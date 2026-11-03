@@ -1,0 +1,386 @@
+/* ============================================================================
+   LineBred — design tokens
+   Everything derives from the logo: charcoal #222428, Hereford red #8B1A1A,
+   tan #C9A27A for dark surfaces, Inter throughout, square corners.
+
+   Two layers on purpose:
+     1. RAW palette — the actual colours, named by what they are.
+     2. SEMANTIC tokens — named by the job they do, pointing at raw values.
+   Screens only ever use the semantic layer, so adding dark mode later means
+   remapping this file and touching nothing else.
+   ========================================================================= */
+
+:root {
+  /* ---- raw palette --------------------------------------------------- */
+  --c-charcoal:      #222428;
+  --c-charcoal-80:   #4A4D53;
+  --c-charcoal-60:   #6E7177;
+  --c-charcoal-40:   #9A9CA2;
+
+  --c-red:           #8B1A1A;   /* Hereford red — the logo's accent */
+  --c-red-hover:     #731515;
+  --c-red-press:     #5E1111;
+  --c-red-tint:      #F6EDEC;   /* selected-row wash */
+  --c-red-border:    #E3C9C7;
+
+  --c-tan:           #C9A27A;   /* accent on dark surfaces */
+  --c-tan-dim:       #A8825C;
+
+  /* warm neutrals, tuned to sit under the charcoal rather than fight it */
+  --c-white:         #FFFFFF;
+  --c-warm-50:       #FAF9F7;
+  --c-warm-100:      #F4F2EF;
+  --c-warm-200:      #E8E5E0;
+  --c-warm-300:      #D8D4CD;
+  --c-warm-400:      #BFBAB1;
+
+  /* status — deliberately none of them the brand red, so red never
+     reads as an error anywhere in the interface */
+  --c-good:          #3F6B47;
+  --c-good-bg:       #EDF3EE;
+  --c-good-border:   #C7DACB;
+  --c-caution:       #8A6410;
+  --c-caution-bg:    #F8F1DF;
+  --c-caution-border:#E6D3A4;
+  --c-high:          #A8481A;
+  --c-high-bg:       #FAEFE8;
+  --c-high-border:   #EBCDBB;
+
+  /* ---- semantic: surfaces -------------------------------------------- */
+  --surface:          var(--c-white);
+  --surface-sunken:   var(--c-warm-50);
+  --surface-panel:    var(--c-warm-100);
+  --surface-hover:    var(--c-warm-50);
+  --surface-selected: var(--c-red-tint);
+
+  /* ---- semantic: text ------------------------------------------------ */
+  --text:        var(--c-charcoal);
+  --text-muted:  var(--c-charcoal-60);
+  --text-faint:  var(--c-charcoal-40);
+  --text-invert: var(--c-white);
+  --text-accent: var(--c-red);
+
+  /* ---- semantic: lines ----------------------------------------------- */
+  --border:        var(--c-warm-200);
+  --border-strong: var(--c-warm-300);
+  --border-focus:  var(--c-red);
+  --rule-chart:    var(--c-charcoal);   /* pedigree bracket lines */
+  --rule-chart-hl: var(--c-red);        /* selected / repeated ancestor */
+
+  /* ---- semantic: accent ---------------------------------------------- */
+  --accent:          var(--c-red);
+  --accent-hover:    var(--c-red-hover);
+  --accent-press:    var(--c-red-press);
+  --accent-on:       var(--c-white);
+  --accent-subtle:   var(--c-red-tint);
+  --accent-subtle-b: var(--c-red-border);
+
+  /* ---- semantic: status ---------------------------------------------- */
+  --good: var(--c-good);          --good-bg: var(--c-good-bg);       --good-border: var(--c-good-border);
+  --caution: var(--c-caution);    --caution-bg: var(--c-caution-bg); --caution-border: var(--c-caution-border);
+  --high: var(--c-high);          --high-bg: var(--c-high-bg);       --high-border: var(--c-high-border);
+
+  /* ---- type ----------------------------------------------------------- */
+  --font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+  --t-display: 2rem;      --lh-display: 1.2;    /* 32 */
+  --t-h1:      1.5rem;    --lh-h1: 1.3;         /* 24 */
+  --t-h2:      1.1875rem; --lh-h2: 1.35;        /* 19 */
+  --t-h3:      1rem;      --lh-h3: 1.4;         /* 16 */
+  --t-body:    1rem;      --lh-body: 1.55;      /* 16 — floor on mobile */
+  --t-sm:      0.875rem;  --lh-sm: 1.45;        /* 14 */
+  --t-xs:      0.75rem;   --lh-xs: 1.35;        /* 12 — labels only */
+  --t-metric:  1.75rem;   --lh-metric: 1.15;    /* 28 — single figures */
+
+  --w-reg: 400; --w-med: 500; --w-semi: 600; --w-bold: 700;
+  --track-label: 0.06em;   /* small caps-ish labels */
+  --track-tight: -0.01em;  /* large headings */
+
+  /* ---- space, radius, line ------------------------------------------- */
+  --s-1: 4px;  --s-2: 8px;  --s-3: 12px; --s-4: 16px;
+  --s-5: 24px; --s-6: 32px; --s-7: 48px; --s-8: 64px;
+
+  --r-sm: 4px;   /* inputs, chips, table cells */
+  --r-md: 6px;   /* cards, buttons, panels */
+  --bw: 1px;     /* every border in the UI */
+  --chart-w: 2px;        /* pedigree bracket line */
+  --chart-w-hl: 3px;     /* highlighted bracket line */
+
+  --focus-ring: 0 0 0 2px var(--surface), 0 0 0 4px var(--c-red);
+}
+
+/* ---------------------------------------------------------------------------
+   Dark mode is not switched on. The hooks are here so it is a remap of this
+   one block later, with tan carrying the accent because the deep red does not
+   hold up on a charcoal surface.
+   ------------------------------------------------------------------------ */
+/*
+[data-theme="dark"] {
+  --surface: #1A1C1F; --surface-sunken: #151719; --surface-panel: #232629;
+  --surface-hover: #232629; --surface-selected: #2A2420;
+  --text: #F2F1EF; --text-muted: #A8ABB1; --text-faint: #74777D;
+  --border: #32363B; --border-strong: #434850;
+  --rule-chart: #C7CAD0; --rule-chart-hl: var(--c-tan);
+  --accent: var(--c-tan); --accent-hover: #D7B48F; --accent-on: #1A1C1F;
+  --accent-subtle: #2A2420; --accent-subtle-b: #4A3D30;
+}
+*/
+
+/* ============================================================================
+   Base
+   ========================================================================= */
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body { margin: 0; padding: 0; }
+
+body {
+  background: var(--surface);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: var(--t-body);
+  line-height: var(--lh-body);
+  font-weight: var(--w-reg);
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Every number in this app is a figure you compare against another figure,
+   so tabular lining numerals are the default, not an opt-in. */
+.num, td.num, th.num, .metric, input[type="number"], time, .reg {
+  font-variant-numeric: tabular-nums lining-nums;
+  font-feature-settings: "tnum" 1, "lnum" 1;
+}
+
+h1, h2, h3, h4 { margin: 0; font-weight: var(--w-semi); color: var(--text); }
+h1 { font-size: var(--t-h1); line-height: var(--lh-h1); letter-spacing: var(--track-tight); font-weight: var(--w-bold); }
+h2 { font-size: var(--t-h2); line-height: var(--lh-h2); }
+h3 { font-size: var(--t-h3); line-height: var(--lh-h3); }
+p  { margin: 0 0 var(--s-3); }
+
+a { color: var(--accent); text-underline-offset: 2px; }
+
+:focus-visible { outline: none; box-shadow: var(--focus-ring); border-radius: var(--r-sm); }
+
+/* ============================================================================
+   Labels and eyebrows
+   ========================================================================= */
+.label {
+  font-size: var(--t-xs);
+  line-height: var(--lh-xs);
+  font-weight: var(--w-semi);
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* ============================================================================
+   Buttons
+   ========================================================================= */
+.btn {
+  font: inherit;
+  font-size: var(--t-sm);
+  font-weight: var(--w-semi);
+  line-height: 1;
+  padding: 10px 16px;
+  border-radius: var(--r-md);
+  border: var(--bw) solid transparent;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  background: none;
+  color: var(--text);
+  white-space: nowrap;
+  transition: background-color .12s ease, border-color .12s ease, color .12s ease;
+}
+.btn:disabled { opacity: .45; cursor: default; }
+
+.btn-primary { background: var(--accent); color: var(--accent-on); }
+.btn-primary:hover:not(:disabled) { background: var(--accent-hover); }
+.btn-primary:active:not(:disabled) { background: var(--accent-press); }
+
+.btn-secondary { border-color: var(--text); color: var(--text); }
+.btn-secondary:hover:not(:disabled) { background: var(--surface-panel); }
+
+.btn-quiet { color: var(--text-muted); border-color: var(--border-strong); }
+.btn-quiet:hover:not(:disabled) { background: var(--surface-panel); color: var(--text); }
+
+.btn-sm { padding: 6px 12px; font-size: var(--t-xs); }
+
+/* segmented control — tabs, view switches, depth pickers */
+.seg { display: inline-flex; border: var(--bw) solid var(--border-strong); border-radius: var(--r-md); overflow: hidden; }
+.seg button {
+  font: inherit; font-size: var(--t-sm); font-weight: var(--w-med);
+  padding: 8px 14px; border: 0; background: var(--surface); color: var(--text-muted); cursor: pointer;
+  border-right: var(--bw) solid var(--border-strong);
+}
+.seg button:last-child { border-right: 0; }
+.seg button[aria-pressed="true"] { background: var(--accent); color: var(--accent-on); font-weight: var(--w-semi); }
+
+/* ============================================================================
+   Forms
+   ========================================================================= */
+.field { display: block; }
+.field > .label { display: block; margin-bottom: 6px; }
+.input, select.input, textarea.input {
+  font: inherit;
+  font-size: var(--t-body);
+  width: 100%;
+  padding: 10px 12px;
+  color: var(--text);
+  background: var(--surface);
+  border: var(--bw) solid var(--border-strong);
+  border-radius: var(--r-sm);
+}
+.input::placeholder { color: var(--text-faint); }
+.input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-subtle); }
+.hint { font-size: var(--t-sm); color: var(--text-muted); margin-top: 6px; }
+
+/* ============================================================================
+   Cards and panels
+   ========================================================================= */
+.card {
+  background: var(--surface);
+  border: var(--bw) solid var(--border);
+  border-radius: var(--r-md);
+  padding: var(--s-4);
+}
+.card-head {
+  display: flex; align-items: baseline; justify-content: space-between; gap: var(--s-3);
+  margin: 0 0 var(--s-3); padding-bottom: var(--s-3);
+  border-bottom: var(--bw) solid var(--border);
+}
+.panel { background: var(--surface-panel); border: var(--bw) solid var(--border); border-radius: var(--r-md); padding: var(--s-4); }
+
+.metric { font-size: var(--t-metric); line-height: var(--lh-metric); font-weight: var(--w-semi); }
+.metric-row { display: flex; align-items: baseline; justify-content: space-between; padding: var(--s-2) 0; border-bottom: var(--bw) solid var(--border); }
+.metric-row:last-child { border-bottom: 0; }
+
+/* ============================================================================
+   Status — always a word next to the colour, never colour alone
+   ========================================================================= */
+.tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: var(--t-xs); font-weight: var(--w-semi); letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  padding: 3px 8px; border-radius: var(--r-sm); border: var(--bw) solid;
+}
+.tag-good    { color: var(--good);    background: var(--good-bg);    border-color: var(--good-border); }
+.tag-caution { color: var(--caution); background: var(--caution-bg); border-color: var(--caution-border); }
+.tag-high    { color: var(--high);    background: var(--high-bg);    border-color: var(--high-border); }
+.tag-neutral { color: var(--text-muted); background: var(--surface-panel); border-color: var(--border-strong); }
+.tag-accent  { color: var(--accent); background: var(--accent-subtle); border-color: var(--accent-subtle-b); }
+.tag::before { content: ""; width: 7px; height: 7px; border-radius: 1px; background: currentColor; flex: none; }
+.tag-plain::before { display: none; }
+
+/* ============================================================================
+   Data tables — compact, numbers right, headers stay put
+   ========================================================================= */
+.table-wrap { overflow: auto; border: var(--bw) solid var(--border); border-radius: var(--r-md); background: var(--surface); }
+table.data { width: 100%; border-collapse: separate; border-spacing: 0; font-size: var(--t-sm); }
+table.data th, table.data td { padding: 9px 12px; text-align: left; border-bottom: var(--bw) solid var(--border); }
+table.data thead th {
+  position: sticky; top: 0; z-index: 1;
+  background: var(--surface-panel);
+  font-size: var(--t-xs); font-weight: var(--w-semi); letter-spacing: var(--track-label);
+  text-transform: uppercase; color: var(--text-muted);
+  border-bottom: var(--bw) solid var(--border-strong);
+  white-space: nowrap;
+}
+table.data td.num, table.data th.num { text-align: right; font-variant-numeric: tabular-nums lining-nums; white-space: nowrap; }
+table.data tbody tr:last-child td { border-bottom: 0; }
+table.data tbody tr:hover td { background: var(--surface-hover); }
+table.data tbody tr[aria-selected="true"] td { background: var(--surface-selected); }
+table.data tbody tr[aria-selected="true"] td:first-child { box-shadow: inset 3px 0 0 var(--accent); }
+.cell-strong { font-weight: var(--w-semi); color: var(--text); }
+.cell-muted  { color: var(--text-muted); }
+
+/* ============================================================================
+   Pedigree bracket — the signature element.
+   Straight lines, square 90° corners, sire above, dam below. No curves, no
+   rounded joins, no dots. Drawn with borders so it stays crisp at any zoom.
+   ========================================================================= */
+.ped { display: flex; align-items: stretch; font-size: var(--t-sm); }
+.ped-col { display: flex; flex-direction: column; justify-content: space-around; flex: 1 1 0; min-width: 0; }
+
+.ped-node {
+  position: relative;
+  display: flex; flex-direction: column; justify-content: center;
+  background: var(--surface);
+  border: var(--bw) solid var(--border-strong);
+  border-radius: var(--r-sm);
+  padding: 7px 10px;
+  margin: 3px 0;
+  min-width: 0;
+}
+.ped-node .nm {
+  font-weight: var(--w-semi); font-size: var(--t-sm); color: var(--text);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.ped-node .meta {
+  font-size: var(--t-xs); color: var(--text-muted);
+  font-variant-numeric: tabular-nums lining-nums;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.ped-node[data-role="sire"] { border-left: 3px solid var(--rule-chart); }
+.ped-node[data-role="dam"]  { border-left: 3px solid var(--c-charcoal-40); }
+.ped-node[data-state="selected"] { border-color: var(--accent); background: var(--accent-subtle); }
+.ped-node[data-state="selected"][data-role] { border-left-color: var(--accent); }
+.ped-node[data-state="repeat"] { border-color: var(--accent); }
+.ped-node[data-state="repeat"]::after {
+  content: "×" attr(data-count);
+  position: absolute; top: -1px; right: -1px;
+  font-size: 10px; font-weight: var(--w-bold); letter-spacing: .02em;
+  background: var(--accent); color: var(--accent-on);
+  padding: 1px 5px; border-radius: 0 var(--r-sm) 0 var(--r-sm);
+  font-variant-numeric: tabular-nums;
+}
+.ped-node[data-state="empty"] {
+  border-style: dashed; border-left-style: dashed;
+  color: var(--text-faint); background: var(--surface-sunken);
+}
+
+/* the bracket itself: a stub out, a vertical bar, a stub into each parent */
+.ped-branch { display: flex; align-items: stretch; flex: 1 1 0; min-width: 0; }
+.ped-link { flex: 0 0 22px; position: relative; }
+.ped-link::before {           /* horizontal out of the child */
+  content: ""; position: absolute; left: 0; top: 50%; width: 11px;
+  border-top: var(--chart-w) solid var(--rule-chart);
+}
+.ped-pair { display: flex; flex-direction: column; flex: 1 1 0; min-width: 0; position: relative; }
+.ped-half { display: flex; align-items: center; flex: 1 1 0; min-width: 0; position: relative; }
+.ped-half::before {           /* horizontal into each parent */
+  content: ""; position: absolute; left: -11px; top: 50%; width: 11px;
+  border-top: var(--chart-w) solid var(--rule-chart);
+}
+/* The vertical bar is split so each half owns its own segment. A single shared
+   bar could only be one colour, which made the sire side look as though it were
+   on a highlighted path when only the dam side was. */
+.ped-half::after {
+  content: ""; position: absolute; left: -11px;
+  border-left: var(--chart-w) solid var(--rule-chart);
+}
+.ped-half:first-child::after { top: 50%; bottom: 0; }
+.ped-half:last-child::after  { top: 0; bottom: 50%; }
+.ped-half:only-child::after  { display: none; }
+
+.ped-link.is-hl::before,
+.ped-half.is-hl::before,
+.ped-half.is-hl::after { border-color: var(--rule-chart-hl); border-width: var(--chart-w-hl); }
+
+/* ============================================================================
+   Small helpers
+   ========================================================================= */
+.stack  { display: flex; flex-direction: column; gap: var(--s-3); }
+.row    { display: flex; align-items: center; gap: var(--s-2); flex-wrap: wrap; }
+.spacer { flex: 1; }
+.rule   { border: 0; border-top: var(--bw) solid var(--border); margin: var(--s-5) 0; }
+.muted  { color: var(--text-muted); }
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}

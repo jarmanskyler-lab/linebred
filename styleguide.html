@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LineBred Style Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<style>
+  .sg { max-width: 1060px; margin: 0 auto; padding: var(--s-6) var(--s-4) var(--s-8); }
+  .sg-head { border-bottom: 2px solid var(--text); padding-bottom: var(--s-4); margin-bottom: var(--s-6); }
+  .sg-head img { display: block; height: 52px; width: auto; }
+  .sg-head p { margin: var(--s-4) 0 0; max-width: 62ch; color: var(--text-muted); }
+  section { margin: var(--s-7) 0 0; }
+  section > h2 { margin-bottom: var(--s-1); }
+  section > .intro { color: var(--text-muted); font-size: var(--t-sm); max-width: 66ch; margin-bottom: var(--s-4); }
+  .grid { display: grid; gap: var(--s-3); }
+  .g2 { grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); }
+  .g3 { grid-template-columns: repeat(auto-fit, minmax(190px,1fr)); }
+  .g4 { grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); }
+
+  .swatch { border: var(--bw) solid var(--border); border-radius: var(--r-md); overflow: hidden; }
+  .swatch .chip { height: 56px; }
+  .swatch .meta { padding: 8px 10px; }
+  .swatch .nm { font-size: var(--t-sm); font-weight: var(--w-semi); display: block; }
+  .swatch .vl { font-size: var(--t-xs); color: var(--text-muted); font-variant-numeric: tabular-nums; }
+  .swatch .tk { font-size: var(--t-xs); color: var(--text-faint); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+
+  .type-row { display: flex; align-items: baseline; gap: var(--s-4); padding: var(--s-3) 0; border-bottom: var(--bw) solid var(--border); }
+  .type-row .tk { flex: 0 0 150px; font-size: var(--t-xs); color: var(--text-faint); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+  .logo-plate { border: var(--bw) solid var(--border); border-radius: var(--r-md); padding: var(--s-4); display: flex; align-items: center; justify-content: center; min-height: 110px; }
+  .logo-plate.dark { background: var(--c-charcoal); border-color: var(--c-charcoal); }
+  .logo-plate.red  { background: var(--accent); border-color: var(--accent); }
+  .logo-plate img, .logo-plate svg { max-width: 100%; height: auto; }
+  .icon-tile { width: 96px; height: 96px; border-radius: 20px; background: var(--accent); display: grid; place-items: center; }
+  code.tok { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: var(--t-xs);
+             background: var(--surface-panel); border: var(--bw) solid var(--border); border-radius: var(--r-sm); padding: 1px 5px; }
+</style>
+</head>
+<body>
+<div class="sg">
+
+  <header class="sg-head">
+    <img src="logo.png" alt="LineBred">
+    <p>The design system for LineBred, built from the logo. Charcoal, one Hereford red accent,
+      Inter throughout, square corners on every pedigree line. Nothing here is decorative —
+      the interface is a working instrument read on a phone in a barn.</p>
+  </header>
+
+  <!-- ===================== LOGO ===================== -->
+  <section>
+    <h2>Logo</h2>
+    <p class="intro">Used as supplied. The reversed variant swaps the deep red for tan, because
+      <code class="tok">#8B1A1A</code> goes muddy on a charcoal surface.</p>
+    <div class="grid g2">
+      <div>
+        <div class="logo-plate"><img src="logo.png" alt="LineBred logo" style="height:56px"></div>
+        <p class="hint">Primary — charcoal word, Hereford red stem</p>
+      </div>
+      <div>
+        <div class="logo-plate dark"><img src="logo-reversed.png" alt="LineBred logo, reversed" style="height:56px"></div>
+        <p class="hint">Reversed — white word, tan stem</p>
+      </div>
+    </div>
+    <div class="row" style="margin-top:var(--s-4); gap:var(--s-5)">
+      <div style="text-align:center">
+        <img src="icon-180.png" alt="LineBred app icon" width="96" height="96" style="border-radius:20px;display:block">
+        <p class="hint">App icon</p>
+      </div>
+      <div style="text-align:center">
+        <img src="icon-180.png" alt="LineBred app icon at 44px" width="44" height="44" style="border-radius:10px;display:block">
+        <p class="hint">44 px</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== COLOR ===================== -->
+  <section>
+    <h2>Colour</h2>
+    <p class="intro">Red is an accent, not a surface. It marks the primary action, the selected
+      animal and a repeated ancestor — nothing else. Status colours are deliberately not the
+      brand red, so red never reads as an error.</p>
+
+    <p class="label" style="margin:var(--s-4) 0 var(--s-2)">Brand</p>
+    <div class="grid g4">
+      <div class="swatch"><div class="chip" style="background:#222428"></div><div class="meta"><span class="nm">Charcoal</span><span class="vl">#222428</span><br><span class="tk">--text</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#8B1A1A"></div><div class="meta"><span class="nm">Hereford red</span><span class="vl">#8B1A1A</span><br><span class="tk">--accent</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#C9A27A"></div><div class="meta"><span class="nm">Tan</span><span class="vl">#C9A27A</span><br><span class="tk">dark-surface accent</span></div></div>
+    </div>
+
+    <p class="label" style="margin:var(--s-5) 0 var(--s-2)">Neutrals</p>
+    <div class="grid g4">
+      <div class="swatch"><div class="chip" style="background:#FFFFFF;border-bottom:1px solid var(--border)"></div><div class="meta"><span class="nm">White</span><span class="vl">#FFFFFF</span><br><span class="tk">--surface</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#FAF9F7"></div><div class="meta"><span class="nm">Warm 50</span><span class="vl">#FAF9F7</span><br><span class="tk">--surface-sunken</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#F4F2EF"></div><div class="meta"><span class="nm">Warm 100</span><span class="vl">#F4F2EF</span><br><span class="tk">--surface-panel</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#E8E5E0"></div><div class="meta"><span class="nm">Warm 200</span><span class="vl">#E8E5E0</span><br><span class="tk">--border</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#D8D4CD"></div><div class="meta"><span class="nm">Warm 300</span><span class="vl">#D8D4CD</span><br><span class="tk">--border-strong</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#6E7177"></div><div class="meta"><span class="nm">Charcoal 60</span><span class="vl">#6E7177</span><br><span class="tk">--text-muted</span></div></div>
+    </div>
+
+    <p class="label" style="margin:var(--s-5) 0 var(--s-2)">Status — never the brand red</p>
+    <div class="grid g3">
+      <div class="swatch"><div class="chip" style="background:#3F6B47"></div><div class="meta"><span class="nm">Good</span><span class="vl">#3F6B47</span><br><span class="tk">--good</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#8A6410"></div><div class="meta"><span class="nm">Caution</span><span class="vl">#8A6410</span><br><span class="tk">--caution</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#A8481A"></div><div class="meta"><span class="nm">High</span><span class="vl">#A8481A</span><br><span class="tk">--high</span></div></div>
+    </div>
+    <div class="row" style="margin-top:var(--s-3)">
+      <span class="tag tag-good">Low</span>
+      <span class="tag tag-caution">Caution</span>
+      <span class="tag tag-high">High</span>
+      <span class="tag tag-accent">Selected</span>
+      <span class="tag tag-neutral">Inactive</span>
+      <span class="muted" style="font-size:var(--t-sm)">— each carries a word, so colour is never the only signal</span>
+    </div>
+  </section>
+
+  <!-- ===================== TYPE ===================== -->
+  <section>
+    <h2>Type</h2>
+    <p class="intro">Inter only. Every number — coefficient, blood percentage, registration number —
+      is set in tabular lining figures so columns line up and two figures can be compared at a glance.
+      Body text never drops below 16px.</p>
+    <div class="type-row"><span class="tk">--t-display</span><span style="font-size:var(--t-display);font-weight:700;letter-spacing:var(--track-tight)">JH Mark M440 ET</span></div>
+    <div class="type-row"><span class="tk">--t-h1</span><span style="font-size:var(--t-h1);font-weight:700;letter-spacing:var(--track-tight)">Herd Record</span></div>
+    <div class="type-row"><span class="tk">--t-h2</span><span style="font-size:var(--t-h2);font-weight:600">Mating Planner</span></div>
+    <div class="type-row"><span class="tk">--t-h3</span><span style="font-size:var(--t-h3);font-weight:600">Shared ancestors</span></div>
+    <div class="type-row"><span class="tk">--t-body</span><span style="font-size:var(--t-body)">Inbreeding is the probability that two alleles at a locus are identical by descent.</span></div>
+    <div class="type-row"><span class="tk">--t-sm</span><span style="font-size:var(--t-sm)">Sire: JD Big Arthur I80 · Dam: JH Ms Mark H009 ET</span></div>
+    <div class="type-row"><span class="tk">--t-xs / .label</span><span class="label">Coefficient of relationship</span></div>
+    <div class="type-row"><span class="tk">--t-metric / .num</span><span class="metric num">13.03%</span></div>
+    <div class="type-row"><span class="tk">tabular figures</span>
+      <span class="num" style="font-size:var(--t-body)">11.11%&nbsp; 00.00%&nbsp; 44575646&nbsp; 1,089</span></div>
+  </section>
+
+  <!-- ===================== BUTTONS ===================== -->
+  <section>
+    <h2>Buttons</h2>
+    <p class="intro">One primary action per screen, in red. Everything else is outlined or quiet.</p>
+    <div class="row">
+      <button class="btn btn-primary">Save mating</button>
+      <button class="btn btn-secondary">Add animal</button>
+      <button class="btn btn-quiet">Collapse</button>
+      <button class="btn btn-primary btn-sm">Open</button>
+      <button class="btn btn-secondary" disabled>Disabled</button>
+    </div>
+    <div class="row" style="margin-top:var(--s-3)">
+      <div class="seg" role="group" aria-label="View">
+        <button aria-pressed="true">Chart</button>
+        <button aria-pressed="false">Table</button>
+      </div>
+      <div class="seg" role="group" aria-label="Generations">
+        <button aria-pressed="false">3 gen</button>
+        <button aria-pressed="true">4 gen</button>
+        <button aria-pressed="false">5 gen</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FORMS ===================== -->
+  <section>
+    <h2>Form inputs</h2>
+    <div class="grid g2">
+      <label class="field">
+        <span class="label">Search animal</span>
+        <input class="input" type="search" placeholder="Name or registration number">
+        <span class="hint">10,575 animals in the herd book</span>
+      </label>
+      <label class="field">
+        <span class="label">Rank by</span>
+        <select class="input">
+          <option>A–Z</option><option>Inbreeding coefficient</option>
+          <option>Blood % to Mark Donald 77</option><option>Founder balance</option>
+        </select>
+      </label>
+      <label class="field">
+        <span class="label">Registration number</span>
+        <input class="input num" inputmode="numeric" value="44575646">
+      </label>
+      <label class="field">
+        <span class="label">Notes</span>
+        <textarea class="input" rows="2" placeholder="Source, chart reference, anything to flag"></textarea>
+      </label>
+    </div>
+  </section>
+
+  <!-- ===================== CARD ===================== -->
+  <section>
+    <h2>Card</h2>
+    <p class="intro">Flat, thin border, 6px corner. No shadow.</p>
+    <div class="grid g2">
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <h3>JH Mark M440 ET</h3>
+            <span class="num" style="font-size:var(--t-sm);color:var(--text-muted)">No. 44575646 · Born 2024</span>
+          </div>
+          <span class="tag tag-high">High</span>
+        </div>
+        <div class="metric-row"><span class="label">Inbreeding</span><span class="metric num">13.03%</span></div>
+        <div class="metric-row"><span class="label">Blood — Mark Donald 77</span><span class="num cell-strong">20.44%</span></div>
+        <div class="metric-row"><span class="label">Blood — McK Donald Dhu 43</span><span class="num cell-strong">10.01%</span></div>
+        <div class="metric-row"><span class="label">Generations known</span><span class="num cell-strong">52</span></div>
+      </div>
+      <div class="panel">
+        <p class="label" style="margin-bottom:var(--s-2)">Concentration</p>
+        <div class="metric-row"><span><span class="tag tag-good tag-plain">Under 6.25%</span></span><span class="num">8,986</span></div>
+        <div class="metric-row"><span><span class="tag tag-caution tag-plain">6.25 – 12.5%</span></span><span class="num">674</span></div>
+        <div class="metric-row"><span><span class="tag tag-high tag-plain">12.5% and over</span></span><span class="num">915</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== TABLE ===================== -->
+  <section>
+    <h2>Data table</h2>
+    <p class="intro">Compact rows, numbers right-aligned in tabular figures, header sticks on scroll.
+      The selected row takes a red edge rather than a red fill.</p>
+    <div class="table-wrap" style="max-height:290px">
+      <table class="data">
+        <thead><tr>
+          <th>Animal</th><th>Sire</th><th>Dam</th>
+          <th class="num">Reg.</th><th class="num">Inbreeding</th><th class="num">77</th><th class="num">43</th><th>Band</th>
+        </tr></thead>
+        <tbody>
+          <tr aria-selected="true">
+            <td class="cell-strong">JH Mark M440 ET</td><td class="cell-muted">JD Big Arthur I80</td><td class="cell-muted">JH Ms Mark H009 ET</td>
+            <td class="num">44575646</td><td class="num cell-strong">13.03%</td><td class="num">20.44%</td><td class="num">10.01%</td><td><span class="tag tag-high">High</span></td></tr>
+          <tr><td class="cell-strong">JH Ms Mark H009 ET</td><td class="cell-muted">DH Beau Mark 815</td><td class="cell-muted">MDA Ms Mark 3024 ET</td>
+            <td class="num">44155408</td><td class="num cell-strong">5.98%</td><td class="num">22.90%</td><td class="num">10.64%</td><td><span class="tag tag-good">Low</span></td></tr>
+          <tr><td class="cell-strong">Mark Arthur 775</td><td class="cell-muted">TT McK Arthur 405</td><td class="cell-muted">SB Miss Mark 88</td>
+            <td class="num">14595430</td><td class="num cell-strong">5.33%</td><td class="num">25.00%</td><td class="num">25.00%</td><td><span class="tag tag-good">Low</span></td></tr>
+          <tr><td class="cell-strong">DH Beau Mark 815</td><td class="cell-muted">DH Beau Mark Dhu 326</td><td class="cell-muted">DH Belle Mark 321</td>
+            <td class="num">15026334</td><td class="num cell-strong">16.32%</td><td class="num">18.75%</td><td class="num">21.29%</td><td><span class="tag tag-high">High</span></td></tr>
+          <tr><td class="cell-strong">SB Donald 120</td><td class="cell-muted">Mark Donald 77</td><td class="cell-muted">SB Miss Mark 18</td>
+            <td class="num">—</td><td class="num cell-strong">37.10%</td><td class="num">75.00%</td><td class="num">0.00%</td><td><span class="tag tag-high">High</span></td></tr>
+          <tr><td class="cell-strong">Mark Donald 77</td><td class="cell-muted">Mark Donald</td><td class="cell-muted">Donna Gomez</td>
+            <td class="num">—</td><td class="num cell-strong">8.67%</td><td class="num">100.00%</td><td class="num">0.00%</td><td><span class="tag tag-caution">Caution</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===================== PEDIGREE ===================== -->
+  <section>
+    <h2>Pedigree bracket</h2>
+    <p class="intro">Drawn exactly like the logo: straight lines, square 90° corners, sire above and
+      dam below, no curves and no dots at the ends. Charcoal by default; red marks the line through a
+      repeated ancestor, with a count so the repetition is stated and not just coloured.</p>
+
+    <div class="card" style="padding:var(--s-4)">
+      <div class="ped" style="min-height:300px">
+        <!-- gen 0 -->
+        <div class="ped-col" style="flex:0 0 190px">
+          <div class="ped-node" data-state="selected">
+            <span class="nm">JH Mark M440 ET</span>
+            <span class="meta">No. 44575646 · F 13.03%</span>
+          </div>
+        </div>
+        <!-- gen 1 -->
+        <div class="ped-branch">
+          <div class="ped-link is-hl"></div>
+          <div class="ped-pair">
+            <div class="ped-half">
+              <div class="ped-branch">
+                <div class="ped-col">
+                  <div class="ped-node" data-role="sire"><span class="nm">JD Big Arthur I80</span><span class="meta">No. 17701298 · F 4.73%</span></div>
+                </div>
+                <!-- gen 2 off the sire -->
+                <div class="ped-branch">
+                  <div class="ped-link"></div>
+                  <div class="ped-pair">
+                    <div class="ped-half">
+                      <div class="ped-col"><div class="ped-node" data-role="sire"><span class="nm">SR Big Arthur H201</span><span class="meta">F 5.01%</span></div></div>
+                    </div>
+                    <div class="ped-half">
+                      <div class="ped-col"><div class="ped-node" data-role="dam"><span class="nm">SR Markette L518</span><span class="meta">F 7.39%</span></div></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="ped-half is-hl">
+              <div class="ped-branch">
+                <div class="ped-col">
+                  <div class="ped-node" data-role="dam"><span class="nm">JH Ms Mark H009 ET</span><span class="meta">No. 44155408 · F 5.98%</span></div>
+                </div>
+                <!-- gen 2 off the dam -->
+                <div class="ped-branch">
+                  <div class="ped-link is-hl"></div>
+                  <div class="ped-pair">
+                    <div class="ped-half is-hl">
+                      <div class="ped-col">
+                        <div class="ped-node" data-role="sire" data-state="repeat" data-count="3"><span class="nm">DH Beau Mark 815</span><span class="meta">F 16.32%</span></div>
+                      </div>
+                    </div>
+                    <div class="ped-half">
+                      <div class="ped-col"><div class="ped-node" data-role="dam" data-state="empty"><span class="nm">Not recorded</span><span class="meta">Pedigree ends here</span></div></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" style="margin-top:var(--s-4);padding-top:var(--s-3);border-top:var(--bw) solid var(--border);font-size:var(--t-sm)">
+        <span class="muted">Key:</span>
+        <span class="row" style="gap:6px"><span style="display:inline-block;width:18px;border-top:2px solid var(--rule-chart)"></span><span class="muted">line of descent</span></span>
+        <span class="row" style="gap:6px"><span style="display:inline-block;width:18px;border-top:3px solid var(--rule-chart-hl)"></span><span class="muted">through a repeated ancestor</span></span>
+        <span class="row" style="gap:6px"><span class="tag tag-accent">×3</span><span class="muted">times that animal appears</span></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PRINCIPLES ===================== -->
+  <section>
+    <h2>Rules</h2>
+    <ul style="font-size:var(--t-sm);color:var(--text-muted);max-width:68ch;padding-left:1.1em">
+      <li style="margin-bottom:6px">Red is for one primary action, the selected animal, and a repeated ancestor. Nothing else.</li>
+      <li style="margin-bottom:6px">Status never relies on colour alone — every band carries its word.</li>
+      <li style="margin-bottom:6px">Every figure is tabular, so two numbers can be compared down a column.</li>
+      <li style="margin-bottom:6px">Pedigree lines are square-cornered. No curve, no rounded join, no terminal dot.</li>
+      <li style="margin-bottom:6px">Corners are 4px on controls and 6px on cards. No shadows, no gradients, no texture.</li>
+      <li>Body text starts at 16px and goes up, never down.</li>
+    </ul>
+  </section>
+
+</div>
+</body>
+</html>

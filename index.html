@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LineBred</title>
+<meta name="description" content="Hereford linebreeding analysis — COI, blood percentage and mating planning for the Mark Donald line.">
+<meta name="theme-color" content="#8B1A1A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="LineBred">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="favicon-32.png" sizes="32x32">
+<link rel="icon" href="icon-512.png" sizes="512x512">
+<style>
+  :root { color-scheme: light; }
+  body { background: var(--surface-sunken, #FAF9F7); }
+  #boot {
+    position: fixed; inset: 0; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 18px;
+    background: var(--surface-sunken, #FAF9F7); z-index: 9999; padding: 24px; text-align: center;
+  }
+  #boot img { height: 34px; width: auto; }
+  #boot .msg { font-size: 14px; color: #6E7177; max-width: 32ch; line-height: 1.5;
+               font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  #boot .bar { width: 170px; height: 3px; background: #E8E5E0; border-radius: 2px; overflow: hidden; }
+  #boot .bar i { display: block; height: 100%; width: 40%; background: #8B1A1A; border-radius: 2px;
+                 animation: slide 1.1s ease-in-out infinite; }
+  @keyframes slide { 0% { transform: translateX(-110%); } 100% { transform: translateX(310%); } }
+  #boot.failed .bar { display: none; }
+  #boot.failed .msg { color: #A8481A; }
+  @media (prefers-reduced-motion: reduce) { #boot .bar i { animation: none; width: 100%; } }
+</style>
+</head>
+<body>
+<div id="boot">
+  <img src="logo.png" alt="LineBred">
+  <div class="bar"><i></i></div>
+  <div class="msg" id="bootmsg">Loading pedigree database…</div>
+</div>
+<div id="root"></div>
+
+<script>
+  // Bump this when data.json is regenerated so phones pick up the new copy.
+  window.__LINEBRED_DATA_VERSION = "20261102-400d8220";
+  window.addEventListener("error", function (e) {
+    var b = document.getElementById("boot");
+    if (b && !b.dataset.gone) {
+      b.classList.add("failed");
+      document.getElementById("bootmsg").textContent =
+        "Something failed to load. Pull down to refresh, or check your connection. (" + (e.message || "error") + ")";
+    }
+  });
+</script>
+<script defer src="app.js"></script>
+<script>
+  // The app renders synchronously; the database arrives a moment later.
+  // Clear the splash as soon as React has put something on the page.
+  (function () {
+    var tries = 0;
+    function check() {
+      var root = document.getElementById("root");
+      if (root && root.childNodes.length) {
+        var b = document.getElementById("boot");
+        if (b) { b.dataset.gone = "1"; b.remove(); }
+        return;
+      }
+      if (++tries < 150) setTimeout(check, 40);
+    }
+    check();
+  })();
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function () {
+      navigator.serviceWorker.register("sw.js").catch(function () {});
+    });
+  }
+</script>
+</body>
+</html>
