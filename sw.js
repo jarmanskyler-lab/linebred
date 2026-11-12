@@ -2,7 +2,7 @@
 // Strategy: cache the app shell on install; serve the shell cache-first so the app
 // opens with no signal, and keep data.json network-first so a freshly pushed
 // database is picked up as soon as the phone is online again.
-const VERSION = "20261110-cf4a2bb5";
+const VERSION = "20261112-a5a0328b";
 const SHELL = "linebred-shell-" + VERSION;
 const DATA  = "linebred-data-" + VERSION;
 const SHELL_FILES = [
