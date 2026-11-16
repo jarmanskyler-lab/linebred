@@ -9391,7 +9391,7 @@ Error generating stack: ` +
       [E, k] = (0, b.useState)([]),
       [O, f] = (0, b.useState)(null),
       [p, m] = (0, b.useState)(!1),
-      [w, x] = (0, b.useState)("browse"),
+      [w, x] = (0, b.useState)("dashboard"),
       [mm, setMm] = (0, b.useState)("check"),
       [cmLast, setCmLast] = (0, b.useState)({ cow: "", bull: "", extra: [], key: 0 }),
       [h, T] = (0, b.useState)(""),
@@ -9602,6 +9602,9 @@ Error generating stack: ` +
           className: "toolbar",
           children: [
             (0, o.jsx)("span", {
+              onClick: () => x("dashboard"),
+              style: { cursor: "pointer" },
+              title: "Dashboard",
               children: (0, o.jsx)("img", { src: "logo.png", alt: "LineBred" }),
             }),
             (0, o.jsx)("button", {
@@ -9620,11 +9623,6 @@ Error generating stack: ` +
               className: w === "matinglog" ? "active" : "",
               onClick: () => x("matinglog"),
               children: "Log",
-            }),
-            (0, o.jsx)("button", {
-              className: w === "dashboard" ? "active" : "",
-              onClick: () => x("dashboard"),
-              children: "Dashboard",
             }),
             (0, o.jsx)("button", {
               className: w === "reports" ? "active" : "",
