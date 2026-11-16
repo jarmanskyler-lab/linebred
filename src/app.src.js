@@ -11127,6 +11127,273 @@ Error generating stack: ` +
       ],
     });
   }
+  function AnimalStdCard(P) {
+    var E = b.default.createElement;
+    var s = P.name,
+      h = P.rec,
+      t = P.sire,
+      n = P.dam,
+      r = P.names,
+      a = P.kinship,
+      all = P.allAnimals,
+      targets = P.targets,
+      pick = P.onSelect;
+    var G = window.__lbProg || {};
+    var sn = function (x) {
+      return (G.shorts && G.shorts[x]) || x;
+    };
+    var COL = targets.map(function (F, i) {
+      return P.isFounder(F) ? (G.colors && G.colors[F]) || FCOL[i % 8] : CM_REF_COL[i % CM_REF_COL.length];
+    });
+    var per = b.useMemo(
+      function () {
+        return targets.map(function (F) {
+          var cl = cmClosest(s, F, t, n, r);
+          return {
+            name: F,
+            blood: ye(s, F, t, n, r) * 100,
+            rel: rs(s, F, t, n, a) * 100,
+            occ: On(s, F, t, n, r),
+            cl: cl,
+            gens: cmGenLine(cmGens(s, F, t, n, r).slice(1), []),
+          };
+        });
+      },
+      [s, targets.join("\u0001"), t, n, r, a],
+    );
+    var kids = b.useMemo(
+      function () {
+        var k = 0,
+          ka = 0;
+        all.forEach(function (x) {
+          if (x.sire === s || x.dam === s) {
+            k++;
+            if (x.status === "Active" || x.livingAvailable) ka++;
+          }
+        });
+        return { k: k, ka: ka };
+      },
+      [s, all],
+    );
+    var fper = per.filter(function (p, i) {
+      return P.isFounder(p.name);
+    });
+    var totBlood = 0;
+    fper.forEach(function (p) {
+      totBlood += p.blood;
+    });
+    var other = Math.max(0, 100 - totBlood);
+    function donut() {
+      var R = 40,
+        K = 2 * Math.PI * R,
+        off = 0,
+        tot = 0;
+      var segs = [];
+      per.forEach(function (p, i) {
+        if (!P.isFounder(p.name)) return;
+        var v = Math.max(0, Math.min(p.blood, 100 - tot));
+        tot += v;
+        var len = (K * v) / 100;
+        segs.push(
+          E("circle", {
+            key: i,
+            cx: 56,
+            cy: 56,
+            r: R,
+            stroke: COL[i],
+            strokeDasharray: len + " " + (K - len),
+            strokeDashoffset: -off,
+          }),
+        );
+        off += len;
+      });
+      return E(
+        "svg",
+        { className: "pl-dn-svg", viewBox: "0 0 112 112", role: "img", "aria-label": "Foundation ancestry" },
+        E(
+          "g",
+          { transform: "rotate(-90 56 56)", fill: "none", strokeWidth: 14 },
+          E("circle", { cx: 56, cy: 56, r: R, stroke: "var(--border-strong)", strokeOpacity: 0.5 }),
+          segs,
+        ),
+        E("text", { x: 56, y: 54, textAnchor: "middle", className: "pl-dn-big" }, tot.toFixed(1) + "%"),
+        E("text", { x: 56, y: 70, textAnchor: "middle", className: "pl-dn-sm" }, "foundation"),
+      );
+    }
+    function plink(nm, lab) {
+      return nm
+        ? E("span", { className: "ah-link", onClick: function () { pick(nm); } }, nm)
+        : E("span", { className: "ah-none" }, lab);
+    }
+    var hasPar = !!(t[s] || n[s]);
+    var skip = new Set(targets.concat([s]));
+    var top = (P.top || []).filter(function (o) {
+      return !skip.has(o.name);
+    });
+    var sexLab = P.sexLabel;
+    return E(
+      "div",
+      { className: "pl-card pl-card-static" },
+      E(
+        "div",
+        { className: "pl-head" },
+        E("span", { className: "pl-role" }, sexLab),
+        h && h.regNum ? E("span", { className: "pl-reg" }, "Reg " + h.regNum) : null,
+        h && h.birthDate ? E("span", { className: "pl-reg" }, h.birthDate) : null,
+        P.status ? E("span", { className: "pl-reg" }, P.status) : null,
+      ),
+      E("div", { className: "pl-name" }, s + (h && h.isStub ? " (stub)" : "")),
+      hasPar
+        ? E("div", { className: "pl-par" }, plink(t[s], "sire not recorded"), " × ", plink(n[s], "dam not recorded"))
+        : E("div", { className: "pl-par" }, "no sire or dam recorded"),
+      E(
+        "div",
+        { className: "pl-mid" },
+        E("div", { className: "pl-dwrap" }, donut()),
+        E(
+          "div",
+          { className: "pl-tb" },
+          E(
+            "table",
+            { className: "pl-table pl-ftable" },
+            E(
+              "thead",
+              null,
+              E(
+                "tr",
+                null,
+                ["Foundation", "Blood %", "Relation", "Times", "Closest"].map(function (hh) {
+                  return E("th", { key: hh }, hh);
+                }),
+              ),
+            ),
+            E(
+              "tbody",
+              null,
+              per.map(function (p, j) {
+                var reached = p.occ > 0;
+                return [
+                  E(
+                    "tr",
+                    { key: p.name },
+                    E(
+                      "td",
+                      null,
+                      E("i", { className: "pl-sw", style: { background: COL[j] } }),
+                      E("span", { className: "ah-link", onClick: function () { pick(p.name); } }, sn(p.name)),
+                    ),
+                    reached
+                      ? [
+                          E("td", { key: "b" }, p.blood.toFixed(1) + "%"),
+                          E("td", { key: "r" }, (p.rel / 100).toFixed(2)),
+                          E("td", { key: "o" }, p.occ),
+                          E("td", { key: "c" }, p.cl === null ? "—" : "Gen " + p.cl),
+                        ]
+                      : E("td", { colSpan: 4, className: "fmuted" }, "not reached — pedigree stops too soon"),
+                  ),
+                  p.gens
+                    ? E(
+                        "tr",
+                        { key: p.name + "|g", className: "pl-genrow" },
+                        E("td", { colSpan: 5 }, "In generations: " + p.gens),
+                      )
+                    : null,
+                ];
+              }),
+              E(
+                "tr",
+                { key: "other" },
+                E(
+                  "td",
+                  null,
+                  E("i", { className: "pl-sw", style: { background: "var(--border-strong)" } }),
+                  "All other ancestors",
+                ),
+                E("td", null, other.toFixed(1) + "%"),
+                E("td", null),
+                E("td", null),
+                E("td", null),
+              ),
+            ),
+          ),
+        ),
+      ),
+      E(
+        "div",
+        { className: "pl-tiles" },
+        E(
+          "div",
+          { className: "pl-tile" },
+          E("div", { className: "pl-l" }, "COI"),
+          E("div", { className: "pl-v" }, P.hasPed ? P.coi.toFixed(2) + "%" : "no pedigree"),
+          E("div", { className: "pl-s" }, "sire × dam kinship"),
+        ),
+        E(
+          "div",
+          { className: "pl-tile" },
+          E("div", { className: "pl-l" }, "Complete generations"),
+          E("div", { className: "pl-v" }, P.complete + " / " + P.deep),
+          E("div", { className: "pl-s" }, "complete / deep, goal 10"),
+        ),
+        E(
+          "div",
+          { className: "pl-tile" },
+          E("div", { className: "pl-l" }, "Offspring in database"),
+          E("div", { className: "pl-v" }, kids.k),
+          E("div", { className: "pl-s" }, kids.ka + " still active"),
+        ),
+      ),
+      top.length
+        ? E(
+            "div",
+            null,
+            E("p", { className: "pl-hd" }, "Other ancestors this animal concentrates"),
+            E(
+              "p",
+              { className: "pl-sub" },
+              "Ranked by relationship. Foundation and tracked animals are left out.",
+            ),
+            E(
+              "table",
+              { className: "pl-table" },
+              E(
+                "thead",
+                null,
+                E(
+                  "tr",
+                  null,
+                  ["Rank", "Ancestor", "Rel. coef.", "Blood %", "Occ."].map(function (hh) {
+                    return E("th", { key: hh }, hh);
+                  }),
+                ),
+              ),
+              E(
+                "tbody",
+                null,
+                top.slice(0, 5).map(function (o, j) {
+                  return E(
+                    "tr",
+                    { key: o.name },
+                    E("td", null, j + 1),
+                    E("td", null, E("span", { className: "ah-link", onClick: function () { pick(o.name); } }, o.name)),
+                    E("td", null, o.rel.toFixed(1) + "%"),
+                    E("td", null, o.blood.toFixed(1) + "%"),
+                    E("td", null, o.occ + "×"),
+                  );
+                }),
+              ),
+            ),
+          )
+        : null,
+      P.complete < 6 && P.hasPed
+        ? E(
+            "div",
+            { className: "pl-note" },
+            "Short pedigree: only " + P.complete + " complete generations, so these numbers may be low.",
+          )
+        : null,
+    );
+  }
   function rh({
     allAnimals: e,
     sire: t,
@@ -11234,7 +11501,7 @@ Error generating stack: ` +
                       onClick: () => {
                         (u(z.name), v(z.name));
                       },
-                      children: [z.name, z.isStub ? " (stub)" : ""],
+                      children: [z.name, z.isStub ? " (stub)" : "", sxd(z)],
                     },
                     z.name,
                   ),
@@ -11245,202 +11512,26 @@ Error generating stack: ` +
         s
           ? (0, o.jsxs)(o.Fragment, {
               children: [
-                (0, o.jsxs)("div", {
-                  className: "ah-head",
-                  children: [
-                    (0, o.jsxs)("div", {
-                      className: "ah-id",
-                      children: [
-                        (0, o.jsxs)("div", {
-                          className: "ah-nmrow",
-                          children: [
-                            (0, o.jsxs)("h1", {
-                              className: "ah-nm",
-                              children: [s, h && h.isStub ? " (stub)" : ""],
-                            }),
-                            R &&
-                              (0, o.jsxs)("span", {
-                                className: "ah-badge",
-                                title: R,
-                                children: [
-                                  (0, o.jsx)("span", {
-                                    className: "ah-chk",
-                                    "aria-hidden": "true",
-                                    children: (0, o.jsx)("svg", {
-                                      viewBox: "0 0 12 12",
-                                      fill: "none",
-                                      stroke: "#fff",
-                                      strokeWidth: "2.4",
-                                      strokeLinecap: "round",
-                                      strokeLinejoin: "round",
-                                      children: (0, o.jsx)("path", { d: "M2 6.3 L4.7 9 L10 3" }),
-                                    }),
-                                  }),
-                                  "ACTIVE",
-                                ],
-                              }),
-                          ],
-                        }),
-                        (0, o.jsxs)("div", {
-                          className: "ah-meta",
-                          children: [
-                            (h && h.regNum) || "no reg",
-                            h && h.birthDate ? " \xB7 " + h.birthDate : "",
-                            " \xB7 " + (Rl(q) === "\u2014" ? "sex not recorded" : eh(q)),
-                          ],
-                        }),
-                      ],
-                    }),
-                    (0, o.jsxs)("div", {
-                      className: "ah-coi",
-                      children: [
-                        (0, o.jsx)("span", { className: "ah-k", children: "COI" }),
-                        I
-                          ? (0, o.jsxs)("span", {
-                              className: "ah-v",
-                              children: [T.toFixed(2), (0, o.jsx)("small", { children: "%" })],
-                            })
-                          : (0, o.jsx)("span", { className: "ah-v none", children: "no pedigree" }),
-                      ],
-                    }),
-                    (0, o.jsxs)("div", {
-                      className: "ah-ped",
-                      children: [
-                        (0, o.jsx)("div", { className: "ah-k", children: "Pedigree gens" }),
-                        (0, o.jsxs)("div", {
-                          className: "ah-pv",
-                          children: [
-                            (0, o.jsx)("b", { children: M.fullThrough }),
-                            " ",
-                            (0, o.jsx)("span", { children: "complete" }),
-                            (0, o.jsx)("i", { children: "/" }),
-                            (0, o.jsx)("b", { children: U }),
-                            " ",
-                            (0, o.jsx)("span", { children: "deep" }),
-                          ],
-                        }),
-                      ],
-                    }),
-                  ],
-                }),
-                (0, o.jsx)("div", {
-                  className: "ah-mating",
-                  children:
-                    t[s] || n[s]
-                      ? (0, o.jsxs)(o.Fragment, {
-                          children: [
-                            t[s]
-                              ? (0, o.jsx)("span", {
-                                  className: "ah-link",
-                                  onClick: () => {
-                                    (u(t[s]), v(t[s]));
-                                  },
-                                  children: t[s],
-                                })
-                              : (0, o.jsx)("span", {
-                                  className: "ah-none",
-                                  children: "sire not recorded",
-                                }),
-                            (0, o.jsx)("span", { className: "ah-x", children: "\xD7" }),
-                            n[s]
-                              ? (0, o.jsx)("span", {
-                                  className: "ah-link",
-                                  onClick: () => {
-                                    (u(n[s]), v(n[s]));
-                                  },
-                                  children: n[s],
-                                })
-                              : (0, o.jsx)("span", {
-                                  className: "ah-none",
-                                  children: "dam not recorded",
-                                }),
-                          ],
-                        })
-                      : (0, o.jsx)("span", {
-                          className: "ah-none",
-                          children: "no sire or dam recorded",
-                        }),
-                }),
-                (0, o.jsx)("div", {
-                  className: "card ah-found",
-                  children: (0, o.jsx)("div", {
-                    className: "table-scroll",
-                    children: (0, o.jsxs)("table", {
-                      className: "rank-table found-table",
-                      children: [
-                        (0, o.jsxs)("colgroup", {
-                          children: [
-                            (0, o.jsx)("col", { className: "fc1" }),
-                            (0, o.jsx)("col", { className: "fc2" }),
-                            (0, o.jsx)("col", { className: "fc3" }),
-                            (0, o.jsx)("col", { className: "fc4" }),
-                            (0, o.jsx)("col", { className: "fc5" }),
-                          ],
-                        }),
-                        (0, o.jsx)("thead", {
-                          children: (0, o.jsxs)("tr", {
-                            children: [
-                              (0, o.jsx)("th", {
-                                style: { textAlign: "left" },
-                                children: "Foundation animal",
-                              }),
-                              (0, o.jsx)("th", { children: "Relationship" }),
-                              (0, o.jsx)("th", { children: "% Blood" }),
-                              (0, o.jsx)("th", { children: "Times" }),
-                              (0, o.jsx)("th", {}),
-                            ],
-                          }),
-                        }),
-                        (0, o.jsx)("tbody", {
-                          children: y.map((z, S) => {
-                            let _ = ye(s, z, t, n, r) * 100,
-                              N = On(s, z, t, n, r),
-                              P = rs(s, z, t, n, i) * 100,
-                              $ = N > 0;
-                            return (0, o.jsxs)(
-                              "tr",
-                              {
-                                children: [
-                                  (0, o.jsxs)("td", {
-                                    style: { textAlign: "left" },
-                                    children: [
-                                      (0, o.jsx)("span", { className: "fdot fdot-" + (S % 5) }),
-                                      (0, o.jsx)("span", {
-                                        className: "ah-link",
-                                        onClick: () => {
-                                          (u(z), v(z));
-                                        },
-                                        children: z,
-                                      }),
-                                    ],
-                                  }),
-                                  $
-                                    ? (0, o.jsxs)(o.Fragment, {
-                                        children: [
-                                          (0, o.jsxs)("td", {
-                                            className: "fk",
-                                            children: [P.toFixed(2), "%"],
-                                          }),
-                                          (0, o.jsxs)("td", { children: [_.toFixed(2), "%"] }),
-                                          (0, o.jsx)("td", { className: "fmuted", children: N }),
-                                        ],
-                                      })
-                                    : (0, o.jsx)("td", {
-                                        colSpan: 3,
-                                        className: "fmuted",
-                                        style: { textAlign: "right" },
-                                        children: "not reached \u2014 pedigree stops too soon",
-                                      }),
-                                  (0, o.jsx)("td", {}),
-                                ],
-                              },
-                              z,
-                            );
-                          }),
-                        }),
-                      ],
-                    }),
-                  }),
+                (0, o.jsx)(AnimalStdCard, {
+                  name: s,
+                  rec: h,
+                  sire: t,
+                  dam: n,
+                  names: r,
+                  kinship: i,
+                  allAnimals: e,
+                  targets: AT,
+                  isFounder: (q9) => y.includes(q9),
+                  onSelect: (z) => {
+                    (u(z), v(z));
+                  },
+                  top: K,
+                  sexLabel: Rl(q) === "\u2014" ? "sex not recorded" : eh(q),
+                  status: R,
+                  hasPed: I,
+                  coi: T,
+                  complete: M.fullThrough,
+                  deep: U,
                 }),
                 (0, o.jsxs)("div", {
                   className: "card pedigree-panel",
@@ -13294,7 +13385,7 @@ Error generating stack: ` +
         if (!u) return [];
         let D = oe(u);
         return e
-          .filter((z) => z.name.includes(D) && qe(z.name, z, t, n) !== "Male")
+          .filter((z) => z.name.includes(D) && Zr(z) && qe(z.name, z, t, n) !== "Male")
           .sort((z, S) => z.name.indexOf(D) - S.name.indexOf(D))
           .slice(0, 8);
       }, [u, e, t, n]),
@@ -15570,13 +15661,13 @@ Error generating stack: ` +
       J = (0, b.useMemo)(() => {
         if (!f) return [];
         let F = oe(f);
-        return e.filter((Q) => Q.name.includes(F)).slice(0, 6);
-      }, [f, e]),
+        return e.filter((Q) => Q.name.includes(F) && qe(Q.name, Q, r, l) !== "Female").slice(0, 6);
+      }, [f, e, r, l]),
       A = (0, b.useMemo)(() => {
         if (!m) return [];
         let F = oe(m);
-        return e.filter((Q) => Q.name.includes(F)).slice(0, 6);
-      }, [m, e]),
+        return e.filter((Q) => Q.name.includes(F) && qe(Q.name, Q, r, l) !== "Male").slice(0, 6);
+      }, [m, e, r, l]),
       se = (F) => {
         let Q = e.find((ne) => ne.name === F);
         Q &&
@@ -16173,7 +16264,7 @@ Error generating stack: ` +
         })
       : null;
   }
-  function ph({ label: e, value: t, onChange: n, allAnimals: r }) {
+  function ph({ label: e, value: t, onChange: n, allAnimals: r, accept: acc }) {
     let [l, a] = (0, b.useState)(t || "");
     (0, b.useEffect)(() => {
       a(t || "");
@@ -16181,8 +16272,8 @@ Error generating stack: ` +
     let i = (0, b.useMemo)(() => {
       if (!l) return [];
       let s = oe(l);
-      return r.filter((u) => u.name.includes(s)).slice(0, 8);
-    }, [l, r]);
+      return r.filter((u) => u.name.includes(s) && (!acc || acc(u))).slice(0, 8);
+    }, [l, r, acc]);
     return (0, o.jsxs)("div", {
       className: "pairing-slot",
       style: { position: "relative" },
@@ -16308,7 +16399,7 @@ Error generating stack: ` +
         if (!g) return [];
         let N = oe(g);
         return e
-          .filter((P) => P.name.includes(N) && qe(P.name, P, t, n) !== "Male")
+          .filter((P) => P.name.includes(N) && Zr(P) && qe(P.name, P, t, n) !== "Male")
           .sort((P, $) => P.name.indexOf(N) - $.name.indexOf(N))
           .slice(0, 8);
       }, [g, e, t, n]),
@@ -17388,7 +17479,7 @@ Error generating stack: ` +
       E(
         "div",
         { className: "pairing-row" },
-        E(ph, { label: "Dam", value: c, onChange: P.onDamChange, allAnimals: e }),
+        E(ph, { label: "Dam", value: c, onChange: P.onDamChange, allAnimals: e, accept: function (x) { return Zr(x) && qe(x.name, x, t, n) !== "Male"; } }),
       ),
       q(
         "1. What do you want to do?",
@@ -18070,8 +18161,8 @@ Error generating stack: ` +
       E(
         "div",
         { className: "pairing-row" },
-        E(ph, { label: "Cow", value: cow, onChange: setCow, allAnimals: e }),
-        E(ph, { label: "Bull", value: bull, onChange: setBull, allAnimals: e }),
+        E(ph, { label: "Cow", value: cow, onChange: setCow, allAnimals: e, accept: function (x) { return Zr(x) && qe(x.name, x, t, n) !== "Male"; } }),
+        E(ph, { label: "Bull", value: bull, onChange: setBull, allAnimals: e, accept: function (x) { return Zr(x) && qe(x.name, x, t, n) !== "Female"; } }),
       ),
       E(
         "div",
@@ -18110,7 +18201,7 @@ Error generating stack: ` +
       E(
         "div",
         { className: "metric-note" },
-        "Pick a cow and a bull to see the calf. The bull can be any animal, available or not. Foundation animals are always measured; any animal you add is measured the same way, on this screen only.",
+        "Pick a cow and a bull to see the calf. The pickers list only living animals or bulls with semen on hand, by sex. Foundation animals are always measured; any animal you add is measured the same way, on this screen only.",
       ),
     );
 
@@ -18346,7 +18437,7 @@ Error generating stack: ` +
         { className: "pl-ng-help" },
         "Pick a mate for this calf (assumed to be a heifer) to see the same card for her calf. You can keep going.",
       ),
-      E(ph, { key: "mate" + cow + bull, label: "Mate for the calf", value: mate, onChange: setMate, allAnimals: e }),
+      E(ph, { key: "mate" + cow + bull, label: "Mate for the calf", value: mate, onChange: setMate, allAnimals: e, accept: function (x) { return Zr(x) && qe(x.name, x, t, n) !== "Female"; } }),
       mate && r.has(mate) && ext
         ? E(CheckMate, {
             key: ext.CALF + "|" + mate,
@@ -18452,7 +18543,7 @@ Error generating stack: ` +
       G = (0, b.useMemo)(() => {
         if (!p) return [];
         let C = oe(p);
-        return e.filter((H) => H.name.includes(C)).slice(0, 6);
+        return e.filter((H) => H.name.includes(C) && Zr(H) && qe(H.name, H, t, n) !== "Female").slice(0, 6);
       }, [p, e]),
       Z = (C) => {
         (C && !E.includes(C) && k([...E, C]), y(""));
@@ -18536,7 +18627,7 @@ Error generating stack: ` +
       F = (0, b.useMemo)(() => {
         if (!I) return [];
         let C = oe(I);
-        return e.filter((H) => H.name.includes(C) && H.name !== h && H.name !== c).slice(0, 6);
+        return e.filter((H) => H.name.includes(C) && H.name !== h && H.name !== c && Zr(H) && qe(H.name, H, t, n) !== "Female").slice(0, 6);
       }, [I, e, h, c]),
       Q = "(Hypothetical Grandcalf)",
       ne = (0, b.useMemo)(() => {
