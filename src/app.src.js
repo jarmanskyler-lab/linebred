@@ -1,0 +1,20196 @@
+(() => {
+  var af = Object.create;
+  var us = Object.defineProperty;
+  var sf = Object.getOwnPropertyDescriptor;
+  var uf = Object.getOwnPropertyNames;
+  var cf = Object.getPrototypeOf,
+    df = Object.prototype.hasOwnProperty;
+  var _t = (e, t) => () => {
+    try {
+      return (t || e((t = { exports: {} }).exports, t), t.exports);
+    } catch (n) {
+      throw ((t = 0), n);
+    }
+  };
+  var ff = (e, t, n, r) => {
+    if ((t && typeof t == "object") || typeof t == "function")
+      for (let l of uf(t))
+        !df.call(e, l) &&
+          l !== n &&
+          us(e, l, { get: () => t[l], enumerable: !(r = sf(t, l)) || r.enumerable });
+    return e;
+  };
+  var ro = (e, t, n) => (
+    (n = e != null ? af(cf(e)) : {}),
+    ff(t || !e || !e.__esModule ? us(n, "default", { value: e, enumerable: !0 }) : n, e)
+  );
+  var Ns = _t((re) => {
+    "use strict";
+    var lr = Symbol.for("react.element"),
+      pf = Symbol.for("react.portal"),
+      mf = Symbol.for("react.fragment"),
+      hf = Symbol.for("react.strict_mode"),
+      vf = Symbol.for("react.profiler"),
+      gf = Symbol.for("react.provider"),
+      yf = Symbol.for("react.context"),
+      wf = Symbol.for("react.forward_ref"),
+      kf = Symbol.for("react.suspense"),
+      Nf = Symbol.for("react.memo"),
+      xf = Symbol.for("react.lazy"),
+      cs = Symbol.iterator;
+    function bf(e) {
+      return e === null || typeof e != "object"
+        ? null
+        : ((e = (cs && e[cs]) || e["@@iterator"]), typeof e == "function" ? e : null);
+    }
+    var ps = {
+        isMounted: function () {
+          return !1;
+        },
+        enqueueForceUpdate: function () {},
+        enqueueReplaceState: function () {},
+        enqueueSetState: function () {},
+      },
+      ms = Object.assign,
+      hs = {};
+    function zn(e, t, n) {
+      ((this.props = e), (this.context = t), (this.refs = hs), (this.updater = n || ps));
+    }
+    zn.prototype.isReactComponent = {};
+    zn.prototype.setState = function (e, t) {
+      if (typeof e != "object" && typeof e != "function" && e != null)
+        throw Error(
+          "setState(...): takes an object of state variables to update or a function which returns an object of state variables.",
+        );
+      this.updater.enqueueSetState(this, e, t, "setState");
+    };
+    zn.prototype.forceUpdate = function (e) {
+      this.updater.enqueueForceUpdate(this, e, "forceUpdate");
+    };
+    function vs() {}
+    vs.prototype = zn.prototype;
+    function Fl(e, t, n) {
+      ((this.props = e), (this.context = t), (this.refs = hs), (this.updater = n || ps));
+    }
+    var Ll = (Fl.prototype = new vs());
+    Ll.constructor = Fl;
+    ms(Ll, zn.prototype);
+    Ll.isPureReactComponent = !0;
+    var ds = Array.isArray,
+      gs = Object.prototype.hasOwnProperty,
+      Al = { current: null },
+      ys = { key: !0, ref: !0, __self: !0, __source: !0 };
+    function ws(e, t, n) {
+      var r,
+        l = {},
+        a = null,
+        i = null;
+      if (t != null)
+        for (r in (t.ref !== void 0 && (i = t.ref), t.key !== void 0 && (a = "" + t.key), t))
+          gs.call(t, r) && !ys.hasOwnProperty(r) && (l[r] = t[r]);
+      var s = arguments.length - 2;
+      if (s === 1) l.children = n;
+      else if (1 < s) {
+        for (var u = Array(s), d = 0; d < s; d++) u[d] = arguments[d + 2];
+        l.children = u;
+      }
+      if (e && e.defaultProps)
+        for (r in ((s = e.defaultProps), s)) l[r] === void 0 && (l[r] = s[r]);
+      return { $$typeof: lr, type: e, key: a, ref: i, props: l, _owner: Al.current };
+    }
+    function Sf(e, t) {
+      return { $$typeof: lr, type: e.type, key: t, ref: e.ref, props: e.props, _owner: e._owner };
+    }
+    function Bl(e) {
+      return typeof e == "object" && e !== null && e.$$typeof === lr;
+    }
+    function Cf(e) {
+      var t = { "=": "=0", ":": "=2" };
+      return (
+        "$" +
+        e.replace(/[=:]/g, function (n) {
+          return t[n];
+        })
+      );
+    }
+    var fs = /\/+/g;
+    function Il(e, t) {
+      return typeof e == "object" && e !== null && e.key != null ? Cf("" + e.key) : t.toString(36);
+    }
+    function lo(e, t, n, r, l) {
+      var a = typeof e;
+      (a === "undefined" || a === "boolean") && (e = null);
+      var i = !1;
+      if (e === null) i = !0;
+      else
+        switch (a) {
+          case "string":
+          case "number":
+            i = !0;
+            break;
+          case "object":
+            switch (e.$$typeof) {
+              case lr:
+              case pf:
+                i = !0;
+            }
+        }
+      if (i)
+        return (
+          (i = e),
+          (l = l(i)),
+          (e = r === "" ? "." + Il(i, 0) : r),
+          ds(l)
+            ? ((n = ""),
+              e != null && (n = e.replace(fs, "$&/") + "/"),
+              lo(l, t, n, "", function (d) {
+                return d;
+              }))
+            : l != null &&
+              (Bl(l) &&
+                (l = Sf(
+                  l,
+                  n +
+                    (!l.key || (i && i.key === l.key)
+                      ? ""
+                      : ("" + l.key).replace(fs, "$&/") + "/") +
+                    e,
+                )),
+              t.push(l)),
+          1
+        );
+      if (((i = 0), (r = r === "" ? "." : r + ":"), ds(e)))
+        for (var s = 0; s < e.length; s++) {
+          a = e[s];
+          var u = r + Il(a, s);
+          i += lo(a, t, n, u, l);
+        }
+      else if (((u = bf(e)), typeof u == "function"))
+        for (e = u.call(e), s = 0; !(a = e.next()).done;)
+          ((a = a.value), (u = r + Il(a, s++)), (i += lo(a, t, n, u, l)));
+      else if (a === "object")
+        throw (
+          (t = String(e)),
+          Error(
+            "Objects are not valid as a React child (found: " +
+              (t === "[object Object]"
+                ? "object with keys {" + Object.keys(e).join(", ") + "}"
+                : t) +
+              "). If you meant to render a collection of children, use an array instead.",
+          )
+        );
+      return i;
+    }
+    function oo(e, t, n) {
+      if (e == null) return e;
+      var r = [],
+        l = 0;
+      return (
+        lo(e, r, "", "", function (a) {
+          return t.call(n, a, l++);
+        }),
+        r
+      );
+    }
+    function Ef(e) {
+      if (e._status === -1) {
+        var t = e._result;
+        ((t = t()),
+          t.then(
+            function (n) {
+              (e._status === 0 || e._status === -1) && ((e._status = 1), (e._result = n));
+            },
+            function (n) {
+              (e._status === 0 || e._status === -1) && ((e._status = 2), (e._result = n));
+            },
+          ),
+          e._status === -1 && ((e._status = 0), (e._result = t)));
+      }
+      if (e._status === 1) return e._result.default;
+      throw e._result;
+    }
+    var $e = { current: null },
+      ao = { transition: null },
+      Tf = { ReactCurrentDispatcher: $e, ReactCurrentBatchConfig: ao, ReactCurrentOwner: Al };
+    function ks() {
+      throw Error("act(...) is not supported in production builds of React.");
+    }
+    re.Children = {
+      map: oo,
+      forEach: function (e, t, n) {
+        oo(
+          e,
+          function () {
+            t.apply(this, arguments);
+          },
+          n,
+        );
+      },
+      count: function (e) {
+        var t = 0;
+        return (
+          oo(e, function () {
+            t++;
+          }),
+          t
+        );
+      },
+      toArray: function (e) {
+        return (
+          oo(e, function (t) {
+            return t;
+          }) || []
+        );
+      },
+      only: function (e) {
+        if (!Bl(e))
+          throw Error("React.Children.only expected to receive a single React element child.");
+        return e;
+      },
+    };
+    re.Component = zn;
+    re.Fragment = mf;
+    re.Profiler = vf;
+    re.PureComponent = Fl;
+    re.StrictMode = hf;
+    re.Suspense = kf;
+    re.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED = Tf;
+    re.act = ks;
+    re.cloneElement = function (e, t, n) {
+      if (e == null)
+        throw Error(
+          "React.cloneElement(...): The argument must be a React element, but you passed " +
+            e +
+            ".",
+        );
+      var r = ms({}, e.props),
+        l = e.key,
+        a = e.ref,
+        i = e._owner;
+      if (t != null) {
+        if (
+          (t.ref !== void 0 && ((a = t.ref), (i = Al.current)),
+          t.key !== void 0 && (l = "" + t.key),
+          e.type && e.type.defaultProps)
+        )
+          var s = e.type.defaultProps;
+        for (u in t)
+          gs.call(t, u) &&
+            !ys.hasOwnProperty(u) &&
+            (r[u] = t[u] === void 0 && s !== void 0 ? s[u] : t[u]);
+      }
+      var u = arguments.length - 2;
+      if (u === 1) r.children = n;
+      else if (1 < u) {
+        s = Array(u);
+        for (var d = 0; d < u; d++) s[d] = arguments[d + 2];
+        r.children = s;
+      }
+      return { $$typeof: lr, type: e.type, key: l, ref: a, props: r, _owner: i };
+    };
+    re.createContext = function (e) {
+      return (
+        (e = {
+          $$typeof: yf,
+          _currentValue: e,
+          _currentValue2: e,
+          _threadCount: 0,
+          Provider: null,
+          Consumer: null,
+          _defaultValue: null,
+          _globalName: null,
+        }),
+        (e.Provider = { $$typeof: gf, _context: e }),
+        (e.Consumer = e)
+      );
+    };
+    re.createElement = ws;
+    re.createFactory = function (e) {
+      var t = ws.bind(null, e);
+      return ((t.type = e), t);
+    };
+    re.createRef = function () {
+      return { current: null };
+    };
+    re.forwardRef = function (e) {
+      return { $$typeof: wf, render: e };
+    };
+    re.isValidElement = Bl;
+    re.lazy = function (e) {
+      return { $$typeof: xf, _payload: { _status: -1, _result: e }, _init: Ef };
+    };
+    re.memo = function (e, t) {
+      return { $$typeof: Nf, type: e, compare: t === void 0 ? null : t };
+    };
+    re.startTransition = function (e) {
+      var t = ao.transition;
+      ao.transition = {};
+      try {
+        e();
+      } finally {
+        ao.transition = t;
+      }
+    };
+    re.unstable_act = ks;
+    re.useCallback = function (e, t) {
+      return $e.current.useCallback(e, t);
+    };
+    re.useContext = function (e) {
+      return $e.current.useContext(e);
+    };
+    re.useDebugValue = function () {};
+    re.useDeferredValue = function (e) {
+      return $e.current.useDeferredValue(e);
+    };
+    re.useEffect = function (e, t) {
+      return $e.current.useEffect(e, t);
+    };
+    re.useId = function () {
+      return $e.current.useId();
+    };
+    re.useImperativeHandle = function (e, t, n) {
+      return $e.current.useImperativeHandle(e, t, n);
+    };
+    re.useInsertionEffect = function (e, t) {
+      return $e.current.useInsertionEffect(e, t);
+    };
+    re.useLayoutEffect = function (e, t) {
+      return $e.current.useLayoutEffect(e, t);
+    };
+    re.useMemo = function (e, t) {
+      return $e.current.useMemo(e, t);
+    };
+    re.useReducer = function (e, t, n) {
+      return $e.current.useReducer(e, t, n);
+    };
+    re.useRef = function (e) {
+      return $e.current.useRef(e);
+    };
+    re.useState = function (e) {
+      return $e.current.useState(e);
+    };
+    re.useSyncExternalStore = function (e, t, n) {
+      return $e.current.useSyncExternalStore(e, t, n);
+    };
+    re.useTransition = function () {
+      return $e.current.useTransition();
+    };
+    re.version = "18.3.1";
+  });
+  var io = _t((bh, xs) => {
+    "use strict";
+    xs.exports = Ns();
+  });
+  var Ps = _t((de) => {
+    "use strict";
+    function Hl(e, t) {
+      var n = e.length;
+      e.push(t);
+      e: for (; 0 < n;) {
+        var r = (n - 1) >>> 1,
+          l = e[r];
+        if (0 < so(l, t)) ((e[r] = t), (e[n] = l), (n = r));
+        else break e;
+      }
+    }
+    function ht(e) {
+      return e.length === 0 ? null : e[0];
+    }
+    function co(e) {
+      if (e.length === 0) return null;
+      var t = e[0],
+        n = e.pop();
+      if (n !== t) {
+        e[0] = n;
+        e: for (var r = 0, l = e.length, a = l >>> 1; r < a;) {
+          var i = 2 * (r + 1) - 1,
+            s = e[i],
+            u = i + 1,
+            d = e[u];
+          if (0 > so(s, n))
+            u < l && 0 > so(d, s)
+              ? ((e[r] = d), (e[u] = n), (r = u))
+              : ((e[r] = s), (e[i] = n), (r = i));
+          else if (u < l && 0 > so(d, n)) ((e[r] = d), (e[u] = n), (r = u));
+          else break e;
+        }
+      }
+      return t;
+    }
+    function so(e, t) {
+      var n = e.sortIndex - t.sortIndex;
+      return n !== 0 ? n : e.id - t.id;
+    }
+    typeof performance == "object" && typeof performance.now == "function"
+      ? ((bs = performance),
+        (de.unstable_now = function () {
+          return bs.now();
+        }))
+      : ((jl = Date),
+        (Ss = jl.now()),
+        (de.unstable_now = function () {
+          return jl.now() - Ss;
+        }));
+    var bs,
+      jl,
+      Ss,
+      St = [],
+      $t = [],
+      Of = 1,
+      at = null,
+      Le = 3,
+      fo = !1,
+      fn = !1,
+      ir = !1,
+      Ts = typeof setTimeout == "function" ? setTimeout : null,
+      Os = typeof clearTimeout == "function" ? clearTimeout : null,
+      Cs = typeof setImmediate < "u" ? setImmediate : null;
+    typeof navigator < "u" &&
+      navigator.scheduling !== void 0 &&
+      navigator.scheduling.isInputPending !== void 0 &&
+      navigator.scheduling.isInputPending.bind(navigator.scheduling);
+    function Vl(e) {
+      for (var t = ht($t); t !== null;) {
+        if (t.callback === null) co($t);
+        else if (t.startTime <= e) (co($t), (t.sortIndex = t.expirationTime), Hl(St, t));
+        else break;
+        t = ht($t);
+      }
+    }
+    function Wl(e) {
+      if (((ir = !1), Vl(e), !fn))
+        if (ht(St) !== null) ((fn = !0), Kl(Ql));
+        else {
+          var t = ht($t);
+          t !== null && Gl(Wl, t.startTime - e);
+        }
+    }
+    function Ql(e, t) {
+      ((fn = !1), ir && ((ir = !1), Os(sr), (sr = -1)), (fo = !0));
+      var n = Le;
+      try {
+        for (Vl(t), at = ht(St); at !== null && (!(at.expirationTime > t) || (e && !_s()));) {
+          var r = at.callback;
+          if (typeof r == "function") {
+            ((at.callback = null), (Le = at.priorityLevel));
+            var l = r(at.expirationTime <= t);
+            ((t = de.unstable_now()),
+              typeof l == "function" ? (at.callback = l) : at === ht(St) && co(St),
+              Vl(t));
+          } else co(St);
+          at = ht(St);
+        }
+        if (at !== null) var a = !0;
+        else {
+          var i = ht($t);
+          (i !== null && Gl(Wl, i.startTime - t), (a = !1));
+        }
+        return a;
+      } finally {
+        ((at = null), (Le = n), (fo = !1));
+      }
+    }
+    var po = !1,
+      uo = null,
+      sr = -1,
+      zs = 5,
+      Rs = -1;
+    function _s() {
+      return !(de.unstable_now() - Rs < zs);
+    }
+    function Ul() {
+      if (uo !== null) {
+        var e = de.unstable_now();
+        Rs = e;
+        var t = !0;
+        try {
+          t = uo(!0, e);
+        } finally {
+          t ? ar() : ((po = !1), (uo = null));
+        }
+      } else po = !1;
+    }
+    var ar;
+    typeof Cs == "function"
+      ? (ar = function () {
+          Cs(Ul);
+        })
+      : typeof MessageChannel < "u"
+        ? (($l = new MessageChannel()),
+          (Es = $l.port2),
+          ($l.port1.onmessage = Ul),
+          (ar = function () {
+            Es.postMessage(null);
+          }))
+        : (ar = function () {
+            Ts(Ul, 0);
+          });
+    var $l, Es;
+    function Kl(e) {
+      ((uo = e), po || ((po = !0), ar()));
+    }
+    function Gl(e, t) {
+      sr = Ts(function () {
+        e(de.unstable_now());
+      }, t);
+    }
+    de.unstable_IdlePriority = 5;
+    de.unstable_ImmediatePriority = 1;
+    de.unstable_LowPriority = 4;
+    de.unstable_NormalPriority = 3;
+    de.unstable_Profiling = null;
+    de.unstable_UserBlockingPriority = 2;
+    de.unstable_cancelCallback = function (e) {
+      e.callback = null;
+    };
+    de.unstable_continueExecution = function () {
+      fn || fo || ((fn = !0), Kl(Ql));
+    };
+    de.unstable_forceFrameRate = function (e) {
+      0 > e || 125 < e
+        ? console.error(
+            "forceFrameRate takes a positive int between 0 and 125, forcing frame rates higher than 125 fps is not supported",
+          )
+        : (zs = 0 < e ? Math.floor(1e3 / e) : 5);
+    };
+    de.unstable_getCurrentPriorityLevel = function () {
+      return Le;
+    };
+    de.unstable_getFirstCallbackNode = function () {
+      return ht(St);
+    };
+    de.unstable_next = function (e) {
+      switch (Le) {
+        case 1:
+        case 2:
+        case 3:
+          var t = 3;
+          break;
+        default:
+          t = Le;
+      }
+      var n = Le;
+      Le = t;
+      try {
+        return e();
+      } finally {
+        Le = n;
+      }
+    };
+    de.unstable_pauseExecution = function () {};
+    de.unstable_requestPaint = function () {};
+    de.unstable_runWithPriority = function (e, t) {
+      switch (e) {
+        case 1:
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+          break;
+        default:
+          e = 3;
+      }
+      var n = Le;
+      Le = e;
+      try {
+        return t();
+      } finally {
+        Le = n;
+      }
+    };
+    de.unstable_scheduleCallback = function (e, t, n) {
+      var r = de.unstable_now();
+      switch (
+        (typeof n == "object" && n !== null
+          ? ((n = n.delay), (n = typeof n == "number" && 0 < n ? r + n : r))
+          : (n = r),
+        e)
+      ) {
+        case 1:
+          var l = -1;
+          break;
+        case 2:
+          l = 250;
+          break;
+        case 5:
+          l = 1073741823;
+          break;
+        case 4:
+          l = 1e4;
+          break;
+        default:
+          l = 5e3;
+      }
+      return (
+        (l = n + l),
+        (e = {
+          id: Of++,
+          callback: t,
+          priorityLevel: e,
+          startTime: n,
+          expirationTime: l,
+          sortIndex: -1,
+        }),
+        n > r
+          ? ((e.sortIndex = n),
+            Hl($t, e),
+            ht(St) === null &&
+              e === ht($t) &&
+              (ir ? (Os(sr), (sr = -1)) : (ir = !0), Gl(Wl, n - r)))
+          : ((e.sortIndex = l), Hl(St, e), fn || fo || ((fn = !0), Kl(Ql))),
+        e
+      );
+    };
+    de.unstable_shouldYield = _s;
+    de.unstable_wrapCallback = function (e) {
+      var t = Le;
+      return function () {
+        var n = Le;
+        Le = t;
+        try {
+          return e.apply(this, arguments);
+        } finally {
+          Le = n;
+        }
+      };
+    };
+  });
+  var Ms = _t((Ch, Ds) => {
+    "use strict";
+    Ds.exports = Ps();
+  });
+  var Ad = _t((ot) => {
+    "use strict";
+    var zf = io(),
+      nt = Ms();
+    function L(e) {
+      for (
+        var t = "https://reactjs.org/docs/error-decoder.html?invariant=" + e, n = 1;
+        n < arguments.length;
+        n++
+      )
+        t += "&args[]=" + encodeURIComponent(arguments[n]);
+      return (
+        "Minified React error #" +
+        e +
+        "; visit " +
+        t +
+        " for the full message or use the non-minified dev environment for full errors and additional helpful warnings."
+      );
+    }
+    var Uu = new Set(),
+      Rr = {};
+    function Cn(e, t) {
+      (Xn(e, t), Xn(e + "Capture", t));
+    }
+    function Xn(e, t) {
+      for (Rr[e] = t, e = 0; e < t.length; e++) Uu.add(t[e]);
+    }
+    var Lt = !(
+        typeof window > "u" ||
+        typeof window.document > "u" ||
+        typeof window.document.createElement > "u"
+      ),
+      ga = Object.prototype.hasOwnProperty,
+      Rf =
+        /^[:A-Z_a-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u02FF\u0370-\u037D\u037F-\u1FFF\u200C-\u200D\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD][:A-Z_a-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u02FF\u0370-\u037D\u037F-\u1FFF\u200C-\u200D\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD\-.0-9\u00B7\u0300-\u036F\u203F-\u2040]*$/,
+      Is = {},
+      Fs = {};
+    function _f(e) {
+      return ga.call(Fs, e)
+        ? !0
+        : ga.call(Is, e)
+          ? !1
+          : Rf.test(e)
+            ? (Fs[e] = !0)
+            : ((Is[e] = !0), !1);
+    }
+    function Pf(e, t, n, r) {
+      if (n !== null && n.type === 0) return !1;
+      switch (typeof t) {
+        case "function":
+        case "symbol":
+          return !0;
+        case "boolean":
+          return r
+            ? !1
+            : n !== null
+              ? !n.acceptsBooleans
+              : ((e = e.toLowerCase().slice(0, 5)), e !== "data-" && e !== "aria-");
+        default:
+          return !1;
+      }
+    }
+    function Df(e, t, n, r) {
+      if (t === null || typeof t > "u" || Pf(e, t, n, r)) return !0;
+      if (r) return !1;
+      if (n !== null)
+        switch (n.type) {
+          case 3:
+            return !t;
+          case 4:
+            return t === !1;
+          case 5:
+            return isNaN(t);
+          case 6:
+            return isNaN(t) || 1 > t;
+        }
+      return !1;
+    }
+    function We(e, t, n, r, l, a, i) {
+      ((this.acceptsBooleans = t === 2 || t === 3 || t === 4),
+        (this.attributeName = r),
+        (this.attributeNamespace = l),
+        (this.mustUseProperty = n),
+        (this.propertyName = e),
+        (this.type = t),
+        (this.sanitizeURL = a),
+        (this.removeEmptyString = i));
+    }
+    var Fe = {};
+    "children dangerouslySetInnerHTML defaultValue defaultChecked innerHTML suppressContentEditableWarning suppressHydrationWarning style"
+      .split(" ")
+      .forEach(function (e) {
+        Fe[e] = new We(e, 0, !1, e, null, !1, !1);
+      });
+    [
+      ["acceptCharset", "accept-charset"],
+      ["className", "class"],
+      ["htmlFor", "for"],
+      ["httpEquiv", "http-equiv"],
+    ].forEach(function (e) {
+      var t = e[0];
+      Fe[t] = new We(t, 1, !1, e[1], null, !1, !1);
+    });
+    ["contentEditable", "draggable", "spellCheck", "value"].forEach(function (e) {
+      Fe[e] = new We(e, 2, !1, e.toLowerCase(), null, !1, !1);
+    });
+    ["autoReverse", "externalResourcesRequired", "focusable", "preserveAlpha"].forEach(
+      function (e) {
+        Fe[e] = new We(e, 2, !1, e, null, !1, !1);
+      },
+    );
+    "allowFullScreen async autoFocus autoPlay controls default defer disabled disablePictureInPicture disableRemotePlayback formNoValidate hidden loop noModule noValidate open playsInline readOnly required reversed scoped seamless itemScope"
+      .split(" ")
+      .forEach(function (e) {
+        Fe[e] = new We(e, 3, !1, e.toLowerCase(), null, !1, !1);
+      });
+    ["checked", "multiple", "muted", "selected"].forEach(function (e) {
+      Fe[e] = new We(e, 3, !0, e, null, !1, !1);
+    });
+    ["capture", "download"].forEach(function (e) {
+      Fe[e] = new We(e, 4, !1, e, null, !1, !1);
+    });
+    ["cols", "rows", "size", "span"].forEach(function (e) {
+      Fe[e] = new We(e, 6, !1, e, null, !1, !1);
+    });
+    ["rowSpan", "start"].forEach(function (e) {
+      Fe[e] = new We(e, 5, !1, e.toLowerCase(), null, !1, !1);
+    });
+    var ui = /[\-:]([a-z])/g;
+    function ci(e) {
+      return e[1].toUpperCase();
+    }
+    "accent-height alignment-baseline arabic-form baseline-shift cap-height clip-path clip-rule color-interpolation color-interpolation-filters color-profile color-rendering dominant-baseline enable-background fill-opacity fill-rule flood-color flood-opacity font-family font-size font-size-adjust font-stretch font-style font-variant font-weight glyph-name glyph-orientation-horizontal glyph-orientation-vertical horiz-adv-x horiz-origin-x image-rendering letter-spacing lighting-color marker-end marker-mid marker-start overline-position overline-thickness paint-order panose-1 pointer-events rendering-intent shape-rendering stop-color stop-opacity strikethrough-position strikethrough-thickness stroke-dasharray stroke-dashoffset stroke-linecap stroke-linejoin stroke-miterlimit stroke-opacity stroke-width text-anchor text-decoration text-rendering underline-position underline-thickness unicode-bidi unicode-range units-per-em v-alphabetic v-hanging v-ideographic v-mathematical vector-effect vert-adv-y vert-origin-x vert-origin-y word-spacing writing-mode xmlns:xlink x-height"
+      .split(" ")
+      .forEach(function (e) {
+        var t = e.replace(ui, ci);
+        Fe[t] = new We(t, 1, !1, e, null, !1, !1);
+      });
+    "xlink:actuate xlink:arcrole xlink:role xlink:show xlink:title xlink:type"
+      .split(" ")
+      .forEach(function (e) {
+        var t = e.replace(ui, ci);
+        Fe[t] = new We(t, 1, !1, e, "http://www.w3.org/1999/xlink", !1, !1);
+      });
+    ["xml:base", "xml:lang", "xml:space"].forEach(function (e) {
+      var t = e.replace(ui, ci);
+      Fe[t] = new We(t, 1, !1, e, "http://www.w3.org/XML/1998/namespace", !1, !1);
+    });
+    ["tabIndex", "crossOrigin"].forEach(function (e) {
+      Fe[e] = new We(e, 1, !1, e.toLowerCase(), null, !1, !1);
+    });
+    Fe.xlinkHref = new We("xlinkHref", 1, !1, "xlink:href", "http://www.w3.org/1999/xlink", !0, !1);
+    ["src", "href", "action", "formAction"].forEach(function (e) {
+      Fe[e] = new We(e, 1, !1, e.toLowerCase(), null, !0, !0);
+    });
+    function di(e, t, n, r) {
+      var l = Fe.hasOwnProperty(t) ? Fe[t] : null;
+      (l !== null
+        ? l.type !== 0
+        : r ||
+          !(2 < t.length) ||
+          (t[0] !== "o" && t[0] !== "O") ||
+          (t[1] !== "n" && t[1] !== "N")) &&
+        (Df(t, n, l, r) && (n = null),
+        r || l === null
+          ? _f(t) && (n === null ? e.removeAttribute(t) : e.setAttribute(t, "" + n))
+          : l.mustUseProperty
+            ? (e[l.propertyName] = n === null ? (l.type === 3 ? !1 : "") : n)
+            : ((t = l.attributeName),
+              (r = l.attributeNamespace),
+              n === null
+                ? e.removeAttribute(t)
+                : ((l = l.type),
+                  (n = l === 3 || (l === 4 && n === !0) ? "" : "" + n),
+                  r ? e.setAttributeNS(r, t, n) : e.setAttribute(t, n))));
+    }
+    var Ut = zf.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED,
+      mo = Symbol.for("react.element"),
+      Pn = Symbol.for("react.portal"),
+      Dn = Symbol.for("react.fragment"),
+      fi = Symbol.for("react.strict_mode"),
+      ya = Symbol.for("react.profiler"),
+      $u = Symbol.for("react.provider"),
+      Hu = Symbol.for("react.context"),
+      pi = Symbol.for("react.forward_ref"),
+      wa = Symbol.for("react.suspense"),
+      ka = Symbol.for("react.suspense_list"),
+      mi = Symbol.for("react.memo"),
+      Vt = Symbol.for("react.lazy"),
+      Vu = Symbol.for("react.offscreen"),
+      Ls = Symbol.iterator;
+    function ur(e) {
+      return e === null || typeof e != "object"
+        ? null
+        : ((e = (Ls && e[Ls]) || e["@@iterator"]), typeof e == "function" ? e : null);
+    }
+    var be = Object.assign,
+      Yl;
+    function gr(e) {
+      if (Yl === void 0)
+        try {
+          throw Error();
+        } catch (n) {
+          var t = n.stack.trim().match(/\n( *(at )?)/);
+          Yl = (t && t[1]) || "";
+        }
+      return (
+        `
+` +
+        Yl +
+        e
+      );
+    }
+    var Xl = !1;
+    function ql(e, t) {
+      if (!e || Xl) return "";
+      Xl = !0;
+      var n = Error.prepareStackTrace;
+      Error.prepareStackTrace = void 0;
+      try {
+        if (t)
+          if (
+            ((t = function () {
+              throw Error();
+            }),
+            Object.defineProperty(t.prototype, "props", {
+              set: function () {
+                throw Error();
+              },
+            }),
+            typeof Reflect == "object" && Reflect.construct)
+          ) {
+            try {
+              Reflect.construct(t, []);
+            } catch (d) {
+              var r = d;
+            }
+            Reflect.construct(e, [], t);
+          } else {
+            try {
+              t.call();
+            } catch (d) {
+              r = d;
+            }
+            e.call(t.prototype);
+          }
+        else {
+          try {
+            throw Error();
+          } catch (d) {
+            r = d;
+          }
+          e();
+        }
+      } catch (d) {
+        if (d && r && typeof d.stack == "string") {
+          for (
+            var l = d.stack.split(`
+`),
+              a = r.stack.split(`
+`),
+              i = l.length - 1,
+              s = a.length - 1;
+            1 <= i && 0 <= s && l[i] !== a[s];
+          )
+            s--;
+          for (; 1 <= i && 0 <= s; i--, s--)
+            if (l[i] !== a[s]) {
+              if (i !== 1 || s !== 1)
+                do
+                  if ((i--, s--, 0 > s || l[i] !== a[s])) {
+                    var u =
+                      `
+` + l[i].replace(" at new ", " at ");
+                    return (
+                      e.displayName &&
+                        u.includes("<anonymous>") &&
+                        (u = u.replace("<anonymous>", e.displayName)),
+                      u
+                    );
+                  }
+                while (1 <= i && 0 <= s);
+              break;
+            }
+        }
+      } finally {
+        ((Xl = !1), (Error.prepareStackTrace = n));
+      }
+      return (e = e ? e.displayName || e.name : "") ? gr(e) : "";
+    }
+    function Mf(e) {
+      switch (e.tag) {
+        case 5:
+          return gr(e.type);
+        case 16:
+          return gr("Lazy");
+        case 13:
+          return gr("Suspense");
+        case 19:
+          return gr("SuspenseList");
+        case 0:
+        case 2:
+        case 15:
+          return ((e = ql(e.type, !1)), e);
+        case 11:
+          return ((e = ql(e.type.render, !1)), e);
+        case 1:
+          return ((e = ql(e.type, !0)), e);
+        default:
+          return "";
+      }
+    }
+    function Na(e) {
+      if (e == null) return null;
+      if (typeof e == "function") return e.displayName || e.name || null;
+      if (typeof e == "string") return e;
+      switch (e) {
+        case Dn:
+          return "Fragment";
+        case Pn:
+          return "Portal";
+        case ya:
+          return "Profiler";
+        case fi:
+          return "StrictMode";
+        case wa:
+          return "Suspense";
+        case ka:
+          return "SuspenseList";
+      }
+      if (typeof e == "object")
+        switch (e.$$typeof) {
+          case Hu:
+            return (e.displayName || "Context") + ".Consumer";
+          case $u:
+            return (e._context.displayName || "Context") + ".Provider";
+          case pi:
+            var t = e.render;
+            return (
+              (e = e.displayName),
+              e ||
+                ((e = t.displayName || t.name || ""),
+                (e = e !== "" ? "ForwardRef(" + e + ")" : "ForwardRef")),
+              e
+            );
+          case mi:
+            return ((t = e.displayName || null), t !== null ? t : Na(e.type) || "Memo");
+          case Vt:
+            ((t = e._payload), (e = e._init));
+            try {
+              return Na(e(t));
+            } catch {}
+        }
+      return null;
+    }
+    function If(e) {
+      var t = e.type;
+      switch (e.tag) {
+        case 24:
+          return "Cache";
+        case 9:
+          return (t.displayName || "Context") + ".Consumer";
+        case 10:
+          return (t._context.displayName || "Context") + ".Provider";
+        case 18:
+          return "DehydratedFragment";
+        case 11:
+          return (
+            (e = t.render),
+            (e = e.displayName || e.name || ""),
+            t.displayName || (e !== "" ? "ForwardRef(" + e + ")" : "ForwardRef")
+          );
+        case 7:
+          return "Fragment";
+        case 5:
+          return t;
+        case 4:
+          return "Portal";
+        case 3:
+          return "Root";
+        case 6:
+          return "Text";
+        case 16:
+          return Na(t);
+        case 8:
+          return t === fi ? "StrictMode" : "Mode";
+        case 22:
+          return "Offscreen";
+        case 12:
+          return "Profiler";
+        case 21:
+          return "Scope";
+        case 13:
+          return "Suspense";
+        case 19:
+          return "SuspenseList";
+        case 25:
+          return "TracingMarker";
+        case 1:
+        case 0:
+        case 17:
+        case 2:
+        case 14:
+        case 15:
+          if (typeof t == "function") return t.displayName || t.name || null;
+          if (typeof t == "string") return t;
+      }
+      return null;
+    }
+    function on(e) {
+      switch (typeof e) {
+        case "boolean":
+        case "number":
+        case "string":
+        case "undefined":
+          return e;
+        case "object":
+          return e;
+        default:
+          return "";
+      }
+    }
+    function Wu(e) {
+      var t = e.type;
+      return (e = e.nodeName) && e.toLowerCase() === "input" && (t === "checkbox" || t === "radio");
+    }
+    function Ff(e) {
+      var t = Wu(e) ? "checked" : "value",
+        n = Object.getOwnPropertyDescriptor(e.constructor.prototype, t),
+        r = "" + e[t];
+      if (
+        !e.hasOwnProperty(t) &&
+        typeof n < "u" &&
+        typeof n.get == "function" &&
+        typeof n.set == "function"
+      ) {
+        var l = n.get,
+          a = n.set;
+        return (
+          Object.defineProperty(e, t, {
+            configurable: !0,
+            get: function () {
+              return l.call(this);
+            },
+            set: function (i) {
+              ((r = "" + i), a.call(this, i));
+            },
+          }),
+          Object.defineProperty(e, t, { enumerable: n.enumerable }),
+          {
+            getValue: function () {
+              return r;
+            },
+            setValue: function (i) {
+              r = "" + i;
+            },
+            stopTracking: function () {
+              ((e._valueTracker = null), delete e[t]);
+            },
+          }
+        );
+      }
+    }
+    function ho(e) {
+      e._valueTracker || (e._valueTracker = Ff(e));
+    }
+    function Qu(e) {
+      if (!e) return !1;
+      var t = e._valueTracker;
+      if (!t) return !0;
+      var n = t.getValue(),
+        r = "";
+      return (
+        e && (r = Wu(e) ? (e.checked ? "true" : "false") : e.value),
+        (e = r),
+        e !== n ? (t.setValue(e), !0) : !1
+      );
+    }
+    function Ho(e) {
+      if (((e = e || (typeof document < "u" ? document : void 0)), typeof e > "u")) return null;
+      try {
+        return e.activeElement || e.body;
+      } catch {
+        return e.body;
+      }
+    }
+    function xa(e, t) {
+      var n = t.checked;
+      return be({}, t, {
+        defaultChecked: void 0,
+        defaultValue: void 0,
+        value: void 0,
+        checked: n ?? e._wrapperState.initialChecked,
+      });
+    }
+    function As(e, t) {
+      var n = t.defaultValue == null ? "" : t.defaultValue,
+        r = t.checked != null ? t.checked : t.defaultChecked;
+      ((n = on(t.value != null ? t.value : n)),
+        (e._wrapperState = {
+          initialChecked: r,
+          initialValue: n,
+          controlled:
+            t.type === "checkbox" || t.type === "radio" ? t.checked != null : t.value != null,
+        }));
+    }
+    function Ku(e, t) {
+      ((t = t.checked), t != null && di(e, "checked", t, !1));
+    }
+    function ba(e, t) {
+      Ku(e, t);
+      var n = on(t.value),
+        r = t.type;
+      if (n != null)
+        r === "number"
+          ? ((n === 0 && e.value === "") || e.value != n) && (e.value = "" + n)
+          : e.value !== "" + n && (e.value = "" + n);
+      else if (r === "submit" || r === "reset") {
+        e.removeAttribute("value");
+        return;
+      }
+      (t.hasOwnProperty("value")
+        ? Sa(e, t.type, n)
+        : t.hasOwnProperty("defaultValue") && Sa(e, t.type, on(t.defaultValue)),
+        t.checked == null && t.defaultChecked != null && (e.defaultChecked = !!t.defaultChecked));
+    }
+    function Bs(e, t, n) {
+      if (t.hasOwnProperty("value") || t.hasOwnProperty("defaultValue")) {
+        var r = t.type;
+        if (!((r !== "submit" && r !== "reset") || (t.value !== void 0 && t.value !== null)))
+          return;
+        ((t = "" + e._wrapperState.initialValue),
+          n || t === e.value || (e.value = t),
+          (e.defaultValue = t));
+      }
+      ((n = e.name),
+        n !== "" && (e.name = ""),
+        (e.defaultChecked = !!e._wrapperState.initialChecked),
+        n !== "" && (e.name = n));
+    }
+    function Sa(e, t, n) {
+      (t !== "number" || Ho(e.ownerDocument) !== e) &&
+        (n == null
+          ? (e.defaultValue = "" + e._wrapperState.initialValue)
+          : e.defaultValue !== "" + n && (e.defaultValue = "" + n));
+    }
+    var yr = Array.isArray;
+    function Vn(e, t, n, r) {
+      if (((e = e.options), t)) {
+        t = {};
+        for (var l = 0; l < n.length; l++) t["$" + n[l]] = !0;
+        for (n = 0; n < e.length; n++)
+          ((l = t.hasOwnProperty("$" + e[n].value)),
+            e[n].selected !== l && (e[n].selected = l),
+            l && r && (e[n].defaultSelected = !0));
+      } else {
+        for (n = "" + on(n), t = null, l = 0; l < e.length; l++) {
+          if (e[l].value === n) {
+            ((e[l].selected = !0), r && (e[l].defaultSelected = !0));
+            return;
+          }
+          t !== null || e[l].disabled || (t = e[l]);
+        }
+        t !== null && (t.selected = !0);
+      }
+    }
+    function Ca(e, t) {
+      if (t.dangerouslySetInnerHTML != null) throw Error(L(91));
+      return be({}, t, {
+        value: void 0,
+        defaultValue: void 0,
+        children: "" + e._wrapperState.initialValue,
+      });
+    }
+    function js(e, t) {
+      var n = t.value;
+      if (n == null) {
+        if (((n = t.children), (t = t.defaultValue), n != null)) {
+          if (t != null) throw Error(L(92));
+          if (yr(n)) {
+            if (1 < n.length) throw Error(L(93));
+            n = n[0];
+          }
+          t = n;
+        }
+        (t == null && (t = ""), (n = t));
+      }
+      e._wrapperState = { initialValue: on(n) };
+    }
+    function Gu(e, t) {
+      var n = on(t.value),
+        r = on(t.defaultValue);
+      (n != null &&
+        ((n = "" + n),
+        n !== e.value && (e.value = n),
+        t.defaultValue == null && e.defaultValue !== n && (e.defaultValue = n)),
+        r != null && (e.defaultValue = "" + r));
+    }
+    function Us(e) {
+      var t = e.textContent;
+      t === e._wrapperState.initialValue && t !== "" && t !== null && (e.value = t);
+    }
+    function Yu(e) {
+      switch (e) {
+        case "svg":
+          return "http://www.w3.org/2000/svg";
+        case "math":
+          return "http://www.w3.org/1998/Math/MathML";
+        default:
+          return "http://www.w3.org/1999/xhtml";
+      }
+    }
+    function Ea(e, t) {
+      return e == null || e === "http://www.w3.org/1999/xhtml"
+        ? Yu(t)
+        : e === "http://www.w3.org/2000/svg" && t === "foreignObject"
+          ? "http://www.w3.org/1999/xhtml"
+          : e;
+    }
+    var vo,
+      Xu = (function (e) {
+        return typeof MSApp < "u" && MSApp.execUnsafeLocalFunction
+          ? function (t, n, r, l) {
+              MSApp.execUnsafeLocalFunction(function () {
+                return e(t, n, r, l);
+              });
+            }
+          : e;
+      })(function (e, t) {
+        if (e.namespaceURI !== "http://www.w3.org/2000/svg" || "innerHTML" in e) e.innerHTML = t;
+        else {
+          for (
+            vo = vo || document.createElement("div"),
+              vo.innerHTML = "<svg>" + t.valueOf().toString() + "</svg>",
+              t = vo.firstChild;
+            e.firstChild;
+          )
+            e.removeChild(e.firstChild);
+          for (; t.firstChild;) e.appendChild(t.firstChild);
+        }
+      });
+    function _r(e, t) {
+      if (t) {
+        var n = e.firstChild;
+        if (n && n === e.lastChild && n.nodeType === 3) {
+          n.nodeValue = t;
+          return;
+        }
+      }
+      e.textContent = t;
+    }
+    var Nr = {
+        animationIterationCount: !0,
+        aspectRatio: !0,
+        borderImageOutset: !0,
+        borderImageSlice: !0,
+        borderImageWidth: !0,
+        boxFlex: !0,
+        boxFlexGroup: !0,
+        boxOrdinalGroup: !0,
+        columnCount: !0,
+        columns: !0,
+        flex: !0,
+        flexGrow: !0,
+        flexPositive: !0,
+        flexShrink: !0,
+        flexNegative: !0,
+        flexOrder: !0,
+        gridArea: !0,
+        gridRow: !0,
+        gridRowEnd: !0,
+        gridRowSpan: !0,
+        gridRowStart: !0,
+        gridColumn: !0,
+        gridColumnEnd: !0,
+        gridColumnSpan: !0,
+        gridColumnStart: !0,
+        fontWeight: !0,
+        lineClamp: !0,
+        lineHeight: !0,
+        opacity: !0,
+        order: !0,
+        orphans: !0,
+        tabSize: !0,
+        widows: !0,
+        zIndex: !0,
+        zoom: !0,
+        fillOpacity: !0,
+        floodOpacity: !0,
+        stopOpacity: !0,
+        strokeDasharray: !0,
+        strokeDashoffset: !0,
+        strokeMiterlimit: !0,
+        strokeOpacity: !0,
+        strokeWidth: !0,
+      },
+      Lf = ["Webkit", "ms", "Moz", "O"];
+    Object.keys(Nr).forEach(function (e) {
+      Lf.forEach(function (t) {
+        ((t = t + e.charAt(0).toUpperCase() + e.substring(1)), (Nr[t] = Nr[e]));
+      });
+    });
+    function qu(e, t, n) {
+      return t == null || typeof t == "boolean" || t === ""
+        ? ""
+        : n || typeof t != "number" || t === 0 || (Nr.hasOwnProperty(e) && Nr[e])
+          ? ("" + t).trim()
+          : t + "px";
+    }
+    function Ju(e, t) {
+      e = e.style;
+      for (var n in t)
+        if (t.hasOwnProperty(n)) {
+          var r = n.indexOf("--") === 0,
+            l = qu(n, t[n], r);
+          (n === "float" && (n = "cssFloat"), r ? e.setProperty(n, l) : (e[n] = l));
+        }
+    }
+    var Af = be(
+      { menuitem: !0 },
+      {
+        area: !0,
+        base: !0,
+        br: !0,
+        col: !0,
+        embed: !0,
+        hr: !0,
+        img: !0,
+        input: !0,
+        keygen: !0,
+        link: !0,
+        meta: !0,
+        param: !0,
+        source: !0,
+        track: !0,
+        wbr: !0,
+      },
+    );
+    function Ta(e, t) {
+      if (t) {
+        if (Af[e] && (t.children != null || t.dangerouslySetInnerHTML != null))
+          throw Error(L(137, e));
+        if (t.dangerouslySetInnerHTML != null) {
+          if (t.children != null) throw Error(L(60));
+          if (
+            typeof t.dangerouslySetInnerHTML != "object" ||
+            !("__html" in t.dangerouslySetInnerHTML)
+          )
+            throw Error(L(61));
+        }
+        if (t.style != null && typeof t.style != "object") throw Error(L(62));
+      }
+    }
+    function Oa(e, t) {
+      if (e.indexOf("-") === -1) return typeof t.is == "string";
+      switch (e) {
+        case "annotation-xml":
+        case "color-profile":
+        case "font-face":
+        case "font-face-src":
+        case "font-face-uri":
+        case "font-face-format":
+        case "font-face-name":
+        case "missing-glyph":
+          return !1;
+        default:
+          return !0;
+      }
+    }
+    var za = null;
+    function hi(e) {
+      return (
+        (e = e.target || e.srcElement || window),
+        e.correspondingUseElement && (e = e.correspondingUseElement),
+        e.nodeType === 3 ? e.parentNode : e
+      );
+    }
+    var Ra = null,
+      Wn = null,
+      Qn = null;
+    function $s(e) {
+      if ((e = Yr(e))) {
+        if (typeof Ra != "function") throw Error(L(280));
+        var t = e.stateNode;
+        t && ((t = gl(t)), Ra(e.stateNode, e.type, t));
+      }
+    }
+    function Zu(e) {
+      Wn ? (Qn ? Qn.push(e) : (Qn = [e])) : (Wn = e);
+    }
+    function ec() {
+      if (Wn) {
+        var e = Wn,
+          t = Qn;
+        if (((Qn = Wn = null), $s(e), t)) for (e = 0; e < t.length; e++) $s(t[e]);
+      }
+    }
+    function tc(e, t) {
+      return e(t);
+    }
+    function nc() {}
+    var Jl = !1;
+    function rc(e, t, n) {
+      if (Jl) return e(t, n);
+      Jl = !0;
+      try {
+        return tc(e, t, n);
+      } finally {
+        ((Jl = !1), (Wn !== null || Qn !== null) && (nc(), ec()));
+      }
+    }
+    function Pr(e, t) {
+      var n = e.stateNode;
+      if (n === null) return null;
+      var r = gl(n);
+      if (r === null) return null;
+      n = r[t];
+      e: switch (t) {
+        case "onClick":
+        case "onClickCapture":
+        case "onDoubleClick":
+        case "onDoubleClickCapture":
+        case "onMouseDown":
+        case "onMouseDownCapture":
+        case "onMouseMove":
+        case "onMouseMoveCapture":
+        case "onMouseUp":
+        case "onMouseUpCapture":
+        case "onMouseEnter":
+          ((r = !r.disabled) ||
+            ((e = e.type),
+            (r = !(e === "button" || e === "input" || e === "select" || e === "textarea"))),
+            (e = !r));
+          break e;
+        default:
+          e = !1;
+      }
+      if (e) return null;
+      if (n && typeof n != "function") throw Error(L(231, t, typeof n));
+      return n;
+    }
+    var _a = !1;
+    if (Lt)
+      try {
+        ((Rn = {}),
+          Object.defineProperty(Rn, "passive", {
+            get: function () {
+              _a = !0;
+            },
+          }),
+          window.addEventListener("test", Rn, Rn),
+          window.removeEventListener("test", Rn, Rn));
+      } catch {
+        _a = !1;
+      }
+    var Rn;
+    function Bf(e, t, n, r, l, a, i, s, u) {
+      var d = Array.prototype.slice.call(arguments, 3);
+      try {
+        t.apply(n, d);
+      } catch (c) {
+        this.onError(c);
+      }
+    }
+    var xr = !1,
+      Vo = null,
+      Wo = !1,
+      Pa = null,
+      jf = {
+        onError: function (e) {
+          ((xr = !0), (Vo = e));
+        },
+      };
+    function Uf(e, t, n, r, l, a, i, s, u) {
+      ((xr = !1), (Vo = null), Bf.apply(jf, arguments));
+    }
+    function $f(e, t, n, r, l, a, i, s, u) {
+      if ((Uf.apply(this, arguments), xr)) {
+        if (xr) {
+          var d = Vo;
+          ((xr = !1), (Vo = null));
+        } else throw Error(L(198));
+        Wo || ((Wo = !0), (Pa = d));
+      }
+    }
+    function En(e) {
+      var t = e,
+        n = e;
+      if (e.alternate) for (; t.return;) t = t.return;
+      else {
+        e = t;
+        do ((t = e), (t.flags & 4098) !== 0 && (n = t.return), (e = t.return));
+        while (e);
+      }
+      return t.tag === 3 ? n : null;
+    }
+    function oc(e) {
+      if (e.tag === 13) {
+        var t = e.memoizedState;
+        if ((t === null && ((e = e.alternate), e !== null && (t = e.memoizedState)), t !== null))
+          return t.dehydrated;
+      }
+      return null;
+    }
+    function Hs(e) {
+      if (En(e) !== e) throw Error(L(188));
+    }
+    function Hf(e) {
+      var t = e.alternate;
+      if (!t) {
+        if (((t = En(e)), t === null)) throw Error(L(188));
+        return t !== e ? null : e;
+      }
+      for (var n = e, r = t; ;) {
+        var l = n.return;
+        if (l === null) break;
+        var a = l.alternate;
+        if (a === null) {
+          if (((r = l.return), r !== null)) {
+            n = r;
+            continue;
+          }
+          break;
+        }
+        if (l.child === a.child) {
+          for (a = l.child; a;) {
+            if (a === n) return (Hs(l), e);
+            if (a === r) return (Hs(l), t);
+            a = a.sibling;
+          }
+          throw Error(L(188));
+        }
+        if (n.return !== r.return) ((n = l), (r = a));
+        else {
+          for (var i = !1, s = l.child; s;) {
+            if (s === n) {
+              ((i = !0), (n = l), (r = a));
+              break;
+            }
+            if (s === r) {
+              ((i = !0), (r = l), (n = a));
+              break;
+            }
+            s = s.sibling;
+          }
+          if (!i) {
+            for (s = a.child; s;) {
+              if (s === n) {
+                ((i = !0), (n = a), (r = l));
+                break;
+              }
+              if (s === r) {
+                ((i = !0), (r = a), (n = l));
+                break;
+              }
+              s = s.sibling;
+            }
+            if (!i) throw Error(L(189));
+          }
+        }
+        if (n.alternate !== r) throw Error(L(190));
+      }
+      if (n.tag !== 3) throw Error(L(188));
+      return n.stateNode.current === n ? e : t;
+    }
+    function lc(e) {
+      return ((e = Hf(e)), e !== null ? ac(e) : null);
+    }
+    function ac(e) {
+      if (e.tag === 5 || e.tag === 6) return e;
+      for (e = e.child; e !== null;) {
+        var t = ac(e);
+        if (t !== null) return t;
+        e = e.sibling;
+      }
+      return null;
+    }
+    var ic = nt.unstable_scheduleCallback,
+      Vs = nt.unstable_cancelCallback,
+      Vf = nt.unstable_shouldYield,
+      Wf = nt.unstable_requestPaint,
+      Te = nt.unstable_now,
+      Qf = nt.unstable_getCurrentPriorityLevel,
+      vi = nt.unstable_ImmediatePriority,
+      sc = nt.unstable_UserBlockingPriority,
+      Qo = nt.unstable_NormalPriority,
+      Kf = nt.unstable_LowPriority,
+      uc = nt.unstable_IdlePriority,
+      pl = null,
+      Ot = null;
+    function Gf(e) {
+      if (Ot && typeof Ot.onCommitFiberRoot == "function")
+        try {
+          Ot.onCommitFiberRoot(pl, e, void 0, (e.current.flags & 128) === 128);
+        } catch {}
+    }
+    var kt = Math.clz32 ? Math.clz32 : qf,
+      Yf = Math.log,
+      Xf = Math.LN2;
+    function qf(e) {
+      return ((e >>>= 0), e === 0 ? 32 : (31 - ((Yf(e) / Xf) | 0)) | 0);
+    }
+    var go = 64,
+      yo = 4194304;
+    function wr(e) {
+      switch (e & -e) {
+        case 1:
+          return 1;
+        case 2:
+          return 2;
+        case 4:
+          return 4;
+        case 8:
+          return 8;
+        case 16:
+          return 16;
+        case 32:
+          return 32;
+        case 64:
+        case 128:
+        case 256:
+        case 512:
+        case 1024:
+        case 2048:
+        case 4096:
+        case 8192:
+        case 16384:
+        case 32768:
+        case 65536:
+        case 131072:
+        case 262144:
+        case 524288:
+        case 1048576:
+        case 2097152:
+          return e & 4194240;
+        case 4194304:
+        case 8388608:
+        case 16777216:
+        case 33554432:
+        case 67108864:
+          return e & 130023424;
+        case 134217728:
+          return 134217728;
+        case 268435456:
+          return 268435456;
+        case 536870912:
+          return 536870912;
+        case 1073741824:
+          return 1073741824;
+        default:
+          return e;
+      }
+    }
+    function Ko(e, t) {
+      var n = e.pendingLanes;
+      if (n === 0) return 0;
+      var r = 0,
+        l = e.suspendedLanes,
+        a = e.pingedLanes,
+        i = n & 268435455;
+      if (i !== 0) {
+        var s = i & ~l;
+        s !== 0 ? (r = wr(s)) : ((a &= i), a !== 0 && (r = wr(a)));
+      } else ((i = n & ~l), i !== 0 ? (r = wr(i)) : a !== 0 && (r = wr(a)));
+      if (r === 0) return 0;
+      if (
+        t !== 0 &&
+        t !== r &&
+        (t & l) === 0 &&
+        ((l = r & -r), (a = t & -t), l >= a || (l === 16 && (a & 4194240) !== 0))
+      )
+        return t;
+      if (((r & 4) !== 0 && (r |= n & 16), (t = e.entangledLanes), t !== 0))
+        for (e = e.entanglements, t &= r; 0 < t;)
+          ((n = 31 - kt(t)), (l = 1 << n), (r |= e[n]), (t &= ~l));
+      return r;
+    }
+    function Jf(e, t) {
+      switch (e) {
+        case 1:
+        case 2:
+        case 4:
+          return t + 250;
+        case 8:
+        case 16:
+        case 32:
+        case 64:
+        case 128:
+        case 256:
+        case 512:
+        case 1024:
+        case 2048:
+        case 4096:
+        case 8192:
+        case 16384:
+        case 32768:
+        case 65536:
+        case 131072:
+        case 262144:
+        case 524288:
+        case 1048576:
+        case 2097152:
+          return t + 5e3;
+        case 4194304:
+        case 8388608:
+        case 16777216:
+        case 33554432:
+        case 67108864:
+          return -1;
+        case 134217728:
+        case 268435456:
+        case 536870912:
+        case 1073741824:
+          return -1;
+        default:
+          return -1;
+      }
+    }
+    function Zf(e, t) {
+      for (
+        var n = e.suspendedLanes, r = e.pingedLanes, l = e.expirationTimes, a = e.pendingLanes;
+        0 < a;
+      ) {
+        var i = 31 - kt(a),
+          s = 1 << i,
+          u = l[i];
+        (u === -1
+          ? ((s & n) === 0 || (s & r) !== 0) && (l[i] = Jf(s, t))
+          : u <= t && (e.expiredLanes |= s),
+          (a &= ~s));
+      }
+    }
+    function Da(e) {
+      return ((e = e.pendingLanes & -1073741825), e !== 0 ? e : e & 1073741824 ? 1073741824 : 0);
+    }
+    function cc() {
+      var e = go;
+      return ((go <<= 1), (go & 4194240) === 0 && (go = 64), e);
+    }
+    function Zl(e) {
+      for (var t = [], n = 0; 31 > n; n++) t.push(e);
+      return t;
+    }
+    function Kr(e, t, n) {
+      ((e.pendingLanes |= t),
+        t !== 536870912 && ((e.suspendedLanes = 0), (e.pingedLanes = 0)),
+        (e = e.eventTimes),
+        (t = 31 - kt(t)),
+        (e[t] = n));
+    }
+    function ep(e, t) {
+      var n = e.pendingLanes & ~t;
+      ((e.pendingLanes = t),
+        (e.suspendedLanes = 0),
+        (e.pingedLanes = 0),
+        (e.expiredLanes &= t),
+        (e.mutableReadLanes &= t),
+        (e.entangledLanes &= t),
+        (t = e.entanglements));
+      var r = e.eventTimes;
+      for (e = e.expirationTimes; 0 < n;) {
+        var l = 31 - kt(n),
+          a = 1 << l;
+        ((t[l] = 0), (r[l] = -1), (e[l] = -1), (n &= ~a));
+      }
+    }
+    function gi(e, t) {
+      var n = (e.entangledLanes |= t);
+      for (e = e.entanglements; n;) {
+        var r = 31 - kt(n),
+          l = 1 << r;
+        ((l & t) | (e[r] & t) && (e[r] |= t), (n &= ~l));
+      }
+    }
+    var ue = 0;
+    function dc(e) {
+      return ((e &= -e), 1 < e ? (4 < e ? ((e & 268435455) !== 0 ? 16 : 536870912) : 4) : 1);
+    }
+    var fc,
+      yi,
+      pc,
+      mc,
+      hc,
+      Ma = !1,
+      wo = [],
+      Xt = null,
+      qt = null,
+      Jt = null,
+      Dr = new Map(),
+      Mr = new Map(),
+      Qt = [],
+      tp =
+        "mousedown mouseup touchcancel touchend touchstart auxclick dblclick pointercancel pointerdown pointerup dragend dragstart drop compositionend compositionstart keydown keypress keyup input textInput copy cut paste click change contextmenu reset submit".split(
+          " ",
+        );
+    function Ws(e, t) {
+      switch (e) {
+        case "focusin":
+        case "focusout":
+          Xt = null;
+          break;
+        case "dragenter":
+        case "dragleave":
+          qt = null;
+          break;
+        case "mouseover":
+        case "mouseout":
+          Jt = null;
+          break;
+        case "pointerover":
+        case "pointerout":
+          Dr.delete(t.pointerId);
+          break;
+        case "gotpointercapture":
+        case "lostpointercapture":
+          Mr.delete(t.pointerId);
+      }
+    }
+    function cr(e, t, n, r, l, a) {
+      return e === null || e.nativeEvent !== a
+        ? ((e = {
+            blockedOn: t,
+            domEventName: n,
+            eventSystemFlags: r,
+            nativeEvent: a,
+            targetContainers: [l],
+          }),
+          t !== null && ((t = Yr(t)), t !== null && yi(t)),
+          e)
+        : ((e.eventSystemFlags |= r),
+          (t = e.targetContainers),
+          l !== null && t.indexOf(l) === -1 && t.push(l),
+          e);
+    }
+    function np(e, t, n, r, l) {
+      switch (t) {
+        case "focusin":
+          return ((Xt = cr(Xt, e, t, n, r, l)), !0);
+        case "dragenter":
+          return ((qt = cr(qt, e, t, n, r, l)), !0);
+        case "mouseover":
+          return ((Jt = cr(Jt, e, t, n, r, l)), !0);
+        case "pointerover":
+          var a = l.pointerId;
+          return (Dr.set(a, cr(Dr.get(a) || null, e, t, n, r, l)), !0);
+        case "gotpointercapture":
+          return ((a = l.pointerId), Mr.set(a, cr(Mr.get(a) || null, e, t, n, r, l)), !0);
+      }
+      return !1;
+    }
+    function vc(e) {
+      var t = hn(e.target);
+      if (t !== null) {
+        var n = En(t);
+        if (n !== null) {
+          if (((t = n.tag), t === 13)) {
+            if (((t = oc(n)), t !== null)) {
+              ((e.blockedOn = t),
+                hc(e.priority, function () {
+                  pc(n);
+                }));
+              return;
+            }
+          } else if (t === 3 && n.stateNode.current.memoizedState.isDehydrated) {
+            e.blockedOn = n.tag === 3 ? n.stateNode.containerInfo : null;
+            return;
+          }
+        }
+      }
+      e.blockedOn = null;
+    }
+    function Do(e) {
+      if (e.blockedOn !== null) return !1;
+      for (var t = e.targetContainers; 0 < t.length;) {
+        var n = Ia(e.domEventName, e.eventSystemFlags, t[0], e.nativeEvent);
+        if (n === null) {
+          n = e.nativeEvent;
+          var r = new n.constructor(n.type, n);
+          ((za = r), n.target.dispatchEvent(r), (za = null));
+        } else return ((t = Yr(n)), t !== null && yi(t), (e.blockedOn = n), !1);
+        t.shift();
+      }
+      return !0;
+    }
+    function Qs(e, t, n) {
+      Do(e) && n.delete(t);
+    }
+    function rp() {
+      ((Ma = !1),
+        Xt !== null && Do(Xt) && (Xt = null),
+        qt !== null && Do(qt) && (qt = null),
+        Jt !== null && Do(Jt) && (Jt = null),
+        Dr.forEach(Qs),
+        Mr.forEach(Qs));
+    }
+    function dr(e, t) {
+      e.blockedOn === t &&
+        ((e.blockedOn = null),
+        Ma || ((Ma = !0), nt.unstable_scheduleCallback(nt.unstable_NormalPriority, rp)));
+    }
+    function Ir(e) {
+      function t(l) {
+        return dr(l, e);
+      }
+      if (0 < wo.length) {
+        dr(wo[0], e);
+        for (var n = 1; n < wo.length; n++) {
+          var r = wo[n];
+          r.blockedOn === e && (r.blockedOn = null);
+        }
+      }
+      for (
+        Xt !== null && dr(Xt, e),
+          qt !== null && dr(qt, e),
+          Jt !== null && dr(Jt, e),
+          Dr.forEach(t),
+          Mr.forEach(t),
+          n = 0;
+        n < Qt.length;
+        n++
+      )
+        ((r = Qt[n]), r.blockedOn === e && (r.blockedOn = null));
+      for (; 0 < Qt.length && ((n = Qt[0]), n.blockedOn === null);)
+        (vc(n), n.blockedOn === null && Qt.shift());
+    }
+    var Kn = Ut.ReactCurrentBatchConfig,
+      Go = !0;
+    function op(e, t, n, r) {
+      var l = ue,
+        a = Kn.transition;
+      Kn.transition = null;
+      try {
+        ((ue = 1), wi(e, t, n, r));
+      } finally {
+        ((ue = l), (Kn.transition = a));
+      }
+    }
+    function lp(e, t, n, r) {
+      var l = ue,
+        a = Kn.transition;
+      Kn.transition = null;
+      try {
+        ((ue = 4), wi(e, t, n, r));
+      } finally {
+        ((ue = l), (Kn.transition = a));
+      }
+    }
+    function wi(e, t, n, r) {
+      if (Go) {
+        var l = Ia(e, t, n, r);
+        if (l === null) (aa(e, t, r, Yo, n), Ws(e, r));
+        else if (np(l, e, t, n, r)) r.stopPropagation();
+        else if ((Ws(e, r), t & 4 && -1 < tp.indexOf(e))) {
+          for (; l !== null;) {
+            var a = Yr(l);
+            if (
+              (a !== null && fc(a), (a = Ia(e, t, n, r)), a === null && aa(e, t, r, Yo, n), a === l)
+            )
+              break;
+            l = a;
+          }
+          l !== null && r.stopPropagation();
+        } else aa(e, t, r, null, n);
+      }
+    }
+    var Yo = null;
+    function Ia(e, t, n, r) {
+      if (((Yo = null), (e = hi(r)), (e = hn(e)), e !== null))
+        if (((t = En(e)), t === null)) e = null;
+        else if (((n = t.tag), n === 13)) {
+          if (((e = oc(t)), e !== null)) return e;
+          e = null;
+        } else if (n === 3) {
+          if (t.stateNode.current.memoizedState.isDehydrated)
+            return t.tag === 3 ? t.stateNode.containerInfo : null;
+          e = null;
+        } else t !== e && (e = null);
+      return ((Yo = e), null);
+    }
+    function gc(e) {
+      switch (e) {
+        case "cancel":
+        case "click":
+        case "close":
+        case "contextmenu":
+        case "copy":
+        case "cut":
+        case "auxclick":
+        case "dblclick":
+        case "dragend":
+        case "dragstart":
+        case "drop":
+        case "focusin":
+        case "focusout":
+        case "input":
+        case "invalid":
+        case "keydown":
+        case "keypress":
+        case "keyup":
+        case "mousedown":
+        case "mouseup":
+        case "paste":
+        case "pause":
+        case "play":
+        case "pointercancel":
+        case "pointerdown":
+        case "pointerup":
+        case "ratechange":
+        case "reset":
+        case "resize":
+        case "seeked":
+        case "submit":
+        case "touchcancel":
+        case "touchend":
+        case "touchstart":
+        case "volumechange":
+        case "change":
+        case "selectionchange":
+        case "textInput":
+        case "compositionstart":
+        case "compositionend":
+        case "compositionupdate":
+        case "beforeblur":
+        case "afterblur":
+        case "beforeinput":
+        case "blur":
+        case "fullscreenchange":
+        case "focus":
+        case "hashchange":
+        case "popstate":
+        case "select":
+        case "selectstart":
+          return 1;
+        case "drag":
+        case "dragenter":
+        case "dragexit":
+        case "dragleave":
+        case "dragover":
+        case "mousemove":
+        case "mouseout":
+        case "mouseover":
+        case "pointermove":
+        case "pointerout":
+        case "pointerover":
+        case "scroll":
+        case "toggle":
+        case "touchmove":
+        case "wheel":
+        case "mouseenter":
+        case "mouseleave":
+        case "pointerenter":
+        case "pointerleave":
+          return 4;
+        case "message":
+          switch (Qf()) {
+            case vi:
+              return 1;
+            case sc:
+              return 4;
+            case Qo:
+            case Kf:
+              return 16;
+            case uc:
+              return 536870912;
+            default:
+              return 16;
+          }
+        default:
+          return 16;
+      }
+    }
+    var Gt = null,
+      ki = null,
+      Mo = null;
+    function yc() {
+      if (Mo) return Mo;
+      var e,
+        t = ki,
+        n = t.length,
+        r,
+        l = "value" in Gt ? Gt.value : Gt.textContent,
+        a = l.length;
+      for (e = 0; e < n && t[e] === l[e]; e++);
+      var i = n - e;
+      for (r = 1; r <= i && t[n - r] === l[a - r]; r++);
+      return (Mo = l.slice(e, 1 < r ? 1 - r : void 0));
+    }
+    function Io(e) {
+      var t = e.keyCode;
+      return (
+        "charCode" in e ? ((e = e.charCode), e === 0 && t === 13 && (e = 13)) : (e = t),
+        e === 10 && (e = 13),
+        32 <= e || e === 13 ? e : 0
+      );
+    }
+    function ko() {
+      return !0;
+    }
+    function Ks() {
+      return !1;
+    }
+    function rt(e) {
+      function t(n, r, l, a, i) {
+        ((this._reactName = n),
+          (this._targetInst = l),
+          (this.type = r),
+          (this.nativeEvent = a),
+          (this.target = i),
+          (this.currentTarget = null));
+        for (var s in e) e.hasOwnProperty(s) && ((n = e[s]), (this[s] = n ? n(a) : a[s]));
+        return (
+          (this.isDefaultPrevented = (
+            a.defaultPrevented != null ? a.defaultPrevented : a.returnValue === !1
+          )
+            ? ko
+            : Ks),
+          (this.isPropagationStopped = Ks),
+          this
+        );
+      }
+      return (
+        be(t.prototype, {
+          preventDefault: function () {
+            this.defaultPrevented = !0;
+            var n = this.nativeEvent;
+            n &&
+              (n.preventDefault
+                ? n.preventDefault()
+                : typeof n.returnValue != "unknown" && (n.returnValue = !1),
+              (this.isDefaultPrevented = ko));
+          },
+          stopPropagation: function () {
+            var n = this.nativeEvent;
+            n &&
+              (n.stopPropagation
+                ? n.stopPropagation()
+                : typeof n.cancelBubble != "unknown" && (n.cancelBubble = !0),
+              (this.isPropagationStopped = ko));
+          },
+          persist: function () {},
+          isPersistent: ko,
+        }),
+        t
+      );
+    }
+    var rr = {
+        eventPhase: 0,
+        bubbles: 0,
+        cancelable: 0,
+        timeStamp: function (e) {
+          return e.timeStamp || Date.now();
+        },
+        defaultPrevented: 0,
+        isTrusted: 0,
+      },
+      Ni = rt(rr),
+      Gr = be({}, rr, { view: 0, detail: 0 }),
+      ap = rt(Gr),
+      ea,
+      ta,
+      fr,
+      ml = be({}, Gr, {
+        screenX: 0,
+        screenY: 0,
+        clientX: 0,
+        clientY: 0,
+        pageX: 0,
+        pageY: 0,
+        ctrlKey: 0,
+        shiftKey: 0,
+        altKey: 0,
+        metaKey: 0,
+        getModifierState: xi,
+        button: 0,
+        buttons: 0,
+        relatedTarget: function (e) {
+          return e.relatedTarget === void 0
+            ? e.fromElement === e.srcElement
+              ? e.toElement
+              : e.fromElement
+            : e.relatedTarget;
+        },
+        movementX: function (e) {
+          return "movementX" in e
+            ? e.movementX
+            : (e !== fr &&
+                (fr && e.type === "mousemove"
+                  ? ((ea = e.screenX - fr.screenX), (ta = e.screenY - fr.screenY))
+                  : (ta = ea = 0),
+                (fr = e)),
+              ea);
+        },
+        movementY: function (e) {
+          return "movementY" in e ? e.movementY : ta;
+        },
+      }),
+      Gs = rt(ml),
+      ip = be({}, ml, { dataTransfer: 0 }),
+      sp = rt(ip),
+      up = be({}, Gr, { relatedTarget: 0 }),
+      na = rt(up),
+      cp = be({}, rr, { animationName: 0, elapsedTime: 0, pseudoElement: 0 }),
+      dp = rt(cp),
+      fp = be({}, rr, {
+        clipboardData: function (e) {
+          return "clipboardData" in e ? e.clipboardData : window.clipboardData;
+        },
+      }),
+      pp = rt(fp),
+      mp = be({}, rr, { data: 0 }),
+      Ys = rt(mp),
+      hp = {
+        Esc: "Escape",
+        Spacebar: " ",
+        Left: "ArrowLeft",
+        Up: "ArrowUp",
+        Right: "ArrowRight",
+        Down: "ArrowDown",
+        Del: "Delete",
+        Win: "OS",
+        Menu: "ContextMenu",
+        Apps: "ContextMenu",
+        Scroll: "ScrollLock",
+        MozPrintableKey: "Unidentified",
+      },
+      vp = {
+        8: "Backspace",
+        9: "Tab",
+        12: "Clear",
+        13: "Enter",
+        16: "Shift",
+        17: "Control",
+        18: "Alt",
+        19: "Pause",
+        20: "CapsLock",
+        27: "Escape",
+        32: " ",
+        33: "PageUp",
+        34: "PageDown",
+        35: "End",
+        36: "Home",
+        37: "ArrowLeft",
+        38: "ArrowUp",
+        39: "ArrowRight",
+        40: "ArrowDown",
+        45: "Insert",
+        46: "Delete",
+        112: "F1",
+        113: "F2",
+        114: "F3",
+        115: "F4",
+        116: "F5",
+        117: "F6",
+        118: "F7",
+        119: "F8",
+        120: "F9",
+        121: "F10",
+        122: "F11",
+        123: "F12",
+        144: "NumLock",
+        145: "ScrollLock",
+        224: "Meta",
+      },
+      gp = { Alt: "altKey", Control: "ctrlKey", Meta: "metaKey", Shift: "shiftKey" };
+    function yp(e) {
+      var t = this.nativeEvent;
+      return t.getModifierState ? t.getModifierState(e) : (e = gp[e]) ? !!t[e] : !1;
+    }
+    function xi() {
+      return yp;
+    }
+    var wp = be({}, Gr, {
+        key: function (e) {
+          if (e.key) {
+            var t = hp[e.key] || e.key;
+            if (t !== "Unidentified") return t;
+          }
+          return e.type === "keypress"
+            ? ((e = Io(e)), e === 13 ? "Enter" : String.fromCharCode(e))
+            : e.type === "keydown" || e.type === "keyup"
+              ? vp[e.keyCode] || "Unidentified"
+              : "";
+        },
+        code: 0,
+        location: 0,
+        ctrlKey: 0,
+        shiftKey: 0,
+        altKey: 0,
+        metaKey: 0,
+        repeat: 0,
+        locale: 0,
+        getModifierState: xi,
+        charCode: function (e) {
+          return e.type === "keypress" ? Io(e) : 0;
+        },
+        keyCode: function (e) {
+          return e.type === "keydown" || e.type === "keyup" ? e.keyCode : 0;
+        },
+        which: function (e) {
+          return e.type === "keypress"
+            ? Io(e)
+            : e.type === "keydown" || e.type === "keyup"
+              ? e.keyCode
+              : 0;
+        },
+      }),
+      kp = rt(wp),
+      Np = be({}, ml, {
+        pointerId: 0,
+        width: 0,
+        height: 0,
+        pressure: 0,
+        tangentialPressure: 0,
+        tiltX: 0,
+        tiltY: 0,
+        twist: 0,
+        pointerType: 0,
+        isPrimary: 0,
+      }),
+      Xs = rt(Np),
+      xp = be({}, Gr, {
+        touches: 0,
+        targetTouches: 0,
+        changedTouches: 0,
+        altKey: 0,
+        metaKey: 0,
+        ctrlKey: 0,
+        shiftKey: 0,
+        getModifierState: xi,
+      }),
+      bp = rt(xp),
+      Sp = be({}, rr, { propertyName: 0, elapsedTime: 0, pseudoElement: 0 }),
+      Cp = rt(Sp),
+      Ep = be({}, ml, {
+        deltaX: function (e) {
+          return "deltaX" in e ? e.deltaX : "wheelDeltaX" in e ? -e.wheelDeltaX : 0;
+        },
+        deltaY: function (e) {
+          return "deltaY" in e
+            ? e.deltaY
+            : "wheelDeltaY" in e
+              ? -e.wheelDeltaY
+              : "wheelDelta" in e
+                ? -e.wheelDelta
+                : 0;
+        },
+        deltaZ: 0,
+        deltaMode: 0,
+      }),
+      Tp = rt(Ep),
+      Op = [9, 13, 27, 32],
+      bi = Lt && "CompositionEvent" in window,
+      br = null;
+    Lt && "documentMode" in document && (br = document.documentMode);
+    var zp = Lt && "TextEvent" in window && !br,
+      wc = Lt && (!bi || (br && 8 < br && 11 >= br)),
+      qs = " ",
+      Js = !1;
+    function kc(e, t) {
+      switch (e) {
+        case "keyup":
+          return Op.indexOf(t.keyCode) !== -1;
+        case "keydown":
+          return t.keyCode !== 229;
+        case "keypress":
+        case "mousedown":
+        case "focusout":
+          return !0;
+        default:
+          return !1;
+      }
+    }
+    function Nc(e) {
+      return ((e = e.detail), typeof e == "object" && "data" in e ? e.data : null);
+    }
+    var Mn = !1;
+    function Rp(e, t) {
+      switch (e) {
+        case "compositionend":
+          return Nc(t);
+        case "keypress":
+          return t.which !== 32 ? null : ((Js = !0), qs);
+        case "textInput":
+          return ((e = t.data), e === qs && Js ? null : e);
+        default:
+          return null;
+      }
+    }
+    function _p(e, t) {
+      if (Mn)
+        return e === "compositionend" || (!bi && kc(e, t))
+          ? ((e = yc()), (Mo = ki = Gt = null), (Mn = !1), e)
+          : null;
+      switch (e) {
+        case "paste":
+          return null;
+        case "keypress":
+          if (!(t.ctrlKey || t.altKey || t.metaKey) || (t.ctrlKey && t.altKey)) {
+            if (t.char && 1 < t.char.length) return t.char;
+            if (t.which) return String.fromCharCode(t.which);
+          }
+          return null;
+        case "compositionend":
+          return wc && t.locale !== "ko" ? null : t.data;
+        default:
+          return null;
+      }
+    }
+    var Pp = {
+      color: !0,
+      date: !0,
+      datetime: !0,
+      "datetime-local": !0,
+      email: !0,
+      month: !0,
+      number: !0,
+      password: !0,
+      range: !0,
+      search: !0,
+      tel: !0,
+      text: !0,
+      time: !0,
+      url: !0,
+      week: !0,
+    };
+    function Zs(e) {
+      var t = e && e.nodeName && e.nodeName.toLowerCase();
+      return t === "input" ? !!Pp[e.type] : t === "textarea";
+    }
+    function xc(e, t, n, r) {
+      (Zu(r),
+        (t = Xo(t, "onChange")),
+        0 < t.length &&
+          ((n = new Ni("onChange", "change", null, n, r)), e.push({ event: n, listeners: t })));
+    }
+    var Sr = null,
+      Fr = null;
+    function Dp(e) {
+      Dc(e, 0);
+    }
+    function hl(e) {
+      var t = Ln(e);
+      if (Qu(t)) return e;
+    }
+    function Mp(e, t) {
+      if (e === "change") return t;
+    }
+    var bc = !1;
+    Lt &&
+      (Lt
+        ? ((xo = "oninput" in document),
+          xo ||
+            ((ra = document.createElement("div")),
+            ra.setAttribute("oninput", "return;"),
+            (xo = typeof ra.oninput == "function")),
+          (No = xo))
+        : (No = !1),
+      (bc = No && (!document.documentMode || 9 < document.documentMode)));
+    var No, xo, ra;
+    function eu() {
+      Sr && (Sr.detachEvent("onpropertychange", Sc), (Fr = Sr = null));
+    }
+    function Sc(e) {
+      if (e.propertyName === "value" && hl(Fr)) {
+        var t = [];
+        (xc(t, Fr, e, hi(e)), rc(Dp, t));
+      }
+    }
+    function Ip(e, t, n) {
+      e === "focusin"
+        ? (eu(), (Sr = t), (Fr = n), Sr.attachEvent("onpropertychange", Sc))
+        : e === "focusout" && eu();
+    }
+    function Fp(e) {
+      if (e === "selectionchange" || e === "keyup" || e === "keydown") return hl(Fr);
+    }
+    function Lp(e, t) {
+      if (e === "click") return hl(t);
+    }
+    function Ap(e, t) {
+      if (e === "input" || e === "change") return hl(t);
+    }
+    function Bp(e, t) {
+      return (e === t && (e !== 0 || 1 / e === 1 / t)) || (e !== e && t !== t);
+    }
+    var xt = typeof Object.is == "function" ? Object.is : Bp;
+    function Lr(e, t) {
+      if (xt(e, t)) return !0;
+      if (typeof e != "object" || e === null || typeof t != "object" || t === null) return !1;
+      var n = Object.keys(e),
+        r = Object.keys(t);
+      if (n.length !== r.length) return !1;
+      for (r = 0; r < n.length; r++) {
+        var l = n[r];
+        if (!ga.call(t, l) || !xt(e[l], t[l])) return !1;
+      }
+      return !0;
+    }
+    function tu(e) {
+      for (; e && e.firstChild;) e = e.firstChild;
+      return e;
+    }
+    function nu(e, t) {
+      var n = tu(e);
+      e = 0;
+      for (var r; n;) {
+        if (n.nodeType === 3) {
+          if (((r = e + n.textContent.length), e <= t && r >= t)) return { node: n, offset: t - e };
+          e = r;
+        }
+        e: {
+          for (; n;) {
+            if (n.nextSibling) {
+              n = n.nextSibling;
+              break e;
+            }
+            n = n.parentNode;
+          }
+          n = void 0;
+        }
+        n = tu(n);
+      }
+    }
+    function Cc(e, t) {
+      return e && t
+        ? e === t
+          ? !0
+          : e && e.nodeType === 3
+            ? !1
+            : t && t.nodeType === 3
+              ? Cc(e, t.parentNode)
+              : "contains" in e
+                ? e.contains(t)
+                : e.compareDocumentPosition
+                  ? !!(e.compareDocumentPosition(t) & 16)
+                  : !1
+        : !1;
+    }
+    function Ec() {
+      for (var e = window, t = Ho(); t instanceof e.HTMLIFrameElement;) {
+        try {
+          var n = typeof t.contentWindow.location.href == "string";
+        } catch {
+          n = !1;
+        }
+        if (n) e = t.contentWindow;
+        else break;
+        t = Ho(e.document);
+      }
+      return t;
+    }
+    function Si(e) {
+      var t = e && e.nodeName && e.nodeName.toLowerCase();
+      return (
+        t &&
+        ((t === "input" &&
+          (e.type === "text" ||
+            e.type === "search" ||
+            e.type === "tel" ||
+            e.type === "url" ||
+            e.type === "password")) ||
+          t === "textarea" ||
+          e.contentEditable === "true")
+      );
+    }
+    function jp(e) {
+      var t = Ec(),
+        n = e.focusedElem,
+        r = e.selectionRange;
+      if (t !== n && n && n.ownerDocument && Cc(n.ownerDocument.documentElement, n)) {
+        if (r !== null && Si(n)) {
+          if (((t = r.start), (e = r.end), e === void 0 && (e = t), "selectionStart" in n))
+            ((n.selectionStart = t), (n.selectionEnd = Math.min(e, n.value.length)));
+          else if (
+            ((e = ((t = n.ownerDocument || document) && t.defaultView) || window), e.getSelection)
+          ) {
+            e = e.getSelection();
+            var l = n.textContent.length,
+              a = Math.min(r.start, l);
+            ((r = r.end === void 0 ? a : Math.min(r.end, l)),
+              !e.extend && a > r && ((l = r), (r = a), (a = l)),
+              (l = nu(n, a)));
+            var i = nu(n, r);
+            l &&
+              i &&
+              (e.rangeCount !== 1 ||
+                e.anchorNode !== l.node ||
+                e.anchorOffset !== l.offset ||
+                e.focusNode !== i.node ||
+                e.focusOffset !== i.offset) &&
+              ((t = t.createRange()),
+              t.setStart(l.node, l.offset),
+              e.removeAllRanges(),
+              a > r
+                ? (e.addRange(t), e.extend(i.node, i.offset))
+                : (t.setEnd(i.node, i.offset), e.addRange(t)));
+          }
+        }
+        for (t = [], e = n; (e = e.parentNode);)
+          e.nodeType === 1 && t.push({ element: e, left: e.scrollLeft, top: e.scrollTop });
+        for (typeof n.focus == "function" && n.focus(), n = 0; n < t.length; n++)
+          ((e = t[n]), (e.element.scrollLeft = e.left), (e.element.scrollTop = e.top));
+      }
+    }
+    var Up = Lt && "documentMode" in document && 11 >= document.documentMode,
+      In = null,
+      Fa = null,
+      Cr = null,
+      La = !1;
+    function ru(e, t, n) {
+      var r = n.window === n ? n.document : n.nodeType === 9 ? n : n.ownerDocument;
+      La ||
+        In == null ||
+        In !== Ho(r) ||
+        ((r = In),
+        "selectionStart" in r && Si(r)
+          ? (r = { start: r.selectionStart, end: r.selectionEnd })
+          : ((r = ((r.ownerDocument && r.ownerDocument.defaultView) || window).getSelection()),
+            (r = {
+              anchorNode: r.anchorNode,
+              anchorOffset: r.anchorOffset,
+              focusNode: r.focusNode,
+              focusOffset: r.focusOffset,
+            })),
+        (Cr && Lr(Cr, r)) ||
+          ((Cr = r),
+          (r = Xo(Fa, "onSelect")),
+          0 < r.length &&
+            ((t = new Ni("onSelect", "select", null, t, n)),
+            e.push({ event: t, listeners: r }),
+            (t.target = In))));
+    }
+    function bo(e, t) {
+      var n = {};
+      return (
+        (n[e.toLowerCase()] = t.toLowerCase()),
+        (n["Webkit" + e] = "webkit" + t),
+        (n["Moz" + e] = "moz" + t),
+        n
+      );
+    }
+    var Fn = {
+        animationend: bo("Animation", "AnimationEnd"),
+        animationiteration: bo("Animation", "AnimationIteration"),
+        animationstart: bo("Animation", "AnimationStart"),
+        transitionend: bo("Transition", "TransitionEnd"),
+      },
+      oa = {},
+      Tc = {};
+    Lt &&
+      ((Tc = document.createElement("div").style),
+      "AnimationEvent" in window ||
+        (delete Fn.animationend.animation,
+        delete Fn.animationiteration.animation,
+        delete Fn.animationstart.animation),
+      "TransitionEvent" in window || delete Fn.transitionend.transition);
+    function vl(e) {
+      if (oa[e]) return oa[e];
+      if (!Fn[e]) return e;
+      var t = Fn[e],
+        n;
+      for (n in t) if (t.hasOwnProperty(n) && n in Tc) return (oa[e] = t[n]);
+      return e;
+    }
+    var Oc = vl("animationend"),
+      zc = vl("animationiteration"),
+      Rc = vl("animationstart"),
+      _c = vl("transitionend"),
+      Pc = new Map(),
+      ou =
+        "abort auxClick cancel canPlay canPlayThrough click close contextMenu copy cut drag dragEnd dragEnter dragExit dragLeave dragOver dragStart drop durationChange emptied encrypted ended error gotPointerCapture input invalid keyDown keyPress keyUp load loadedData loadedMetadata loadStart lostPointerCapture mouseDown mouseMove mouseOut mouseOver mouseUp paste pause play playing pointerCancel pointerDown pointerMove pointerOut pointerOver pointerUp progress rateChange reset resize seeked seeking stalled submit suspend timeUpdate touchCancel touchEnd touchStart volumeChange scroll toggle touchMove waiting wheel".split(
+          " ",
+        );
+    function an(e, t) {
+      (Pc.set(e, t), Cn(t, [e]));
+    }
+    for (So = 0; So < ou.length; So++)
+      ((Co = ou[So]),
+        (lu = Co.toLowerCase()),
+        (au = Co[0].toUpperCase() + Co.slice(1)),
+        an(lu, "on" + au));
+    var Co, lu, au, So;
+    an(Oc, "onAnimationEnd");
+    an(zc, "onAnimationIteration");
+    an(Rc, "onAnimationStart");
+    an("dblclick", "onDoubleClick");
+    an("focusin", "onFocus");
+    an("focusout", "onBlur");
+    an(_c, "onTransitionEnd");
+    Xn("onMouseEnter", ["mouseout", "mouseover"]);
+    Xn("onMouseLeave", ["mouseout", "mouseover"]);
+    Xn("onPointerEnter", ["pointerout", "pointerover"]);
+    Xn("onPointerLeave", ["pointerout", "pointerover"]);
+    Cn("onChange", "change click focusin focusout input keydown keyup selectionchange".split(" "));
+    Cn(
+      "onSelect",
+      "focusout contextmenu dragend focusin keydown keyup mousedown mouseup selectionchange".split(
+        " ",
+      ),
+    );
+    Cn("onBeforeInput", ["compositionend", "keypress", "textInput", "paste"]);
+    Cn("onCompositionEnd", "compositionend focusout keydown keypress keyup mousedown".split(" "));
+    Cn(
+      "onCompositionStart",
+      "compositionstart focusout keydown keypress keyup mousedown".split(" "),
+    );
+    Cn(
+      "onCompositionUpdate",
+      "compositionupdate focusout keydown keypress keyup mousedown".split(" "),
+    );
+    var kr =
+        "abort canplay canplaythrough durationchange emptied encrypted ended error loadeddata loadedmetadata loadstart pause play playing progress ratechange resize seeked seeking stalled suspend timeupdate volumechange waiting".split(
+          " ",
+        ),
+      $p = new Set("cancel close invalid load scroll toggle".split(" ").concat(kr));
+    function iu(e, t, n) {
+      var r = e.type || "unknown-event";
+      ((e.currentTarget = n), $f(r, t, void 0, e), (e.currentTarget = null));
+    }
+    function Dc(e, t) {
+      t = (t & 4) !== 0;
+      for (var n = 0; n < e.length; n++) {
+        var r = e[n],
+          l = r.event;
+        r = r.listeners;
+        e: {
+          var a = void 0;
+          if (t)
+            for (var i = r.length - 1; 0 <= i; i--) {
+              var s = r[i],
+                u = s.instance,
+                d = s.currentTarget;
+              if (((s = s.listener), u !== a && l.isPropagationStopped())) break e;
+              (iu(l, s, d), (a = u));
+            }
+          else
+            for (i = 0; i < r.length; i++) {
+              if (
+                ((s = r[i]),
+                (u = s.instance),
+                (d = s.currentTarget),
+                (s = s.listener),
+                u !== a && l.isPropagationStopped())
+              )
+                break e;
+              (iu(l, s, d), (a = u));
+            }
+        }
+      }
+      if (Wo) throw ((e = Pa), (Wo = !1), (Pa = null), e);
+    }
+    function he(e, t) {
+      var n = t[$a];
+      n === void 0 && (n = t[$a] = new Set());
+      var r = e + "__bubble";
+      n.has(r) || (Mc(t, e, 2, !1), n.add(r));
+    }
+    function la(e, t, n) {
+      var r = 0;
+      (t && (r |= 4), Mc(n, e, r, t));
+    }
+    var Eo = "_reactListening" + Math.random().toString(36).slice(2);
+    function Ar(e) {
+      if (!e[Eo]) {
+        ((e[Eo] = !0),
+          Uu.forEach(function (n) {
+            n !== "selectionchange" && ($p.has(n) || la(n, !1, e), la(n, !0, e));
+          }));
+        var t = e.nodeType === 9 ? e : e.ownerDocument;
+        t === null || t[Eo] || ((t[Eo] = !0), la("selectionchange", !1, t));
+      }
+    }
+    function Mc(e, t, n, r) {
+      switch (gc(t)) {
+        case 1:
+          var l = op;
+          break;
+        case 4:
+          l = lp;
+          break;
+        default:
+          l = wi;
+      }
+      ((n = l.bind(null, t, n, e)),
+        (l = void 0),
+        !_a || (t !== "touchstart" && t !== "touchmove" && t !== "wheel") || (l = !0),
+        r
+          ? l !== void 0
+            ? e.addEventListener(t, n, { capture: !0, passive: l })
+            : e.addEventListener(t, n, !0)
+          : l !== void 0
+            ? e.addEventListener(t, n, { passive: l })
+            : e.addEventListener(t, n, !1));
+    }
+    function aa(e, t, n, r, l) {
+      var a = r;
+      if ((t & 1) === 0 && (t & 2) === 0 && r !== null)
+        e: for (;;) {
+          if (r === null) return;
+          var i = r.tag;
+          if (i === 3 || i === 4) {
+            var s = r.stateNode.containerInfo;
+            if (s === l || (s.nodeType === 8 && s.parentNode === l)) break;
+            if (i === 4)
+              for (i = r.return; i !== null;) {
+                var u = i.tag;
+                if (
+                  (u === 3 || u === 4) &&
+                  ((u = i.stateNode.containerInfo),
+                  u === l || (u.nodeType === 8 && u.parentNode === l))
+                )
+                  return;
+                i = i.return;
+              }
+            for (; s !== null;) {
+              if (((i = hn(s)), i === null)) return;
+              if (((u = i.tag), u === 5 || u === 6)) {
+                r = a = i;
+                continue e;
+              }
+              s = s.parentNode;
+            }
+          }
+          r = r.return;
+        }
+      rc(function () {
+        var d = a,
+          c = hi(n),
+          g = [];
+        e: {
+          var v = Pc.get(e);
+          if (v !== void 0) {
+            var y = Ni,
+              E = e;
+            switch (e) {
+              case "keypress":
+                if (Io(n) === 0) break e;
+              case "keydown":
+              case "keyup":
+                y = kp;
+                break;
+              case "focusin":
+                ((E = "focus"), (y = na));
+                break;
+              case "focusout":
+                ((E = "blur"), (y = na));
+                break;
+              case "beforeblur":
+              case "afterblur":
+                y = na;
+                break;
+              case "click":
+                if (n.button === 2) break e;
+              case "auxclick":
+              case "dblclick":
+              case "mousedown":
+              case "mousemove":
+              case "mouseup":
+              case "mouseout":
+              case "mouseover":
+              case "contextmenu":
+                y = Gs;
+                break;
+              case "drag":
+              case "dragend":
+              case "dragenter":
+              case "dragexit":
+              case "dragleave":
+              case "dragover":
+              case "dragstart":
+              case "drop":
+                y = sp;
+                break;
+              case "touchcancel":
+              case "touchend":
+              case "touchmove":
+              case "touchstart":
+                y = bp;
+                break;
+              case Oc:
+              case zc:
+              case Rc:
+                y = dp;
+                break;
+              case _c:
+                y = Cp;
+                break;
+              case "scroll":
+                y = ap;
+                break;
+              case "wheel":
+                y = Tp;
+                break;
+              case "copy":
+              case "cut":
+              case "paste":
+                y = pp;
+                break;
+              case "gotpointercapture":
+              case "lostpointercapture":
+              case "pointercancel":
+              case "pointerdown":
+              case "pointermove":
+              case "pointerout":
+              case "pointerover":
+              case "pointerup":
+                y = Xs;
+            }
+            var k = (t & 4) !== 0,
+              O = !k && e === "scroll",
+              f = k ? (v !== null ? v + "Capture" : null) : v;
+            k = [];
+            for (var p = d, m; p !== null;) {
+              m = p;
+              var w = m.stateNode;
+              if (
+                (m.tag === 5 &&
+                  w !== null &&
+                  ((m = w), f !== null && ((w = Pr(p, f)), w != null && k.push(Br(p, w, m)))),
+                O)
+              )
+                break;
+              p = p.return;
+            }
+            0 < k.length && ((v = new y(v, E, null, n, c)), g.push({ event: v, listeners: k }));
+          }
+        }
+        if ((t & 7) === 0) {
+          e: {
+            if (
+              ((v = e === "mouseover" || e === "pointerover"),
+              (y = e === "mouseout" || e === "pointerout"),
+              v && n !== za && (E = n.relatedTarget || n.fromElement) && (hn(E) || E[At]))
+            )
+              break e;
+            if (
+              (y || v) &&
+              ((v =
+                c.window === c
+                  ? c
+                  : (v = c.ownerDocument)
+                    ? v.defaultView || v.parentWindow
+                    : window),
+              y
+                ? ((E = n.relatedTarget || n.toElement),
+                  (y = d),
+                  (E = E ? hn(E) : null),
+                  E !== null &&
+                    ((O = En(E)), E !== O || (E.tag !== 5 && E.tag !== 6)) &&
+                    (E = null))
+                : ((y = null), (E = d)),
+              y !== E)
+            ) {
+              if (
+                ((k = Gs),
+                (w = "onMouseLeave"),
+                (f = "onMouseEnter"),
+                (p = "mouse"),
+                (e === "pointerout" || e === "pointerover") &&
+                  ((k = Xs), (w = "onPointerLeave"), (f = "onPointerEnter"), (p = "pointer")),
+                (O = y == null ? v : Ln(y)),
+                (m = E == null ? v : Ln(E)),
+                (v = new k(w, p + "leave", y, n, c)),
+                (v.target = O),
+                (v.relatedTarget = m),
+                (w = null),
+                hn(c) === d &&
+                  ((k = new k(f, p + "enter", E, n, c)),
+                  (k.target = m),
+                  (k.relatedTarget = O),
+                  (w = k)),
+                (O = w),
+                y && E)
+              )
+                t: {
+                  for (k = y, f = E, p = 0, m = k; m; m = _n(m)) p++;
+                  for (m = 0, w = f; w; w = _n(w)) m++;
+                  for (; 0 < p - m;) ((k = _n(k)), p--);
+                  for (; 0 < m - p;) ((f = _n(f)), m--);
+                  for (; p--;) {
+                    if (k === f || (f !== null && k === f.alternate)) break t;
+                    ((k = _n(k)), (f = _n(f)));
+                  }
+                  k = null;
+                }
+              else k = null;
+              (y !== null && su(g, v, y, k, !1), E !== null && O !== null && su(g, O, E, k, !0));
+            }
+          }
+          e: {
+            if (
+              ((v = d ? Ln(d) : window),
+              (y = v.nodeName && v.nodeName.toLowerCase()),
+              y === "select" || (y === "input" && v.type === "file"))
+            )
+              var x = Mp;
+            else if (Zs(v))
+              if (bc) x = Ap;
+              else {
+                x = Fp;
+                var h = Ip;
+              }
+            else
+              (y = v.nodeName) &&
+                y.toLowerCase() === "input" &&
+                (v.type === "checkbox" || v.type === "radio") &&
+                (x = Lp);
+            if (x && (x = x(e, d))) {
+              xc(g, x, n, c);
+              break e;
+            }
+            (h && h(e, v, d),
+              e === "focusout" &&
+                (h = v._wrapperState) &&
+                h.controlled &&
+                v.type === "number" &&
+                Sa(v, "number", v.value));
+          }
+          switch (((h = d ? Ln(d) : window), e)) {
+            case "focusin":
+              (Zs(h) || h.contentEditable === "true") && ((In = h), (Fa = d), (Cr = null));
+              break;
+            case "focusout":
+              Cr = Fa = In = null;
+              break;
+            case "mousedown":
+              La = !0;
+              break;
+            case "contextmenu":
+            case "mouseup":
+            case "dragend":
+              ((La = !1), ru(g, n, c));
+              break;
+            case "selectionchange":
+              if (Up) break;
+            case "keydown":
+            case "keyup":
+              ru(g, n, c);
+          }
+          var T;
+          if (bi)
+            e: {
+              switch (e) {
+                case "compositionstart":
+                  var I = "onCompositionStart";
+                  break e;
+                case "compositionend":
+                  I = "onCompositionEnd";
+                  break e;
+                case "compositionupdate":
+                  I = "onCompositionUpdate";
+                  break e;
+              }
+              I = void 0;
+            }
+          else
+            Mn
+              ? kc(e, n) && (I = "onCompositionEnd")
+              : e === "keydown" && n.keyCode === 229 && (I = "onCompositionStart");
+          (I &&
+            (wc &&
+              n.locale !== "ko" &&
+              (Mn || I !== "onCompositionStart"
+                ? I === "onCompositionEnd" && Mn && (T = yc())
+                : ((Gt = c), (ki = "value" in Gt ? Gt.value : Gt.textContent), (Mn = !0))),
+            (h = Xo(d, I)),
+            0 < h.length &&
+              ((I = new Ys(I, e, null, n, c)),
+              g.push({ event: I, listeners: h }),
+              T ? (I.data = T) : ((T = Nc(n)), T !== null && (I.data = T)))),
+            (T = zp ? Rp(e, n) : _p(e, n)) &&
+              ((d = Xo(d, "onBeforeInput")),
+              0 < d.length &&
+                ((c = new Ys("onBeforeInput", "beforeinput", null, n, c)),
+                g.push({ event: c, listeners: d }),
+                (c.data = T))));
+        }
+        Dc(g, t);
+      });
+    }
+    function Br(e, t, n) {
+      return { instance: e, listener: t, currentTarget: n };
+    }
+    function Xo(e, t) {
+      for (var n = t + "Capture", r = []; e !== null;) {
+        var l = e,
+          a = l.stateNode;
+        (l.tag === 5 &&
+          a !== null &&
+          ((l = a),
+          (a = Pr(e, n)),
+          a != null && r.unshift(Br(e, a, l)),
+          (a = Pr(e, t)),
+          a != null && r.push(Br(e, a, l))),
+          (e = e.return));
+      }
+      return r;
+    }
+    function _n(e) {
+      if (e === null) return null;
+      do e = e.return;
+      while (e && e.tag !== 5);
+      return e || null;
+    }
+    function su(e, t, n, r, l) {
+      for (var a = t._reactName, i = []; n !== null && n !== r;) {
+        var s = n,
+          u = s.alternate,
+          d = s.stateNode;
+        if (u !== null && u === r) break;
+        (s.tag === 5 &&
+          d !== null &&
+          ((s = d),
+          l
+            ? ((u = Pr(n, a)), u != null && i.unshift(Br(n, u, s)))
+            : l || ((u = Pr(n, a)), u != null && i.push(Br(n, u, s)))),
+          (n = n.return));
+      }
+      i.length !== 0 && e.push({ event: t, listeners: i });
+    }
+    var Hp = /\r\n?/g,
+      Vp = /\u0000|\uFFFD/g;
+    function uu(e) {
+      return (typeof e == "string" ? e : "" + e)
+        .replace(
+          Hp,
+          `
+`,
+        )
+        .replace(Vp, "");
+    }
+    function To(e, t, n) {
+      if (((t = uu(t)), uu(e) !== t && n)) throw Error(L(425));
+    }
+    function qo() {}
+    var Aa = null,
+      Ba = null;
+    function ja(e, t) {
+      return (
+        e === "textarea" ||
+        e === "noscript" ||
+        typeof t.children == "string" ||
+        typeof t.children == "number" ||
+        (typeof t.dangerouslySetInnerHTML == "object" &&
+          t.dangerouslySetInnerHTML !== null &&
+          t.dangerouslySetInnerHTML.__html != null)
+      );
+    }
+    var Ua = typeof setTimeout == "function" ? setTimeout : void 0,
+      Wp = typeof clearTimeout == "function" ? clearTimeout : void 0,
+      cu = typeof Promise == "function" ? Promise : void 0,
+      Qp =
+        typeof queueMicrotask == "function"
+          ? queueMicrotask
+          : typeof cu < "u"
+            ? function (e) {
+                return cu.resolve(null).then(e).catch(Kp);
+              }
+            : Ua;
+    function Kp(e) {
+      setTimeout(function () {
+        throw e;
+      });
+    }
+    function ia(e, t) {
+      var n = t,
+        r = 0;
+      do {
+        var l = n.nextSibling;
+        if ((e.removeChild(n), l && l.nodeType === 8))
+          if (((n = l.data), n === "/$")) {
+            if (r === 0) {
+              (e.removeChild(l), Ir(t));
+              return;
+            }
+            r--;
+          } else (n !== "$" && n !== "$?" && n !== "$!") || r++;
+        n = l;
+      } while (n);
+      Ir(t);
+    }
+    function Zt(e) {
+      for (; e != null; e = e.nextSibling) {
+        var t = e.nodeType;
+        if (t === 1 || t === 3) break;
+        if (t === 8) {
+          if (((t = e.data), t === "$" || t === "$!" || t === "$?")) break;
+          if (t === "/$") return null;
+        }
+      }
+      return e;
+    }
+    function du(e) {
+      e = e.previousSibling;
+      for (var t = 0; e;) {
+        if (e.nodeType === 8) {
+          var n = e.data;
+          if (n === "$" || n === "$!" || n === "$?") {
+            if (t === 0) return e;
+            t--;
+          } else n === "/$" && t++;
+        }
+        e = e.previousSibling;
+      }
+      return null;
+    }
+    var or = Math.random().toString(36).slice(2),
+      Tt = "__reactFiber$" + or,
+      jr = "__reactProps$" + or,
+      At = "__reactContainer$" + or,
+      $a = "__reactEvents$" + or,
+      Gp = "__reactListeners$" + or,
+      Yp = "__reactHandles$" + or;
+    function hn(e) {
+      var t = e[Tt];
+      if (t) return t;
+      for (var n = e.parentNode; n;) {
+        if ((t = n[At] || n[Tt])) {
+          if (((n = t.alternate), t.child !== null || (n !== null && n.child !== null)))
+            for (e = du(e); e !== null;) {
+              if ((n = e[Tt])) return n;
+              e = du(e);
+            }
+          return t;
+        }
+        ((e = n), (n = e.parentNode));
+      }
+      return null;
+    }
+    function Yr(e) {
+      return (
+        (e = e[Tt] || e[At]),
+        !e || (e.tag !== 5 && e.tag !== 6 && e.tag !== 13 && e.tag !== 3) ? null : e
+      );
+    }
+    function Ln(e) {
+      if (e.tag === 5 || e.tag === 6) return e.stateNode;
+      throw Error(L(33));
+    }
+    function gl(e) {
+      return e[jr] || null;
+    }
+    var Ha = [],
+      An = -1;
+    function sn(e) {
+      return { current: e };
+    }
+    function ve(e) {
+      0 > An || ((e.current = Ha[An]), (Ha[An] = null), An--);
+    }
+    function fe(e, t) {
+      (An++, (Ha[An] = e.current), (e.current = t));
+    }
+    var ln = {},
+      Ue = sn(ln),
+      Ge = sn(!1),
+      kn = ln;
+    function qn(e, t) {
+      var n = e.type.contextTypes;
+      if (!n) return ln;
+      var r = e.stateNode;
+      if (r && r.__reactInternalMemoizedUnmaskedChildContext === t)
+        return r.__reactInternalMemoizedMaskedChildContext;
+      var l = {},
+        a;
+      for (a in n) l[a] = t[a];
+      return (
+        r &&
+          ((e = e.stateNode),
+          (e.__reactInternalMemoizedUnmaskedChildContext = t),
+          (e.__reactInternalMemoizedMaskedChildContext = l)),
+        l
+      );
+    }
+    function Ye(e) {
+      return ((e = e.childContextTypes), e != null);
+    }
+    function Jo() {
+      (ve(Ge), ve(Ue));
+    }
+    function fu(e, t, n) {
+      if (Ue.current !== ln) throw Error(L(168));
+      (fe(Ue, t), fe(Ge, n));
+    }
+    function Ic(e, t, n) {
+      var r = e.stateNode;
+      if (((t = t.childContextTypes), typeof r.getChildContext != "function")) return n;
+      r = r.getChildContext();
+      for (var l in r) if (!(l in t)) throw Error(L(108, If(e) || "Unknown", l));
+      return be({}, n, r);
+    }
+    function Zo(e) {
+      return (
+        (e = ((e = e.stateNode) && e.__reactInternalMemoizedMergedChildContext) || ln),
+        (kn = Ue.current),
+        fe(Ue, e),
+        fe(Ge, Ge.current),
+        !0
+      );
+    }
+    function pu(e, t, n) {
+      var r = e.stateNode;
+      if (!r) throw Error(L(169));
+      (n
+        ? ((e = Ic(e, t, kn)),
+          (r.__reactInternalMemoizedMergedChildContext = e),
+          ve(Ge),
+          ve(Ue),
+          fe(Ue, e))
+        : ve(Ge),
+        fe(Ge, n));
+    }
+    var Dt = null,
+      yl = !1,
+      sa = !1;
+    function Fc(e) {
+      Dt === null ? (Dt = [e]) : Dt.push(e);
+    }
+    function Xp(e) {
+      ((yl = !0), Fc(e));
+    }
+    function un() {
+      if (!sa && Dt !== null) {
+        sa = !0;
+        var e = 0,
+          t = ue;
+        try {
+          var n = Dt;
+          for (ue = 1; e < n.length; e++) {
+            var r = n[e];
+            do r = r(!0);
+            while (r !== null);
+          }
+          ((Dt = null), (yl = !1));
+        } catch (l) {
+          throw (Dt !== null && (Dt = Dt.slice(e + 1)), ic(vi, un), l);
+        } finally {
+          ((ue = t), (sa = !1));
+        }
+      }
+      return null;
+    }
+    var Bn = [],
+      jn = 0,
+      el = null,
+      tl = 0,
+      it = [],
+      st = 0,
+      Nn = null,
+      Mt = 1,
+      It = "";
+    function pn(e, t) {
+      ((Bn[jn++] = tl), (Bn[jn++] = el), (el = e), (tl = t));
+    }
+    function Lc(e, t, n) {
+      ((it[st++] = Mt), (it[st++] = It), (it[st++] = Nn), (Nn = e));
+      var r = Mt;
+      e = It;
+      var l = 32 - kt(r) - 1;
+      ((r &= ~(1 << l)), (n += 1));
+      var a = 32 - kt(t) + l;
+      if (30 < a) {
+        var i = l - (l % 5);
+        ((a = (r & ((1 << i) - 1)).toString(32)),
+          (r >>= i),
+          (l -= i),
+          (Mt = (1 << (32 - kt(t) + l)) | (n << l) | r),
+          (It = a + e));
+      } else ((Mt = (1 << a) | (n << l) | r), (It = e));
+    }
+    function Ci(e) {
+      e.return !== null && (pn(e, 1), Lc(e, 1, 0));
+    }
+    function Ei(e) {
+      for (; e === el;) ((el = Bn[--jn]), (Bn[jn] = null), (tl = Bn[--jn]), (Bn[jn] = null));
+      for (; e === Nn;)
+        ((Nn = it[--st]),
+          (it[st] = null),
+          (It = it[--st]),
+          (it[st] = null),
+          (Mt = it[--st]),
+          (it[st] = null));
+    }
+    var tt = null,
+      et = null,
+      ge = !1,
+      wt = null;
+    function Ac(e, t) {
+      var n = ut(5, null, null, 0);
+      ((n.elementType = "DELETED"),
+        (n.stateNode = t),
+        (n.return = e),
+        (t = e.deletions),
+        t === null ? ((e.deletions = [n]), (e.flags |= 16)) : t.push(n));
+    }
+    function mu(e, t) {
+      switch (e.tag) {
+        case 5:
+          var n = e.type;
+          return (
+            (t = t.nodeType !== 1 || n.toLowerCase() !== t.nodeName.toLowerCase() ? null : t),
+            t !== null ? ((e.stateNode = t), (tt = e), (et = Zt(t.firstChild)), !0) : !1
+          );
+        case 6:
+          return (
+            (t = e.pendingProps === "" || t.nodeType !== 3 ? null : t),
+            t !== null ? ((e.stateNode = t), (tt = e), (et = null), !0) : !1
+          );
+        case 13:
+          return (
+            (t = t.nodeType !== 8 ? null : t),
+            t !== null
+              ? ((n = Nn !== null ? { id: Mt, overflow: It } : null),
+                (e.memoizedState = { dehydrated: t, treeContext: n, retryLane: 1073741824 }),
+                (n = ut(18, null, null, 0)),
+                (n.stateNode = t),
+                (n.return = e),
+                (e.child = n),
+                (tt = e),
+                (et = null),
+                !0)
+              : !1
+          );
+        default:
+          return !1;
+      }
+    }
+    function Va(e) {
+      return (e.mode & 1) !== 0 && (e.flags & 128) === 0;
+    }
+    function Wa(e) {
+      if (ge) {
+        var t = et;
+        if (t) {
+          var n = t;
+          if (!mu(e, t)) {
+            if (Va(e)) throw Error(L(418));
+            t = Zt(n.nextSibling);
+            var r = tt;
+            t && mu(e, t) ? Ac(r, n) : ((e.flags = (e.flags & -4097) | 2), (ge = !1), (tt = e));
+          }
+        } else {
+          if (Va(e)) throw Error(L(418));
+          ((e.flags = (e.flags & -4097) | 2), (ge = !1), (tt = e));
+        }
+      }
+    }
+    function hu(e) {
+      for (e = e.return; e !== null && e.tag !== 5 && e.tag !== 3 && e.tag !== 13;) e = e.return;
+      tt = e;
+    }
+    function Oo(e) {
+      if (e !== tt) return !1;
+      if (!ge) return (hu(e), (ge = !0), !1);
+      var t;
+      if (
+        ((t = e.tag !== 3) &&
+          !(t = e.tag !== 5) &&
+          ((t = e.type), (t = t !== "head" && t !== "body" && !ja(e.type, e.memoizedProps))),
+        t && (t = et))
+      ) {
+        if (Va(e)) throw (Bc(), Error(L(418)));
+        for (; t;) (Ac(e, t), (t = Zt(t.nextSibling)));
+      }
+      if ((hu(e), e.tag === 13)) {
+        if (((e = e.memoizedState), (e = e !== null ? e.dehydrated : null), !e))
+          throw Error(L(317));
+        e: {
+          for (e = e.nextSibling, t = 0; e;) {
+            if (e.nodeType === 8) {
+              var n = e.data;
+              if (n === "/$") {
+                if (t === 0) {
+                  et = Zt(e.nextSibling);
+                  break e;
+                }
+                t--;
+              } else (n !== "$" && n !== "$!" && n !== "$?") || t++;
+            }
+            e = e.nextSibling;
+          }
+          et = null;
+        }
+      } else et = tt ? Zt(e.stateNode.nextSibling) : null;
+      return !0;
+    }
+    function Bc() {
+      for (var e = et; e;) e = Zt(e.nextSibling);
+    }
+    function Jn() {
+      ((et = tt = null), (ge = !1));
+    }
+    function Ti(e) {
+      wt === null ? (wt = [e]) : wt.push(e);
+    }
+    var qp = Ut.ReactCurrentBatchConfig;
+    function pr(e, t, n) {
+      if (((e = n.ref), e !== null && typeof e != "function" && typeof e != "object")) {
+        if (n._owner) {
+          if (((n = n._owner), n)) {
+            if (n.tag !== 1) throw Error(L(309));
+            var r = n.stateNode;
+          }
+          if (!r) throw Error(L(147, e));
+          var l = r,
+            a = "" + e;
+          return t !== null &&
+            t.ref !== null &&
+            typeof t.ref == "function" &&
+            t.ref._stringRef === a
+            ? t.ref
+            : ((t = function (i) {
+                var s = l.refs;
+                i === null ? delete s[a] : (s[a] = i);
+              }),
+              (t._stringRef = a),
+              t);
+        }
+        if (typeof e != "string") throw Error(L(284));
+        if (!n._owner) throw Error(L(290, e));
+      }
+      return e;
+    }
+    function zo(e, t) {
+      throw (
+        (e = Object.prototype.toString.call(t)),
+        Error(
+          L(
+            31,
+            e === "[object Object]" ? "object with keys {" + Object.keys(t).join(", ") + "}" : e,
+          ),
+        )
+      );
+    }
+    function vu(e) {
+      var t = e._init;
+      return t(e._payload);
+    }
+    function jc(e) {
+      function t(f, p) {
+        if (e) {
+          var m = f.deletions;
+          m === null ? ((f.deletions = [p]), (f.flags |= 16)) : m.push(p);
+        }
+      }
+      function n(f, p) {
+        if (!e) return null;
+        for (; p !== null;) (t(f, p), (p = p.sibling));
+        return null;
+      }
+      function r(f, p) {
+        for (f = new Map(); p !== null;)
+          (p.key !== null ? f.set(p.key, p) : f.set(p.index, p), (p = p.sibling));
+        return f;
+      }
+      function l(f, p) {
+        return ((f = rn(f, p)), (f.index = 0), (f.sibling = null), f);
+      }
+      function a(f, p, m) {
+        return (
+          (f.index = m),
+          e
+            ? ((m = f.alternate),
+              m !== null ? ((m = m.index), m < p ? ((f.flags |= 2), p) : m) : ((f.flags |= 2), p))
+            : ((f.flags |= 1048576), p)
+        );
+      }
+      function i(f) {
+        return (e && f.alternate === null && (f.flags |= 2), f);
+      }
+      function s(f, p, m, w) {
+        return p === null || p.tag !== 6
+          ? ((p = ha(m, f.mode, w)), (p.return = f), p)
+          : ((p = l(p, m)), (p.return = f), p);
+      }
+      function u(f, p, m, w) {
+        var x = m.type;
+        return x === Dn
+          ? c(f, p, m.props.children, w, m.key)
+          : p !== null &&
+              (p.elementType === x ||
+                (typeof x == "object" && x !== null && x.$$typeof === Vt && vu(x) === p.type))
+            ? ((w = l(p, m.props)), (w.ref = pr(f, p, m)), (w.return = f), w)
+            : ((w = $o(m.type, m.key, m.props, null, f.mode, w)),
+              (w.ref = pr(f, p, m)),
+              (w.return = f),
+              w);
+      }
+      function d(f, p, m, w) {
+        return p === null ||
+          p.tag !== 4 ||
+          p.stateNode.containerInfo !== m.containerInfo ||
+          p.stateNode.implementation !== m.implementation
+          ? ((p = va(m, f.mode, w)), (p.return = f), p)
+          : ((p = l(p, m.children || [])), (p.return = f), p);
+      }
+      function c(f, p, m, w, x) {
+        return p === null || p.tag !== 7
+          ? ((p = wn(m, f.mode, w, x)), (p.return = f), p)
+          : ((p = l(p, m)), (p.return = f), p);
+      }
+      function g(f, p, m) {
+        if ((typeof p == "string" && p !== "") || typeof p == "number")
+          return ((p = ha("" + p, f.mode, m)), (p.return = f), p);
+        if (typeof p == "object" && p !== null) {
+          switch (p.$$typeof) {
+            case mo:
+              return (
+                (m = $o(p.type, p.key, p.props, null, f.mode, m)),
+                (m.ref = pr(f, null, p)),
+                (m.return = f),
+                m
+              );
+            case Pn:
+              return ((p = va(p, f.mode, m)), (p.return = f), p);
+            case Vt:
+              var w = p._init;
+              return g(f, w(p._payload), m);
+          }
+          if (yr(p) || ur(p)) return ((p = wn(p, f.mode, m, null)), (p.return = f), p);
+          zo(f, p);
+        }
+        return null;
+      }
+      function v(f, p, m, w) {
+        var x = p !== null ? p.key : null;
+        if ((typeof m == "string" && m !== "") || typeof m == "number")
+          return x !== null ? null : s(f, p, "" + m, w);
+        if (typeof m == "object" && m !== null) {
+          switch (m.$$typeof) {
+            case mo:
+              return m.key === x ? u(f, p, m, w) : null;
+            case Pn:
+              return m.key === x ? d(f, p, m, w) : null;
+            case Vt:
+              return ((x = m._init), v(f, p, x(m._payload), w));
+          }
+          if (yr(m) || ur(m)) return x !== null ? null : c(f, p, m, w, null);
+          zo(f, m);
+        }
+        return null;
+      }
+      function y(f, p, m, w, x) {
+        if ((typeof w == "string" && w !== "") || typeof w == "number")
+          return ((f = f.get(m) || null), s(p, f, "" + w, x));
+        if (typeof w == "object" && w !== null) {
+          switch (w.$$typeof) {
+            case mo:
+              return ((f = f.get(w.key === null ? m : w.key) || null), u(p, f, w, x));
+            case Pn:
+              return ((f = f.get(w.key === null ? m : w.key) || null), d(p, f, w, x));
+            case Vt:
+              var h = w._init;
+              return y(f, p, m, h(w._payload), x);
+          }
+          if (yr(w) || ur(w)) return ((f = f.get(m) || null), c(p, f, w, x, null));
+          zo(p, w);
+        }
+        return null;
+      }
+      function E(f, p, m, w) {
+        for (
+          var x = null, h = null, T = p, I = (p = 0), R = null;
+          T !== null && I < m.length;
+          I++
+        ) {
+          T.index > I ? ((R = T), (T = null)) : (R = T.sibling);
+          var M = v(f, T, m[I], w);
+          if (M === null) {
+            T === null && (T = R);
+            break;
+          }
+          (e && T && M.alternate === null && t(f, T),
+            (p = a(M, p, I)),
+            h === null ? (x = M) : (h.sibling = M),
+            (h = M),
+            (T = R));
+        }
+        if (I === m.length) return (n(f, T), ge && pn(f, I), x);
+        if (T === null) {
+          for (; I < m.length; I++)
+            ((T = g(f, m[I], w)),
+              T !== null && ((p = a(T, p, I)), h === null ? (x = T) : (h.sibling = T), (h = T)));
+          return (ge && pn(f, I), x);
+        }
+        for (T = r(f, T); I < m.length; I++)
+          ((R = y(T, f, I, m[I], w)),
+            R !== null &&
+              (e && R.alternate !== null && T.delete(R.key === null ? I : R.key),
+              (p = a(R, p, I)),
+              h === null ? (x = R) : (h.sibling = R),
+              (h = R)));
+        return (
+          e &&
+            T.forEach(function (U) {
+              return t(f, U);
+            }),
+          ge && pn(f, I),
+          x
+        );
+      }
+      function k(f, p, m, w) {
+        var x = ur(m);
+        if (typeof x != "function") throw Error(L(150));
+        if (((m = x.call(m)), m == null)) throw Error(L(151));
+        for (
+          var h = (x = null), T = p, I = (p = 0), R = null, M = m.next();
+          T !== null && !M.done;
+          I++, M = m.next()
+        ) {
+          T.index > I ? ((R = T), (T = null)) : (R = T.sibling);
+          var U = v(f, T, M.value, w);
+          if (U === null) {
+            T === null && (T = R);
+            break;
+          }
+          (e && T && U.alternate === null && t(f, T),
+            (p = a(U, p, I)),
+            h === null ? (x = U) : (h.sibling = U),
+            (h = U),
+            (T = R));
+        }
+        if (M.done) return (n(f, T), ge && pn(f, I), x);
+        if (T === null) {
+          for (; !M.done; I++, M = m.next())
+            ((M = g(f, M.value, w)),
+              M !== null && ((p = a(M, p, I)), h === null ? (x = M) : (h.sibling = M), (h = M)));
+          return (ge && pn(f, I), x);
+        }
+        for (T = r(f, T); !M.done; I++, M = m.next())
+          ((M = y(T, f, I, M.value, w)),
+            M !== null &&
+              (e && M.alternate !== null && T.delete(M.key === null ? I : M.key),
+              (p = a(M, p, I)),
+              h === null ? (x = M) : (h.sibling = M),
+              (h = M)));
+        return (
+          e &&
+            T.forEach(function (q) {
+              return t(f, q);
+            }),
+          ge && pn(f, I),
+          x
+        );
+      }
+      function O(f, p, m, w) {
+        if (
+          (typeof m == "object" &&
+            m !== null &&
+            m.type === Dn &&
+            m.key === null &&
+            (m = m.props.children),
+          typeof m == "object" && m !== null)
+        ) {
+          switch (m.$$typeof) {
+            case mo:
+              e: {
+                for (var x = m.key, h = p; h !== null;) {
+                  if (h.key === x) {
+                    if (((x = m.type), x === Dn)) {
+                      if (h.tag === 7) {
+                        (n(f, h.sibling), (p = l(h, m.props.children)), (p.return = f), (f = p));
+                        break e;
+                      }
+                    } else if (
+                      h.elementType === x ||
+                      (typeof x == "object" && x !== null && x.$$typeof === Vt && vu(x) === h.type)
+                    ) {
+                      (n(f, h.sibling),
+                        (p = l(h, m.props)),
+                        (p.ref = pr(f, h, m)),
+                        (p.return = f),
+                        (f = p));
+                      break e;
+                    }
+                    n(f, h);
+                    break;
+                  } else t(f, h);
+                  h = h.sibling;
+                }
+                m.type === Dn
+                  ? ((p = wn(m.props.children, f.mode, w, m.key)), (p.return = f), (f = p))
+                  : ((w = $o(m.type, m.key, m.props, null, f.mode, w)),
+                    (w.ref = pr(f, p, m)),
+                    (w.return = f),
+                    (f = w));
+              }
+              return i(f);
+            case Pn:
+              e: {
+                for (h = m.key; p !== null;) {
+                  if (p.key === h)
+                    if (
+                      p.tag === 4 &&
+                      p.stateNode.containerInfo === m.containerInfo &&
+                      p.stateNode.implementation === m.implementation
+                    ) {
+                      (n(f, p.sibling), (p = l(p, m.children || [])), (p.return = f), (f = p));
+                      break e;
+                    } else {
+                      n(f, p);
+                      break;
+                    }
+                  else t(f, p);
+                  p = p.sibling;
+                }
+                ((p = va(m, f.mode, w)), (p.return = f), (f = p));
+              }
+              return i(f);
+            case Vt:
+              return ((h = m._init), O(f, p, h(m._payload), w));
+          }
+          if (yr(m)) return E(f, p, m, w);
+          if (ur(m)) return k(f, p, m, w);
+          zo(f, m);
+        }
+        return (typeof m == "string" && m !== "") || typeof m == "number"
+          ? ((m = "" + m),
+            p !== null && p.tag === 6
+              ? (n(f, p.sibling), (p = l(p, m)), (p.return = f), (f = p))
+              : (n(f, p), (p = ha(m, f.mode, w)), (p.return = f), (f = p)),
+            i(f))
+          : n(f, p);
+      }
+      return O;
+    }
+    var Zn = jc(!0),
+      Uc = jc(!1),
+      nl = sn(null),
+      rl = null,
+      Un = null,
+      Oi = null;
+    function zi() {
+      Oi = Un = rl = null;
+    }
+    function Ri(e) {
+      var t = nl.current;
+      (ve(nl), (e._currentValue = t));
+    }
+    function Qa(e, t, n) {
+      for (; e !== null;) {
+        var r = e.alternate;
+        if (
+          ((e.childLanes & t) !== t
+            ? ((e.childLanes |= t), r !== null && (r.childLanes |= t))
+            : r !== null && (r.childLanes & t) !== t && (r.childLanes |= t),
+          e === n)
+        )
+          break;
+        e = e.return;
+      }
+    }
+    function Gn(e, t) {
+      ((rl = e),
+        (Oi = Un = null),
+        (e = e.dependencies),
+        e !== null &&
+          e.firstContext !== null &&
+          ((e.lanes & t) !== 0 && (Ke = !0), (e.firstContext = null)));
+    }
+    function dt(e) {
+      var t = e._currentValue;
+      if (Oi !== e)
+        if (((e = { context: e, memoizedValue: t, next: null }), Un === null)) {
+          if (rl === null) throw Error(L(308));
+          ((Un = e), (rl.dependencies = { lanes: 0, firstContext: e }));
+        } else Un = Un.next = e;
+      return t;
+    }
+    var vn = null;
+    function _i(e) {
+      vn === null ? (vn = [e]) : vn.push(e);
+    }
+    function $c(e, t, n, r) {
+      var l = t.interleaved;
+      return (
+        l === null ? ((n.next = n), _i(t)) : ((n.next = l.next), (l.next = n)),
+        (t.interleaved = n),
+        Bt(e, r)
+      );
+    }
+    function Bt(e, t) {
+      e.lanes |= t;
+      var n = e.alternate;
+      for (n !== null && (n.lanes |= t), n = e, e = e.return; e !== null;)
+        ((e.childLanes |= t),
+          (n = e.alternate),
+          n !== null && (n.childLanes |= t),
+          (n = e),
+          (e = e.return));
+      return n.tag === 3 ? n.stateNode : null;
+    }
+    var Wt = !1;
+    function Pi(e) {
+      e.updateQueue = {
+        baseState: e.memoizedState,
+        firstBaseUpdate: null,
+        lastBaseUpdate: null,
+        shared: { pending: null, interleaved: null, lanes: 0 },
+        effects: null,
+      };
+    }
+    function Hc(e, t) {
+      ((e = e.updateQueue),
+        t.updateQueue === e &&
+          (t.updateQueue = {
+            baseState: e.baseState,
+            firstBaseUpdate: e.firstBaseUpdate,
+            lastBaseUpdate: e.lastBaseUpdate,
+            shared: e.shared,
+            effects: e.effects,
+          }));
+    }
+    function Ft(e, t) {
+      return { eventTime: e, lane: t, tag: 0, payload: null, callback: null, next: null };
+    }
+    function en(e, t, n) {
+      var r = e.updateQueue;
+      if (r === null) return null;
+      if (((r = r.shared), (le & 2) !== 0)) {
+        var l = r.pending;
+        return (
+          l === null ? (t.next = t) : ((t.next = l.next), (l.next = t)),
+          (r.pending = t),
+          Bt(e, n)
+        );
+      }
+      return (
+        (l = r.interleaved),
+        l === null ? ((t.next = t), _i(r)) : ((t.next = l.next), (l.next = t)),
+        (r.interleaved = t),
+        Bt(e, n)
+      );
+    }
+    function Fo(e, t, n) {
+      if (((t = t.updateQueue), t !== null && ((t = t.shared), (n & 4194240) !== 0))) {
+        var r = t.lanes;
+        ((r &= e.pendingLanes), (n |= r), (t.lanes = n), gi(e, n));
+      }
+    }
+    function gu(e, t) {
+      var n = e.updateQueue,
+        r = e.alternate;
+      if (r !== null && ((r = r.updateQueue), n === r)) {
+        var l = null,
+          a = null;
+        if (((n = n.firstBaseUpdate), n !== null)) {
+          do {
+            var i = {
+              eventTime: n.eventTime,
+              lane: n.lane,
+              tag: n.tag,
+              payload: n.payload,
+              callback: n.callback,
+              next: null,
+            };
+            (a === null ? (l = a = i) : (a = a.next = i), (n = n.next));
+          } while (n !== null);
+          a === null ? (l = a = t) : (a = a.next = t);
+        } else l = a = t;
+        ((n = {
+          baseState: r.baseState,
+          firstBaseUpdate: l,
+          lastBaseUpdate: a,
+          shared: r.shared,
+          effects: r.effects,
+        }),
+          (e.updateQueue = n));
+        return;
+      }
+      ((e = n.lastBaseUpdate),
+        e === null ? (n.firstBaseUpdate = t) : (e.next = t),
+        (n.lastBaseUpdate = t));
+    }
+    function ol(e, t, n, r) {
+      var l = e.updateQueue;
+      Wt = !1;
+      var a = l.firstBaseUpdate,
+        i = l.lastBaseUpdate,
+        s = l.shared.pending;
+      if (s !== null) {
+        l.shared.pending = null;
+        var u = s,
+          d = u.next;
+        ((u.next = null), i === null ? (a = d) : (i.next = d), (i = u));
+        var c = e.alternate;
+        c !== null &&
+          ((c = c.updateQueue),
+          (s = c.lastBaseUpdate),
+          s !== i && (s === null ? (c.firstBaseUpdate = d) : (s.next = d), (c.lastBaseUpdate = u)));
+      }
+      if (a !== null) {
+        var g = l.baseState;
+        ((i = 0), (c = d = u = null), (s = a));
+        do {
+          var v = s.lane,
+            y = s.eventTime;
+          if ((r & v) === v) {
+            c !== null &&
+              (c = c.next =
+                {
+                  eventTime: y,
+                  lane: 0,
+                  tag: s.tag,
+                  payload: s.payload,
+                  callback: s.callback,
+                  next: null,
+                });
+            e: {
+              var E = e,
+                k = s;
+              switch (((v = t), (y = n), k.tag)) {
+                case 1:
+                  if (((E = k.payload), typeof E == "function")) {
+                    g = E.call(y, g, v);
+                    break e;
+                  }
+                  g = E;
+                  break e;
+                case 3:
+                  E.flags = (E.flags & -65537) | 128;
+                case 0:
+                  if (
+                    ((E = k.payload), (v = typeof E == "function" ? E.call(y, g, v) : E), v == null)
+                  )
+                    break e;
+                  g = be({}, g, v);
+                  break e;
+                case 2:
+                  Wt = !0;
+              }
+            }
+            s.callback !== null &&
+              s.lane !== 0 &&
+              ((e.flags |= 64), (v = l.effects), v === null ? (l.effects = [s]) : v.push(s));
+          } else
+            ((y = {
+              eventTime: y,
+              lane: v,
+              tag: s.tag,
+              payload: s.payload,
+              callback: s.callback,
+              next: null,
+            }),
+              c === null ? ((d = c = y), (u = g)) : (c = c.next = y),
+              (i |= v));
+          if (((s = s.next), s === null)) {
+            if (((s = l.shared.pending), s === null)) break;
+            ((v = s),
+              (s = v.next),
+              (v.next = null),
+              (l.lastBaseUpdate = v),
+              (l.shared.pending = null));
+          }
+        } while (!0);
+        if (
+          (c === null && (u = g),
+          (l.baseState = u),
+          (l.firstBaseUpdate = d),
+          (l.lastBaseUpdate = c),
+          (t = l.shared.interleaved),
+          t !== null)
+        ) {
+          l = t;
+          do ((i |= l.lane), (l = l.next));
+          while (l !== t);
+        } else a === null && (l.shared.lanes = 0);
+        ((bn |= i), (e.lanes = i), (e.memoizedState = g));
+      }
+    }
+    function yu(e, t, n) {
+      if (((e = t.effects), (t.effects = null), e !== null))
+        for (t = 0; t < e.length; t++) {
+          var r = e[t],
+            l = r.callback;
+          if (l !== null) {
+            if (((r.callback = null), (r = n), typeof l != "function")) throw Error(L(191, l));
+            l.call(r);
+          }
+        }
+    }
+    var Xr = {},
+      zt = sn(Xr),
+      Ur = sn(Xr),
+      $r = sn(Xr);
+    function gn(e) {
+      if (e === Xr) throw Error(L(174));
+      return e;
+    }
+    function Di(e, t) {
+      switch ((fe($r, t), fe(Ur, e), fe(zt, Xr), (e = t.nodeType), e)) {
+        case 9:
+        case 11:
+          t = (t = t.documentElement) ? t.namespaceURI : Ea(null, "");
+          break;
+        default:
+          ((e = e === 8 ? t.parentNode : t),
+            (t = e.namespaceURI || null),
+            (e = e.tagName),
+            (t = Ea(t, e)));
+      }
+      (ve(zt), fe(zt, t));
+    }
+    function er() {
+      (ve(zt), ve(Ur), ve($r));
+    }
+    function Vc(e) {
+      gn($r.current);
+      var t = gn(zt.current),
+        n = Ea(t, e.type);
+      t !== n && (fe(Ur, e), fe(zt, n));
+    }
+    function Mi(e) {
+      Ur.current === e && (ve(zt), ve(Ur));
+    }
+    var Ne = sn(0);
+    function ll(e) {
+      for (var t = e; t !== null;) {
+        if (t.tag === 13) {
+          var n = t.memoizedState;
+          if (n !== null && ((n = n.dehydrated), n === null || n.data === "$?" || n.data === "$!"))
+            return t;
+        } else if (t.tag === 19 && t.memoizedProps.revealOrder !== void 0) {
+          if ((t.flags & 128) !== 0) return t;
+        } else if (t.child !== null) {
+          ((t.child.return = t), (t = t.child));
+          continue;
+        }
+        if (t === e) break;
+        for (; t.sibling === null;) {
+          if (t.return === null || t.return === e) return null;
+          t = t.return;
+        }
+        ((t.sibling.return = t.return), (t = t.sibling));
+      }
+      return null;
+    }
+    var ua = [];
+    function Ii() {
+      for (var e = 0; e < ua.length; e++) ua[e]._workInProgressVersionPrimary = null;
+      ua.length = 0;
+    }
+    var Lo = Ut.ReactCurrentDispatcher,
+      ca = Ut.ReactCurrentBatchConfig,
+      xn = 0,
+      xe = null,
+      Re = null,
+      Pe = null,
+      al = !1,
+      Er = !1,
+      Hr = 0,
+      Jp = 0;
+    function Ae() {
+      throw Error(L(321));
+    }
+    function Fi(e, t) {
+      if (t === null) return !1;
+      for (var n = 0; n < t.length && n < e.length; n++) if (!xt(e[n], t[n])) return !1;
+      return !0;
+    }
+    function Li(e, t, n, r, l, a) {
+      if (
+        ((xn = a),
+        (xe = t),
+        (t.memoizedState = null),
+        (t.updateQueue = null),
+        (t.lanes = 0),
+        (Lo.current = e === null || e.memoizedState === null ? nm : rm),
+        (e = n(r, l)),
+        Er)
+      ) {
+        a = 0;
+        do {
+          if (((Er = !1), (Hr = 0), 25 <= a)) throw Error(L(301));
+          ((a += 1), (Pe = Re = null), (t.updateQueue = null), (Lo.current = om), (e = n(r, l)));
+        } while (Er);
+      }
+      if (
+        ((Lo.current = il),
+        (t = Re !== null && Re.next !== null),
+        (xn = 0),
+        (Pe = Re = xe = null),
+        (al = !1),
+        t)
+      )
+        throw Error(L(300));
+      return e;
+    }
+    function Ai() {
+      var e = Hr !== 0;
+      return ((Hr = 0), e);
+    }
+    function Et() {
+      var e = { memoizedState: null, baseState: null, baseQueue: null, queue: null, next: null };
+      return (Pe === null ? (xe.memoizedState = Pe = e) : (Pe = Pe.next = e), Pe);
+    }
+    function ft() {
+      if (Re === null) {
+        var e = xe.alternate;
+        e = e !== null ? e.memoizedState : null;
+      } else e = Re.next;
+      var t = Pe === null ? xe.memoizedState : Pe.next;
+      if (t !== null) ((Pe = t), (Re = e));
+      else {
+        if (e === null) throw Error(L(310));
+        ((Re = e),
+          (e = {
+            memoizedState: Re.memoizedState,
+            baseState: Re.baseState,
+            baseQueue: Re.baseQueue,
+            queue: Re.queue,
+            next: null,
+          }),
+          Pe === null ? (xe.memoizedState = Pe = e) : (Pe = Pe.next = e));
+      }
+      return Pe;
+    }
+    function Vr(e, t) {
+      return typeof t == "function" ? t(e) : t;
+    }
+    function da(e) {
+      var t = ft(),
+        n = t.queue;
+      if (n === null) throw Error(L(311));
+      n.lastRenderedReducer = e;
+      var r = Re,
+        l = r.baseQueue,
+        a = n.pending;
+      if (a !== null) {
+        if (l !== null) {
+          var i = l.next;
+          ((l.next = a.next), (a.next = i));
+        }
+        ((r.baseQueue = l = a), (n.pending = null));
+      }
+      if (l !== null) {
+        ((a = l.next), (r = r.baseState));
+        var s = (i = null),
+          u = null,
+          d = a;
+        do {
+          var c = d.lane;
+          if ((xn & c) === c)
+            (u !== null &&
+              (u = u.next =
+                {
+                  lane: 0,
+                  action: d.action,
+                  hasEagerState: d.hasEagerState,
+                  eagerState: d.eagerState,
+                  next: null,
+                }),
+              (r = d.hasEagerState ? d.eagerState : e(r, d.action)));
+          else {
+            var g = {
+              lane: c,
+              action: d.action,
+              hasEagerState: d.hasEagerState,
+              eagerState: d.eagerState,
+              next: null,
+            };
+            (u === null ? ((s = u = g), (i = r)) : (u = u.next = g), (xe.lanes |= c), (bn |= c));
+          }
+          d = d.next;
+        } while (d !== null && d !== a);
+        (u === null ? (i = r) : (u.next = s),
+          xt(r, t.memoizedState) || (Ke = !0),
+          (t.memoizedState = r),
+          (t.baseState = i),
+          (t.baseQueue = u),
+          (n.lastRenderedState = r));
+      }
+      if (((e = n.interleaved), e !== null)) {
+        l = e;
+        do ((a = l.lane), (xe.lanes |= a), (bn |= a), (l = l.next));
+        while (l !== e);
+      } else l === null && (n.lanes = 0);
+      return [t.memoizedState, n.dispatch];
+    }
+    function fa(e) {
+      var t = ft(),
+        n = t.queue;
+      if (n === null) throw Error(L(311));
+      n.lastRenderedReducer = e;
+      var r = n.dispatch,
+        l = n.pending,
+        a = t.memoizedState;
+      if (l !== null) {
+        n.pending = null;
+        var i = (l = l.next);
+        do ((a = e(a, i.action)), (i = i.next));
+        while (i !== l);
+        (xt(a, t.memoizedState) || (Ke = !0),
+          (t.memoizedState = a),
+          t.baseQueue === null && (t.baseState = a),
+          (n.lastRenderedState = a));
+      }
+      return [a, r];
+    }
+    function Wc() {}
+    function Qc(e, t) {
+      var n = xe,
+        r = ft(),
+        l = t(),
+        a = !xt(r.memoizedState, l);
+      if (
+        (a && ((r.memoizedState = l), (Ke = !0)),
+        (r = r.queue),
+        Bi(Yc.bind(null, n, r, e), [e]),
+        r.getSnapshot !== t || a || (Pe !== null && Pe.memoizedState.tag & 1))
+      ) {
+        if (((n.flags |= 2048), Wr(9, Gc.bind(null, n, r, l, t), void 0, null), De === null))
+          throw Error(L(349));
+        (xn & 30) !== 0 || Kc(n, t, l);
+      }
+      return l;
+    }
+    function Kc(e, t, n) {
+      ((e.flags |= 16384),
+        (e = { getSnapshot: t, value: n }),
+        (t = xe.updateQueue),
+        t === null
+          ? ((t = { lastEffect: null, stores: null }), (xe.updateQueue = t), (t.stores = [e]))
+          : ((n = t.stores), n === null ? (t.stores = [e]) : n.push(e)));
+    }
+    function Gc(e, t, n, r) {
+      ((t.value = n), (t.getSnapshot = r), Xc(t) && qc(e));
+    }
+    function Yc(e, t, n) {
+      return n(function () {
+        Xc(t) && qc(e);
+      });
+    }
+    function Xc(e) {
+      var t = e.getSnapshot;
+      e = e.value;
+      try {
+        var n = t();
+        return !xt(e, n);
+      } catch {
+        return !0;
+      }
+    }
+    function qc(e) {
+      var t = Bt(e, 1);
+      t !== null && Nt(t, e, 1, -1);
+    }
+    function wu(e) {
+      var t = Et();
+      return (
+        typeof e == "function" && (e = e()),
+        (t.memoizedState = t.baseState = e),
+        (e = {
+          pending: null,
+          interleaved: null,
+          lanes: 0,
+          dispatch: null,
+          lastRenderedReducer: Vr,
+          lastRenderedState: e,
+        }),
+        (t.queue = e),
+        (e = e.dispatch = tm.bind(null, xe, e)),
+        [t.memoizedState, e]
+      );
+    }
+    function Wr(e, t, n, r) {
+      return (
+        (e = { tag: e, create: t, destroy: n, deps: r, next: null }),
+        (t = xe.updateQueue),
+        t === null
+          ? ((t = { lastEffect: null, stores: null }),
+            (xe.updateQueue = t),
+            (t.lastEffect = e.next = e))
+          : ((n = t.lastEffect),
+            n === null
+              ? (t.lastEffect = e.next = e)
+              : ((r = n.next), (n.next = e), (e.next = r), (t.lastEffect = e))),
+        e
+      );
+    }
+    function Jc() {
+      return ft().memoizedState;
+    }
+    function Ao(e, t, n, r) {
+      var l = Et();
+      ((xe.flags |= e), (l.memoizedState = Wr(1 | t, n, void 0, r === void 0 ? null : r)));
+    }
+    function wl(e, t, n, r) {
+      var l = ft();
+      r = r === void 0 ? null : r;
+      var a = void 0;
+      if (Re !== null) {
+        var i = Re.memoizedState;
+        if (((a = i.destroy), r !== null && Fi(r, i.deps))) {
+          l.memoizedState = Wr(t, n, a, r);
+          return;
+        }
+      }
+      ((xe.flags |= e), (l.memoizedState = Wr(1 | t, n, a, r)));
+    }
+    function ku(e, t) {
+      return Ao(8390656, 8, e, t);
+    }
+    function Bi(e, t) {
+      return wl(2048, 8, e, t);
+    }
+    function Zc(e, t) {
+      return wl(4, 2, e, t);
+    }
+    function ed(e, t) {
+      return wl(4, 4, e, t);
+    }
+    function td(e, t) {
+      if (typeof t == "function")
+        return (
+          (e = e()),
+          t(e),
+          function () {
+            t(null);
+          }
+        );
+      if (t != null)
+        return (
+          (e = e()),
+          (t.current = e),
+          function () {
+            t.current = null;
+          }
+        );
+    }
+    function nd(e, t, n) {
+      return ((n = n != null ? n.concat([e]) : null), wl(4, 4, td.bind(null, t, e), n));
+    }
+    function ji() {}
+    function rd(e, t) {
+      var n = ft();
+      t = t === void 0 ? null : t;
+      var r = n.memoizedState;
+      return r !== null && t !== null && Fi(t, r[1]) ? r[0] : ((n.memoizedState = [e, t]), e);
+    }
+    function od(e, t) {
+      var n = ft();
+      t = t === void 0 ? null : t;
+      var r = n.memoizedState;
+      return r !== null && t !== null && Fi(t, r[1])
+        ? r[0]
+        : ((e = e()), (n.memoizedState = [e, t]), e);
+    }
+    function ld(e, t, n) {
+      return (xn & 21) === 0
+        ? (e.baseState && ((e.baseState = !1), (Ke = !0)), (e.memoizedState = n))
+        : (xt(n, t) || ((n = cc()), (xe.lanes |= n), (bn |= n), (e.baseState = !0)), t);
+    }
+    function Zp(e, t) {
+      var n = ue;
+      ((ue = n !== 0 && 4 > n ? n : 4), e(!0));
+      var r = ca.transition;
+      ca.transition = {};
+      try {
+        (e(!1), t());
+      } finally {
+        ((ue = n), (ca.transition = r));
+      }
+    }
+    function ad() {
+      return ft().memoizedState;
+    }
+    function em(e, t, n) {
+      var r = nn(e);
+      if (((n = { lane: r, action: n, hasEagerState: !1, eagerState: null, next: null }), id(e)))
+        sd(t, n);
+      else if (((n = $c(e, t, n, r)), n !== null)) {
+        var l = Ve();
+        (Nt(n, e, r, l), ud(n, t, r));
+      }
+    }
+    function tm(e, t, n) {
+      var r = nn(e),
+        l = { lane: r, action: n, hasEagerState: !1, eagerState: null, next: null };
+      if (id(e)) sd(t, l);
+      else {
+        var a = e.alternate;
+        if (
+          e.lanes === 0 &&
+          (a === null || a.lanes === 0) &&
+          ((a = t.lastRenderedReducer), a !== null)
+        )
+          try {
+            var i = t.lastRenderedState,
+              s = a(i, n);
+            if (((l.hasEagerState = !0), (l.eagerState = s), xt(s, i))) {
+              var u = t.interleaved;
+              (u === null ? ((l.next = l), _i(t)) : ((l.next = u.next), (u.next = l)),
+                (t.interleaved = l));
+              return;
+            }
+          } catch {}
+        ((n = $c(e, t, l, r)), n !== null && ((l = Ve()), Nt(n, e, r, l), ud(n, t, r)));
+      }
+    }
+    function id(e) {
+      var t = e.alternate;
+      return e === xe || (t !== null && t === xe);
+    }
+    function sd(e, t) {
+      Er = al = !0;
+      var n = e.pending;
+      (n === null ? (t.next = t) : ((t.next = n.next), (n.next = t)), (e.pending = t));
+    }
+    function ud(e, t, n) {
+      if ((n & 4194240) !== 0) {
+        var r = t.lanes;
+        ((r &= e.pendingLanes), (n |= r), (t.lanes = n), gi(e, n));
+      }
+    }
+    var il = {
+        readContext: dt,
+        useCallback: Ae,
+        useContext: Ae,
+        useEffect: Ae,
+        useImperativeHandle: Ae,
+        useInsertionEffect: Ae,
+        useLayoutEffect: Ae,
+        useMemo: Ae,
+        useReducer: Ae,
+        useRef: Ae,
+        useState: Ae,
+        useDebugValue: Ae,
+        useDeferredValue: Ae,
+        useTransition: Ae,
+        useMutableSource: Ae,
+        useSyncExternalStore: Ae,
+        useId: Ae,
+        unstable_isNewReconciler: !1,
+      },
+      nm = {
+        readContext: dt,
+        useCallback: function (e, t) {
+          return ((Et().memoizedState = [e, t === void 0 ? null : t]), e);
+        },
+        useContext: dt,
+        useEffect: ku,
+        useImperativeHandle: function (e, t, n) {
+          return ((n = n != null ? n.concat([e]) : null), Ao(4194308, 4, td.bind(null, t, e), n));
+        },
+        useLayoutEffect: function (e, t) {
+          return Ao(4194308, 4, e, t);
+        },
+        useInsertionEffect: function (e, t) {
+          return Ao(4, 2, e, t);
+        },
+        useMemo: function (e, t) {
+          var n = Et();
+          return ((t = t === void 0 ? null : t), (e = e()), (n.memoizedState = [e, t]), e);
+        },
+        useReducer: function (e, t, n) {
+          var r = Et();
+          return (
+            (t = n !== void 0 ? n(t) : t),
+            (r.memoizedState = r.baseState = t),
+            (e = {
+              pending: null,
+              interleaved: null,
+              lanes: 0,
+              dispatch: null,
+              lastRenderedReducer: e,
+              lastRenderedState: t,
+            }),
+            (r.queue = e),
+            (e = e.dispatch = em.bind(null, xe, e)),
+            [r.memoizedState, e]
+          );
+        },
+        useRef: function (e) {
+          var t = Et();
+          return ((e = { current: e }), (t.memoizedState = e));
+        },
+        useState: wu,
+        useDebugValue: ji,
+        useDeferredValue: function (e) {
+          return (Et().memoizedState = e);
+        },
+        useTransition: function () {
+          var e = wu(!1),
+            t = e[0];
+          return ((e = Zp.bind(null, e[1])), (Et().memoizedState = e), [t, e]);
+        },
+        useMutableSource: function () {},
+        useSyncExternalStore: function (e, t, n) {
+          var r = xe,
+            l = Et();
+          if (ge) {
+            if (n === void 0) throw Error(L(407));
+            n = n();
+          } else {
+            if (((n = t()), De === null)) throw Error(L(349));
+            (xn & 30) !== 0 || Kc(r, t, n);
+          }
+          l.memoizedState = n;
+          var a = { value: n, getSnapshot: t };
+          return (
+            (l.queue = a),
+            ku(Yc.bind(null, r, a, e), [e]),
+            (r.flags |= 2048),
+            Wr(9, Gc.bind(null, r, a, n, t), void 0, null),
+            n
+          );
+        },
+        useId: function () {
+          var e = Et(),
+            t = De.identifierPrefix;
+          if (ge) {
+            var n = It,
+              r = Mt;
+            ((n = (r & ~(1 << (32 - kt(r) - 1))).toString(32) + n),
+              (t = ":" + t + "R" + n),
+              (n = Hr++),
+              0 < n && (t += "H" + n.toString(32)),
+              (t += ":"));
+          } else ((n = Jp++), (t = ":" + t + "r" + n.toString(32) + ":"));
+          return (e.memoizedState = t);
+        },
+        unstable_isNewReconciler: !1,
+      },
+      rm = {
+        readContext: dt,
+        useCallback: rd,
+        useContext: dt,
+        useEffect: Bi,
+        useImperativeHandle: nd,
+        useInsertionEffect: Zc,
+        useLayoutEffect: ed,
+        useMemo: od,
+        useReducer: da,
+        useRef: Jc,
+        useState: function () {
+          return da(Vr);
+        },
+        useDebugValue: ji,
+        useDeferredValue: function (e) {
+          var t = ft();
+          return ld(t, Re.memoizedState, e);
+        },
+        useTransition: function () {
+          var e = da(Vr)[0],
+            t = ft().memoizedState;
+          return [e, t];
+        },
+        useMutableSource: Wc,
+        useSyncExternalStore: Qc,
+        useId: ad,
+        unstable_isNewReconciler: !1,
+      },
+      om = {
+        readContext: dt,
+        useCallback: rd,
+        useContext: dt,
+        useEffect: Bi,
+        useImperativeHandle: nd,
+        useInsertionEffect: Zc,
+        useLayoutEffect: ed,
+        useMemo: od,
+        useReducer: fa,
+        useRef: Jc,
+        useState: function () {
+          return fa(Vr);
+        },
+        useDebugValue: ji,
+        useDeferredValue: function (e) {
+          var t = ft();
+          return Re === null ? (t.memoizedState = e) : ld(t, Re.memoizedState, e);
+        },
+        useTransition: function () {
+          var e = fa(Vr)[0],
+            t = ft().memoizedState;
+          return [e, t];
+        },
+        useMutableSource: Wc,
+        useSyncExternalStore: Qc,
+        useId: ad,
+        unstable_isNewReconciler: !1,
+      };
+    function gt(e, t) {
+      if (e && e.defaultProps) {
+        ((t = be({}, t)), (e = e.defaultProps));
+        for (var n in e) t[n] === void 0 && (t[n] = e[n]);
+        return t;
+      }
+      return t;
+    }
+    function Ka(e, t, n, r) {
+      ((t = e.memoizedState),
+        (n = n(r, t)),
+        (n = n == null ? t : be({}, t, n)),
+        (e.memoizedState = n),
+        e.lanes === 0 && (e.updateQueue.baseState = n));
+    }
+    var kl = {
+      isMounted: function (e) {
+        return (e = e._reactInternals) ? En(e) === e : !1;
+      },
+      enqueueSetState: function (e, t, n) {
+        e = e._reactInternals;
+        var r = Ve(),
+          l = nn(e),
+          a = Ft(r, l);
+        ((a.payload = t),
+          n != null && (a.callback = n),
+          (t = en(e, a, l)),
+          t !== null && (Nt(t, e, l, r), Fo(t, e, l)));
+      },
+      enqueueReplaceState: function (e, t, n) {
+        e = e._reactInternals;
+        var r = Ve(),
+          l = nn(e),
+          a = Ft(r, l);
+        ((a.tag = 1),
+          (a.payload = t),
+          n != null && (a.callback = n),
+          (t = en(e, a, l)),
+          t !== null && (Nt(t, e, l, r), Fo(t, e, l)));
+      },
+      enqueueForceUpdate: function (e, t) {
+        e = e._reactInternals;
+        var n = Ve(),
+          r = nn(e),
+          l = Ft(n, r);
+        ((l.tag = 2),
+          t != null && (l.callback = t),
+          (t = en(e, l, r)),
+          t !== null && (Nt(t, e, r, n), Fo(t, e, r)));
+      },
+    };
+    function Nu(e, t, n, r, l, a, i) {
+      return (
+        (e = e.stateNode),
+        typeof e.shouldComponentUpdate == "function"
+          ? e.shouldComponentUpdate(r, a, i)
+          : t.prototype && t.prototype.isPureReactComponent
+            ? !Lr(n, r) || !Lr(l, a)
+            : !0
+      );
+    }
+    function cd(e, t, n) {
+      var r = !1,
+        l = ln,
+        a = t.contextType;
+      return (
+        typeof a == "object" && a !== null
+          ? (a = dt(a))
+          : ((l = Ye(t) ? kn : Ue.current),
+            (r = t.contextTypes),
+            (a = (r = r != null) ? qn(e, l) : ln)),
+        (t = new t(n, a)),
+        (e.memoizedState = t.state !== null && t.state !== void 0 ? t.state : null),
+        (t.updater = kl),
+        (e.stateNode = t),
+        (t._reactInternals = e),
+        r &&
+          ((e = e.stateNode),
+          (e.__reactInternalMemoizedUnmaskedChildContext = l),
+          (e.__reactInternalMemoizedMaskedChildContext = a)),
+        t
+      );
+    }
+    function xu(e, t, n, r) {
+      ((e = t.state),
+        typeof t.componentWillReceiveProps == "function" && t.componentWillReceiveProps(n, r),
+        typeof t.UNSAFE_componentWillReceiveProps == "function" &&
+          t.UNSAFE_componentWillReceiveProps(n, r),
+        t.state !== e && kl.enqueueReplaceState(t, t.state, null));
+    }
+    function Ga(e, t, n, r) {
+      var l = e.stateNode;
+      ((l.props = n), (l.state = e.memoizedState), (l.refs = {}), Pi(e));
+      var a = t.contextType;
+      (typeof a == "object" && a !== null
+        ? (l.context = dt(a))
+        : ((a = Ye(t) ? kn : Ue.current), (l.context = qn(e, a))),
+        (l.state = e.memoizedState),
+        (a = t.getDerivedStateFromProps),
+        typeof a == "function" && (Ka(e, t, a, n), (l.state = e.memoizedState)),
+        typeof t.getDerivedStateFromProps == "function" ||
+          typeof l.getSnapshotBeforeUpdate == "function" ||
+          (typeof l.UNSAFE_componentWillMount != "function" &&
+            typeof l.componentWillMount != "function") ||
+          ((t = l.state),
+          typeof l.componentWillMount == "function" && l.componentWillMount(),
+          typeof l.UNSAFE_componentWillMount == "function" && l.UNSAFE_componentWillMount(),
+          t !== l.state && kl.enqueueReplaceState(l, l.state, null),
+          ol(e, n, l, r),
+          (l.state = e.memoizedState)),
+        typeof l.componentDidMount == "function" && (e.flags |= 4194308));
+    }
+    function tr(e, t) {
+      try {
+        var n = "",
+          r = t;
+        do ((n += Mf(r)), (r = r.return));
+        while (r);
+        var l = n;
+      } catch (a) {
+        l =
+          `
+Error generating stack: ` +
+          a.message +
+          `
+` +
+          a.stack;
+      }
+      return { value: e, source: t, stack: l, digest: null };
+    }
+    function pa(e, t, n) {
+      return { value: e, source: null, stack: n ?? null, digest: t ?? null };
+    }
+    function Ya(e, t) {
+      try {
+        console.error(t.value);
+      } catch (n) {
+        setTimeout(function () {
+          throw n;
+        });
+      }
+    }
+    var lm = typeof WeakMap == "function" ? WeakMap : Map;
+    function dd(e, t, n) {
+      ((n = Ft(-1, n)), (n.tag = 3), (n.payload = { element: null }));
+      var r = t.value;
+      return (
+        (n.callback = function () {
+          (ul || ((ul = !0), (li = r)), Ya(e, t));
+        }),
+        n
+      );
+    }
+    function fd(e, t, n) {
+      ((n = Ft(-1, n)), (n.tag = 3));
+      var r = e.type.getDerivedStateFromError;
+      if (typeof r == "function") {
+        var l = t.value;
+        ((n.payload = function () {
+          return r(l);
+        }),
+          (n.callback = function () {
+            Ya(e, t);
+          }));
+      }
+      var a = e.stateNode;
+      return (
+        a !== null &&
+          typeof a.componentDidCatch == "function" &&
+          (n.callback = function () {
+            (Ya(e, t),
+              typeof r != "function" && (tn === null ? (tn = new Set([this])) : tn.add(this)));
+            var i = t.stack;
+            this.componentDidCatch(t.value, { componentStack: i !== null ? i : "" });
+          }),
+        n
+      );
+    }
+    function bu(e, t, n) {
+      var r = e.pingCache;
+      if (r === null) {
+        r = e.pingCache = new lm();
+        var l = new Set();
+        r.set(t, l);
+      } else ((l = r.get(t)), l === void 0 && ((l = new Set()), r.set(t, l)));
+      l.has(n) || (l.add(n), (e = wm.bind(null, e, t, n)), t.then(e, e));
+    }
+    function Su(e) {
+      do {
+        var t;
+        if (
+          ((t = e.tag === 13) &&
+            ((t = e.memoizedState), (t = t !== null ? t.dehydrated !== null : !0)),
+          t)
+        )
+          return e;
+        e = e.return;
+      } while (e !== null);
+      return null;
+    }
+    function Cu(e, t, n, r, l) {
+      return (e.mode & 1) === 0
+        ? (e === t
+            ? (e.flags |= 65536)
+            : ((e.flags |= 128),
+              (n.flags |= 131072),
+              (n.flags &= -52805),
+              n.tag === 1 &&
+                (n.alternate === null ? (n.tag = 17) : ((t = Ft(-1, 1)), (t.tag = 2), en(n, t, 1))),
+              (n.lanes |= 1)),
+          e)
+        : ((e.flags |= 65536), (e.lanes = l), e);
+    }
+    var am = Ut.ReactCurrentOwner,
+      Ke = !1;
+    function He(e, t, n, r) {
+      t.child = e === null ? Uc(t, null, n, r) : Zn(t, e.child, n, r);
+    }
+    function Eu(e, t, n, r, l) {
+      n = n.render;
+      var a = t.ref;
+      return (
+        Gn(t, l),
+        (r = Li(e, t, n, r, a, l)),
+        (n = Ai()),
+        e !== null && !Ke
+          ? ((t.updateQueue = e.updateQueue), (t.flags &= -2053), (e.lanes &= ~l), jt(e, t, l))
+          : (ge && n && Ci(t), (t.flags |= 1), He(e, t, r, l), t.child)
+      );
+    }
+    function Tu(e, t, n, r, l) {
+      if (e === null) {
+        var a = n.type;
+        return typeof a == "function" &&
+          !Gi(a) &&
+          a.defaultProps === void 0 &&
+          n.compare === null &&
+          n.defaultProps === void 0
+          ? ((t.tag = 15), (t.type = a), pd(e, t, a, r, l))
+          : ((e = $o(n.type, null, r, t, t.mode, l)),
+            (e.ref = t.ref),
+            (e.return = t),
+            (t.child = e));
+      }
+      if (((a = e.child), (e.lanes & l) === 0)) {
+        var i = a.memoizedProps;
+        if (((n = n.compare), (n = n !== null ? n : Lr), n(i, r) && e.ref === t.ref))
+          return jt(e, t, l);
+      }
+      return ((t.flags |= 1), (e = rn(a, r)), (e.ref = t.ref), (e.return = t), (t.child = e));
+    }
+    function pd(e, t, n, r, l) {
+      if (e !== null) {
+        var a = e.memoizedProps;
+        if (Lr(a, r) && e.ref === t.ref)
+          if (((Ke = !1), (t.pendingProps = r = a), (e.lanes & l) !== 0))
+            (e.flags & 131072) !== 0 && (Ke = !0);
+          else return ((t.lanes = e.lanes), jt(e, t, l));
+      }
+      return Xa(e, t, n, r, l);
+    }
+    function md(e, t, n) {
+      var r = t.pendingProps,
+        l = r.children,
+        a = e !== null ? e.memoizedState : null;
+      if (r.mode === "hidden")
+        if ((t.mode & 1) === 0)
+          ((t.memoizedState = { baseLanes: 0, cachePool: null, transitions: null }),
+            fe(Hn, Ze),
+            (Ze |= n));
+        else {
+          if ((n & 1073741824) === 0)
+            return (
+              (e = a !== null ? a.baseLanes | n : n),
+              (t.lanes = t.childLanes = 1073741824),
+              (t.memoizedState = { baseLanes: e, cachePool: null, transitions: null }),
+              (t.updateQueue = null),
+              fe(Hn, Ze),
+              (Ze |= e),
+              null
+            );
+          ((t.memoizedState = { baseLanes: 0, cachePool: null, transitions: null }),
+            (r = a !== null ? a.baseLanes : n),
+            fe(Hn, Ze),
+            (Ze |= r));
+        }
+      else
+        (a !== null ? ((r = a.baseLanes | n), (t.memoizedState = null)) : (r = n),
+          fe(Hn, Ze),
+          (Ze |= r));
+      return (He(e, t, l, n), t.child);
+    }
+    function hd(e, t) {
+      var n = t.ref;
+      ((e === null && n !== null) || (e !== null && e.ref !== n)) &&
+        ((t.flags |= 512), (t.flags |= 2097152));
+    }
+    function Xa(e, t, n, r, l) {
+      var a = Ye(n) ? kn : Ue.current;
+      return (
+        (a = qn(t, a)),
+        Gn(t, l),
+        (n = Li(e, t, n, r, a, l)),
+        (r = Ai()),
+        e !== null && !Ke
+          ? ((t.updateQueue = e.updateQueue), (t.flags &= -2053), (e.lanes &= ~l), jt(e, t, l))
+          : (ge && r && Ci(t), (t.flags |= 1), He(e, t, n, l), t.child)
+      );
+    }
+    function Ou(e, t, n, r, l) {
+      if (Ye(n)) {
+        var a = !0;
+        Zo(t);
+      } else a = !1;
+      if ((Gn(t, l), t.stateNode === null)) (Bo(e, t), cd(t, n, r), Ga(t, n, r, l), (r = !0));
+      else if (e === null) {
+        var i = t.stateNode,
+          s = t.memoizedProps;
+        i.props = s;
+        var u = i.context,
+          d = n.contextType;
+        typeof d == "object" && d !== null
+          ? (d = dt(d))
+          : ((d = Ye(n) ? kn : Ue.current), (d = qn(t, d)));
+        var c = n.getDerivedStateFromProps,
+          g = typeof c == "function" || typeof i.getSnapshotBeforeUpdate == "function";
+        (g ||
+          (typeof i.UNSAFE_componentWillReceiveProps != "function" &&
+            typeof i.componentWillReceiveProps != "function") ||
+          ((s !== r || u !== d) && xu(t, i, r, d)),
+          (Wt = !1));
+        var v = t.memoizedState;
+        ((i.state = v),
+          ol(t, r, i, l),
+          (u = t.memoizedState),
+          s !== r || v !== u || Ge.current || Wt
+            ? (typeof c == "function" && (Ka(t, n, c, r), (u = t.memoizedState)),
+              (s = Wt || Nu(t, n, s, r, v, u, d))
+                ? (g ||
+                    (typeof i.UNSAFE_componentWillMount != "function" &&
+                      typeof i.componentWillMount != "function") ||
+                    (typeof i.componentWillMount == "function" && i.componentWillMount(),
+                    typeof i.UNSAFE_componentWillMount == "function" &&
+                      i.UNSAFE_componentWillMount()),
+                  typeof i.componentDidMount == "function" && (t.flags |= 4194308))
+                : (typeof i.componentDidMount == "function" && (t.flags |= 4194308),
+                  (t.memoizedProps = r),
+                  (t.memoizedState = u)),
+              (i.props = r),
+              (i.state = u),
+              (i.context = d),
+              (r = s))
+            : (typeof i.componentDidMount == "function" && (t.flags |= 4194308), (r = !1)));
+      } else {
+        ((i = t.stateNode),
+          Hc(e, t),
+          (s = t.memoizedProps),
+          (d = t.type === t.elementType ? s : gt(t.type, s)),
+          (i.props = d),
+          (g = t.pendingProps),
+          (v = i.context),
+          (u = n.contextType),
+          typeof u == "object" && u !== null
+            ? (u = dt(u))
+            : ((u = Ye(n) ? kn : Ue.current), (u = qn(t, u))));
+        var y = n.getDerivedStateFromProps;
+        ((c = typeof y == "function" || typeof i.getSnapshotBeforeUpdate == "function") ||
+          (typeof i.UNSAFE_componentWillReceiveProps != "function" &&
+            typeof i.componentWillReceiveProps != "function") ||
+          ((s !== g || v !== u) && xu(t, i, r, u)),
+          (Wt = !1),
+          (v = t.memoizedState),
+          (i.state = v),
+          ol(t, r, i, l));
+        var E = t.memoizedState;
+        s !== g || v !== E || Ge.current || Wt
+          ? (typeof y == "function" && (Ka(t, n, y, r), (E = t.memoizedState)),
+            (d = Wt || Nu(t, n, d, r, v, E, u) || !1)
+              ? (c ||
+                  (typeof i.UNSAFE_componentWillUpdate != "function" &&
+                    typeof i.componentWillUpdate != "function") ||
+                  (typeof i.componentWillUpdate == "function" && i.componentWillUpdate(r, E, u),
+                  typeof i.UNSAFE_componentWillUpdate == "function" &&
+                    i.UNSAFE_componentWillUpdate(r, E, u)),
+                typeof i.componentDidUpdate == "function" && (t.flags |= 4),
+                typeof i.getSnapshotBeforeUpdate == "function" && (t.flags |= 1024))
+              : (typeof i.componentDidUpdate != "function" ||
+                  (s === e.memoizedProps && v === e.memoizedState) ||
+                  (t.flags |= 4),
+                typeof i.getSnapshotBeforeUpdate != "function" ||
+                  (s === e.memoizedProps && v === e.memoizedState) ||
+                  (t.flags |= 1024),
+                (t.memoizedProps = r),
+                (t.memoizedState = E)),
+            (i.props = r),
+            (i.state = E),
+            (i.context = u),
+            (r = d))
+          : (typeof i.componentDidUpdate != "function" ||
+              (s === e.memoizedProps && v === e.memoizedState) ||
+              (t.flags |= 4),
+            typeof i.getSnapshotBeforeUpdate != "function" ||
+              (s === e.memoizedProps && v === e.memoizedState) ||
+              (t.flags |= 1024),
+            (r = !1));
+      }
+      return qa(e, t, n, r, a, l);
+    }
+    function qa(e, t, n, r, l, a) {
+      hd(e, t);
+      var i = (t.flags & 128) !== 0;
+      if (!r && !i) return (l && pu(t, n, !1), jt(e, t, a));
+      ((r = t.stateNode), (am.current = t));
+      var s = i && typeof n.getDerivedStateFromError != "function" ? null : r.render();
+      return (
+        (t.flags |= 1),
+        e !== null && i
+          ? ((t.child = Zn(t, e.child, null, a)), (t.child = Zn(t, null, s, a)))
+          : He(e, t, s, a),
+        (t.memoizedState = r.state),
+        l && pu(t, n, !0),
+        t.child
+      );
+    }
+    function vd(e) {
+      var t = e.stateNode;
+      (t.pendingContext
+        ? fu(e, t.pendingContext, t.pendingContext !== t.context)
+        : t.context && fu(e, t.context, !1),
+        Di(e, t.containerInfo));
+    }
+    function zu(e, t, n, r, l) {
+      return (Jn(), Ti(l), (t.flags |= 256), He(e, t, n, r), t.child);
+    }
+    var Ja = { dehydrated: null, treeContext: null, retryLane: 0 };
+    function Za(e) {
+      return { baseLanes: e, cachePool: null, transitions: null };
+    }
+    function gd(e, t, n) {
+      var r = t.pendingProps,
+        l = Ne.current,
+        a = !1,
+        i = (t.flags & 128) !== 0,
+        s;
+      if (
+        ((s = i) || (s = e !== null && e.memoizedState === null ? !1 : (l & 2) !== 0),
+        s ? ((a = !0), (t.flags &= -129)) : (e === null || e.memoizedState !== null) && (l |= 1),
+        fe(Ne, l & 1),
+        e === null)
+      )
+        return (
+          Wa(t),
+          (e = t.memoizedState),
+          e !== null && ((e = e.dehydrated), e !== null)
+            ? ((t.mode & 1) === 0
+                ? (t.lanes = 1)
+                : e.data === "$!"
+                  ? (t.lanes = 8)
+                  : (t.lanes = 1073741824),
+              null)
+            : ((i = r.children),
+              (e = r.fallback),
+              a
+                ? ((r = t.mode),
+                  (a = t.child),
+                  (i = { mode: "hidden", children: i }),
+                  (r & 1) === 0 && a !== null
+                    ? ((a.childLanes = 0), (a.pendingProps = i))
+                    : (a = bl(i, r, 0, null)),
+                  (e = wn(e, r, n, null)),
+                  (a.return = t),
+                  (e.return = t),
+                  (a.sibling = e),
+                  (t.child = a),
+                  (t.child.memoizedState = Za(n)),
+                  (t.memoizedState = Ja),
+                  e)
+                : Ui(t, i))
+        );
+      if (((l = e.memoizedState), l !== null && ((s = l.dehydrated), s !== null)))
+        return im(e, t, i, r, s, l, n);
+      if (a) {
+        ((a = r.fallback), (i = t.mode), (l = e.child), (s = l.sibling));
+        var u = { mode: "hidden", children: r.children };
+        return (
+          (i & 1) === 0 && t.child !== l
+            ? ((r = t.child), (r.childLanes = 0), (r.pendingProps = u), (t.deletions = null))
+            : ((r = rn(l, u)), (r.subtreeFlags = l.subtreeFlags & 14680064)),
+          s !== null ? (a = rn(s, a)) : ((a = wn(a, i, n, null)), (a.flags |= 2)),
+          (a.return = t),
+          (r.return = t),
+          (r.sibling = a),
+          (t.child = r),
+          (r = a),
+          (a = t.child),
+          (i = e.child.memoizedState),
+          (i =
+            i === null
+              ? Za(n)
+              : { baseLanes: i.baseLanes | n, cachePool: null, transitions: i.transitions }),
+          (a.memoizedState = i),
+          (a.childLanes = e.childLanes & ~n),
+          (t.memoizedState = Ja),
+          r
+        );
+      }
+      return (
+        (a = e.child),
+        (e = a.sibling),
+        (r = rn(a, { mode: "visible", children: r.children })),
+        (t.mode & 1) === 0 && (r.lanes = n),
+        (r.return = t),
+        (r.sibling = null),
+        e !== null &&
+          ((n = t.deletions), n === null ? ((t.deletions = [e]), (t.flags |= 16)) : n.push(e)),
+        (t.child = r),
+        (t.memoizedState = null),
+        r
+      );
+    }
+    function Ui(e, t) {
+      return (
+        (t = bl({ mode: "visible", children: t }, e.mode, 0, null)),
+        (t.return = e),
+        (e.child = t)
+      );
+    }
+    function Ro(e, t, n, r) {
+      return (
+        r !== null && Ti(r),
+        Zn(t, e.child, null, n),
+        (e = Ui(t, t.pendingProps.children)),
+        (e.flags |= 2),
+        (t.memoizedState = null),
+        e
+      );
+    }
+    function im(e, t, n, r, l, a, i) {
+      if (n)
+        return t.flags & 256
+          ? ((t.flags &= -257), (r = pa(Error(L(422)))), Ro(e, t, i, r))
+          : t.memoizedState !== null
+            ? ((t.child = e.child), (t.flags |= 128), null)
+            : ((a = r.fallback),
+              (l = t.mode),
+              (r = bl({ mode: "visible", children: r.children }, l, 0, null)),
+              (a = wn(a, l, i, null)),
+              (a.flags |= 2),
+              (r.return = t),
+              (a.return = t),
+              (r.sibling = a),
+              (t.child = r),
+              (t.mode & 1) !== 0 && Zn(t, e.child, null, i),
+              (t.child.memoizedState = Za(i)),
+              (t.memoizedState = Ja),
+              a);
+      if ((t.mode & 1) === 0) return Ro(e, t, i, null);
+      if (l.data === "$!") {
+        if (((r = l.nextSibling && l.nextSibling.dataset), r)) var s = r.dgst;
+        return ((r = s), (a = Error(L(419))), (r = pa(a, r, void 0)), Ro(e, t, i, r));
+      }
+      if (((s = (i & e.childLanes) !== 0), Ke || s)) {
+        if (((r = De), r !== null)) {
+          switch (i & -i) {
+            case 4:
+              l = 2;
+              break;
+            case 16:
+              l = 8;
+              break;
+            case 64:
+            case 128:
+            case 256:
+            case 512:
+            case 1024:
+            case 2048:
+            case 4096:
+            case 8192:
+            case 16384:
+            case 32768:
+            case 65536:
+            case 131072:
+            case 262144:
+            case 524288:
+            case 1048576:
+            case 2097152:
+            case 4194304:
+            case 8388608:
+            case 16777216:
+            case 33554432:
+            case 67108864:
+              l = 32;
+              break;
+            case 536870912:
+              l = 268435456;
+              break;
+            default:
+              l = 0;
+          }
+          ((l = (l & (r.suspendedLanes | i)) !== 0 ? 0 : l),
+            l !== 0 && l !== a.retryLane && ((a.retryLane = l), Bt(e, l), Nt(r, e, l, -1)));
+        }
+        return (Ki(), (r = pa(Error(L(421)))), Ro(e, t, i, r));
+      }
+      return l.data === "$?"
+        ? ((t.flags |= 128), (t.child = e.child), (t = km.bind(null, e)), (l._reactRetry = t), null)
+        : ((e = a.treeContext),
+          (et = Zt(l.nextSibling)),
+          (tt = t),
+          (ge = !0),
+          (wt = null),
+          e !== null &&
+            ((it[st++] = Mt),
+            (it[st++] = It),
+            (it[st++] = Nn),
+            (Mt = e.id),
+            (It = e.overflow),
+            (Nn = t)),
+          (t = Ui(t, r.children)),
+          (t.flags |= 4096),
+          t);
+    }
+    function Ru(e, t, n) {
+      e.lanes |= t;
+      var r = e.alternate;
+      (r !== null && (r.lanes |= t), Qa(e.return, t, n));
+    }
+    function ma(e, t, n, r, l) {
+      var a = e.memoizedState;
+      a === null
+        ? (e.memoizedState = {
+            isBackwards: t,
+            rendering: null,
+            renderingStartTime: 0,
+            last: r,
+            tail: n,
+            tailMode: l,
+          })
+        : ((a.isBackwards = t),
+          (a.rendering = null),
+          (a.renderingStartTime = 0),
+          (a.last = r),
+          (a.tail = n),
+          (a.tailMode = l));
+    }
+    function yd(e, t, n) {
+      var r = t.pendingProps,
+        l = r.revealOrder,
+        a = r.tail;
+      if ((He(e, t, r.children, n), (r = Ne.current), (r & 2) !== 0))
+        ((r = (r & 1) | 2), (t.flags |= 128));
+      else {
+        if (e !== null && (e.flags & 128) !== 0)
+          e: for (e = t.child; e !== null;) {
+            if (e.tag === 13) e.memoizedState !== null && Ru(e, n, t);
+            else if (e.tag === 19) Ru(e, n, t);
+            else if (e.child !== null) {
+              ((e.child.return = e), (e = e.child));
+              continue;
+            }
+            if (e === t) break e;
+            for (; e.sibling === null;) {
+              if (e.return === null || e.return === t) break e;
+              e = e.return;
+            }
+            ((e.sibling.return = e.return), (e = e.sibling));
+          }
+        r &= 1;
+      }
+      if ((fe(Ne, r), (t.mode & 1) === 0)) t.memoizedState = null;
+      else
+        switch (l) {
+          case "forwards":
+            for (n = t.child, l = null; n !== null;)
+              ((e = n.alternate), e !== null && ll(e) === null && (l = n), (n = n.sibling));
+            ((n = l),
+              n === null
+                ? ((l = t.child), (t.child = null))
+                : ((l = n.sibling), (n.sibling = null)),
+              ma(t, !1, l, n, a));
+            break;
+          case "backwards":
+            for (n = null, l = t.child, t.child = null; l !== null;) {
+              if (((e = l.alternate), e !== null && ll(e) === null)) {
+                t.child = l;
+                break;
+              }
+              ((e = l.sibling), (l.sibling = n), (n = l), (l = e));
+            }
+            ma(t, !0, n, null, a);
+            break;
+          case "together":
+            ma(t, !1, null, null, void 0);
+            break;
+          default:
+            t.memoizedState = null;
+        }
+      return t.child;
+    }
+    function Bo(e, t) {
+      (t.mode & 1) === 0 &&
+        e !== null &&
+        ((e.alternate = null), (t.alternate = null), (t.flags |= 2));
+    }
+    function jt(e, t, n) {
+      if (
+        (e !== null && (t.dependencies = e.dependencies), (bn |= t.lanes), (n & t.childLanes) === 0)
+      )
+        return null;
+      if (e !== null && t.child !== e.child) throw Error(L(153));
+      if (t.child !== null) {
+        for (e = t.child, n = rn(e, e.pendingProps), t.child = n, n.return = t; e.sibling !== null;)
+          ((e = e.sibling), (n = n.sibling = rn(e, e.pendingProps)), (n.return = t));
+        n.sibling = null;
+      }
+      return t.child;
+    }
+    function sm(e, t, n) {
+      switch (t.tag) {
+        case 3:
+          (vd(t), Jn());
+          break;
+        case 5:
+          Vc(t);
+          break;
+        case 1:
+          Ye(t.type) && Zo(t);
+          break;
+        case 4:
+          Di(t, t.stateNode.containerInfo);
+          break;
+        case 10:
+          var r = t.type._context,
+            l = t.memoizedProps.value;
+          (fe(nl, r._currentValue), (r._currentValue = l));
+          break;
+        case 13:
+          if (((r = t.memoizedState), r !== null))
+            return r.dehydrated !== null
+              ? (fe(Ne, Ne.current & 1), (t.flags |= 128), null)
+              : (n & t.child.childLanes) !== 0
+                ? gd(e, t, n)
+                : (fe(Ne, Ne.current & 1), (e = jt(e, t, n)), e !== null ? e.sibling : null);
+          fe(Ne, Ne.current & 1);
+          break;
+        case 19:
+          if (((r = (n & t.childLanes) !== 0), (e.flags & 128) !== 0)) {
+            if (r) return yd(e, t, n);
+            t.flags |= 128;
+          }
+          if (
+            ((l = t.memoizedState),
+            l !== null && ((l.rendering = null), (l.tail = null), (l.lastEffect = null)),
+            fe(Ne, Ne.current),
+            r)
+          )
+            break;
+          return null;
+        case 22:
+        case 23:
+          return ((t.lanes = 0), md(e, t, n));
+      }
+      return jt(e, t, n);
+    }
+    var wd, ei, kd, Nd;
+    wd = function (e, t) {
+      for (var n = t.child; n !== null;) {
+        if (n.tag === 5 || n.tag === 6) e.appendChild(n.stateNode);
+        else if (n.tag !== 4 && n.child !== null) {
+          ((n.child.return = n), (n = n.child));
+          continue;
+        }
+        if (n === t) break;
+        for (; n.sibling === null;) {
+          if (n.return === null || n.return === t) return;
+          n = n.return;
+        }
+        ((n.sibling.return = n.return), (n = n.sibling));
+      }
+    };
+    ei = function () {};
+    kd = function (e, t, n, r) {
+      var l = e.memoizedProps;
+      if (l !== r) {
+        ((e = t.stateNode), gn(zt.current));
+        var a = null;
+        switch (n) {
+          case "input":
+            ((l = xa(e, l)), (r = xa(e, r)), (a = []));
+            break;
+          case "select":
+            ((l = be({}, l, { value: void 0 })), (r = be({}, r, { value: void 0 })), (a = []));
+            break;
+          case "textarea":
+            ((l = Ca(e, l)), (r = Ca(e, r)), (a = []));
+            break;
+          default:
+            typeof l.onClick != "function" && typeof r.onClick == "function" && (e.onclick = qo);
+        }
+        Ta(n, r);
+        var i;
+        n = null;
+        for (d in l)
+          if (!r.hasOwnProperty(d) && l.hasOwnProperty(d) && l[d] != null)
+            if (d === "style") {
+              var s = l[d];
+              for (i in s) s.hasOwnProperty(i) && (n || (n = {}), (n[i] = ""));
+            } else
+              d !== "dangerouslySetInnerHTML" &&
+                d !== "children" &&
+                d !== "suppressContentEditableWarning" &&
+                d !== "suppressHydrationWarning" &&
+                d !== "autoFocus" &&
+                (Rr.hasOwnProperty(d) ? a || (a = []) : (a = a || []).push(d, null));
+        for (d in r) {
+          var u = r[d];
+          if (((s = l?.[d]), r.hasOwnProperty(d) && u !== s && (u != null || s != null)))
+            if (d === "style")
+              if (s) {
+                for (i in s)
+                  !s.hasOwnProperty(i) ||
+                    (u && u.hasOwnProperty(i)) ||
+                    (n || (n = {}), (n[i] = ""));
+                for (i in u) u.hasOwnProperty(i) && s[i] !== u[i] && (n || (n = {}), (n[i] = u[i]));
+              } else (n || (a || (a = []), a.push(d, n)), (n = u));
+            else
+              d === "dangerouslySetInnerHTML"
+                ? ((u = u ? u.__html : void 0),
+                  (s = s ? s.__html : void 0),
+                  u != null && s !== u && (a = a || []).push(d, u))
+                : d === "children"
+                  ? (typeof u != "string" && typeof u != "number") || (a = a || []).push(d, "" + u)
+                  : d !== "suppressContentEditableWarning" &&
+                    d !== "suppressHydrationWarning" &&
+                    (Rr.hasOwnProperty(d)
+                      ? (u != null && d === "onScroll" && he("scroll", e), a || s === u || (a = []))
+                      : (a = a || []).push(d, u));
+        }
+        n && (a = a || []).push("style", n);
+        var d = a;
+        (t.updateQueue = d) && (t.flags |= 4);
+      }
+    };
+    Nd = function (e, t, n, r) {
+      n !== r && (t.flags |= 4);
+    };
+    function mr(e, t) {
+      if (!ge)
+        switch (e.tailMode) {
+          case "hidden":
+            t = e.tail;
+            for (var n = null; t !== null;) (t.alternate !== null && (n = t), (t = t.sibling));
+            n === null ? (e.tail = null) : (n.sibling = null);
+            break;
+          case "collapsed":
+            n = e.tail;
+            for (var r = null; n !== null;) (n.alternate !== null && (r = n), (n = n.sibling));
+            r === null
+              ? t || e.tail === null
+                ? (e.tail = null)
+                : (e.tail.sibling = null)
+              : (r.sibling = null);
+        }
+    }
+    function Be(e) {
+      var t = e.alternate !== null && e.alternate.child === e.child,
+        n = 0,
+        r = 0;
+      if (t)
+        for (var l = e.child; l !== null;)
+          ((n |= l.lanes | l.childLanes),
+            (r |= l.subtreeFlags & 14680064),
+            (r |= l.flags & 14680064),
+            (l.return = e),
+            (l = l.sibling));
+      else
+        for (l = e.child; l !== null;)
+          ((n |= l.lanes | l.childLanes),
+            (r |= l.subtreeFlags),
+            (r |= l.flags),
+            (l.return = e),
+            (l = l.sibling));
+      return ((e.subtreeFlags |= r), (e.childLanes = n), t);
+    }
+    function um(e, t, n) {
+      var r = t.pendingProps;
+      switch ((Ei(t), t.tag)) {
+        case 2:
+        case 16:
+        case 15:
+        case 0:
+        case 11:
+        case 7:
+        case 8:
+        case 12:
+        case 9:
+        case 14:
+          return (Be(t), null);
+        case 1:
+          return (Ye(t.type) && Jo(), Be(t), null);
+        case 3:
+          return (
+            (r = t.stateNode),
+            er(),
+            ve(Ge),
+            ve(Ue),
+            Ii(),
+            r.pendingContext && ((r.context = r.pendingContext), (r.pendingContext = null)),
+            (e === null || e.child === null) &&
+              (Oo(t)
+                ? (t.flags |= 4)
+                : e === null ||
+                  (e.memoizedState.isDehydrated && (t.flags & 256) === 0) ||
+                  ((t.flags |= 1024), wt !== null && (si(wt), (wt = null)))),
+            ei(e, t),
+            Be(t),
+            null
+          );
+        case 5:
+          Mi(t);
+          var l = gn($r.current);
+          if (((n = t.type), e !== null && t.stateNode != null))
+            (kd(e, t, n, r, l), e.ref !== t.ref && ((t.flags |= 512), (t.flags |= 2097152)));
+          else {
+            if (!r) {
+              if (t.stateNode === null) throw Error(L(166));
+              return (Be(t), null);
+            }
+            if (((e = gn(zt.current)), Oo(t))) {
+              ((r = t.stateNode), (n = t.type));
+              var a = t.memoizedProps;
+              switch (((r[Tt] = t), (r[jr] = a), (e = (t.mode & 1) !== 0), n)) {
+                case "dialog":
+                  (he("cancel", r), he("close", r));
+                  break;
+                case "iframe":
+                case "object":
+                case "embed":
+                  he("load", r);
+                  break;
+                case "video":
+                case "audio":
+                  for (l = 0; l < kr.length; l++) he(kr[l], r);
+                  break;
+                case "source":
+                  he("error", r);
+                  break;
+                case "img":
+                case "image":
+                case "link":
+                  (he("error", r), he("load", r));
+                  break;
+                case "details":
+                  he("toggle", r);
+                  break;
+                case "input":
+                  (As(r, a), he("invalid", r));
+                  break;
+                case "select":
+                  ((r._wrapperState = { wasMultiple: !!a.multiple }), he("invalid", r));
+                  break;
+                case "textarea":
+                  (js(r, a), he("invalid", r));
+              }
+              (Ta(n, a), (l = null));
+              for (var i in a)
+                if (a.hasOwnProperty(i)) {
+                  var s = a[i];
+                  i === "children"
+                    ? typeof s == "string"
+                      ? r.textContent !== s &&
+                        (a.suppressHydrationWarning !== !0 && To(r.textContent, s, e),
+                        (l = ["children", s]))
+                      : typeof s == "number" &&
+                        r.textContent !== "" + s &&
+                        (a.suppressHydrationWarning !== !0 && To(r.textContent, s, e),
+                        (l = ["children", "" + s]))
+                    : Rr.hasOwnProperty(i) && s != null && i === "onScroll" && he("scroll", r);
+                }
+              switch (n) {
+                case "input":
+                  (ho(r), Bs(r, a, !0));
+                  break;
+                case "textarea":
+                  (ho(r), Us(r));
+                  break;
+                case "select":
+                case "option":
+                  break;
+                default:
+                  typeof a.onClick == "function" && (r.onclick = qo);
+              }
+              ((r = l), (t.updateQueue = r), r !== null && (t.flags |= 4));
+            } else {
+              ((i = l.nodeType === 9 ? l : l.ownerDocument),
+                e === "http://www.w3.org/1999/xhtml" && (e = Yu(n)),
+                e === "http://www.w3.org/1999/xhtml"
+                  ? n === "script"
+                    ? ((e = i.createElement("div")),
+                      (e.innerHTML = "<script><\/script>"),
+                      (e = e.removeChild(e.firstChild)))
+                    : typeof r.is == "string"
+                      ? (e = i.createElement(n, { is: r.is }))
+                      : ((e = i.createElement(n)),
+                        n === "select" &&
+                          ((i = e), r.multiple ? (i.multiple = !0) : r.size && (i.size = r.size)))
+                  : (e = i.createElementNS(e, n)),
+                (e[Tt] = t),
+                (e[jr] = r),
+                wd(e, t, !1, !1),
+                (t.stateNode = e));
+              e: {
+                switch (((i = Oa(n, r)), n)) {
+                  case "dialog":
+                    (he("cancel", e), he("close", e), (l = r));
+                    break;
+                  case "iframe":
+                  case "object":
+                  case "embed":
+                    (he("load", e), (l = r));
+                    break;
+                  case "video":
+                  case "audio":
+                    for (l = 0; l < kr.length; l++) he(kr[l], e);
+                    l = r;
+                    break;
+                  case "source":
+                    (he("error", e), (l = r));
+                    break;
+                  case "img":
+                  case "image":
+                  case "link":
+                    (he("error", e), he("load", e), (l = r));
+                    break;
+                  case "details":
+                    (he("toggle", e), (l = r));
+                    break;
+                  case "input":
+                    (As(e, r), (l = xa(e, r)), he("invalid", e));
+                    break;
+                  case "option":
+                    l = r;
+                    break;
+                  case "select":
+                    ((e._wrapperState = { wasMultiple: !!r.multiple }),
+                      (l = be({}, r, { value: void 0 })),
+                      he("invalid", e));
+                    break;
+                  case "textarea":
+                    (js(e, r), (l = Ca(e, r)), he("invalid", e));
+                    break;
+                  default:
+                    l = r;
+                }
+                (Ta(n, l), (s = l));
+                for (a in s)
+                  if (s.hasOwnProperty(a)) {
+                    var u = s[a];
+                    a === "style"
+                      ? Ju(e, u)
+                      : a === "dangerouslySetInnerHTML"
+                        ? ((u = u ? u.__html : void 0), u != null && Xu(e, u))
+                        : a === "children"
+                          ? typeof u == "string"
+                            ? (n !== "textarea" || u !== "") && _r(e, u)
+                            : typeof u == "number" && _r(e, "" + u)
+                          : a !== "suppressContentEditableWarning" &&
+                            a !== "suppressHydrationWarning" &&
+                            a !== "autoFocus" &&
+                            (Rr.hasOwnProperty(a)
+                              ? u != null && a === "onScroll" && he("scroll", e)
+                              : u != null && di(e, a, u, i));
+                  }
+                switch (n) {
+                  case "input":
+                    (ho(e), Bs(e, r, !1));
+                    break;
+                  case "textarea":
+                    (ho(e), Us(e));
+                    break;
+                  case "option":
+                    r.value != null && e.setAttribute("value", "" + on(r.value));
+                    break;
+                  case "select":
+                    ((e.multiple = !!r.multiple),
+                      (a = r.value),
+                      a != null
+                        ? Vn(e, !!r.multiple, a, !1)
+                        : r.defaultValue != null && Vn(e, !!r.multiple, r.defaultValue, !0));
+                    break;
+                  default:
+                    typeof l.onClick == "function" && (e.onclick = qo);
+                }
+                switch (n) {
+                  case "button":
+                  case "input":
+                  case "select":
+                  case "textarea":
+                    r = !!r.autoFocus;
+                    break e;
+                  case "img":
+                    r = !0;
+                    break e;
+                  default:
+                    r = !1;
+                }
+              }
+              r && (t.flags |= 4);
+            }
+            t.ref !== null && ((t.flags |= 512), (t.flags |= 2097152));
+          }
+          return (Be(t), null);
+        case 6:
+          if (e && t.stateNode != null) Nd(e, t, e.memoizedProps, r);
+          else {
+            if (typeof r != "string" && t.stateNode === null) throw Error(L(166));
+            if (((n = gn($r.current)), gn(zt.current), Oo(t))) {
+              if (
+                ((r = t.stateNode),
+                (n = t.memoizedProps),
+                (r[Tt] = t),
+                (a = r.nodeValue !== n) && ((e = tt), e !== null))
+              )
+                switch (e.tag) {
+                  case 3:
+                    To(r.nodeValue, n, (e.mode & 1) !== 0);
+                    break;
+                  case 5:
+                    e.memoizedProps.suppressHydrationWarning !== !0 &&
+                      To(r.nodeValue, n, (e.mode & 1) !== 0);
+                }
+              a && (t.flags |= 4);
+            } else
+              ((r = (n.nodeType === 9 ? n : n.ownerDocument).createTextNode(r)),
+                (r[Tt] = t),
+                (t.stateNode = r));
+          }
+          return (Be(t), null);
+        case 13:
+          if (
+            (ve(Ne),
+            (r = t.memoizedState),
+            e === null || (e.memoizedState !== null && e.memoizedState.dehydrated !== null))
+          ) {
+            if (ge && et !== null && (t.mode & 1) !== 0 && (t.flags & 128) === 0)
+              (Bc(), Jn(), (t.flags |= 98560), (a = !1));
+            else if (((a = Oo(t)), r !== null && r.dehydrated !== null)) {
+              if (e === null) {
+                if (!a) throw Error(L(318));
+                if (((a = t.memoizedState), (a = a !== null ? a.dehydrated : null), !a))
+                  throw Error(L(317));
+                a[Tt] = t;
+              } else (Jn(), (t.flags & 128) === 0 && (t.memoizedState = null), (t.flags |= 4));
+              (Be(t), (a = !1));
+            } else (wt !== null && (si(wt), (wt = null)), (a = !0));
+            if (!a) return t.flags & 65536 ? t : null;
+          }
+          return (t.flags & 128) !== 0
+            ? ((t.lanes = n), t)
+            : ((r = r !== null),
+              r !== (e !== null && e.memoizedState !== null) &&
+                r &&
+                ((t.child.flags |= 8192),
+                (t.mode & 1) !== 0 &&
+                  (e === null || (Ne.current & 1) !== 0 ? _e === 0 && (_e = 3) : Ki())),
+              t.updateQueue !== null && (t.flags |= 4),
+              Be(t),
+              null);
+        case 4:
+          return (er(), ei(e, t), e === null && Ar(t.stateNode.containerInfo), Be(t), null);
+        case 10:
+          return (Ri(t.type._context), Be(t), null);
+        case 17:
+          return (Ye(t.type) && Jo(), Be(t), null);
+        case 19:
+          if ((ve(Ne), (a = t.memoizedState), a === null)) return (Be(t), null);
+          if (((r = (t.flags & 128) !== 0), (i = a.rendering), i === null))
+            if (r) mr(a, !1);
+            else {
+              if (_e !== 0 || (e !== null && (e.flags & 128) !== 0))
+                for (e = t.child; e !== null;) {
+                  if (((i = ll(e)), i !== null)) {
+                    for (
+                      t.flags |= 128,
+                        mr(a, !1),
+                        r = i.updateQueue,
+                        r !== null && ((t.updateQueue = r), (t.flags |= 4)),
+                        t.subtreeFlags = 0,
+                        r = n,
+                        n = t.child;
+                      n !== null;
+                    )
+                      ((a = n),
+                        (e = r),
+                        (a.flags &= 14680066),
+                        (i = a.alternate),
+                        i === null
+                          ? ((a.childLanes = 0),
+                            (a.lanes = e),
+                            (a.child = null),
+                            (a.subtreeFlags = 0),
+                            (a.memoizedProps = null),
+                            (a.memoizedState = null),
+                            (a.updateQueue = null),
+                            (a.dependencies = null),
+                            (a.stateNode = null))
+                          : ((a.childLanes = i.childLanes),
+                            (a.lanes = i.lanes),
+                            (a.child = i.child),
+                            (a.subtreeFlags = 0),
+                            (a.deletions = null),
+                            (a.memoizedProps = i.memoizedProps),
+                            (a.memoizedState = i.memoizedState),
+                            (a.updateQueue = i.updateQueue),
+                            (a.type = i.type),
+                            (e = i.dependencies),
+                            (a.dependencies =
+                              e === null
+                                ? null
+                                : { lanes: e.lanes, firstContext: e.firstContext })),
+                        (n = n.sibling));
+                    return (fe(Ne, (Ne.current & 1) | 2), t.child);
+                  }
+                  e = e.sibling;
+                }
+              a.tail !== null &&
+                Te() > nr &&
+                ((t.flags |= 128), (r = !0), mr(a, !1), (t.lanes = 4194304));
+            }
+          else {
+            if (!r)
+              if (((e = ll(i)), e !== null)) {
+                if (
+                  ((t.flags |= 128),
+                  (r = !0),
+                  (n = e.updateQueue),
+                  n !== null && ((t.updateQueue = n), (t.flags |= 4)),
+                  mr(a, !0),
+                  a.tail === null && a.tailMode === "hidden" && !i.alternate && !ge)
+                )
+                  return (Be(t), null);
+              } else
+                2 * Te() - a.renderingStartTime > nr &&
+                  n !== 1073741824 &&
+                  ((t.flags |= 128), (r = !0), mr(a, !1), (t.lanes = 4194304));
+            a.isBackwards
+              ? ((i.sibling = t.child), (t.child = i))
+              : ((n = a.last), n !== null ? (n.sibling = i) : (t.child = i), (a.last = i));
+          }
+          return a.tail !== null
+            ? ((t = a.tail),
+              (a.rendering = t),
+              (a.tail = t.sibling),
+              (a.renderingStartTime = Te()),
+              (t.sibling = null),
+              (n = Ne.current),
+              fe(Ne, r ? (n & 1) | 2 : n & 1),
+              t)
+            : (Be(t), null);
+        case 22:
+        case 23:
+          return (
+            Qi(),
+            (r = t.memoizedState !== null),
+            e !== null && (e.memoizedState !== null) !== r && (t.flags |= 8192),
+            r && (t.mode & 1) !== 0
+              ? (Ze & 1073741824) !== 0 && (Be(t), t.subtreeFlags & 6 && (t.flags |= 8192))
+              : Be(t),
+            null
+          );
+        case 24:
+          return null;
+        case 25:
+          return null;
+      }
+      throw Error(L(156, t.tag));
+    }
+    function cm(e, t) {
+      switch ((Ei(t), t.tag)) {
+        case 1:
+          return (
+            Ye(t.type) && Jo(),
+            (e = t.flags),
+            e & 65536 ? ((t.flags = (e & -65537) | 128), t) : null
+          );
+        case 3:
+          return (
+            er(),
+            ve(Ge),
+            ve(Ue),
+            Ii(),
+            (e = t.flags),
+            (e & 65536) !== 0 && (e & 128) === 0 ? ((t.flags = (e & -65537) | 128), t) : null
+          );
+        case 5:
+          return (Mi(t), null);
+        case 13:
+          if ((ve(Ne), (e = t.memoizedState), e !== null && e.dehydrated !== null)) {
+            if (t.alternate === null) throw Error(L(340));
+            Jn();
+          }
+          return ((e = t.flags), e & 65536 ? ((t.flags = (e & -65537) | 128), t) : null);
+        case 19:
+          return (ve(Ne), null);
+        case 4:
+          return (er(), null);
+        case 10:
+          return (Ri(t.type._context), null);
+        case 22:
+        case 23:
+          return (Qi(), null);
+        case 24:
+          return null;
+        default:
+          return null;
+      }
+    }
+    var _o = !1,
+      je = !1,
+      dm = typeof WeakSet == "function" ? WeakSet : Set,
+      V = null;
+    function $n(e, t) {
+      var n = e.ref;
+      if (n !== null)
+        if (typeof n == "function")
+          try {
+            n(null);
+          } catch (r) {
+            Ce(e, t, r);
+          }
+        else n.current = null;
+    }
+    function ti(e, t, n) {
+      try {
+        n();
+      } catch (r) {
+        Ce(e, t, r);
+      }
+    }
+    var _u = !1;
+    function fm(e, t) {
+      if (((Aa = Go), (e = Ec()), Si(e))) {
+        if ("selectionStart" in e) var n = { start: e.selectionStart, end: e.selectionEnd };
+        else
+          e: {
+            n = ((n = e.ownerDocument) && n.defaultView) || window;
+            var r = n.getSelection && n.getSelection();
+            if (r && r.rangeCount !== 0) {
+              n = r.anchorNode;
+              var l = r.anchorOffset,
+                a = r.focusNode;
+              r = r.focusOffset;
+              try {
+                (n.nodeType, a.nodeType);
+              } catch {
+                n = null;
+                break e;
+              }
+              var i = 0,
+                s = -1,
+                u = -1,
+                d = 0,
+                c = 0,
+                g = e,
+                v = null;
+              t: for (;;) {
+                for (
+                  var y;
+                  g !== n || (l !== 0 && g.nodeType !== 3) || (s = i + l),
+                    g !== a || (r !== 0 && g.nodeType !== 3) || (u = i + r),
+                    g.nodeType === 3 && (i += g.nodeValue.length),
+                    (y = g.firstChild) !== null;
+                )
+                  ((v = g), (g = y));
+                for (;;) {
+                  if (g === e) break t;
+                  if (
+                    (v === n && ++d === l && (s = i),
+                    v === a && ++c === r && (u = i),
+                    (y = g.nextSibling) !== null)
+                  )
+                    break;
+                  ((g = v), (v = g.parentNode));
+                }
+                g = y;
+              }
+              n = s === -1 || u === -1 ? null : { start: s, end: u };
+            } else n = null;
+          }
+        n = n || { start: 0, end: 0 };
+      } else n = null;
+      for (Ba = { focusedElem: e, selectionRange: n }, Go = !1, V = t; V !== null;)
+        if (((t = V), (e = t.child), (t.subtreeFlags & 1028) !== 0 && e !== null))
+          ((e.return = t), (V = e));
+        else
+          for (; V !== null;) {
+            t = V;
+            try {
+              var E = t.alternate;
+              if ((t.flags & 1024) !== 0)
+                switch (t.tag) {
+                  case 0:
+                  case 11:
+                  case 15:
+                    break;
+                  case 1:
+                    if (E !== null) {
+                      var k = E.memoizedProps,
+                        O = E.memoizedState,
+                        f = t.stateNode,
+                        p = f.getSnapshotBeforeUpdate(
+                          t.elementType === t.type ? k : gt(t.type, k),
+                          O,
+                        );
+                      f.__reactInternalSnapshotBeforeUpdate = p;
+                    }
+                    break;
+                  case 3:
+                    var m = t.stateNode.containerInfo;
+                    m.nodeType === 1
+                      ? (m.textContent = "")
+                      : m.nodeType === 9 && m.documentElement && m.removeChild(m.documentElement);
+                    break;
+                  case 5:
+                  case 6:
+                  case 4:
+                  case 17:
+                    break;
+                  default:
+                    throw Error(L(163));
+                }
+            } catch (w) {
+              Ce(t, t.return, w);
+            }
+            if (((e = t.sibling), e !== null)) {
+              ((e.return = t.return), (V = e));
+              break;
+            }
+            V = t.return;
+          }
+      return ((E = _u), (_u = !1), E);
+    }
+    function Tr(e, t, n) {
+      var r = t.updateQueue;
+      if (((r = r !== null ? r.lastEffect : null), r !== null)) {
+        var l = (r = r.next);
+        do {
+          if ((l.tag & e) === e) {
+            var a = l.destroy;
+            ((l.destroy = void 0), a !== void 0 && ti(t, n, a));
+          }
+          l = l.next;
+        } while (l !== r);
+      }
+    }
+    function Nl(e, t) {
+      if (((t = t.updateQueue), (t = t !== null ? t.lastEffect : null), t !== null)) {
+        var n = (t = t.next);
+        do {
+          if ((n.tag & e) === e) {
+            var r = n.create;
+            n.destroy = r();
+          }
+          n = n.next;
+        } while (n !== t);
+      }
+    }
+    function ni(e) {
+      var t = e.ref;
+      if (t !== null) {
+        var n = e.stateNode;
+        (e.tag, (e = n), typeof t == "function" ? t(e) : (t.current = e));
+      }
+    }
+    function xd(e) {
+      var t = e.alternate;
+      (t !== null && ((e.alternate = null), xd(t)),
+        (e.child = null),
+        (e.deletions = null),
+        (e.sibling = null),
+        e.tag === 5 &&
+          ((t = e.stateNode),
+          t !== null && (delete t[Tt], delete t[jr], delete t[$a], delete t[Gp], delete t[Yp])),
+        (e.stateNode = null),
+        (e.return = null),
+        (e.dependencies = null),
+        (e.memoizedProps = null),
+        (e.memoizedState = null),
+        (e.pendingProps = null),
+        (e.stateNode = null),
+        (e.updateQueue = null));
+    }
+    function bd(e) {
+      return e.tag === 5 || e.tag === 3 || e.tag === 4;
+    }
+    function Pu(e) {
+      e: for (;;) {
+        for (; e.sibling === null;) {
+          if (e.return === null || bd(e.return)) return null;
+          e = e.return;
+        }
+        for (
+          e.sibling.return = e.return, e = e.sibling;
+          e.tag !== 5 && e.tag !== 6 && e.tag !== 18;
+        ) {
+          if (e.flags & 2 || e.child === null || e.tag === 4) continue e;
+          ((e.child.return = e), (e = e.child));
+        }
+        if (!(e.flags & 2)) return e.stateNode;
+      }
+    }
+    function ri(e, t, n) {
+      var r = e.tag;
+      if (r === 5 || r === 6)
+        ((e = e.stateNode),
+          t
+            ? n.nodeType === 8
+              ? n.parentNode.insertBefore(e, t)
+              : n.insertBefore(e, t)
+            : (n.nodeType === 8
+                ? ((t = n.parentNode), t.insertBefore(e, n))
+                : ((t = n), t.appendChild(e)),
+              (n = n._reactRootContainer),
+              n != null || t.onclick !== null || (t.onclick = qo)));
+      else if (r !== 4 && ((e = e.child), e !== null))
+        for (ri(e, t, n), e = e.sibling; e !== null;) (ri(e, t, n), (e = e.sibling));
+    }
+    function oi(e, t, n) {
+      var r = e.tag;
+      if (r === 5 || r === 6) ((e = e.stateNode), t ? n.insertBefore(e, t) : n.appendChild(e));
+      else if (r !== 4 && ((e = e.child), e !== null))
+        for (oi(e, t, n), e = e.sibling; e !== null;) (oi(e, t, n), (e = e.sibling));
+    }
+    var Me = null,
+      yt = !1;
+    function Ht(e, t, n) {
+      for (n = n.child; n !== null;) (Sd(e, t, n), (n = n.sibling));
+    }
+    function Sd(e, t, n) {
+      if (Ot && typeof Ot.onCommitFiberUnmount == "function")
+        try {
+          Ot.onCommitFiberUnmount(pl, n);
+        } catch {}
+      switch (n.tag) {
+        case 5:
+          je || $n(n, t);
+        case 6:
+          var r = Me,
+            l = yt;
+          ((Me = null),
+            Ht(e, t, n),
+            (Me = r),
+            (yt = l),
+            Me !== null &&
+              (yt
+                ? ((e = Me),
+                  (n = n.stateNode),
+                  e.nodeType === 8 ? e.parentNode.removeChild(n) : e.removeChild(n))
+                : Me.removeChild(n.stateNode)));
+          break;
+        case 18:
+          Me !== null &&
+            (yt
+              ? ((e = Me),
+                (n = n.stateNode),
+                e.nodeType === 8 ? ia(e.parentNode, n) : e.nodeType === 1 && ia(e, n),
+                Ir(e))
+              : ia(Me, n.stateNode));
+          break;
+        case 4:
+          ((r = Me),
+            (l = yt),
+            (Me = n.stateNode.containerInfo),
+            (yt = !0),
+            Ht(e, t, n),
+            (Me = r),
+            (yt = l));
+          break;
+        case 0:
+        case 11:
+        case 14:
+        case 15:
+          if (!je && ((r = n.updateQueue), r !== null && ((r = r.lastEffect), r !== null))) {
+            l = r = r.next;
+            do {
+              var a = l,
+                i = a.destroy;
+              ((a = a.tag),
+                i !== void 0 && ((a & 2) !== 0 || (a & 4) !== 0) && ti(n, t, i),
+                (l = l.next));
+            } while (l !== r);
+          }
+          Ht(e, t, n);
+          break;
+        case 1:
+          if (!je && ($n(n, t), (r = n.stateNode), typeof r.componentWillUnmount == "function"))
+            try {
+              ((r.props = n.memoizedProps), (r.state = n.memoizedState), r.componentWillUnmount());
+            } catch (s) {
+              Ce(n, t, s);
+            }
+          Ht(e, t, n);
+          break;
+        case 21:
+          Ht(e, t, n);
+          break;
+        case 22:
+          n.mode & 1
+            ? ((je = (r = je) || n.memoizedState !== null), Ht(e, t, n), (je = r))
+            : Ht(e, t, n);
+          break;
+        default:
+          Ht(e, t, n);
+      }
+    }
+    function Du(e) {
+      var t = e.updateQueue;
+      if (t !== null) {
+        e.updateQueue = null;
+        var n = e.stateNode;
+        (n === null && (n = e.stateNode = new dm()),
+          t.forEach(function (r) {
+            var l = Nm.bind(null, e, r);
+            n.has(r) || (n.add(r), r.then(l, l));
+          }));
+      }
+    }
+    function vt(e, t) {
+      var n = t.deletions;
+      if (n !== null)
+        for (var r = 0; r < n.length; r++) {
+          var l = n[r];
+          try {
+            var a = e,
+              i = t,
+              s = i;
+            e: for (; s !== null;) {
+              switch (s.tag) {
+                case 5:
+                  ((Me = s.stateNode), (yt = !1));
+                  break e;
+                case 3:
+                  ((Me = s.stateNode.containerInfo), (yt = !0));
+                  break e;
+                case 4:
+                  ((Me = s.stateNode.containerInfo), (yt = !0));
+                  break e;
+              }
+              s = s.return;
+            }
+            if (Me === null) throw Error(L(160));
+            (Sd(a, i, l), (Me = null), (yt = !1));
+            var u = l.alternate;
+            (u !== null && (u.return = null), (l.return = null));
+          } catch (d) {
+            Ce(l, t, d);
+          }
+        }
+      if (t.subtreeFlags & 12854) for (t = t.child; t !== null;) (Cd(t, e), (t = t.sibling));
+    }
+    function Cd(e, t) {
+      var n = e.alternate,
+        r = e.flags;
+      switch (e.tag) {
+        case 0:
+        case 11:
+        case 14:
+        case 15:
+          if ((vt(t, e), Ct(e), r & 4)) {
+            try {
+              (Tr(3, e, e.return), Nl(3, e));
+            } catch (k) {
+              Ce(e, e.return, k);
+            }
+            try {
+              Tr(5, e, e.return);
+            } catch (k) {
+              Ce(e, e.return, k);
+            }
+          }
+          break;
+        case 1:
+          (vt(t, e), Ct(e), r & 512 && n !== null && $n(n, n.return));
+          break;
+        case 5:
+          if ((vt(t, e), Ct(e), r & 512 && n !== null && $n(n, n.return), e.flags & 32)) {
+            var l = e.stateNode;
+            try {
+              _r(l, "");
+            } catch (k) {
+              Ce(e, e.return, k);
+            }
+          }
+          if (r & 4 && ((l = e.stateNode), l != null)) {
+            var a = e.memoizedProps,
+              i = n !== null ? n.memoizedProps : a,
+              s = e.type,
+              u = e.updateQueue;
+            if (((e.updateQueue = null), u !== null))
+              try {
+                (s === "input" && a.type === "radio" && a.name != null && Ku(l, a), Oa(s, i));
+                var d = Oa(s, a);
+                for (i = 0; i < u.length; i += 2) {
+                  var c = u[i],
+                    g = u[i + 1];
+                  c === "style"
+                    ? Ju(l, g)
+                    : c === "dangerouslySetInnerHTML"
+                      ? Xu(l, g)
+                      : c === "children"
+                        ? _r(l, g)
+                        : di(l, c, g, d);
+                }
+                switch (s) {
+                  case "input":
+                    ba(l, a);
+                    break;
+                  case "textarea":
+                    Gu(l, a);
+                    break;
+                  case "select":
+                    var v = l._wrapperState.wasMultiple;
+                    l._wrapperState.wasMultiple = !!a.multiple;
+                    var y = a.value;
+                    y != null
+                      ? Vn(l, !!a.multiple, y, !1)
+                      : v !== !!a.multiple &&
+                        (a.defaultValue != null
+                          ? Vn(l, !!a.multiple, a.defaultValue, !0)
+                          : Vn(l, !!a.multiple, a.multiple ? [] : "", !1));
+                }
+                l[jr] = a;
+              } catch (k) {
+                Ce(e, e.return, k);
+              }
+          }
+          break;
+        case 6:
+          if ((vt(t, e), Ct(e), r & 4)) {
+            if (e.stateNode === null) throw Error(L(162));
+            ((l = e.stateNode), (a = e.memoizedProps));
+            try {
+              l.nodeValue = a;
+            } catch (k) {
+              Ce(e, e.return, k);
+            }
+          }
+          break;
+        case 3:
+          if ((vt(t, e), Ct(e), r & 4 && n !== null && n.memoizedState.isDehydrated))
+            try {
+              Ir(t.containerInfo);
+            } catch (k) {
+              Ce(e, e.return, k);
+            }
+          break;
+        case 4:
+          (vt(t, e), Ct(e));
+          break;
+        case 13:
+          (vt(t, e),
+            Ct(e),
+            (l = e.child),
+            l.flags & 8192 &&
+              ((a = l.memoizedState !== null),
+              (l.stateNode.isHidden = a),
+              !a || (l.alternate !== null && l.alternate.memoizedState !== null) || (Vi = Te())),
+            r & 4 && Du(e));
+          break;
+        case 22:
+          if (
+            ((c = n !== null && n.memoizedState !== null),
+            e.mode & 1 ? ((je = (d = je) || c), vt(t, e), (je = d)) : vt(t, e),
+            Ct(e),
+            r & 8192)
+          ) {
+            if (
+              ((d = e.memoizedState !== null),
+              (e.stateNode.isHidden = d) && !c && (e.mode & 1) !== 0)
+            )
+              for (V = e, c = e.child; c !== null;) {
+                for (g = V = c; V !== null;) {
+                  switch (((v = V), (y = v.child), v.tag)) {
+                    case 0:
+                    case 11:
+                    case 14:
+                    case 15:
+                      Tr(4, v, v.return);
+                      break;
+                    case 1:
+                      $n(v, v.return);
+                      var E = v.stateNode;
+                      if (typeof E.componentWillUnmount == "function") {
+                        ((r = v), (n = v.return));
+                        try {
+                          ((t = r),
+                            (E.props = t.memoizedProps),
+                            (E.state = t.memoizedState),
+                            E.componentWillUnmount());
+                        } catch (k) {
+                          Ce(r, n, k);
+                        }
+                      }
+                      break;
+                    case 5:
+                      $n(v, v.return);
+                      break;
+                    case 22:
+                      if (v.memoizedState !== null) {
+                        Iu(g);
+                        continue;
+                      }
+                  }
+                  y !== null ? ((y.return = v), (V = y)) : Iu(g);
+                }
+                c = c.sibling;
+              }
+            e: for (c = null, g = e; ;) {
+              if (g.tag === 5) {
+                if (c === null) {
+                  c = g;
+                  try {
+                    ((l = g.stateNode),
+                      d
+                        ? ((a = l.style),
+                          typeof a.setProperty == "function"
+                            ? a.setProperty("display", "none", "important")
+                            : (a.display = "none"))
+                        : ((s = g.stateNode),
+                          (u = g.memoizedProps.style),
+                          (i = u != null && u.hasOwnProperty("display") ? u.display : null),
+                          (s.style.display = qu("display", i))));
+                  } catch (k) {
+                    Ce(e, e.return, k);
+                  }
+                }
+              } else if (g.tag === 6) {
+                if (c === null)
+                  try {
+                    g.stateNode.nodeValue = d ? "" : g.memoizedProps;
+                  } catch (k) {
+                    Ce(e, e.return, k);
+                  }
+              } else if (
+                ((g.tag !== 22 && g.tag !== 23) || g.memoizedState === null || g === e) &&
+                g.child !== null
+              ) {
+                ((g.child.return = g), (g = g.child));
+                continue;
+              }
+              if (g === e) break e;
+              for (; g.sibling === null;) {
+                if (g.return === null || g.return === e) break e;
+                (c === g && (c = null), (g = g.return));
+              }
+              (c === g && (c = null), (g.sibling.return = g.return), (g = g.sibling));
+            }
+          }
+          break;
+        case 19:
+          (vt(t, e), Ct(e), r & 4 && Du(e));
+          break;
+        case 21:
+          break;
+        default:
+          (vt(t, e), Ct(e));
+      }
+    }
+    function Ct(e) {
+      var t = e.flags;
+      if (t & 2) {
+        try {
+          e: {
+            for (var n = e.return; n !== null;) {
+              if (bd(n)) {
+                var r = n;
+                break e;
+              }
+              n = n.return;
+            }
+            throw Error(L(160));
+          }
+          switch (r.tag) {
+            case 5:
+              var l = r.stateNode;
+              r.flags & 32 && (_r(l, ""), (r.flags &= -33));
+              var a = Pu(e);
+              oi(e, a, l);
+              break;
+            case 3:
+            case 4:
+              var i = r.stateNode.containerInfo,
+                s = Pu(e);
+              ri(e, s, i);
+              break;
+            default:
+              throw Error(L(161));
+          }
+        } catch (u) {
+          Ce(e, e.return, u);
+        }
+        e.flags &= -3;
+      }
+      t & 4096 && (e.flags &= -4097);
+    }
+    function pm(e, t, n) {
+      ((V = e), Ed(e, t, n));
+    }
+    function Ed(e, t, n) {
+      for (var r = (e.mode & 1) !== 0; V !== null;) {
+        var l = V,
+          a = l.child;
+        if (l.tag === 22 && r) {
+          var i = l.memoizedState !== null || _o;
+          if (!i) {
+            var s = l.alternate,
+              u = (s !== null && s.memoizedState !== null) || je;
+            s = _o;
+            var d = je;
+            if (((_o = i), (je = u) && !d))
+              for (V = l; V !== null;)
+                ((i = V),
+                  (u = i.child),
+                  i.tag === 22 && i.memoizedState !== null
+                    ? Fu(l)
+                    : u !== null
+                      ? ((u.return = i), (V = u))
+                      : Fu(l));
+            for (; a !== null;) ((V = a), Ed(a, t, n), (a = a.sibling));
+            ((V = l), (_o = s), (je = d));
+          }
+          Mu(e, t, n);
+        } else
+          (l.subtreeFlags & 8772) !== 0 && a !== null ? ((a.return = l), (V = a)) : Mu(e, t, n);
+      }
+    }
+    function Mu(e) {
+      for (; V !== null;) {
+        var t = V;
+        if ((t.flags & 8772) !== 0) {
+          var n = t.alternate;
+          try {
+            if ((t.flags & 8772) !== 0)
+              switch (t.tag) {
+                case 0:
+                case 11:
+                case 15:
+                  je || Nl(5, t);
+                  break;
+                case 1:
+                  var r = t.stateNode;
+                  if (t.flags & 4 && !je)
+                    if (n === null) r.componentDidMount();
+                    else {
+                      var l =
+                        t.elementType === t.type ? n.memoizedProps : gt(t.type, n.memoizedProps);
+                      r.componentDidUpdate(
+                        l,
+                        n.memoizedState,
+                        r.__reactInternalSnapshotBeforeUpdate,
+                      );
+                    }
+                  var a = t.updateQueue;
+                  a !== null && yu(t, a, r);
+                  break;
+                case 3:
+                  var i = t.updateQueue;
+                  if (i !== null) {
+                    if (((n = null), t.child !== null))
+                      switch (t.child.tag) {
+                        case 5:
+                          n = t.child.stateNode;
+                          break;
+                        case 1:
+                          n = t.child.stateNode;
+                      }
+                    yu(t, i, n);
+                  }
+                  break;
+                case 5:
+                  var s = t.stateNode;
+                  if (n === null && t.flags & 4) {
+                    n = s;
+                    var u = t.memoizedProps;
+                    switch (t.type) {
+                      case "button":
+                      case "input":
+                      case "select":
+                      case "textarea":
+                        u.autoFocus && n.focus();
+                        break;
+                      case "img":
+                        u.src && (n.src = u.src);
+                    }
+                  }
+                  break;
+                case 6:
+                  break;
+                case 4:
+                  break;
+                case 12:
+                  break;
+                case 13:
+                  if (t.memoizedState === null) {
+                    var d = t.alternate;
+                    if (d !== null) {
+                      var c = d.memoizedState;
+                      if (c !== null) {
+                        var g = c.dehydrated;
+                        g !== null && Ir(g);
+                      }
+                    }
+                  }
+                  break;
+                case 19:
+                case 17:
+                case 21:
+                case 22:
+                case 23:
+                case 25:
+                  break;
+                default:
+                  throw Error(L(163));
+              }
+            je || (t.flags & 512 && ni(t));
+          } catch (v) {
+            Ce(t, t.return, v);
+          }
+        }
+        if (t === e) {
+          V = null;
+          break;
+        }
+        if (((n = t.sibling), n !== null)) {
+          ((n.return = t.return), (V = n));
+          break;
+        }
+        V = t.return;
+      }
+    }
+    function Iu(e) {
+      for (; V !== null;) {
+        var t = V;
+        if (t === e) {
+          V = null;
+          break;
+        }
+        var n = t.sibling;
+        if (n !== null) {
+          ((n.return = t.return), (V = n));
+          break;
+        }
+        V = t.return;
+      }
+    }
+    function Fu(e) {
+      for (; V !== null;) {
+        var t = V;
+        try {
+          switch (t.tag) {
+            case 0:
+            case 11:
+            case 15:
+              var n = t.return;
+              try {
+                Nl(4, t);
+              } catch (u) {
+                Ce(t, n, u);
+              }
+              break;
+            case 1:
+              var r = t.stateNode;
+              if (typeof r.componentDidMount == "function") {
+                var l = t.return;
+                try {
+                  r.componentDidMount();
+                } catch (u) {
+                  Ce(t, l, u);
+                }
+              }
+              var a = t.return;
+              try {
+                ni(t);
+              } catch (u) {
+                Ce(t, a, u);
+              }
+              break;
+            case 5:
+              var i = t.return;
+              try {
+                ni(t);
+              } catch (u) {
+                Ce(t, i, u);
+              }
+          }
+        } catch (u) {
+          Ce(t, t.return, u);
+        }
+        if (t === e) {
+          V = null;
+          break;
+        }
+        var s = t.sibling;
+        if (s !== null) {
+          ((s.return = t.return), (V = s));
+          break;
+        }
+        V = t.return;
+      }
+    }
+    var mm = Math.ceil,
+      sl = Ut.ReactCurrentDispatcher,
+      $i = Ut.ReactCurrentOwner,
+      ct = Ut.ReactCurrentBatchConfig,
+      le = 0,
+      De = null,
+      Oe = null,
+      Ie = 0,
+      Ze = 0,
+      Hn = sn(0),
+      _e = 0,
+      Qr = null,
+      bn = 0,
+      xl = 0,
+      Hi = 0,
+      Or = null,
+      Qe = null,
+      Vi = 0,
+      nr = 1 / 0,
+      Pt = null,
+      ul = !1,
+      li = null,
+      tn = null,
+      Po = !1,
+      Yt = null,
+      cl = 0,
+      zr = 0,
+      ai = null,
+      jo = -1,
+      Uo = 0;
+    function Ve() {
+      return (le & 6) !== 0 ? Te() : jo !== -1 ? jo : (jo = Te());
+    }
+    function nn(e) {
+      return (e.mode & 1) === 0
+        ? 1
+        : (le & 2) !== 0 && Ie !== 0
+          ? Ie & -Ie
+          : qp.transition !== null
+            ? (Uo === 0 && (Uo = cc()), Uo)
+            : ((e = ue), e !== 0 || ((e = window.event), (e = e === void 0 ? 16 : gc(e.type))), e);
+    }
+    function Nt(e, t, n, r) {
+      if (50 < zr) throw ((zr = 0), (ai = null), Error(L(185)));
+      (Kr(e, n, r),
+        ((le & 2) === 0 || e !== De) &&
+          (e === De && ((le & 2) === 0 && (xl |= n), _e === 4 && Kt(e, Ie)),
+          Xe(e, r),
+          n === 1 && le === 0 && (t.mode & 1) === 0 && ((nr = Te() + 500), yl && un())));
+    }
+    function Xe(e, t) {
+      var n = e.callbackNode;
+      Zf(e, t);
+      var r = Ko(e, e === De ? Ie : 0);
+      if (r === 0) (n !== null && Vs(n), (e.callbackNode = null), (e.callbackPriority = 0));
+      else if (((t = r & -r), e.callbackPriority !== t)) {
+        if ((n != null && Vs(n), t === 1))
+          (e.tag === 0 ? Xp(Lu.bind(null, e)) : Fc(Lu.bind(null, e)),
+            Qp(function () {
+              (le & 6) === 0 && un();
+            }),
+            (n = null));
+        else {
+          switch (dc(r)) {
+            case 1:
+              n = vi;
+              break;
+            case 4:
+              n = sc;
+              break;
+            case 16:
+              n = Qo;
+              break;
+            case 536870912:
+              n = uc;
+              break;
+            default:
+              n = Qo;
+          }
+          n = Md(n, Td.bind(null, e));
+        }
+        ((e.callbackPriority = t), (e.callbackNode = n));
+      }
+    }
+    function Td(e, t) {
+      if (((jo = -1), (Uo = 0), (le & 6) !== 0)) throw Error(L(327));
+      var n = e.callbackNode;
+      if (Yn() && e.callbackNode !== n) return null;
+      var r = Ko(e, e === De ? Ie : 0);
+      if (r === 0) return null;
+      if ((r & 30) !== 0 || (r & e.expiredLanes) !== 0 || t) t = dl(e, r);
+      else {
+        t = r;
+        var l = le;
+        le |= 2;
+        var a = zd();
+        (De !== e || Ie !== t) && ((Pt = null), (nr = Te() + 500), yn(e, t));
+        do
+          try {
+            gm();
+            break;
+          } catch (s) {
+            Od(e, s);
+          }
+        while (!0);
+        (zi(),
+          (sl.current = a),
+          (le = l),
+          Oe !== null ? (t = 0) : ((De = null), (Ie = 0), (t = _e)));
+      }
+      if (t !== 0) {
+        if ((t === 2 && ((l = Da(e)), l !== 0 && ((r = l), (t = ii(e, l)))), t === 1))
+          throw ((n = Qr), yn(e, 0), Kt(e, r), Xe(e, Te()), n);
+        if (t === 6) Kt(e, r);
+        else {
+          if (
+            ((l = e.current.alternate),
+            (r & 30) === 0 &&
+              !hm(l) &&
+              ((t = dl(e, r)),
+              t === 2 && ((a = Da(e)), a !== 0 && ((r = a), (t = ii(e, a)))),
+              t === 1))
+          )
+            throw ((n = Qr), yn(e, 0), Kt(e, r), Xe(e, Te()), n);
+          switch (((e.finishedWork = l), (e.finishedLanes = r), t)) {
+            case 0:
+            case 1:
+              throw Error(L(345));
+            case 2:
+              mn(e, Qe, Pt);
+              break;
+            case 3:
+              if ((Kt(e, r), (r & 130023424) === r && ((t = Vi + 500 - Te()), 10 < t))) {
+                if (Ko(e, 0) !== 0) break;
+                if (((l = e.suspendedLanes), (l & r) !== r)) {
+                  (Ve(), (e.pingedLanes |= e.suspendedLanes & l));
+                  break;
+                }
+                e.timeoutHandle = Ua(mn.bind(null, e, Qe, Pt), t);
+                break;
+              }
+              mn(e, Qe, Pt);
+              break;
+            case 4:
+              if ((Kt(e, r), (r & 4194240) === r)) break;
+              for (t = e.eventTimes, l = -1; 0 < r;) {
+                var i = 31 - kt(r);
+                ((a = 1 << i), (i = t[i]), i > l && (l = i), (r &= ~a));
+              }
+              if (
+                ((r = l),
+                (r = Te() - r),
+                (r =
+                  (120 > r
+                    ? 120
+                    : 480 > r
+                      ? 480
+                      : 1080 > r
+                        ? 1080
+                        : 1920 > r
+                          ? 1920
+                          : 3e3 > r
+                            ? 3e3
+                            : 4320 > r
+                              ? 4320
+                              : 1960 * mm(r / 1960)) - r),
+                10 < r)
+              ) {
+                e.timeoutHandle = Ua(mn.bind(null, e, Qe, Pt), r);
+                break;
+              }
+              mn(e, Qe, Pt);
+              break;
+            case 5:
+              mn(e, Qe, Pt);
+              break;
+            default:
+              throw Error(L(329));
+          }
+        }
+      }
+      return (Xe(e, Te()), e.callbackNode === n ? Td.bind(null, e) : null);
+    }
+    function ii(e, t) {
+      var n = Or;
+      return (
+        e.current.memoizedState.isDehydrated && (yn(e, t).flags |= 256),
+        (e = dl(e, t)),
+        e !== 2 && ((t = Qe), (Qe = n), t !== null && si(t)),
+        e
+      );
+    }
+    function si(e) {
+      Qe === null ? (Qe = e) : Qe.push.apply(Qe, e);
+    }
+    function hm(e) {
+      for (var t = e; ;) {
+        if (t.flags & 16384) {
+          var n = t.updateQueue;
+          if (n !== null && ((n = n.stores), n !== null))
+            for (var r = 0; r < n.length; r++) {
+              var l = n[r],
+                a = l.getSnapshot;
+              l = l.value;
+              try {
+                if (!xt(a(), l)) return !1;
+              } catch {
+                return !1;
+              }
+            }
+        }
+        if (((n = t.child), t.subtreeFlags & 16384 && n !== null)) ((n.return = t), (t = n));
+        else {
+          if (t === e) break;
+          for (; t.sibling === null;) {
+            if (t.return === null || t.return === e) return !0;
+            t = t.return;
+          }
+          ((t.sibling.return = t.return), (t = t.sibling));
+        }
+      }
+      return !0;
+    }
+    function Kt(e, t) {
+      for (
+        t &= ~Hi, t &= ~xl, e.suspendedLanes |= t, e.pingedLanes &= ~t, e = e.expirationTimes;
+        0 < t;
+      ) {
+        var n = 31 - kt(t),
+          r = 1 << n;
+        ((e[n] = -1), (t &= ~r));
+      }
+    }
+    function Lu(e) {
+      if ((le & 6) !== 0) throw Error(L(327));
+      Yn();
+      var t = Ko(e, 0);
+      if ((t & 1) === 0) return (Xe(e, Te()), null);
+      var n = dl(e, t);
+      if (e.tag !== 0 && n === 2) {
+        var r = Da(e);
+        r !== 0 && ((t = r), (n = ii(e, r)));
+      }
+      if (n === 1) throw ((n = Qr), yn(e, 0), Kt(e, t), Xe(e, Te()), n);
+      if (n === 6) throw Error(L(345));
+      return (
+        (e.finishedWork = e.current.alternate),
+        (e.finishedLanes = t),
+        mn(e, Qe, Pt),
+        Xe(e, Te()),
+        null
+      );
+    }
+    function Wi(e, t) {
+      var n = le;
+      le |= 1;
+      try {
+        return e(t);
+      } finally {
+        ((le = n), le === 0 && ((nr = Te() + 500), yl && un()));
+      }
+    }
+    function Sn(e) {
+      Yt !== null && Yt.tag === 0 && (le & 6) === 0 && Yn();
+      var t = le;
+      le |= 1;
+      var n = ct.transition,
+        r = ue;
+      try {
+        if (((ct.transition = null), (ue = 1), e)) return e();
+      } finally {
+        ((ue = r), (ct.transition = n), (le = t), (le & 6) === 0 && un());
+      }
+    }
+    function Qi() {
+      ((Ze = Hn.current), ve(Hn));
+    }
+    function yn(e, t) {
+      ((e.finishedWork = null), (e.finishedLanes = 0));
+      var n = e.timeoutHandle;
+      if ((n !== -1 && ((e.timeoutHandle = -1), Wp(n)), Oe !== null))
+        for (n = Oe.return; n !== null;) {
+          var r = n;
+          switch ((Ei(r), r.tag)) {
+            case 1:
+              ((r = r.type.childContextTypes), r != null && Jo());
+              break;
+            case 3:
+              (er(), ve(Ge), ve(Ue), Ii());
+              break;
+            case 5:
+              Mi(r);
+              break;
+            case 4:
+              er();
+              break;
+            case 13:
+              ve(Ne);
+              break;
+            case 19:
+              ve(Ne);
+              break;
+            case 10:
+              Ri(r.type._context);
+              break;
+            case 22:
+            case 23:
+              Qi();
+          }
+          n = n.return;
+        }
+      if (
+        ((De = e),
+        (Oe = e = rn(e.current, null)),
+        (Ie = Ze = t),
+        (_e = 0),
+        (Qr = null),
+        (Hi = xl = bn = 0),
+        (Qe = Or = null),
+        vn !== null)
+      ) {
+        for (t = 0; t < vn.length; t++)
+          if (((n = vn[t]), (r = n.interleaved), r !== null)) {
+            n.interleaved = null;
+            var l = r.next,
+              a = n.pending;
+            if (a !== null) {
+              var i = a.next;
+              ((a.next = l), (r.next = i));
+            }
+            n.pending = r;
+          }
+        vn = null;
+      }
+      return e;
+    }
+    function Od(e, t) {
+      do {
+        var n = Oe;
+        try {
+          if ((zi(), (Lo.current = il), al)) {
+            for (var r = xe.memoizedState; r !== null;) {
+              var l = r.queue;
+              (l !== null && (l.pending = null), (r = r.next));
+            }
+            al = !1;
+          }
+          if (
+            ((xn = 0),
+            (Pe = Re = xe = null),
+            (Er = !1),
+            (Hr = 0),
+            ($i.current = null),
+            n === null || n.return === null)
+          ) {
+            ((_e = 1), (Qr = t), (Oe = null));
+            break;
+          }
+          e: {
+            var a = e,
+              i = n.return,
+              s = n,
+              u = t;
+            if (
+              ((t = Ie),
+              (s.flags |= 32768),
+              u !== null && typeof u == "object" && typeof u.then == "function")
+            ) {
+              var d = u,
+                c = s,
+                g = c.tag;
+              if ((c.mode & 1) === 0 && (g === 0 || g === 11 || g === 15)) {
+                var v = c.alternate;
+                v
+                  ? ((c.updateQueue = v.updateQueue),
+                    (c.memoizedState = v.memoizedState),
+                    (c.lanes = v.lanes))
+                  : ((c.updateQueue = null), (c.memoizedState = null));
+              }
+              var y = Su(i);
+              if (y !== null) {
+                ((y.flags &= -257), Cu(y, i, s, a, t), y.mode & 1 && bu(a, d, t), (t = y), (u = d));
+                var E = t.updateQueue;
+                if (E === null) {
+                  var k = new Set();
+                  (k.add(u), (t.updateQueue = k));
+                } else E.add(u);
+                break e;
+              } else {
+                if ((t & 1) === 0) {
+                  (bu(a, d, t), Ki());
+                  break e;
+                }
+                u = Error(L(426));
+              }
+            } else if (ge && s.mode & 1) {
+              var O = Su(i);
+              if (O !== null) {
+                ((O.flags & 65536) === 0 && (O.flags |= 256), Cu(O, i, s, a, t), Ti(tr(u, s)));
+                break e;
+              }
+            }
+            ((a = u = tr(u, s)),
+              _e !== 4 && (_e = 2),
+              Or === null ? (Or = [a]) : Or.push(a),
+              (a = i));
+            do {
+              switch (a.tag) {
+                case 3:
+                  ((a.flags |= 65536), (t &= -t), (a.lanes |= t));
+                  var f = dd(a, u, t);
+                  gu(a, f);
+                  break e;
+                case 1:
+                  s = u;
+                  var p = a.type,
+                    m = a.stateNode;
+                  if (
+                    (a.flags & 128) === 0 &&
+                    (typeof p.getDerivedStateFromError == "function" ||
+                      (m !== null &&
+                        typeof m.componentDidCatch == "function" &&
+                        (tn === null || !tn.has(m))))
+                  ) {
+                    ((a.flags |= 65536), (t &= -t), (a.lanes |= t));
+                    var w = fd(a, s, t);
+                    gu(a, w);
+                    break e;
+                  }
+              }
+              a = a.return;
+            } while (a !== null);
+          }
+          _d(n);
+        } catch (x) {
+          ((t = x), Oe === n && n !== null && (Oe = n = n.return));
+          continue;
+        }
+        break;
+      } while (!0);
+    }
+    function zd() {
+      var e = sl.current;
+      return ((sl.current = il), e === null ? il : e);
+    }
+    function Ki() {
+      ((_e === 0 || _e === 3 || _e === 2) && (_e = 4),
+        De === null || ((bn & 268435455) === 0 && (xl & 268435455) === 0) || Kt(De, Ie));
+    }
+    function dl(e, t) {
+      var n = le;
+      le |= 2;
+      var r = zd();
+      (De !== e || Ie !== t) && ((Pt = null), yn(e, t));
+      do
+        try {
+          vm();
+          break;
+        } catch (l) {
+          Od(e, l);
+        }
+      while (!0);
+      if ((zi(), (le = n), (sl.current = r), Oe !== null)) throw Error(L(261));
+      return ((De = null), (Ie = 0), _e);
+    }
+    function vm() {
+      for (; Oe !== null;) Rd(Oe);
+    }
+    function gm() {
+      for (; Oe !== null && !Vf();) Rd(Oe);
+    }
+    function Rd(e) {
+      var t = Dd(e.alternate, e, Ze);
+      ((e.memoizedProps = e.pendingProps), t === null ? _d(e) : (Oe = t), ($i.current = null));
+    }
+    function _d(e) {
+      var t = e;
+      do {
+        var n = t.alternate;
+        if (((e = t.return), (t.flags & 32768) === 0)) {
+          if (((n = um(n, t, Ze)), n !== null)) {
+            Oe = n;
+            return;
+          }
+        } else {
+          if (((n = cm(n, t)), n !== null)) {
+            ((n.flags &= 32767), (Oe = n));
+            return;
+          }
+          if (e !== null) ((e.flags |= 32768), (e.subtreeFlags = 0), (e.deletions = null));
+          else {
+            ((_e = 6), (Oe = null));
+            return;
+          }
+        }
+        if (((t = t.sibling), t !== null)) {
+          Oe = t;
+          return;
+        }
+        Oe = t = e;
+      } while (t !== null);
+      _e === 0 && (_e = 5);
+    }
+    function mn(e, t, n) {
+      var r = ue,
+        l = ct.transition;
+      try {
+        ((ct.transition = null), (ue = 1), ym(e, t, n, r));
+      } finally {
+        ((ct.transition = l), (ue = r));
+      }
+      return null;
+    }
+    function ym(e, t, n, r) {
+      do Yn();
+      while (Yt !== null);
+      if ((le & 6) !== 0) throw Error(L(327));
+      n = e.finishedWork;
+      var l = e.finishedLanes;
+      if (n === null) return null;
+      if (((e.finishedWork = null), (e.finishedLanes = 0), n === e.current)) throw Error(L(177));
+      ((e.callbackNode = null), (e.callbackPriority = 0));
+      var a = n.lanes | n.childLanes;
+      if (
+        (ep(e, a),
+        e === De && ((Oe = De = null), (Ie = 0)),
+        ((n.subtreeFlags & 2064) === 0 && (n.flags & 2064) === 0) ||
+          Po ||
+          ((Po = !0),
+          Md(Qo, function () {
+            return (Yn(), null);
+          })),
+        (a = (n.flags & 15990) !== 0),
+        (n.subtreeFlags & 15990) !== 0 || a)
+      ) {
+        ((a = ct.transition), (ct.transition = null));
+        var i = ue;
+        ue = 1;
+        var s = le;
+        ((le |= 4),
+          ($i.current = null),
+          fm(e, n),
+          Cd(n, e),
+          jp(Ba),
+          (Go = !!Aa),
+          (Ba = Aa = null),
+          (e.current = n),
+          pm(n, e, l),
+          Wf(),
+          (le = s),
+          (ue = i),
+          (ct.transition = a));
+      } else e.current = n;
+      if (
+        (Po && ((Po = !1), (Yt = e), (cl = l)),
+        (a = e.pendingLanes),
+        a === 0 && (tn = null),
+        Gf(n.stateNode, r),
+        Xe(e, Te()),
+        t !== null)
+      )
+        for (r = e.onRecoverableError, n = 0; n < t.length; n++)
+          ((l = t[n]), r(l.value, { componentStack: l.stack, digest: l.digest }));
+      if (ul) throw ((ul = !1), (e = li), (li = null), e);
+      return (
+        (cl & 1) !== 0 && e.tag !== 0 && Yn(),
+        (a = e.pendingLanes),
+        (a & 1) !== 0 ? (e === ai ? zr++ : ((zr = 0), (ai = e))) : (zr = 0),
+        un(),
+        null
+      );
+    }
+    function Yn() {
+      if (Yt !== null) {
+        var e = dc(cl),
+          t = ct.transition,
+          n = ue;
+        try {
+          if (((ct.transition = null), (ue = 16 > e ? 16 : e), Yt === null)) var r = !1;
+          else {
+            if (((e = Yt), (Yt = null), (cl = 0), (le & 6) !== 0)) throw Error(L(331));
+            var l = le;
+            for (le |= 4, V = e.current; V !== null;) {
+              var a = V,
+                i = a.child;
+              if ((V.flags & 16) !== 0) {
+                var s = a.deletions;
+                if (s !== null) {
+                  for (var u = 0; u < s.length; u++) {
+                    var d = s[u];
+                    for (V = d; V !== null;) {
+                      var c = V;
+                      switch (c.tag) {
+                        case 0:
+                        case 11:
+                        case 15:
+                          Tr(8, c, a);
+                      }
+                      var g = c.child;
+                      if (g !== null) ((g.return = c), (V = g));
+                      else
+                        for (; V !== null;) {
+                          c = V;
+                          var v = c.sibling,
+                            y = c.return;
+                          if ((xd(c), c === d)) {
+                            V = null;
+                            break;
+                          }
+                          if (v !== null) {
+                            ((v.return = y), (V = v));
+                            break;
+                          }
+                          V = y;
+                        }
+                    }
+                  }
+                  var E = a.alternate;
+                  if (E !== null) {
+                    var k = E.child;
+                    if (k !== null) {
+                      E.child = null;
+                      do {
+                        var O = k.sibling;
+                        ((k.sibling = null), (k = O));
+                      } while (k !== null);
+                    }
+                  }
+                  V = a;
+                }
+              }
+              if ((a.subtreeFlags & 2064) !== 0 && i !== null) ((i.return = a), (V = i));
+              else
+                e: for (; V !== null;) {
+                  if (((a = V), (a.flags & 2048) !== 0))
+                    switch (a.tag) {
+                      case 0:
+                      case 11:
+                      case 15:
+                        Tr(9, a, a.return);
+                    }
+                  var f = a.sibling;
+                  if (f !== null) {
+                    ((f.return = a.return), (V = f));
+                    break e;
+                  }
+                  V = a.return;
+                }
+            }
+            var p = e.current;
+            for (V = p; V !== null;) {
+              i = V;
+              var m = i.child;
+              if ((i.subtreeFlags & 2064) !== 0 && m !== null) ((m.return = i), (V = m));
+              else
+                e: for (i = p; V !== null;) {
+                  if (((s = V), (s.flags & 2048) !== 0))
+                    try {
+                      switch (s.tag) {
+                        case 0:
+                        case 11:
+                        case 15:
+                          Nl(9, s);
+                      }
+                    } catch (x) {
+                      Ce(s, s.return, x);
+                    }
+                  if (s === i) {
+                    V = null;
+                    break e;
+                  }
+                  var w = s.sibling;
+                  if (w !== null) {
+                    ((w.return = s.return), (V = w));
+                    break e;
+                  }
+                  V = s.return;
+                }
+            }
+            if (((le = l), un(), Ot && typeof Ot.onPostCommitFiberRoot == "function"))
+              try {
+                Ot.onPostCommitFiberRoot(pl, e);
+              } catch {}
+            r = !0;
+          }
+          return r;
+        } finally {
+          ((ue = n), (ct.transition = t));
+        }
+      }
+      return !1;
+    }
+    function Au(e, t, n) {
+      ((t = tr(n, t)),
+        (t = dd(e, t, 1)),
+        (e = en(e, t, 1)),
+        (t = Ve()),
+        e !== null && (Kr(e, 1, t), Xe(e, t)));
+    }
+    function Ce(e, t, n) {
+      if (e.tag === 3) Au(e, e, n);
+      else
+        for (; t !== null;) {
+          if (t.tag === 3) {
+            Au(t, e, n);
+            break;
+          } else if (t.tag === 1) {
+            var r = t.stateNode;
+            if (
+              typeof t.type.getDerivedStateFromError == "function" ||
+              (typeof r.componentDidCatch == "function" && (tn === null || !tn.has(r)))
+            ) {
+              ((e = tr(n, e)),
+                (e = fd(t, e, 1)),
+                (t = en(t, e, 1)),
+                (e = Ve()),
+                t !== null && (Kr(t, 1, e), Xe(t, e)));
+              break;
+            }
+          }
+          t = t.return;
+        }
+    }
+    function wm(e, t, n) {
+      var r = e.pingCache;
+      (r !== null && r.delete(t),
+        (t = Ve()),
+        (e.pingedLanes |= e.suspendedLanes & n),
+        De === e &&
+          (Ie & n) === n &&
+          (_e === 4 || (_e === 3 && (Ie & 130023424) === Ie && 500 > Te() - Vi)
+            ? yn(e, 0)
+            : (Hi |= n)),
+        Xe(e, t));
+    }
+    function Pd(e, t) {
+      t === 0 &&
+        ((e.mode & 1) === 0
+          ? (t = 1)
+          : ((t = yo), (yo <<= 1), (yo & 130023424) === 0 && (yo = 4194304)));
+      var n = Ve();
+      ((e = Bt(e, t)), e !== null && (Kr(e, t, n), Xe(e, n)));
+    }
+    function km(e) {
+      var t = e.memoizedState,
+        n = 0;
+      (t !== null && (n = t.retryLane), Pd(e, n));
+    }
+    function Nm(e, t) {
+      var n = 0;
+      switch (e.tag) {
+        case 13:
+          var r = e.stateNode,
+            l = e.memoizedState;
+          l !== null && (n = l.retryLane);
+          break;
+        case 19:
+          r = e.stateNode;
+          break;
+        default:
+          throw Error(L(314));
+      }
+      (r !== null && r.delete(t), Pd(e, n));
+    }
+    var Dd;
+    Dd = function (e, t, n) {
+      if (e !== null)
+        if (e.memoizedProps !== t.pendingProps || Ge.current) Ke = !0;
+        else {
+          if ((e.lanes & n) === 0 && (t.flags & 128) === 0) return ((Ke = !1), sm(e, t, n));
+          Ke = (e.flags & 131072) !== 0;
+        }
+      else ((Ke = !1), ge && (t.flags & 1048576) !== 0 && Lc(t, tl, t.index));
+      switch (((t.lanes = 0), t.tag)) {
+        case 2:
+          var r = t.type;
+          (Bo(e, t), (e = t.pendingProps));
+          var l = qn(t, Ue.current);
+          (Gn(t, n), (l = Li(null, t, r, e, l, n)));
+          var a = Ai();
+          return (
+            (t.flags |= 1),
+            typeof l == "object" &&
+            l !== null &&
+            typeof l.render == "function" &&
+            l.$$typeof === void 0
+              ? ((t.tag = 1),
+                (t.memoizedState = null),
+                (t.updateQueue = null),
+                Ye(r) ? ((a = !0), Zo(t)) : (a = !1),
+                (t.memoizedState = l.state !== null && l.state !== void 0 ? l.state : null),
+                Pi(t),
+                (l.updater = kl),
+                (t.stateNode = l),
+                (l._reactInternals = t),
+                Ga(t, r, e, n),
+                (t = qa(null, t, r, !0, a, n)))
+              : ((t.tag = 0), ge && a && Ci(t), He(null, t, l, n), (t = t.child)),
+            t
+          );
+        case 16:
+          r = t.elementType;
+          e: {
+            switch (
+              (Bo(e, t),
+              (e = t.pendingProps),
+              (l = r._init),
+              (r = l(r._payload)),
+              (t.type = r),
+              (l = t.tag = bm(r)),
+              (e = gt(r, e)),
+              l)
+            ) {
+              case 0:
+                t = Xa(null, t, r, e, n);
+                break e;
+              case 1:
+                t = Ou(null, t, r, e, n);
+                break e;
+              case 11:
+                t = Eu(null, t, r, e, n);
+                break e;
+              case 14:
+                t = Tu(null, t, r, gt(r.type, e), n);
+                break e;
+            }
+            throw Error(L(306, r, ""));
+          }
+          return t;
+        case 0:
+          return (
+            (r = t.type),
+            (l = t.pendingProps),
+            (l = t.elementType === r ? l : gt(r, l)),
+            Xa(e, t, r, l, n)
+          );
+        case 1:
+          return (
+            (r = t.type),
+            (l = t.pendingProps),
+            (l = t.elementType === r ? l : gt(r, l)),
+            Ou(e, t, r, l, n)
+          );
+        case 3:
+          e: {
+            if ((vd(t), e === null)) throw Error(L(387));
+            ((r = t.pendingProps),
+              (a = t.memoizedState),
+              (l = a.element),
+              Hc(e, t),
+              ol(t, r, null, n));
+            var i = t.memoizedState;
+            if (((r = i.element), a.isDehydrated))
+              if (
+                ((a = {
+                  element: r,
+                  isDehydrated: !1,
+                  cache: i.cache,
+                  pendingSuspenseBoundaries: i.pendingSuspenseBoundaries,
+                  transitions: i.transitions,
+                }),
+                (t.updateQueue.baseState = a),
+                (t.memoizedState = a),
+                t.flags & 256)
+              ) {
+                ((l = tr(Error(L(423)), t)), (t = zu(e, t, r, n, l)));
+                break e;
+              } else if (r !== l) {
+                ((l = tr(Error(L(424)), t)), (t = zu(e, t, r, n, l)));
+                break e;
+              } else
+                for (
+                  et = Zt(t.stateNode.containerInfo.firstChild),
+                    tt = t,
+                    ge = !0,
+                    wt = null,
+                    n = Uc(t, null, r, n),
+                    t.child = n;
+                  n;
+                )
+                  ((n.flags = (n.flags & -3) | 4096), (n = n.sibling));
+            else {
+              if ((Jn(), r === l)) {
+                t = jt(e, t, n);
+                break e;
+              }
+              He(e, t, r, n);
+            }
+            t = t.child;
+          }
+          return t;
+        case 5:
+          return (
+            Vc(t),
+            e === null && Wa(t),
+            (r = t.type),
+            (l = t.pendingProps),
+            (a = e !== null ? e.memoizedProps : null),
+            (i = l.children),
+            ja(r, l) ? (i = null) : a !== null && ja(r, a) && (t.flags |= 32),
+            hd(e, t),
+            He(e, t, i, n),
+            t.child
+          );
+        case 6:
+          return (e === null && Wa(t), null);
+        case 13:
+          return gd(e, t, n);
+        case 4:
+          return (
+            Di(t, t.stateNode.containerInfo),
+            (r = t.pendingProps),
+            e === null ? (t.child = Zn(t, null, r, n)) : He(e, t, r, n),
+            t.child
+          );
+        case 11:
+          return (
+            (r = t.type),
+            (l = t.pendingProps),
+            (l = t.elementType === r ? l : gt(r, l)),
+            Eu(e, t, r, l, n)
+          );
+        case 7:
+          return (He(e, t, t.pendingProps, n), t.child);
+        case 8:
+          return (He(e, t, t.pendingProps.children, n), t.child);
+        case 12:
+          return (He(e, t, t.pendingProps.children, n), t.child);
+        case 10:
+          e: {
+            if (
+              ((r = t.type._context),
+              (l = t.pendingProps),
+              (a = t.memoizedProps),
+              (i = l.value),
+              fe(nl, r._currentValue),
+              (r._currentValue = i),
+              a !== null)
+            )
+              if (xt(a.value, i)) {
+                if (a.children === l.children && !Ge.current) {
+                  t = jt(e, t, n);
+                  break e;
+                }
+              } else
+                for (a = t.child, a !== null && (a.return = t); a !== null;) {
+                  var s = a.dependencies;
+                  if (s !== null) {
+                    i = a.child;
+                    for (var u = s.firstContext; u !== null;) {
+                      if (u.context === r) {
+                        if (a.tag === 1) {
+                          ((u = Ft(-1, n & -n)), (u.tag = 2));
+                          var d = a.updateQueue;
+                          if (d !== null) {
+                            d = d.shared;
+                            var c = d.pending;
+                            (c === null ? (u.next = u) : ((u.next = c.next), (c.next = u)),
+                              (d.pending = u));
+                          }
+                        }
+                        ((a.lanes |= n),
+                          (u = a.alternate),
+                          u !== null && (u.lanes |= n),
+                          Qa(a.return, n, t),
+                          (s.lanes |= n));
+                        break;
+                      }
+                      u = u.next;
+                    }
+                  } else if (a.tag === 10) i = a.type === t.type ? null : a.child;
+                  else if (a.tag === 18) {
+                    if (((i = a.return), i === null)) throw Error(L(341));
+                    ((i.lanes |= n),
+                      (s = i.alternate),
+                      s !== null && (s.lanes |= n),
+                      Qa(i, n, t),
+                      (i = a.sibling));
+                  } else i = a.child;
+                  if (i !== null) i.return = a;
+                  else
+                    for (i = a; i !== null;) {
+                      if (i === t) {
+                        i = null;
+                        break;
+                      }
+                      if (((a = i.sibling), a !== null)) {
+                        ((a.return = i.return), (i = a));
+                        break;
+                      }
+                      i = i.return;
+                    }
+                  a = i;
+                }
+            (He(e, t, l.children, n), (t = t.child));
+          }
+          return t;
+        case 9:
+          return (
+            (l = t.type),
+            (r = t.pendingProps.children),
+            Gn(t, n),
+            (l = dt(l)),
+            (r = r(l)),
+            (t.flags |= 1),
+            He(e, t, r, n),
+            t.child
+          );
+        case 14:
+          return (
+            (r = t.type),
+            (l = gt(r, t.pendingProps)),
+            (l = gt(r.type, l)),
+            Tu(e, t, r, l, n)
+          );
+        case 15:
+          return pd(e, t, t.type, t.pendingProps, n);
+        case 17:
+          return (
+            (r = t.type),
+            (l = t.pendingProps),
+            (l = t.elementType === r ? l : gt(r, l)),
+            Bo(e, t),
+            (t.tag = 1),
+            Ye(r) ? ((e = !0), Zo(t)) : (e = !1),
+            Gn(t, n),
+            cd(t, r, l),
+            Ga(t, r, l, n),
+            qa(null, t, r, !0, e, n)
+          );
+        case 19:
+          return yd(e, t, n);
+        case 22:
+          return md(e, t, n);
+      }
+      throw Error(L(156, t.tag));
+    };
+    function Md(e, t) {
+      return ic(e, t);
+    }
+    function xm(e, t, n, r) {
+      ((this.tag = e),
+        (this.key = n),
+        (this.sibling =
+          this.child =
+          this.return =
+          this.stateNode =
+          this.type =
+          this.elementType =
+            null),
+        (this.index = 0),
+        (this.ref = null),
+        (this.pendingProps = t),
+        (this.dependencies = this.memoizedState = this.updateQueue = this.memoizedProps = null),
+        (this.mode = r),
+        (this.subtreeFlags = this.flags = 0),
+        (this.deletions = null),
+        (this.childLanes = this.lanes = 0),
+        (this.alternate = null));
+    }
+    function ut(e, t, n, r) {
+      return new xm(e, t, n, r);
+    }
+    function Gi(e) {
+      return ((e = e.prototype), !(!e || !e.isReactComponent));
+    }
+    function bm(e) {
+      if (typeof e == "function") return Gi(e) ? 1 : 0;
+      if (e != null) {
+        if (((e = e.$$typeof), e === pi)) return 11;
+        if (e === mi) return 14;
+      }
+      return 2;
+    }
+    function rn(e, t) {
+      var n = e.alternate;
+      return (
+        n === null
+          ? ((n = ut(e.tag, t, e.key, e.mode)),
+            (n.elementType = e.elementType),
+            (n.type = e.type),
+            (n.stateNode = e.stateNode),
+            (n.alternate = e),
+            (e.alternate = n))
+          : ((n.pendingProps = t),
+            (n.type = e.type),
+            (n.flags = 0),
+            (n.subtreeFlags = 0),
+            (n.deletions = null)),
+        (n.flags = e.flags & 14680064),
+        (n.childLanes = e.childLanes),
+        (n.lanes = e.lanes),
+        (n.child = e.child),
+        (n.memoizedProps = e.memoizedProps),
+        (n.memoizedState = e.memoizedState),
+        (n.updateQueue = e.updateQueue),
+        (t = e.dependencies),
+        (n.dependencies = t === null ? null : { lanes: t.lanes, firstContext: t.firstContext }),
+        (n.sibling = e.sibling),
+        (n.index = e.index),
+        (n.ref = e.ref),
+        n
+      );
+    }
+    function $o(e, t, n, r, l, a) {
+      var i = 2;
+      if (((r = e), typeof e == "function")) Gi(e) && (i = 1);
+      else if (typeof e == "string") i = 5;
+      else
+        e: switch (e) {
+          case Dn:
+            return wn(n.children, l, a, t);
+          case fi:
+            ((i = 8), (l |= 8));
+            break;
+          case ya:
+            return ((e = ut(12, n, t, l | 2)), (e.elementType = ya), (e.lanes = a), e);
+          case wa:
+            return ((e = ut(13, n, t, l)), (e.elementType = wa), (e.lanes = a), e);
+          case ka:
+            return ((e = ut(19, n, t, l)), (e.elementType = ka), (e.lanes = a), e);
+          case Vu:
+            return bl(n, l, a, t);
+          default:
+            if (typeof e == "object" && e !== null)
+              switch (e.$$typeof) {
+                case $u:
+                  i = 10;
+                  break e;
+                case Hu:
+                  i = 9;
+                  break e;
+                case pi:
+                  i = 11;
+                  break e;
+                case mi:
+                  i = 14;
+                  break e;
+                case Vt:
+                  ((i = 16), (r = null));
+                  break e;
+              }
+            throw Error(L(130, e == null ? e : typeof e, ""));
+        }
+      return ((t = ut(i, n, t, l)), (t.elementType = e), (t.type = r), (t.lanes = a), t);
+    }
+    function wn(e, t, n, r) {
+      return ((e = ut(7, e, r, t)), (e.lanes = n), e);
+    }
+    function bl(e, t, n, r) {
+      return (
+        (e = ut(22, e, r, t)),
+        (e.elementType = Vu),
+        (e.lanes = n),
+        (e.stateNode = { isHidden: !1 }),
+        e
+      );
+    }
+    function ha(e, t, n) {
+      return ((e = ut(6, e, null, t)), (e.lanes = n), e);
+    }
+    function va(e, t, n) {
+      return (
+        (t = ut(4, e.children !== null ? e.children : [], e.key, t)),
+        (t.lanes = n),
+        (t.stateNode = {
+          containerInfo: e.containerInfo,
+          pendingChildren: null,
+          implementation: e.implementation,
+        }),
+        t
+      );
+    }
+    function Sm(e, t, n, r, l) {
+      ((this.tag = t),
+        (this.containerInfo = e),
+        (this.finishedWork = this.pingCache = this.current = this.pendingChildren = null),
+        (this.timeoutHandle = -1),
+        (this.callbackNode = this.pendingContext = this.context = null),
+        (this.callbackPriority = 0),
+        (this.eventTimes = Zl(0)),
+        (this.expirationTimes = Zl(-1)),
+        (this.entangledLanes =
+          this.finishedLanes =
+          this.mutableReadLanes =
+          this.expiredLanes =
+          this.pingedLanes =
+          this.suspendedLanes =
+          this.pendingLanes =
+            0),
+        (this.entanglements = Zl(0)),
+        (this.identifierPrefix = r),
+        (this.onRecoverableError = l),
+        (this.mutableSourceEagerHydrationData = null));
+    }
+    function Yi(e, t, n, r, l, a, i, s, u) {
+      return (
+        (e = new Sm(e, t, n, s, u)),
+        t === 1 ? ((t = 1), a === !0 && (t |= 8)) : (t = 0),
+        (a = ut(3, null, null, t)),
+        (e.current = a),
+        (a.stateNode = e),
+        (a.memoizedState = {
+          element: r,
+          isDehydrated: n,
+          cache: null,
+          transitions: null,
+          pendingSuspenseBoundaries: null,
+        }),
+        Pi(a),
+        e
+      );
+    }
+    function Cm(e, t, n) {
+      var r = 3 < arguments.length && arguments[3] !== void 0 ? arguments[3] : null;
+      return {
+        $$typeof: Pn,
+        key: r == null ? null : "" + r,
+        children: e,
+        containerInfo: t,
+        implementation: n,
+      };
+    }
+    function Id(e) {
+      if (!e) return ln;
+      e = e._reactInternals;
+      e: {
+        if (En(e) !== e || e.tag !== 1) throw Error(L(170));
+        var t = e;
+        do {
+          switch (t.tag) {
+            case 3:
+              t = t.stateNode.context;
+              break e;
+            case 1:
+              if (Ye(t.type)) {
+                t = t.stateNode.__reactInternalMemoizedMergedChildContext;
+                break e;
+              }
+          }
+          t = t.return;
+        } while (t !== null);
+        throw Error(L(171));
+      }
+      if (e.tag === 1) {
+        var n = e.type;
+        if (Ye(n)) return Ic(e, n, t);
+      }
+      return t;
+    }
+    function Fd(e, t, n, r, l, a, i, s, u) {
+      return (
+        (e = Yi(n, r, !0, e, l, a, i, s, u)),
+        (e.context = Id(null)),
+        (n = e.current),
+        (r = Ve()),
+        (l = nn(n)),
+        (a = Ft(r, l)),
+        (a.callback = t ?? null),
+        en(n, a, l),
+        (e.current.lanes = l),
+        Kr(e, l, r),
+        Xe(e, r),
+        e
+      );
+    }
+    function Sl(e, t, n, r) {
+      var l = t.current,
+        a = Ve(),
+        i = nn(l);
+      return (
+        (n = Id(n)),
+        t.context === null ? (t.context = n) : (t.pendingContext = n),
+        (t = Ft(a, i)),
+        (t.payload = { element: e }),
+        (r = r === void 0 ? null : r),
+        r !== null && (t.callback = r),
+        (e = en(l, t, i)),
+        e !== null && (Nt(e, l, i, a), Fo(e, l, i)),
+        i
+      );
+    }
+    function fl(e) {
+      return ((e = e.current), e.child ? (e.child.tag === 5, e.child.stateNode) : null);
+    }
+    function Bu(e, t) {
+      if (((e = e.memoizedState), e !== null && e.dehydrated !== null)) {
+        var n = e.retryLane;
+        e.retryLane = n !== 0 && n < t ? n : t;
+      }
+    }
+    function Xi(e, t) {
+      (Bu(e, t), (e = e.alternate) && Bu(e, t));
+    }
+    function Em() {
+      return null;
+    }
+    var Ld =
+      typeof reportError == "function"
+        ? reportError
+        : function (e) {
+            console.error(e);
+          };
+    function qi(e) {
+      this._internalRoot = e;
+    }
+    Cl.prototype.render = qi.prototype.render = function (e) {
+      var t = this._internalRoot;
+      if (t === null) throw Error(L(409));
+      Sl(e, t, null, null);
+    };
+    Cl.prototype.unmount = qi.prototype.unmount = function () {
+      var e = this._internalRoot;
+      if (e !== null) {
+        this._internalRoot = null;
+        var t = e.containerInfo;
+        (Sn(function () {
+          Sl(null, e, null, null);
+        }),
+          (t[At] = null));
+      }
+    };
+    function Cl(e) {
+      this._internalRoot = e;
+    }
+    Cl.prototype.unstable_scheduleHydration = function (e) {
+      if (e) {
+        var t = mc();
+        e = { blockedOn: null, target: e, priority: t };
+        for (var n = 0; n < Qt.length && t !== 0 && t < Qt[n].priority; n++);
+        (Qt.splice(n, 0, e), n === 0 && vc(e));
+      }
+    };
+    function Ji(e) {
+      return !(!e || (e.nodeType !== 1 && e.nodeType !== 9 && e.nodeType !== 11));
+    }
+    function El(e) {
+      return !(
+        !e ||
+        (e.nodeType !== 1 &&
+          e.nodeType !== 9 &&
+          e.nodeType !== 11 &&
+          (e.nodeType !== 8 || e.nodeValue !== " react-mount-point-unstable "))
+      );
+    }
+    function ju() {}
+    function Tm(e, t, n, r, l) {
+      if (l) {
+        if (typeof r == "function") {
+          var a = r;
+          r = function () {
+            var d = fl(i);
+            a.call(d);
+          };
+        }
+        var i = Fd(t, r, e, 0, null, !1, !1, "", ju);
+        return (
+          (e._reactRootContainer = i),
+          (e[At] = i.current),
+          Ar(e.nodeType === 8 ? e.parentNode : e),
+          Sn(),
+          i
+        );
+      }
+      for (; (l = e.lastChild);) e.removeChild(l);
+      if (typeof r == "function") {
+        var s = r;
+        r = function () {
+          var d = fl(u);
+          s.call(d);
+        };
+      }
+      var u = Yi(e, 0, !1, null, null, !1, !1, "", ju);
+      return (
+        (e._reactRootContainer = u),
+        (e[At] = u.current),
+        Ar(e.nodeType === 8 ? e.parentNode : e),
+        Sn(function () {
+          Sl(t, u, n, r);
+        }),
+        u
+      );
+    }
+    function Tl(e, t, n, r, l) {
+      var a = n._reactRootContainer;
+      if (a) {
+        var i = a;
+        if (typeof l == "function") {
+          var s = l;
+          l = function () {
+            var u = fl(i);
+            s.call(u);
+          };
+        }
+        Sl(t, i, e, l);
+      } else i = Tm(n, t, e, l, r);
+      return fl(i);
+    }
+    fc = function (e) {
+      switch (e.tag) {
+        case 3:
+          var t = e.stateNode;
+          if (t.current.memoizedState.isDehydrated) {
+            var n = wr(t.pendingLanes);
+            n !== 0 && (gi(t, n | 1), Xe(t, Te()), (le & 6) === 0 && ((nr = Te() + 500), un()));
+          }
+          break;
+        case 13:
+          (Sn(function () {
+            var r = Bt(e, 1);
+            if (r !== null) {
+              var l = Ve();
+              Nt(r, e, 1, l);
+            }
+          }),
+            Xi(e, 1));
+      }
+    };
+    yi = function (e) {
+      if (e.tag === 13) {
+        var t = Bt(e, 134217728);
+        if (t !== null) {
+          var n = Ve();
+          Nt(t, e, 134217728, n);
+        }
+        Xi(e, 134217728);
+      }
+    };
+    pc = function (e) {
+      if (e.tag === 13) {
+        var t = nn(e),
+          n = Bt(e, t);
+        if (n !== null) {
+          var r = Ve();
+          Nt(n, e, t, r);
+        }
+        Xi(e, t);
+      }
+    };
+    mc = function () {
+      return ue;
+    };
+    hc = function (e, t) {
+      var n = ue;
+      try {
+        return ((ue = e), t());
+      } finally {
+        ue = n;
+      }
+    };
+    Ra = function (e, t, n) {
+      switch (t) {
+        case "input":
+          if ((ba(e, n), (t = n.name), n.type === "radio" && t != null)) {
+            for (n = e; n.parentNode;) n = n.parentNode;
+            for (
+              n = n.querySelectorAll("input[name=" + JSON.stringify("" + t) + '][type="radio"]'),
+                t = 0;
+              t < n.length;
+              t++
+            ) {
+              var r = n[t];
+              if (r !== e && r.form === e.form) {
+                var l = gl(r);
+                if (!l) throw Error(L(90));
+                (Qu(r), ba(r, l));
+              }
+            }
+          }
+          break;
+        case "textarea":
+          Gu(e, n);
+          break;
+        case "select":
+          ((t = n.value), t != null && Vn(e, !!n.multiple, t, !1));
+      }
+    };
+    tc = Wi;
+    nc = Sn;
+    var Om = { usingClientEntryPoint: !1, Events: [Yr, Ln, gl, Zu, ec, Wi] },
+      hr = {
+        findFiberByHostInstance: hn,
+        bundleType: 0,
+        version: "18.3.1",
+        rendererPackageName: "react-dom",
+      },
+      zm = {
+        bundleType: hr.bundleType,
+        version: hr.version,
+        rendererPackageName: hr.rendererPackageName,
+        rendererConfig: hr.rendererConfig,
+        overrideHookState: null,
+        overrideHookStateDeletePath: null,
+        overrideHookStateRenamePath: null,
+        overrideProps: null,
+        overridePropsDeletePath: null,
+        overridePropsRenamePath: null,
+        setErrorHandler: null,
+        setSuspenseHandler: null,
+        scheduleUpdate: null,
+        currentDispatcherRef: Ut.ReactCurrentDispatcher,
+        findHostInstanceByFiber: function (e) {
+          return ((e = lc(e)), e === null ? null : e.stateNode);
+        },
+        findFiberByHostInstance: hr.findFiberByHostInstance || Em,
+        findHostInstancesForRefresh: null,
+        scheduleRefresh: null,
+        scheduleRoot: null,
+        setRefreshHandler: null,
+        getCurrentFiber: null,
+        reconcilerVersion: "18.3.1-next-f1338f8080-20240426",
+      };
+    if (
+      typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ < "u" &&
+      ((vr = __REACT_DEVTOOLS_GLOBAL_HOOK__), !vr.isDisabled && vr.supportsFiber)
+    )
+      try {
+        ((pl = vr.inject(zm)), (Ot = vr));
+      } catch {}
+    var vr;
+    ot.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED = Om;
+    ot.createPortal = function (e, t) {
+      var n = 2 < arguments.length && arguments[2] !== void 0 ? arguments[2] : null;
+      if (!Ji(t)) throw Error(L(200));
+      return Cm(e, t, null, n);
+    };
+    ot.createRoot = function (e, t) {
+      if (!Ji(e)) throw Error(L(299));
+      var n = !1,
+        r = "",
+        l = Ld;
+      return (
+        t != null &&
+          (t.unstable_strictMode === !0 && (n = !0),
+          t.identifierPrefix !== void 0 && (r = t.identifierPrefix),
+          t.onRecoverableError !== void 0 && (l = t.onRecoverableError)),
+        (t = Yi(e, 1, !1, null, null, n, !1, r, l)),
+        (e[At] = t.current),
+        Ar(e.nodeType === 8 ? e.parentNode : e),
+        new qi(t)
+      );
+    };
+    ot.findDOMNode = function (e) {
+      if (e == null) return null;
+      if (e.nodeType === 1) return e;
+      var t = e._reactInternals;
+      if (t === void 0)
+        throw typeof e.render == "function"
+          ? Error(L(188))
+          : ((e = Object.keys(e).join(",")), Error(L(268, e)));
+      return ((e = lc(t)), (e = e === null ? null : e.stateNode), e);
+    };
+    ot.flushSync = function (e) {
+      return Sn(e);
+    };
+    ot.hydrate = function (e, t, n) {
+      if (!El(t)) throw Error(L(200));
+      return Tl(null, e, t, !0, n);
+    };
+    ot.hydrateRoot = function (e, t, n) {
+      if (!Ji(e)) throw Error(L(405));
+      var r = (n != null && n.hydratedSources) || null,
+        l = !1,
+        a = "",
+        i = Ld;
+      if (
+        (n != null &&
+          (n.unstable_strictMode === !0 && (l = !0),
+          n.identifierPrefix !== void 0 && (a = n.identifierPrefix),
+          n.onRecoverableError !== void 0 && (i = n.onRecoverableError)),
+        (t = Fd(t, null, e, 1, n ?? null, l, !1, a, i)),
+        (e[At] = t.current),
+        Ar(e),
+        r)
+      )
+        for (e = 0; e < r.length; e++)
+          ((n = r[e]),
+            (l = n._getVersion),
+            (l = l(n._source)),
+            t.mutableSourceEagerHydrationData == null
+              ? (t.mutableSourceEagerHydrationData = [n, l])
+              : t.mutableSourceEagerHydrationData.push(n, l));
+      return new Cl(t);
+    };
+    ot.render = function (e, t, n) {
+      if (!El(t)) throw Error(L(200));
+      return Tl(null, e, t, !1, n);
+    };
+    ot.unmountComponentAtNode = function (e) {
+      if (!El(e)) throw Error(L(40));
+      return e._reactRootContainer
+        ? (Sn(function () {
+            Tl(null, null, e, !1, function () {
+              ((e._reactRootContainer = null), (e[At] = null));
+            });
+          }),
+          !0)
+        : !1;
+    };
+    ot.unstable_batchedUpdates = Wi;
+    ot.unstable_renderSubtreeIntoContainer = function (e, t, n, r) {
+      if (!El(n)) throw Error(L(200));
+      if (e == null || e._reactInternals === void 0) throw Error(L(38));
+      return Tl(e, t, n, !1, r);
+    };
+    ot.version = "18.3.1-next-f1338f8080-20240426";
+  });
+  var Ud = _t((Th, jd) => {
+    "use strict";
+    function Bd() {
+      if (!(
+        typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ > "u" ||
+        typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.checkDCE != "function"
+      ))
+        try {
+          __REACT_DEVTOOLS_GLOBAL_HOOK__.checkDCE(Bd);
+        } catch (e) {
+          console.error(e);
+        }
+    }
+    (Bd(), (jd.exports = Ad()));
+  });
+  var Hd = _t((Zi) => {
+    "use strict";
+    var $d = Ud();
+    ((Zi.createRoot = $d.createRoot), (Zi.hydrateRoot = $d.hydrateRoot));
+    var Oh;
+  });
+  var Wd = _t((Ol) => {
+    "use strict";
+    var Rm = io(),
+      _m = Symbol.for("react.element"),
+      Pm = Symbol.for("react.fragment"),
+      Dm = Object.prototype.hasOwnProperty,
+      Mm = Rm.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactCurrentOwner,
+      Im = { key: !0, ref: !0, __self: !0, __source: !0 };
+    function Vd(e, t, n) {
+      var r,
+        l = {},
+        a = null,
+        i = null;
+      (n !== void 0 && (a = "" + n),
+        t.key !== void 0 && (a = "" + t.key),
+        t.ref !== void 0 && (i = t.ref));
+      for (r in t) Dm.call(t, r) && !Im.hasOwnProperty(r) && (l[r] = t[r]);
+      if (e && e.defaultProps)
+        for (r in ((t = e.defaultProps), t)) l[r] === void 0 && (l[r] = t[r]);
+      return { $$typeof: _m, type: e, key: a, ref: i, props: l, _owner: Mm.current };
+    }
+    Ol.Fragment = Pm;
+    Ol.jsx = Vd;
+    Ol.jsxs = Vd;
+  });
+  var es = _t((_h, Qd) => {
+    "use strict";
+    Qd.exports = Wd();
+  });
+  var b = ro(io()),
+    Jd = ro(Hd()),
+    o = ro(es()),
+    ts = "linebred:";
+  window.storage = {
+    async get(e) {
+      try {
+        let t = window.localStorage.getItem(ts + e);
+        return t === null ? null : { value: t };
+      } catch {
+        return null;
+      }
+    },
+    async set(e, t) {
+      try {
+        return (window.localStorage.setItem(ts + e, String(t)), { ok: !0 });
+      } catch (n) {
+        return { ok: !1, error: String(n) };
+      }
+    },
+    async remove(e) {
+      try {
+        return (window.localStorage.removeItem(ts + e), { ok: !0 });
+      } catch {
+        return { ok: !1 };
+      }
+    },
+  };
+  function Fm(e) {
+    let t = { name: e.n };
+    if (
+      (e.s && (t.sire = e.s),
+      e.d && (t.dam = e.d),
+      e.r && (t.regNum = e.r),
+      e.b && (t.birthDate = e.b),
+      e.x)
+    ) {
+      let n = String(e.x).trim().toLowerCase();
+      t.sexOverride =
+        n === "cow" || n === "female" || n === "f"
+          ? "Female"
+          : n === "bull" || n === "male" || n === "m" || n === "steer"
+            ? "Male"
+            : e.x;
+    }
+    return (
+      e.sem && (t.semenAvailable = !0),
+      e.liv && (t.livingAvailable = !0),
+      e.st && (t.status = e.st),
+      e.hs && (t.herdStatus = e.hs),
+      e.note && (t.notes = e.note),
+      (t.preCOI = e.coi),
+      (t.preB77 = e.b77),
+      (t.preB43 = e.b43),
+      (t.preOcc77 = e.o77),
+      (t.preOcc43 = e.o43),
+      (t.preGen = e.gen),
+      t
+    );
+  }
+  async function Lm() {
+    let e = await fetch("data.json?v=" + (window.__LINEBRED_DATA_VERSION || "1"), {
+      cache: "no-cache",
+    });
+    if (!e.ok) throw new Error("data.json HTTP " + e.status);
+    let t = await e.json();
+    return {
+      animals: (t.animals || []).map(Fm),
+      meta: {
+        count: t.count,
+        generated: t.generated,
+        targets: t.targets,
+        cyclesRemoved: t.cyclesRemoved || [],
+        source: "shipped",
+      },
+    };
+  }
+  var Am = [],
+    Kd = "animal-db-chunk-",
+    Gd = "animal-db-meta";
+  function oe(e) {
+    return (e || "").trim().toUpperCase().replace(/\s+/g, " ");
+  }
+  function Zr(e) {
+    return !!(e && (e.livingAvailable || e.semenAvailable));
+  }
+  function os(e) {
+    return Zr(e) ? "Available" : "";
+  }
+  function Bm(e) {
+    let t = {},
+      n = {},
+      r = {},
+      l = new Set();
+    return (
+      e.forEach((a) => {
+        ((t[a.name] = a.sire || null), (n[a.name] = a.dam || null), l.add(a.name), (r[a.name] = a));
+      }),
+      { sire: t, dam: n, names: l, byName: r }
+    );
+  }
+  function jm(e, t, n) {
+    let r = {};
+    function l(a) {
+      if (!a || !n.has(a)) return 0;
+      if (a in r) return r[a];
+      r[a] = 0;
+      let i = 1 + Math.max(l(e[a]), l(t[a]));
+      return ((r[a] = i), i);
+    }
+    return l;
+  }
+  function Um(e, t, n, r) {
+    let l = new Map();
+    function a(s, u) {
+      return s < u ? s + "|" + u : u + "|" + s;
+    }
+    if (Tn)
+      for (let [s, u] of Tn) {
+        if ((Rt && Rt.has(s)) || !n.has(s)) continue;
+        let d = u.preCOI / 100;
+        l.set(s + "|" + s, 0.5 + 0.5 * d);
+        let c = e[s],
+          g = t[s];
+        c && g && n.has(c) && n.has(g) && l.set(a(c, g), d);
+      }
+    function i(s, u) {
+      if (!s || !u) return 0;
+      if (s === u) {
+        let y = s + "|" + s;
+        if (l.has(y)) return l.get(y);
+        if (!n.has(s)) return (l.set(y, 0.5), 0.5);
+        let E = 0.5 + 0.5 * i(e[s], t[s]);
+        return (l.set(y, E), E);
+      }
+      let d = a(s, u);
+      if (l.has(d)) return l.get(d);
+      if (!n.has(s) || !n.has(u)) return (l.set(d, 0), 0);
+      let c = r(s),
+        g = r(u),
+        v;
+      return (
+        c <= g ? (v = 0.5 * (i(s, e[u]) + i(s, t[u]))) : (v = 0.5 * (i(e[s], u) + i(t[s], u))),
+        l.set(d, v),
+        v
+      );
+    }
+    return i;
+  }
+  var Tn = null,
+    Rt = null;
+  function $m(e, t, n) {
+    Tn = new Map();
+    for (let l of e) l && l.name && l.preCOI !== void 0 && l.preCOI !== null && Tn.set(l.name, l);
+    let r = new Set();
+    for (let l of t || []) l && l.name && r.add(l.name);
+    for (let l of Object.keys(n || {})) {
+      let a = n[l] || {};
+      ("sire" in a || "dam" in a) && r.add(l);
+    }
+    Rt = r;
+  }
+  function Hm(e) {
+    if (!Rt || !Rt.size) return;
+    let t = new Map();
+    for (let r of e)
+      for (let l of [r.sire, r.dam]) l && (t.has(l) || t.set(l, []), t.get(l).push(r.name));
+    let n = [...Rt];
+    for (; n.length;) {
+      let r = n.pop();
+      for (let l of t.get(r) || []) Rt.has(l) || (Rt.add(l), n.push(l));
+    }
+  }
+  function Vm(e) {
+    return !!(Tn && Tn.has(e) && !(Rt && Rt.has(e)));
+  }
+  function ls(e) {
+    return Vm(e) ? Tn.get(e) : null;
+  }
+  var qr = new Map(),
+    Jr = new Map(),
+    Zd = new Map();
+  function Wm() {
+    ((qr = new Map()), (Jr = new Map()), (Zd = new Map()));
+  }
+  function ye(e, t, n, r, l, a = 0) {
+    if (!e) return 0;
+    let i = e + "\0" + t,
+      s = qr.get(i);
+    if (s === void 0) {
+      let u = ls(e);
+      u &&
+        (t === "MARK DONALD 77" && u.preB77 !== void 0
+          ? (s = u.preB77 / 100)
+          : t === "MCK DONALD DHU 43" && u.preB43 !== void 0 && (s = u.preB43 / 100),
+        s !== void 0 && qr.set(i, s));
+    }
+    return (
+      s === void 0 &&
+        (e === t
+          ? (s = 1)
+          : l.has(e)
+            ? (qr.set(i, 0), (s = 0.5 * (ye(n[e], t, n, r, l, 0) + ye(r[e], t, n, r, l, 0))))
+            : (s = 0),
+        qr.set(i, s)),
+      a === 0 ? s : s * Math.pow(0.5, a)
+    );
+  }
+  function On(e, t, n, r, l, a = 0) {
+    if (!e) return 0;
+    let i = e + "\0" + t,
+      s = Jr.get(i);
+    if (s === void 0) {
+      let u = ls(e);
+      u &&
+        (t === "MARK DONALD 77" && u.preOcc77 !== void 0
+          ? (s = u.preOcc77)
+          : t === "MCK DONALD DHU 43" && u.preOcc43 !== void 0 && (s = u.preOcc43),
+        s !== void 0 && Jr.set(i, s));
+    }
+    return (
+      s === void 0 &&
+        (e === t
+          ? (s = 1)
+          : l.has(e)
+            ? (Jr.set(i, 0), (s = On(n[e], t, n, r, l, 0) + On(r[e], t, n, r, l, 0)))
+            : (s = 0),
+        Jr.set(i, s)),
+      s
+    );
+  }
+  function Qm(e, t, n, r, l, a = 400) {
+    let i = [],
+      s = !1,
+      u = new Set();
+    function d(c, g, v) {
+      if (i.length >= a) {
+        s = !0;
+        return;
+      }
+      if (c === t) {
+        i.push({ chain: g.concat(c), steps: v, contribution: Math.pow(0.5, v) });
+        return;
+      }
+      if (!c || !l.has(c) || u.has(c) || ye(c, t, n, r, l) === 0) return;
+      u.add(c);
+      let y = g.concat(c);
+      (d(n[c], y, v + 1), d(r[c], y, v + 1), u.delete(c));
+    }
+    return (
+      d(e, [], 0),
+      i.sort(
+        (c, g) => g.contribution - c.contribution || c.chain.join().localeCompare(g.chain.join()),
+      ),
+      { paths: i, truncated: s }
+    );
+  }
+  function eo(e, t, n, r, l = null) {
+    if (!e || !r.has(e)) return -1;
+    let a = l || Zd,
+      i = a instanceof Map,
+      s = i ? a.get(e) : a[e];
+    if (s !== void 0) return s;
+    {
+      let d = ls(e);
+      if (d && d.preGen !== void 0) return (i ? a.set(e, d.preGen) : (a[e] = d.preGen), d.preGen);
+    }
+    i ? a.set(e, 0) : (a[e] = 0);
+    let u = 1 + Math.max(eo(t[e], t, n, r, a), eo(n[e], t, n, r, a));
+    return (i ? a.set(e, u) : (a[e] = u), u);
+  }
+  function Yd(e, t, n) {
+    if (!e) return new Set();
+    let r = t[e],
+      l = n[e],
+      a = [r ? t[r] : null, r ? n[r] : null, l ? t[l] : null, l ? n[l] : null];
+    return new Set(a.filter(Boolean));
+  }
+  function Km(e, t, n, r) {
+    let l = n[e] || null,
+      a = r[e] || null,
+      i = Yd(e, n, r),
+      s = [],
+      u = [];
+    t.forEach((c) => {
+      if (c.name === e) return;
+      let g = c.sire || null,
+        v = c.dam || null;
+      if (g === e || v === e) {
+        u.push({ name: c.name, otherParent: g === e ? v : g, sex: cn(c.name, n, r) });
+        return;
+      }
+      let y = l && g === l,
+        E = a && v === a;
+      y && E
+        ? s.push({ name: c.name, type: "Full", sire: g, dam: v, sex: cn(c.name, n, r) })
+        : y || E
+          ? s.push({ name: c.name, type: "Half", sire: g, dam: v, sex: cn(c.name, n, r) })
+          : i.size > 0 &&
+            [...Yd(c.name, n, r)].some((f) => i.has(f)) &&
+            s.push({ name: c.name, type: "Quarter", sire: g, dam: v, sex: cn(c.name, n, r) });
+    });
+    let d = { Full: 0, Half: 1, Quarter: 2 };
+    return (
+      s.sort((c, g) => d[c.type] - d[g.type] || c.name.localeCompare(g.name)),
+      u.sort((c, g) => c.name.localeCompare(g.name)),
+      { siblings: s, offspring: u }
+    );
+  }
+  var cnCache = new WeakMap();
+  function cn(e, t, n) {
+    let c = cnCache.get(t);
+    if (!c || c.n !== n) {
+      c = { n, s: new Set(Object.values(t)), d: new Set(Object.values(n)) };
+      cnCache.set(t, c);
+    }
+    let r = c.s.has(e),
+      l = c.d.has(e);
+    return r && l ? "Conflict" : r ? "Male" : l ? "Female" : "Unknown";
+  }
+  function qe(e, t, n, r) {
+    return t && t.sexOverride ? t.sexOverride : cn(e, n, r);
+  }
+  function rs(e, t, n, r, l) {
+    return 2 * l(e, t);
+  }
+  function lt(e) {
+    return e < 6.25
+      ? {
+          label: "Low",
+          color: "#4a5c3a",
+          note: "Roughly third-cousin level or looser \u2014 minimal inbreeding depression risk.",
+        }
+      : e < 12.5
+        ? {
+            label: "Caution",
+            color: "#a08a3c",
+            note: "Half-sibling to first-cousin level \u2014 the common range for deliberate linebreeding programs, worth watching.",
+          }
+        : e < 25
+          ? {
+              label: "Risk",
+              color: "#c17a3a",
+              note: "Past the half-sibling threshold \u2014 real risk of reduced fertility, calving ease, and vigor without hard culling.",
+            }
+          : {
+              label: "High",
+              color: "#7a2e2e",
+              note: "Approaching full-sibling territory \u2014 typically only used briefly and deliberately, with a clear exit plan.",
+            };
+  }
+  function Gm(e, t, n, r, l) {
+    let a = t.map((i) => ye(e, i, n, r, l) * 100);
+    return {
+      blood: a,
+      byName: Object.fromEntries(t.map((i, s) => [i, a[s]])),
+      balance: a.length ? Math.min(...a) : 0,
+      total: a.reduce((i, s) => i + s, 0),
+    };
+  }
+  function zl(e, t, n, r, l, a, i) {
+    let s = i(e, t),
+      u = 0.5 * ye(e, n, r, l, a) + 0.5 * ye(t, n, r, l, a),
+      d = On(e, n, r, l, a) + On(t, n, r, l, a),
+      c = 0.5 * (i(e, n) + i(t, n)),
+      g = i(r[n], l[n]),
+      y = 2 * c;
+    return { calfCOI: s, blood: u, occ: d, rel: y };
+  }
+  function Ym(e, t, n, r, l) {
+    let a = new Set(),
+      i = new Set();
+    return (Pl(e, n, r, l, 1, a), Pl(t, n, r, l, 1, i), [...a].filter((u) => i.has(u)));
+  }
+  function pdgCreate(host, getProps) {
+    var MIN_SCALE = 0.4,
+      OPEN_SCALE = 0.78,
+      MAX_SCALE = 2.5,
+      STUB = 30,
+      GAP_Y = 16,
+      MAX_DEPTH = 40;
+    var expanded = new Map();
+    var scale = 1,
+      tx = 24,
+      ty = 24,
+      moved = 0,
+      drag = null,
+      pinch = null,
+      destroyed = false;
+    var pointers = new Map();
+    var rootLayout = null;
+
+    host.textContent = "";
+    var viewport = document.createElement("div");
+    viewport.className = "pdg-view";
+    viewport.tabIndex = 0;
+    viewport.setAttribute(
+      "aria-label",
+      "Pedigree chart. Drag to move it. Pinch or ctrl-scroll to zoom.",
+    );
+    var world = document.createElement("div");
+    world.className = "pdg-world";
+    viewport.appendChild(world);
+    var controls = document.createElement("div");
+    controls.className = "pdg-controls";
+    var bIn = document.createElement("button");
+    bIn.type = "button";
+    bIn.textContent = "+";
+    bIn.setAttribute("aria-label", "Zoom in");
+    var zoomLabel = document.createElement("span");
+    zoomLabel.textContent = "100%";
+    var bOut = document.createElement("button");
+    bOut.type = "button";
+    bOut.textContent = "−";
+    bOut.setAttribute("aria-label", "Zoom out");
+    var bFit = document.createElement("button");
+    bFit.type = "button";
+    bFit.textContent = "Fit";
+    bFit.className = "pdg-fit";
+    bFit.setAttribute("aria-label", "Fit to screen");
+    controls.appendChild(bIn);
+    controls.appendChild(zoomLabel);
+    controls.appendChild(bOut);
+    controls.appendChild(bFit);
+    host.appendChild(viewport);
+    host.appendChild(controls);
+
+    function clamp(v, lo, hi) {
+      return Math.min(hi, Math.max(lo, v));
+    }
+    function openDepth() {
+      var P = getProps();
+      return Math.max(1, (P.maxGen || 5) - 1);
+    }
+    function isExpanded(path, depth) {
+      return expanded.has(path) ? expanded.get(path) : depth < openDepth();
+    }
+
+    function badgeText(name) {
+      var parts = String(name).trim().split(/\s+/);
+      var last = parts[parts.length - 1] || "";
+      if (/\d/.test(last)) return last.length > 5 ? last.slice(0, 5) : last;
+      return parts
+        .slice(0, 2)
+        .map(function (w) {
+          return w.charAt(0);
+        })
+        .join("");
+    }
+
+    function coiOf(P, key) {
+      try {
+        if (P.coiOf) {
+          var v = P.coiOf(key);
+          if (v != null && isFinite(v)) return v;
+        }
+        var a = P.byName && P.byName[key];
+        if (a && a.preCOI != null && isFinite(a.preCOI)) return a.preCOI;
+      } catch (e) {}
+      return null;
+    }
+
+    function parentNode(P, pname) {
+      if (!pname) return { name: "[Not recorded]", blank: true };
+      if (P.names.has(pname)) return animalNode(P, pname);
+      return { name: pname, unknown: true, note: "Not yet in database" };
+    }
+
+    function animalNode(P, key) {
+      var a = (P.byName && P.byName[key]) || null;
+      var s = P.sire[key] || null,
+        d = P.dam[key] || null;
+      var node = {
+        key: key,
+        name: key,
+        real: true,
+        reg: a && a.regNum ? a.regNum : "",
+        birth: a && a.birthDate ? String(a.birthDate) : "",
+        coi: coiOf(P, key),
+        expandable: !!(s || d),
+      };
+      var sv, dv;
+      Object.defineProperty(node, "sire", {
+        get: function () {
+          if (!sv) sv = parentNode(P, s);
+          return sv;
+        },
+      });
+      Object.defineProperty(node, "dam", {
+        get: function () {
+          if (!dv) dv = parentNode(P, d);
+          return dv;
+        },
+      });
+      return node;
+    }
+
+    function makeCard(P, node, depth, path, role, tracked) {
+      var card = document.createElement("article");
+      card.className = "pdg-card";
+      card.style.width = depth === 0 ? "224px" : "196px";
+      if (depth === 0) card.classList.add("is-subject");
+      if (node.unknown) card.classList.add("is-unknown");
+      if (node.blank) card.classList.add("is-blank");
+      var isTracked = !!(node.real && depth !== 0 && tracked.has(node.key));
+      if (isTracked) {
+        card.classList.add("is-tracked");
+        var tk = tracked.get(node.key);
+        card.classList.add("fc-" + tk.c);
+        card.setAttribute("data-fc", tk.c);
+      }
+
+      var head = document.createElement("div");
+      head.className = "pdg-head";
+      var roleEl = document.createElement("span");
+      roleEl.className = role ? "pdg-role" : "pdg-role none";
+      roleEl.textContent = role || "";
+      head.appendChild(roleEl);
+      if (isTracked) {
+        var badge = document.createElement("span");
+        badge.className = "pdg-line";
+        badge.textContent = tk.l;
+        badge.title = tk.c === "c" ? "Tracked on this chart only" : "Foundation animal";
+        card.appendChild(badge);
+      }
+      var right = document.createElement("span");
+      right.className = "pdg-head-right";
+      if (node.reg) {
+        var reg = document.createElement("span");
+        reg.className = "pdg-reg";
+        reg.textContent = node.reg;
+        right.appendChild(reg);
+      }
+      if (
+        node.real &&
+        depth !== 0 &&
+        typeof P.onSelect === "function" &&
+        !(isTracked && P.mode !== "open")
+      ) {
+        var mode = P.mode === "open" ? "open" : "track";
+        var plus = document.createElement("button");
+        plus.type = "button";
+        plus.className = "pdg-plus";
+        if (mode === "track") {
+          plus.textContent = "+";
+          plus.title = "Track on this chart only";
+          plus.setAttribute("aria-label", "Track " + node.name + " on this chart only");
+        } else {
+          plus.textContent = "→";
+          plus.title = "Open this animal’s record";
+          plus.setAttribute("aria-label", "Open " + node.name);
+        }
+        plus.addEventListener("pointerdown", function (ev) {
+          ev.stopPropagation();
+        });
+        plus.addEventListener("click", function (ev) {
+          ev.stopPropagation();
+          var cur = getProps();
+          if (cur && typeof cur.onSelect === "function") cur.onSelect(node.key);
+        });
+        right.appendChild(plus);
+      }
+      head.appendChild(right);
+      card.appendChild(head);
+
+      var name = document.createElement("p");
+      name.className = "pdg-name";
+      name.textContent = node.name;
+      name.title = node.name;
+      card.appendChild(name);
+
+      if (depth !== 0 && node.note) {
+        var note = document.createElement("p");
+        note.className = "pdg-note";
+        note.textContent = node.note;
+        card.appendChild(note);
+      }
+      if (depth !== 0 && node.coi != null && node.real) {
+        var coi = document.createElement("p");
+        coi.className = "pdg-coi";
+        coi.textContent = "COI " + node.coi.toFixed(2) + "%";
+        card.appendChild(coi);
+      }
+
+      if (node.expandable) {
+        var open = isExpanded(path, depth);
+        card.classList.add("is-expandable");
+        card.setAttribute("aria-expanded", open ? "true" : "false");
+        var chev = document.createElement("span");
+        chev.className = "pdg-chevron";
+        chev.setAttribute("aria-hidden", "true");
+        card.appendChild(chev);
+        card.addEventListener("click", function () {
+          expanded.set(path, !isExpanded(path, depth));
+          render();
+          apply();
+        });
+      }
+      return card;
+    }
+
+    function drawLine(svg, x1, y1, x2, y2) {
+      var line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+      line.setAttribute("x1", x1);
+      line.setAttribute("y1", y1);
+      line.setAttribute("x2", x2);
+      line.setAttribute("y2", y2);
+      svg.appendChild(line);
+    }
+
+    function layout(P, node, depth, path, role, cards, tracked) {
+      var card = makeCard(P, node, depth, path, role, tracked);
+      cards.appendChild(card);
+      var cardW = card.offsetWidth,
+        cardH = card.offsetHeight;
+      var open = node.expandable && depth < MAX_DEPTH && isExpanded(path, depth);
+      if (!open) return { card: card, cardW: cardW, cardH: cardH, w: cardW, h: cardH };
+      var sire = layout(P, node.sire, depth + 1, path + ".s", "Sire", cards, tracked);
+      var dam = layout(P, node.dam, depth + 1, path + ".d", "Dam", cards, tracked);
+      var innerH = sire.h + GAP_Y + dam.h;
+      return {
+        card: card,
+        cardW: cardW,
+        cardH: cardH,
+        w: cardW + STUB + Math.max(sire.w, dam.w),
+        h: Math.max(cardH, innerH),
+        sire: sire,
+        dam: dam,
+      };
+    }
+
+    function place(node, x, y, svg) {
+      var cardTop = y + (node.h - node.cardH) / 2;
+      node.card.style.left = x + "px";
+      node.card.style.top = cardTop + "px";
+      if (!node.sire) return;
+      var innerH = node.sire.h + GAP_Y + node.dam.h;
+      var childY = y + (node.h - innerH) / 2;
+      var childX = x + node.cardW + STUB;
+      place(node.sire, childX, childY, svg);
+      place(node.dam, childX, childY + node.sire.h + GAP_Y, svg);
+      var barX = x + node.cardW + STUB / 2;
+      var fromY = cardTop + node.cardH / 2;
+      var sireY = childY + (node.sire.h - node.sire.cardH) / 2 + node.sire.cardH / 2;
+      var damY =
+        childY + node.sire.h + GAP_Y + (node.dam.h - node.dam.cardH) / 2 + node.dam.cardH / 2;
+      drawLine(svg, x + node.cardW, fromY, barX, fromY);
+      drawLine(svg, barX, sireY, barX, damY);
+      drawLine(svg, barX, sireY, childX, sireY);
+      drawLine(svg, barX, damY, childX, damY);
+    }
+
+    function apply() {
+      world.style.transform = "translate(" + tx + "px, " + ty + "px) scale(" + scale + ")";
+      zoomLabel.textContent = Math.round(scale * 100) + "%";
+    }
+
+    function render() {
+      if (destroyed) return;
+      var P = getProps();
+      var tracked = new Map();
+      (P.targets || []).forEach(function (n, i) {
+        if (!tracked.has(n))
+          tracked.set(n, {
+            c: P.colors && P.colors[i] != null ? String(P.colors[i]) : String(i % 8),
+            l: (P.labels && P.labels[i]) || "Foundation",
+          });
+      });
+      world.textContent = "";
+      var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      svg.setAttribute("class", "pdg-lines");
+      var cards = document.createElement("div");
+      cards.className = "pdg-cards";
+      world.appendChild(svg);
+      world.appendChild(cards);
+      rootLayout = layout(P, animalNode(P, P.name), 0, "root", "", cards, tracked);
+      place(rootLayout, 0, 0, svg);
+      svg.setAttribute("width", rootLayout.w);
+      svg.setAttribute("height", rootLayout.h);
+      world.style.width = rootLayout.w + "px";
+      world.style.height = rootLayout.h + "px";
+      world.dataset.width = String(rootLayout.w);
+      world.dataset.height = String(rootLayout.h);
+    }
+
+    function fittedScale() {
+      var w = Number(world.dataset.width) || 1,
+        h = Number(world.dataset.height) || 1,
+        pad = 20;
+      return Math.min((viewport.clientWidth - pad) / w, (viewport.clientHeight - pad) / h);
+    }
+    function placeTree(next) {
+      var w = Number(world.dataset.width) || 1,
+        h = Number(world.dataset.height) || 1,
+        pad = 20;
+      scale = next;
+      if (fittedScale() + 0.001 >= scale) {
+        tx = (viewport.clientWidth - w * scale) / 2;
+        ty = (viewport.clientHeight - h * scale) / 2;
+      } else {
+        tx = pad;
+        ty = (viewport.clientHeight - h * scale) / 2;
+      }
+      apply();
+    }
+    function openReadable() {
+      render();
+      placeTree(Math.min(Math.max(fittedScale(), 0.62), OPEN_SCALE));
+    }
+    function zoomAt(next, c) {
+      var r = viewport.getBoundingClientRect();
+      var px = c.x - r.left,
+        py = c.y - r.top;
+      var wx = (px - tx) / scale,
+        wy = (py - ty) / scale;
+      scale = clamp(next, MIN_SCALE, MAX_SCALE);
+      tx = px - wx * scale;
+      ty = py - wy * scale;
+      apply();
+    }
+    function centerPt() {
+      var r = viewport.getBoundingClientRect();
+      return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+    }
+
+    bIn.addEventListener("click", function () {
+      zoomAt(scale * 1.15, centerPt());
+    });
+    bOut.addEventListener("click", function () {
+      zoomAt(scale / 1.15, centerPt());
+    });
+    bFit.addEventListener("click", function () {
+      placeTree(clamp(fittedScale(), 0.05, MAX_SCALE));
+    });
+
+    viewport.addEventListener("pointerdown", function (ev) {
+      if (ev.target.closest && ev.target.closest("button")) return;
+      try {
+        viewport.focus({ preventScroll: true });
+      } catch (e) {}
+      pointers.set(ev.pointerId, { x: ev.clientX, y: ev.clientY });
+      if (pointers.size === 1) {
+        drag = { x: ev.clientX, y: ev.clientY, tx: tx, ty: ty };
+        moved = 0;
+        pinch = null;
+      } else if (pointers.size === 2) {
+        drag = null;
+        pointers.forEach(function (_v, id) {
+          try {
+            viewport.setPointerCapture(id);
+          } catch (e) {}
+        });
+        var p = Array.from(pointers.values());
+        pinch = { dist: Math.hypot(p[0].x - p[1].x, p[0].y - p[1].y) || 1, scale: scale };
+      }
+    });
+    viewport.addEventListener("pointermove", function (ev) {
+      if (!pointers.has(ev.pointerId)) return;
+      pointers.set(ev.pointerId, { x: ev.clientX, y: ev.clientY });
+      if (pointers.size >= 2 && pinch) {
+        var p = Array.from(pointers.values());
+        var dist = Math.hypot(p[0].x - p[1].x, p[0].y - p[1].y) || 1;
+        zoomAt(pinch.scale * (dist / pinch.dist), {
+          x: (p[0].x + p[1].x) / 2,
+          y: (p[0].y + p[1].y) / 2,
+        });
+        return;
+      }
+      if (!drag) return;
+      var dx = ev.clientX - drag.x,
+        dy = ev.clientY - drag.y;
+      moved = Math.max(moved, Math.hypot(dx, dy));
+      if (moved > 6 && !viewport.hasPointerCapture(ev.pointerId)) {
+        try {
+          viewport.setPointerCapture(ev.pointerId);
+        } catch (e) {}
+      }
+      if (moved <= 6) return;
+      tx = drag.tx + dx;
+      ty = drag.ty + dy;
+      apply();
+    });
+    function endPointer(ev) {
+      pointers.delete(ev.pointerId);
+      if (pointers.size < 2) pinch = null;
+      if (pointers.size === 0) drag = null;
+    }
+    viewport.addEventListener("pointerup", endPointer);
+    viewport.addEventListener("pointercancel", endPointer);
+    viewport.addEventListener(
+      "click",
+      function (ev) {
+        if (moved > 6) {
+          ev.preventDefault();
+          ev.stopPropagation();
+          moved = 0;
+        }
+      },
+      true,
+    );
+    viewport.addEventListener(
+      "wheel",
+      function (ev) {
+        var armed = ev.ctrlKey || ev.metaKey || viewport.matches(":focus-within");
+        if (!armed) return;
+        ev.preventDefault();
+        zoomAt(scale * (ev.deltaY < 0 ? 1.08 : 0.92), { x: ev.clientX, y: ev.clientY });
+      },
+      { passive: false },
+    );
+    viewport.addEventListener("keydown", function (ev) {
+      var step = 48,
+        c = centerPt();
+      if (ev.key === "ArrowLeft") tx += step;
+      else if (ev.key === "ArrowRight") tx -= step;
+      else if (ev.key === "ArrowUp") ty += step;
+      else if (ev.key === "ArrowDown") ty -= step;
+      else if (ev.key === "+" || ev.key === "=") zoomAt(scale * 1.12, c);
+      else if (ev.key === "-" || ev.key === "_") zoomAt(scale / 1.12, c);
+      else return;
+      ev.preventDefault();
+      apply();
+    });
+
+    return {
+      reset: function () {
+        expanded.clear();
+        openReadable();
+      },
+      refresh: function () {
+        render();
+        apply();
+      },
+      destroy: function () {
+        destroyed = true;
+        host.textContent = "";
+      },
+    };
+  }
+  function _l(props) {
+    var ref = b.useRef(null),
+      api = b.useRef(null),
+      cur = b.useRef(props);
+    cur.current = props;
+    var trackSig =
+      (props.targets || []).join("|") +
+      "#" +
+      (props.colors || []).join("|") +
+      "#" +
+      (props.labels || []).join("|");
+    b.useEffect(
+      function () {
+        var chart = pdgCreate(ref.current, function () {
+          return cur.current;
+        });
+        api.current = chart;
+        chart.reset();
+        return function () {
+          chart.destroy();
+          api.current = null;
+        };
+      },
+      [props.name, props.maxGen],
+    );
+    b.useEffect(
+      function () {
+        if (api.current) api.current.refresh();
+      },
+      [props.sire, props.dam, props.names, props.byName, trackSig],
+    );
+    return b.default.createElement("div", { className: "pdg", ref: ref });
+  }
+  function Xm() {
+    let [e, t] = (0, b.useState)([]),
+      [n, r] = (0, b.useState)([]),
+      [l, a] = (0, b.useState)(null),
+      [i, s] = (0, b.useState)(!0),
+      [u, d] = (0, b.useState)(null),
+      [c, g] = (0, b.useState)({}),
+      [v, y] = (0, b.useState)({}),
+      [E, k] = (0, b.useState)([]),
+      [O, f] = (0, b.useState)(null),
+      [p, m] = (0, b.useState)(!1),
+      [w, x] = (0, b.useState)("browse"),
+      [mm, setMm] = (0, b.useState)("check"),
+      [cmLast, setCmLast] = (0, b.useState)({ cow: "", bull: "", extra: [], key: 0 }),
+      [h, T] = (0, b.useState)(""),
+      [I, R] = (0, b.useState)(null),
+      [M, U] = (0, b.useState)(!1),
+      [q, X] = (0, b.useState)(null),
+      [PG, PGs] = (0, b.useState)(PG0),
+      SPG = (j) => {
+        PGs(j);
+        try {
+          window.storage.set("programs", JSON.stringify(j), !1);
+        } catch {}
+      },
+      K = (0, b.useMemo)(() => PGact(PG).items.map((i) => i.name), [PG]),
+      Z = () => {};
+    window.__lbProg = PGglobals(PG);
+    (0, b.useEffect)(() => {
+      (async () => {
+        try {
+          let j = await window.storage.get("user-animals", !1);
+          j && j.value && t(JSON.parse(j.value));
+        } catch {}
+        try {
+          let j = await window.storage.get("animal-edits", !1);
+          j && j.value && g(JSON.parse(j.value));
+        } catch {}
+        try {
+          let j = await window.storage.get("reviewed-animals", !1);
+          j && j.value && y(JSON.parse(j.value));
+        } catch {}
+        try {
+          let j = await window.storage.get("last-updated-global", !1);
+          j && j.value && f(j.value);
+        } catch {}
+        try {
+          let j = await window.storage.get("mating-log", !1);
+          j && j.value && k(JSON.parse(j.value));
+        } catch {}
+        try {
+          let j = await window.storage.get("programs", !1),
+            J = null;
+          if (j && j.value) J = JSON.parse(j.value);
+          if (!J || !Array.isArray(J.list) || !J.list.length) {
+            let q = await window.storage.get("founders", !1);
+            if (q && q.value) {
+              let L = JSON.parse(q.value);
+              Array.isArray(L) && L.length && (J = PGfromList(L));
+            }
+          }
+          J && Array.isArray(J.list) && J.list.length && PGs(PGnorm(J));
+        } catch {}
+        try {
+          let j = !1;
+          try {
+            let J = await window.storage.get(Gd, !1);
+            if (J && J.value) {
+              let A = JSON.parse(J.value),
+                se = [];
+              for (let F = 0; F < A.chunks; F++) se.push(window.storage.get(Kd + F, !1));
+              let pe = (await Promise.all(se)).map((F) => (F && F.value ? F.value : null));
+              pe.length &&
+                pe.every((F) => F !== null) &&
+                (r(JSON.parse(pe.join(""))), a({ ...A, source: "imported" }), (j = !0));
+            }
+          } catch {}
+          if (!j) {
+            let { animals: J, meta: A } = await Lm();
+            (r(J), a(A));
+          }
+        } catch (j) {
+          (console.error("database load failed", j), d(String(j && j.message ? j.message : j)));
+        }
+        (s(!1), m(!0));
+      })();
+    }, []);
+    let B = (0, b.useCallback)(async () => {
+        let j = new Date().toISOString();
+        f(j);
+        try {
+          await window.storage.set("last-updated-global", j, !1);
+        } catch {}
+      }, []),
+      Y = (0, b.useCallback)(
+        async (j, J) => {
+          let A;
+          try {
+            A = JSON.parse(j);
+          } catch {
+            return {
+              ok: !1,
+              error:
+                "That doesn't look like valid database text. Make sure you copied the whole thing.",
+            };
+          }
+          if (!Array.isArray(A) || A.length === 0)
+            return { ok: !1, error: "Parsed fine, but it wasn't a list of animals." };
+          if (!A[0] || typeof A[0].name != "string")
+            return {
+              ok: !1,
+              error: "Parsed fine, but the entries don't look like animal records.",
+            };
+          try {
+            let se = JSON.stringify(A),
+              ce = 4e5,
+              pe = Math.ceil(se.length / ce);
+            for (let Q = 0; Q < pe; Q++) {
+              J && J(Q + 1, pe);
+              let ne = se.slice(Q * ce, (Q + 1) * ce);
+              if (!(await window.storage.set(Kd + Q, ne, !1)))
+                return {
+                  ok: !1,
+                  error: `Storage refused chunk ${Q + 1} of ${pe}. The database may be too large for this device.`,
+                };
+            }
+            let F = { chunks: pe, count: A.length, importedAt: new Date().toISOString() };
+            return (
+              await window.storage.set(Gd, JSON.stringify(F), !1),
+              r(A),
+              a(F),
+              B(),
+              { ok: !0, count: A.length, chunks: pe }
+            );
+          } catch (se) {
+            return {
+              ok: !1,
+              error: "Storage error: " + (se && se.message ? se.message : String(se)),
+            };
+          }
+        },
+        [B],
+      ),
+      D = (0, b.useCallback)(
+        async (j) => {
+          k(j);
+          try {
+            return (await window.storage.set("mating-log", JSON.stringify(j), !1)) ? (B(), !0) : !1;
+          } catch (J) {
+            return (console.error("save failed", J), !1);
+          }
+        },
+        [B],
+      ),
+      z = (0, b.useCallback)((j, J) => {
+        (X([j, J]), x("browse"));
+      }, []),
+      S = (0, b.useMemo)(() => {
+        let J = (n && n.length ? n : Am).map((ce) => ({ ...ce })),
+          A = new Set(e.map((ce) => ce.name));
+        return J.filter((ce) => !A.has(ce.name))
+          .concat(e)
+          .map((ce) => (c[ce.name] ? { ...ce, ...c[ce.name] } : ce));
+      }, [n, e, c]),
+      {
+        sire: _,
+        dam: N,
+        names: P,
+        byName: $,
+      } = (0, b.useMemo)(() => (Wm(), $m(S, e, c), Hm(S), Bm(S)), [S, e, c]),
+      W = (0, b.useMemo)(() => jm(_, N, P), [_, N, P]),
+      ee = (0, b.useMemo)(() => Um(_, N, P, W), [_, N, P, W]),
+      Ee = (0, b.useCallback)(
+        async (j) => {
+          t(j);
+          try {
+            return (await window.storage.set("user-animals", JSON.stringify(j), !1))
+              ? (U(!1), B(), !0)
+              : (U(!0), !1);
+          } catch (J) {
+            return (console.error("save failed", J), U(!0), !1);
+          }
+        },
+        [B],
+      ),
+      ie = (0, b.useCallback)(
+        async (j) => {
+          g(j);
+          try {
+            return (await window.storage.set("animal-edits", JSON.stringify(j), !1))
+              ? (U(!1), B(), !0)
+              : (U(!0), !1);
+          } catch (J) {
+            return (console.error("save failed", J), U(!0), !1);
+          }
+        },
+        [B],
+      ),
+      we = (0, b.useCallback)(async (j) => {
+        y(j);
+        try {
+          return (await window.storage.set("reviewed-animals", JSON.stringify(j), !1))
+            ? (U(!1), !0)
+            : (U(!0), !1);
+        } catch (J) {
+          return (console.error("save failed", J), U(!0), !1);
+        }
+      }, []),
+      ke = (0, b.useCallback)((j) => {
+        (T(j), x("animal"));
+      }, []),
+      bt = (0, b.useCallback)((j) => {
+        (R(j), x("edit"));
+      }, []);
+    return (0, o.jsxs)("div", {
+      className: "app-root",
+      children: [
+        (0, o.jsx)("style", { children: wh }),
+        (0, o.jsxs)("div", {
+          className: "toolbar",
+          children: [
+            (0, o.jsx)("span", {
+              children: (0, o.jsx)("img", { src: "logo.png", alt: "LineBred" }),
+            }),
+            (0, o.jsx)("button", {
+              className: Xd.includes(w) ? "active" : "",
+              onClick: () => {
+                (X(null), x("browse"));
+              },
+              children: "Animals",
+            }),
+            (0, o.jsx)("button", {
+              className: w === "matings" ? "active" : "",
+              onClick: () => x("matings"),
+              children: "Matings",
+            }),
+            (0, o.jsx)("button", {
+              className: w === "matinglog" ? "active" : "",
+              onClick: () => x("matinglog"),
+              children: "Log",
+            }),
+            (0, o.jsx)("button", {
+              className: w === "dashboard" ? "active" : "",
+              onClick: () => x("dashboard"),
+              children: "Dashboard",
+            }),
+            (0, o.jsx)("button", {
+              className: w === "reports" ? "active" : "",
+              onClick: () => x("reports"),
+              children: "Data Health",
+            }),
+          ],
+        }),
+        Xd.includes(w) &&
+          (0, o.jsx)("div", {
+            className: "subnav",
+            children: [
+              ["browse", "Herd"],
+              ["animal", "Animal"],
+              ["add", "Add / Edit"],
+            ].map(([j, J]) =>
+              (0, o.jsx)(
+                "button",
+                {
+                  className: w === j || (j === "add" && w === "edit") ? "active" : "",
+                  onClick: () => x(j),
+                  children: J,
+                },
+                j,
+              ),
+            ),
+          }),
+        (w === "add" || w === "edit") &&
+          (0, o.jsx)("div", {
+            className: "subnav subnav2",
+            children: [
+              ["add", "Add an animal"],
+              ["edit", "Edit an animal"],
+            ].map(([j, J]) =>
+              (0, o.jsx)(
+                "button",
+                { className: w === j ? "active" : "", onClick: () => x(j), children: J },
+                j,
+              ),
+            ),
+          }),
+        w === "matings" &&
+          (0, o.jsx)("div", {
+            className: "subnav subnav2",
+            children: [
+              ["check", "Check a mating"],
+              ["cow", "One cow"],
+              ["herd", "Whole herd"],
+              ["road", "Roadmap"],
+            ].map(([j, J]) =>
+              (0, o.jsx)(
+                "button",
+                { className: mm === j ? "active" : "", onClick: () => setMm(j), children: J },
+                j,
+              ),
+            ),
+          }),
+        M &&
+          (0, o.jsx)("div", {
+            className: "storage-warning",
+            children:
+              "\u26A0 This session isn't saving reliably. Anything you add or edit right now may be lost if you close or reload this tab. Finish what you're doing, then let Claude know so this can be fixed \u2014 don't count on it persisting yet.",
+          }),
+        p
+          ? (0, o.jsxs)(o.Fragment, {
+              children: [
+                w === "dashboard" &&
+                  (0, o.jsx)(ih, {
+                    allAnimals: S,
+                    sire: _,
+                    dam: N,
+                    names: P,
+                    kinship: ee,
+                    onGoToAnimal: ke,
+                    lastUpdated: O,
+                    onDrilldownCoi: z,
+                    founders: K,
+                    setFounders: Z,
+                    pg: PG,
+                    setPg: SPG,
+                  }),
+                w === "animal" &&
+                  (0, o.jsx)(rh, {
+                    allAnimals: S,
+                    sire: _,
+                    dam: N,
+                    names: P,
+                    byName: $,
+                    gen: W,
+                    kinship: ee,
+                    selected: h,
+                    setSelected: T,
+                    founders: K,
+                    setFounders: Z,
+                    pg: PG,
+                    setPg: SPG,
+                  }),
+                w === "browse" &&
+                  (0, o.jsx)(oh, {
+                    allAnimals: S,
+                    sire: _,
+                    dam: N,
+                    names: P,
+                    kinship: ee,
+                    edits: c,
+                    reviewed: v,
+                    saveReviewed: we,
+                    onGoToAnimal: ke,
+                    onGoToEdit: bt,
+                    initialCoiFilter: q,
+                    clearCoiFilter: () => X(null),
+                    founders: K,
+                  }),
+                w === "matings" &&
+                  mm === "check" &&
+                  (0, o.jsx)(CheckMate, {
+                    last: cmLast,
+                    setLast: setCmLast,
+                    matingLog: E,
+                    saveMatingLog: D,
+                    allAnimals: S,
+                    sire: _,
+                    dam: N,
+                    names: P,
+                    kinship: ee,
+                    founders: K,
+                    gen: W,
+                  }),
+                (w === "mating" || w === "matings") &&
+                  mm === "cow" &&
+                  (0, o.jsx)(vh, {
+                    allAnimals: S,
+                    sire: _,
+                    dam: N,
+                    names: P,
+                    byName: $,
+                    kinship: ee,
+                    onGoToAnimal: ke,
+                    matingLog: E,
+                    saveMatingLog: D,
+                    founders: K,
+                    gen: W,
+                  }),
+                (w === "path" || (w === "matings" && mm === "road")) &&
+                  (0, o.jsx)(sh, {
+                    allAnimals: S,
+                    sire: _,
+                    dam: N,
+                    names: P,
+                    byName: $,
+                    kinship: ee,
+                    onGoToAnimal: ke,
+                    founders: K,
+                  }),
+                (w === "opportunities" || (w === "matings" && mm === "herd")) &&
+                  (0, o.jsx)(uh, {
+                    allAnimals: S,
+                    sire: _,
+                    dam: N,
+                    names: P,
+                    kinship: ee,
+                    onGoToAnimal: ke,
+                    founders: K,
+                  }),
+                w === "matinglog" &&
+                  (0, o.jsx)(ch, {
+                    onOpenInPlanner: (h) => {
+                      (setCmLast({ cow: h.cow, bull: h.bull, extra: [], key: Date.now() }), setMm("check"), x("matings"));
+                    },
+                    matingLog: E,
+                    saveMatingLog: D,
+                    onGoToAnimal: ke,
+                    kinship: ee,
+                    sire: _,
+                    dam: N,
+                  }),
+                w === "reports" &&
+                  (0, o.jsx)(dh, {
+                    allAnimals: S,
+                    sire: _,
+                    dam: N,
+                    names: P,
+                    onGoToAnimal: ke,
+                    onGoToEdit: bt,
+                    userAnimals: e,
+                    storageBroken: M,
+                    edits: c,
+                    saveUserAnimals: Ee,
+                    saveEdits: ie,
+                    dbMeta: l,
+                    importDatabase: Y,
+                  }),
+                w === "add" &&
+                  (0, o.jsx)(fh, {
+                    allAnimals: S,
+                    names: P,
+                    byName: $,
+                    sire: _,
+                    dam: N,
+                    userAnimals: e,
+                    saveUserAnimals: Ee,
+                    edits: c,
+                    saveEdits: ie,
+                  }),
+                w === "edit" &&
+                  (0, o.jsx)(gh, {
+                    allAnimals: S,
+                    names: P,
+                    byName: $,
+                    sire: _,
+                    dam: N,
+                    edits: c,
+                    saveEdits: ie,
+                    onGoToAnimal: ke,
+                    selected: I,
+                    setSelected: R,
+                    userAnimals: e,
+                    saveUserAnimals: Ee,
+                    reviewed: v,
+                    saveReviewed: we,
+                  }),
+              ],
+            })
+          : (0, o.jsx)("div", {
+              className: "screen active",
+              children: (0, o.jsxs)("div", {
+                className: "card",
+                children: [
+                  (0, o.jsx)("h2", { children: "Loading\u2026" }),
+                  (0, o.jsx)("div", {
+                    className: "metric-note",
+                    children:
+                      "Reading your animal database from storage. This takes a moment on first open.",
+                  }),
+                ],
+              }),
+            }),
+      ],
+    });
+  }
+  var as = ["MARK DONALD 77", "MCK DONALD DHU 43"];
+  function dn(e) {
+    let sh = window.__lbProg && window.__lbProg.shorts && window.__lbProg.shorts[e];
+    if (sh) return sh;
+    let t = String(e).trim().split(/\s+/);
+    if (t.length <= 1) return e;
+    let n = t[t.length - 1],
+      r = /^[0-9A-Z]{1,6}$/.test(n) ? n : "";
+    return ((r ? t.slice(0, -1) : t).map((i) => i[0]).join("") + (r ? " " + r : "")).slice(0, 10);
+  }
+  var qm = as,
+    Xd = ["browse", "animal", "add", "edit"];
+  function Rl(e) {
+    return e === "Male" ? "M" : e === "Female" ? "F" : e === "Conflict" ? "!" : "\u2013";
+  }
+  function Pl(e, t, n, r, l, a) {
+    !e ||
+      l > 40 ||
+      !r.has(e) ||
+      (a.add(e), Pl(t[e], t, n, r, l + 1, a), Pl(n[e], t, n, r, l + 1, a));
+  }
+  function Dl(e, t, n, r, l, a) {
+    !e ||
+      l > 40 ||
+      !r.has(e) ||
+      a.has(e) ||
+      (a.add(e), Dl(t[e], t, n, r, l + 1, a), Dl(n[e], t, n, r, l + 1, a));
+  }
+  function Jm(e, t, n, r, l) {
+    let a = new Map(),
+      i = new Map();
+    if (!e || !r.has(e)) return { blood: a, occ: i };
+    let s = new Set([e]),
+      u = [e];
+    for (; u.length;) {
+      let v = u.pop();
+      for (let y of [t[v], n[v]]) y && r.has(y) && !s.has(y) && (s.add(y), u.push(y));
+    }
+    let d = [...s].sort((v, y) => l(y) - l(v)),
+      c = new Map([[e, 1]]),
+      g = new Map([[e, 1]]);
+    for (let v of d) {
+      let y = c.get(v) || 0,
+        E = g.get(v) || 0;
+      if (!(!y && !E))
+        for (let k of [t[v], n[v]])
+          !k ||
+            !r.has(k) ||
+            (y && c.set(k, (c.get(k) || 0) + y / 2), E && g.set(k, (g.get(k) || 0) + E));
+    }
+    for (let [v, y] of c) v !== e && a.set(v, y);
+    for (let [v, y] of g) v !== e && i.set(v, y);
+    return { blood: a, occ: i };
+  }
+  function ef({
+    startFemale: e,
+    target: t,
+    goalBloodPct: n,
+    maxCoiPct: r,
+    maxGenerations: l,
+    candidates: a,
+    sire: i,
+    dam: s,
+    names: u,
+    kinship: d,
+    beamWidth: c = 24,
+    founders: FND = [],
+    holds: HOLD = {},
+  }) {
+    let g = a.map((m) => m.name),
+      v = {};
+    let sb = {};
+    g.forEach((m) => {
+      sb[m] = FND.map((F) => ye(m, F, i, s, u) * 100);
+    });
+    g.forEach((m) => {
+      v[m] = {};
+    });
+    for (let m = 0; m < g.length; m++)
+      for (let w = m; w < g.length; w++) {
+        let x = d(g[m], g[w]);
+        ((v[g[m]][g[w]] = x), (v[g[w]][g[m]] = x));
+      }
+    let y = {};
+    a.forEach((m) => {
+      y[m.name] = m.blood;
+    });
+    let E = {};
+    g.forEach((m) => {
+      E[m] = d(e, m);
+    });
+    let k = {
+        vec: E,
+        blood: ye(e, t, i, s, u) * 100,
+        coi: d(i[e], s[e]) * 100,
+        steps: [],
+        fb: FND.map((F) => ye(e, F, i, s, u) * 100),
+      },
+      O = [],
+      f = [k];
+    for (let m = 1; m <= l; m++) {
+      let w = [];
+      for (let x of f)
+        for (let h of g) {
+          let T = x.vec[h] * 100;
+          if (T > r) continue;
+          let I = (x.blood + y[h]) / 2;
+          if (I <= x.blood) continue;
+          let FB = x.fb.map((vv, ix) => (vv + sb[h][ix]) / 2);
+          if (FND.some((F, ix) => HOLD[F] && FB[ix] < HOLD[F])) continue;
+          let R = {};
+          for (let U of g) R[U] = (x.vec[U] + v[h][U]) / 2;
+          let M = {
+            vec: R,
+            blood: I,
+            coi: T,
+            fb: FB,
+            steps: x.steps.concat({ sire: h, blood: I, coi: T, generation: m, fb: FB }),
+          };
+          I >= n ? O.push(M) : w.push(M);
+        }
+      if ((w.sort((x, h) => h.blood - x.blood || x.coi - h.coi), (f = w.slice(0, c)), !f.length))
+        break;
+    }
+    O.sort(
+      (m, w) =>
+        m.steps.length - w.steps.length ||
+        m.steps[m.steps.length - 1].coi - w.steps[w.steps.length - 1].coi ||
+        w.blood - m.blood,
+    );
+    let p = f.length ? [...f].sort((m, w) => w.blood - m.blood || m.coi - w.coi).slice(0, 5) : [];
+    return { reached: O.slice(0, 12), bestEffort: p, start: k };
+  }
+  function to(e) {
+    if (!e) return !1;
+    if (e.semenAvailable || e.livingAvailable) return !0;
+    let t = e.status;
+    return t ? t !== "Inactive" && t !== "Culled" && t !== "Deceased" : !1;
+  }
+  function Zm({ animal: e, ancestor: t, sire: n, dam: r, names: l, blood: a, onGoToAnimal: i }) {
+    let { paths: s, truncated: u } = (0, b.useMemo)(() => Qm(e, t, n, r, l), [e, t, n, r, l]),
+      d = n[e],
+      c = r[e],
+      g = (0, b.useMemo)(() => {
+        let k = { sire: [], dam: [] };
+        return (
+          s.forEach((O) => {
+            let f = O.chain[1];
+            f && f === c ? k.dam.push(O) : k.sire.push(O);
+          }),
+          k
+        );
+      }, [s, c]),
+      v = s.reduce((k, O) => k + O.contribution, 0) * 100,
+      y = (k) => k.reduce((O, f) => O + f.contribution, 0) * 100,
+      E = (k, O, f) =>
+        f.length
+          ? (0, o.jsxs)("div", {
+              style: { marginTop: 14 },
+              children: [
+                (0, o.jsxs)("div", {
+                  className: "metric-note",
+                  style: { marginBottom: 6 },
+                  children: [
+                    (0, o.jsxs)("b", { children: [k, O ? ` \u2014 ${O}` : ""] }),
+                    " \xB7 ",
+                    f.length,
+                    " path",
+                    f.length === 1 ? "" : "s",
+                    " \xB7 ",
+                    y(f).toFixed(2),
+                    "%",
+                  ],
+                }),
+                (0, o.jsx)("div", {
+                  className: "table-scroll",
+                  children: (0, o.jsxs)("table", {
+                    className: "rank-table",
+                    children: [
+                      (0, o.jsx)("thead", {
+                        children: (0, o.jsxs)("tr", {
+                          children: [
+                            (0, o.jsx)("th", { children: "Gen." }),
+                            (0, o.jsx)("th", { children: "Route" }),
+                            (0, o.jsx)("th", { children: "Contributes" }),
+                          ],
+                        }),
+                      }),
+                      (0, o.jsx)("tbody", {
+                        children: f.map((p, m) =>
+                          (0, o.jsxs)(
+                            "tr",
+                            {
+                              children: [
+                                (0, o.jsx)("td", { children: p.steps }),
+                                (0, o.jsx)("td", {
+                                  style: { whiteSpace: "normal" },
+                                  children: p.chain
+                                    .slice(1)
+                                    .map((w, x, h) =>
+                                      (0, o.jsxs)(
+                                        "span",
+                                        {
+                                          children: [
+                                            (0, o.jsx)("span", {
+                                              className: "row-link",
+                                              style: { cursor: "pointer" },
+                                              onClick: () => i(w),
+                                              children: w,
+                                            }),
+                                            x < h.length - 1 ? " \u203A " : "",
+                                          ],
+                                        },
+                                        x,
+                                      ),
+                                    ),
+                                }),
+                                (0, o.jsxs)("td", {
+                                  children: [(p.contribution * 100).toFixed(3), "%"],
+                                }),
+                              ],
+                            },
+                            m,
+                          ),
+                        ),
+                      }),
+                    ],
+                  }),
+                }),
+              ],
+            })
+          : null;
+    return (0, o.jsxs)("div", {
+      style: { marginTop: 10 },
+      children: [
+        (0, o.jsxs)("div", {
+          className: "metric-note",
+          children: [
+            "Each route runs from ",
+            e,
+            " up to ",
+            t,
+            ". A route ",
+            s.length ? s[0].steps : 0,
+            " generations back contributes 0.5",
+            (0, o.jsx)("sup", { children: s.length ? s[0].steps : 0 }),
+            " of the animal's genes; together they total ",
+            v.toFixed(2),
+            "%",
+            Math.abs(v - a) < 0.01 ? "" : ` (blood % reads ${a.toFixed(2)}%)`,
+            ".",
+          ],
+        }),
+        u &&
+          (0, o.jsx)("div", {
+            className: "metric-note warn-hint",
+            style: { marginTop: 6 },
+            children: "Too many routes to list in full \u2014 showing the 400 largest.",
+          }),
+        E("Sire side", d, g.sire),
+        E("Dam side", c, g.dam),
+      ],
+    });
+  }
+  function eh(e) {
+    if (!e) return "sex not recorded";
+    let t = String(e).trim().toLowerCase();
+    return t.startsWith("m") || t === "bull" || t === "steer"
+      ? "Bull"
+      : t.startsWith("f") || t === "cow" || t === "heifer"
+        ? "Cow"
+        : e;
+  }
+  function th(e, t, n, r, l, a) {
+    let i = t[e],
+      s = n[e];
+    if (!i || !s || !r.has(i) || !r.has(s)) return { credit: new Map(), total: 0 };
+    let u = (k, O) => (k < O ? k + "\0" + O : O + "\0" + k),
+      d = new Set(),
+      c = [],
+      g = [[i, s]];
+    for (d.add(u(i, s)); g.length;) {
+      let [k, O] = g.pop();
+      if ((c.push([k, O]), k === O)) continue;
+      let f =
+        l(k) <= l(O)
+          ? [
+              [k, t[O]],
+              [k, n[O]],
+            ]
+          : [
+              [t[k], O],
+              [n[k], O],
+            ];
+      for (let [p, m] of f) {
+        if (!p || !m || !r.has(p) || !r.has(m)) continue;
+        let w = u(p, m);
+        d.has(w) || (d.add(w), g.push([p, m]));
+      }
+    }
+    c.sort((k, O) => l(O[0]) + l(O[1]) - (l(k[0]) + l(k[1])));
+    let v = new Map();
+    v.set(u(i, s), 1);
+    let y = new Map();
+    for (let [k, O] of c) {
+      let f = v.get(u(k, O)) || 0;
+      if (f <= 0) continue;
+      if (k === O) {
+        let m = t[k] && n[k] ? a(t[k], n[k]) : 0;
+        y.set(k, (y.get(k) || 0) + f * 0.5 * (1 + m));
+        continue;
+      }
+      let p =
+        l(k) <= l(O)
+          ? [
+              [k, t[O]],
+              [k, n[O]],
+            ]
+          : [
+              [t[k], O],
+              [n[k], O],
+            ];
+      for (let [m, w] of p) {
+        if (!m || !w || !r.has(m) || !r.has(w)) continue;
+        let x = u(m, w);
+        v.set(x, (v.get(x) || 0) + f * 0.5);
+      }
+    }
+    let E = 0;
+    return (
+      y.forEach((k) => {
+        E += k;
+      }),
+      { credit: y, total: E }
+    );
+  }
+  function nh(e, t, n, r, l = 10) {
+    let a = [],
+      i = [e],
+      s = 0;
+    for (let u = 1; u <= l; u++) {
+      let d = [];
+      for (let v of i) {
+        let y = v ? t[v] : null,
+          E = v ? n[v] : null;
+        (d.push(y && r.has(y) ? y : null), d.push(E && r.has(E) ? E : null));
+      }
+      let c = d.filter(Boolean).length,
+        g = Math.pow(2, u);
+      if (
+        (a.push({ gen: u, filled: c, total: g, pct: (c / g) * 100 }),
+        c === g && (s = u),
+        (i = d),
+        c === 0)
+      )
+        break;
+    }
+    return { perGen: a, fullThrough: s };
+  }
+  var FCOL = [
+    "var(--accent)",
+    "#1F3A5F",
+    "var(--good)",
+    "var(--caution)",
+    "#6B4A7A",
+    "#1E7F86",
+    "#A33A5A",
+    "#7A5C2E",
+  ];
+  var PG_MAX = 6,
+    CT_SOFT = 6,
+    PROGRAMS_UI = false;
+  function sugShort(nm) {
+    var m = /(?:^|\s)(\d{1,3})$/.exec(String(nm || "").trim());
+    if (!m) return "";
+    var n = +m[1],
+      x = n % 100;
+    var suf = x >= 11 && x <= 13 ? "th" : { 1: "st", 2: "nd", 3: "rd" }[n % 10] || "th";
+    return n + suf;
+  }
+  function PG0() {
+    return {
+      active: "p1",
+      list: [
+        {
+          id: "p1",
+          name: "Mark Donald",
+          items: [
+            { name: as[0], short: "77th", color: 0, note: "" },
+            { name: as[1], short: "43rd", color: 1, note: "" },
+          ],
+        },
+      ],
+    };
+  }
+  function PGfromList(L) {
+    return {
+      active: "p1",
+      list: [
+        {
+          id: "p1",
+          name: "Mark Donald",
+          items: L.map(function (n, i) {
+            return { name: n, short: sugShort(n), color: i % 8, note: "" };
+          }),
+        },
+      ],
+    };
+  }
+  function PGnorm(J) {
+    try {
+      var list = (J && Array.isArray(J.list) ? J.list : [])
+        .map(function (p, pi) {
+          var used = {};
+          var items = (Array.isArray(p.items) ? p.items : [])
+            .filter(function (it) {
+              return it && typeof it.name === "string" && it.name;
+            })
+            .slice(0, PG_MAX)
+            .map(function (it, i) {
+              var col =
+                typeof it.color === "number" && it.color >= 0 && it.color < 8 ? it.color : i % 8;
+              used[col] = 1;
+              return {
+                name: it.name,
+                short: typeof it.short === "string" ? it.short : "",
+                color: col,
+                note: typeof it.note === "string" ? it.note : "",
+              };
+            });
+          return {
+            id: typeof p.id === "string" && p.id ? p.id : "p" + (pi + 1),
+            name: typeof p.name === "string" && p.name ? p.name : "Program " + (pi + 1),
+            items: items,
+          };
+        })
+        .filter(function (p) {
+          return p.items.length > 0;
+        });
+      if (!list.length) return PG0();
+      var act = list.some(function (p) {
+        return p.id === J.active;
+      })
+        ? J.active
+        : list[0].id;
+      return { active: act, list: list };
+    } catch (e) {
+      return PG0();
+    }
+  }
+  function PGact(PG) {
+    for (var i = 0; i < PG.list.length; i++) if (PG.list[i].id === PG.active) return PG.list[i];
+    return PG.list[0];
+  }
+  function PGglobals(PG) {
+    var a = PGact(PG),
+      colors = {},
+      shorts = {},
+      idx = {};
+    PG.list.forEach(function (p) {
+      p.items.forEach(function (it) {
+        if (it.short && !shorts[it.name]) shorts[it.name] = it.short;
+      });
+    });
+    a.items.forEach(function (it) {
+      colors[it.name] = FCOL[it.color % 8];
+      idx[it.name] = it.color % 8;
+      if (it.short) shorts[it.name] = it.short;
+    });
+    var others = PG.list
+      .filter(function (p) {
+        return p.id !== a.id;
+      })
+      .map(function (p) {
+        return {
+          name: p.name,
+          items: p.items.map(function (i) {
+            return i.name;
+          }),
+        };
+      });
+    return { colors: colors, shorts: shorts, idx: idx, others: others, active: a.name };
+  }
+  function FndCard(P) {
+    var E = b.default.createElement;
+    var pg = P.pg,
+      setPg = P.setPg,
+      all = P.allAnimals;
+    var act = PGact(pg);
+    var sF = b.useState(null),
+      form = sF[0],
+      setForm = sF[1];
+    var sR = b.useState(null),
+      rm = sR[0],
+      setRm = sR[1];
+    var sD = b.useState(false),
+      delp = sD[0],
+      setDelp = sD[1];
+    var sM = b.useState(""),
+      msg = sM[0],
+      setMsg = sM[1];
+    var sq = b.useState(""),
+      q = sq[0],
+      setQ = sq[1];
+    var sugg = b.useMemo(
+      function () {
+        if (!form || form.mode === "edit" || form.name || !q) return [];
+        var u = oe(q);
+        return all
+          .filter(function (c) {
+            return (
+              (c.name.indexOf(u) >= 0 || (c.regNum && String(c.regNum).indexOf(q.trim()) >= 0)) &&
+              !act.items.some(function (it) {
+                return it.name === c.name;
+              })
+            );
+          })
+          .slice(0, 6);
+      },
+      [q, form, all, act],
+    );
+    function save(p) {
+      setPg(p);
+    }
+    function upd(items) {
+      save({
+        active: pg.active,
+        list: pg.list.map(function (p) {
+          return p.id === act.id ? { id: p.id, name: p.name, items: items } : p;
+        }),
+      });
+    }
+    function usedColors(except) {
+      var u = {};
+      act.items.forEach(function (it) {
+        if (it.name !== except) u[it.color] = 1;
+      });
+      return u;
+    }
+    function firstFree(except) {
+      var u = usedColors(except);
+      for (var i = 0; i < 8; i++) if (!u[i]) return i;
+      return 0;
+    }
+    function openAdd() {
+      if (act.items.length >= PG_MAX) {
+        setMsg(
+          "This program already has " + PG_MAX + " foundation animals. Remove one to add another.",
+        );
+        return;
+      }
+      setMsg("");
+      setQ("");
+      setRm(null);
+      setForm({ mode: "add", name: "", short: "", color: firstFree(null), note: "", pname: "" });
+    }
+    function openNew() {
+      setMsg("");
+      setQ("");
+      setRm(null);
+      setForm({ mode: "newprog", name: "", short: "", color: 0, note: "", pname: "" });
+    }
+    function openEdit(it) {
+      setMsg("");
+      setQ("");
+      setRm(null);
+      setForm({
+        mode: "edit",
+        orig: it.name,
+        name: it.name,
+        short: it.short,
+        color: it.color,
+        note: it.note || "",
+        pname: "",
+      });
+    }
+    function pick(nm) {
+      setForm(Object.assign({}, form, { name: nm, short: form.short || sugShort(nm) }));
+      setQ("");
+    }
+    function validate(f) {
+      if (f.mode === "newprog" && !f.pname.trim()) return "Give the program a name.";
+      if (!f.name) return "Pick the foundation animal first.";
+      var items =
+        f.mode === "newprog"
+          ? []
+          : act.items.filter(function (it) {
+              return it.name !== f.orig;
+            });
+      if (f.mode === "add" && items.length >= PG_MAX)
+        return "This program already has " + PG_MAX + " foundation animals.";
+      if (
+        f.mode !== "newprog" &&
+        items.some(function (it) {
+          return it.name === f.name;
+        })
+      )
+        return f.name + " is already a foundation animal in this program.";
+      var sh = f.short.trim();
+      if (
+        sh &&
+        items.some(function (it) {
+          return it.short && it.short.toLowerCase() === sh.toLowerCase();
+        })
+      )
+        return "Another foundation animal in this program already uses the short name " + sh + ".";
+      if (
+        items.some(function (it) {
+          return it.color === f.color;
+        })
+      )
+        return "That color is taken by another foundation animal in this program. Pick another.";
+      if (
+        f.mode === "newprog" &&
+        pg.list.some(function (p) {
+          return p.name.toLowerCase() === f.pname.trim().toLowerCase();
+        })
+      )
+        return "A program with that name already exists.";
+      return "";
+    }
+    function submit() {
+      var err = validate(form);
+      if (err) {
+        setMsg(err);
+        return;
+      }
+      var it = {
+        name: form.name,
+        short: form.short.trim(),
+        color: form.color,
+        note: form.note.trim(),
+      };
+      if (form.mode === "add") upd(act.items.concat([it]));
+      else if (form.mode === "edit")
+        upd(
+          act.items.map(function (x) {
+            return x.name === form.orig ? it : x;
+          }),
+        );
+      else {
+        var id = "p" + Date.now().toString(36);
+        save({
+          active: id,
+          list: pg.list.concat([{ id: id, name: form.pname.trim(), items: [it] }]),
+        });
+      }
+      setForm(null);
+      setMsg("");
+    }
+    function doRemove(nm) {
+      if (act.items.length <= 1) {
+        setMsg("A program needs at least one foundation animal.");
+        setRm(null);
+        return;
+      }
+      upd(
+        act.items.filter(function (x) {
+          return x.name !== nm;
+        }),
+      );
+      setRm(null);
+      setMsg("");
+    }
+    function doDelProg() {
+      if (pg.list.length <= 1) {
+        setMsg("You need at least one program.");
+        setDelp(false);
+        return;
+      }
+      var rest = pg.list.filter(function (p) {
+        return p.id !== act.id;
+      });
+      save({ active: rest[0].id, list: rest });
+      setDelp(false);
+      setMsg("");
+    }
+    function doExport() {
+      try {
+        var blob = new Blob(
+          [JSON.stringify({ app: "linebred-programs", version: 1, programs: pg }, null, 2)],
+          { type: "application/json" },
+        );
+        var a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "linebred-programs.json";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setMsg("Exported programs and foundation animals to linebred-programs.json.");
+      } catch (e) {
+        setMsg("Export did not work on this device.");
+      }
+    }
+    function doImport(ev) {
+      var f = ev.target.files && ev.target.files[0];
+      ev.target.value = "";
+      if (!f) return;
+      var rd = new FileReader();
+      rd.onload = function () {
+        try {
+          var j = JSON.parse(String(rd.result)),
+            p = j && j.programs ? j.programs : j;
+          if (!p || !Array.isArray(p.list) || !p.list.length) throw new Error("bad");
+          var n = PGnorm(p);
+          save(n);
+          setMsg("Imported " + n.list.length + " program" + (n.list.length === 1 ? "" : "s") + ".");
+        } catch (e) {
+          setMsg("That file isn't a LineBred programs export, so nothing was changed.");
+        }
+      };
+      rd.readAsText(f);
+    }
+    var fileRef = b.useRef(null);
+    var swatches = function (cur, taken, onPick) {
+      return E(
+        "div",
+        { className: "fnd-sw-row" },
+        FCOL.map(function (c, i) {
+          var dis = !!taken[i] && i !== cur;
+          return E("button", {
+            key: i,
+            type: "button",
+            className: "fnd-sw" + (i === cur ? " on" : "") + (dis ? " off" : ""),
+            style: { background: c },
+            disabled: dis,
+            title: dis ? "Used by another foundation animal" : "Color " + (i + 1),
+            "aria-label": "Color " + (i + 1),
+            onClick: function () {
+              setForm(Object.assign({}, form, { color: i }));
+            },
+          });
+        }),
+      );
+    };
+    var formEl = null;
+    if (form) {
+      var taken = usedColors(form.mode === "edit" ? form.orig : null);
+      if (form.mode === "newprog") taken = {};
+      formEl = E(
+        "div",
+        { className: "fnd-form" },
+        E(
+          "div",
+          { className: "fnd-ft" },
+          form.mode === "edit"
+            ? "Edit foundation animal"
+            : form.mode === "newprog"
+              ? "New program"
+              : "Designate a foundation animal",
+        ),
+        E(
+          "div",
+          { className: "fnd-fn" },
+          "A foundation animal is the basis of this breeding program. Every blood %, ranking and the planner are measured against it.",
+        ),
+        form.mode === "newprog" &&
+          E(
+            "label",
+            { className: "fnd-lab" },
+            "Program name",
+            E("input", {
+              value: form.pname,
+              placeholder: "e.g. L1 / Domino",
+              onChange: function (e) {
+                setForm(Object.assign({}, form, { pname: e.target.value }));
+              },
+            }),
+          ),
+        E(
+          "div",
+          { className: "fnd-lab" },
+          "Animal",
+          form.name
+            ? E(
+                "div",
+                { className: "fnd-picked" },
+                E("b", null, form.name),
+                form.mode !== "edit" &&
+                  E(
+                    "button",
+                    {
+                      type: "button",
+                      className: "btn secondary",
+                      onClick: function () {
+                        setForm(Object.assign({}, form, { name: "" }));
+                      },
+                    },
+                    "Change",
+                  ),
+              )
+            : E(
+                "div",
+                { style: { position: "relative" } },
+                E("input", {
+                  autoCorrect: "off",
+                  autoCapitalize: "off",
+                  autoComplete: "off",
+                  spellCheck: "false",
+                  placeholder: "Search by name or registration number…",
+                  value: q,
+                  onChange: function (e) {
+                    setQ(e.target.value);
+                  },
+                }),
+                sugg.length > 0 &&
+                  E(
+                    "div",
+                    { className: "suggestions" },
+                    sugg.map(function (c) {
+                      return E(
+                        "div",
+                        {
+                          key: c.name,
+                          className: "suggestion-row",
+                          onClick: function () {
+                            pick(c.name);
+                          },
+                        },
+                        c.name,
+                        c.regNum ? E("span", { className: "fnd-reg" }, " Reg " + c.regNum) : null,
+                      );
+                    }),
+                  ),
+              ),
+        ),
+        E(
+          "label",
+          { className: "fnd-lab" },
+          "Short name",
+          E("input", {
+            value: form.short,
+            placeholder: sugShort(form.name) || "e.g. 77th",
+            maxLength: 14,
+            onChange: function (e) {
+              setForm(Object.assign({}, form, { short: e.target.value }));
+            },
+          }),
+          E(
+            "span",
+            { className: "fnd-hint" },
+            "Shown where space is tight. Leave blank to use the full name.",
+          ),
+        ),
+        E("div", { className: "fnd-lab" }, "Color", swatches(form.color, taken)),
+        E(
+          "label",
+          { className: "fnd-lab" },
+          "Note (optional)",
+          E("input", {
+            value: form.note,
+            placeholder: "e.g. Cornerstone sire of the program",
+            maxLength: 120,
+            onChange: function (e) {
+              setForm(Object.assign({}, form, { note: e.target.value }));
+            },
+          }),
+        ),
+        E(
+          "div",
+          { className: "fnd-btns" },
+          E(
+            "button",
+            { type: "button", className: "btn", onClick: submit },
+            form.mode === "edit" ? "Save changes" : "Designate foundation animal",
+          ),
+          E(
+            "button",
+            {
+              type: "button",
+              className: "btn secondary",
+              onClick: function () {
+                setForm(null);
+                setMsg("");
+              },
+            },
+            "Cancel",
+          ),
+        ),
+      );
+    }
+    var rows = act.items.map(function (it) {
+      var confirming = rm === it.name;
+      return E(
+        "div",
+        { key: it.name, className: "fnd-row" },
+        E("i", { className: "fnd-dot", style: { background: FCOL[it.color % 8] } }),
+        E(
+          "div",
+          { className: "fnd-main" },
+          E(
+            "div",
+            { className: "fnd-nm" },
+            it.short ? E("b", { className: "fnd-short" }, it.short) : null,
+            E("span", { className: "fnd-full" }, it.name),
+            !qm.includes(it.name) &&
+              E(
+                "span",
+                {
+                  className: "tag",
+                  style: { marginLeft: 6 },
+                  title: "Calculated live rather than precomputed",
+                },
+                "live",
+              ),
+          ),
+          it.note ? E("div", { className: "fnd-note" }, it.note) : null,
+        ),
+        confirming
+          ? E(
+              "div",
+              { className: "fnd-conf" },
+              "Remove " + (it.short || it.name) + "? ",
+              E(
+                "button",
+                {
+                  type: "button",
+                  className: "btn",
+                  onClick: function () {
+                    doRemove(it.name);
+                  },
+                },
+                "Yes, remove",
+              ),
+              E(
+                "button",
+                {
+                  type: "button",
+                  className: "btn secondary",
+                  onClick: function () {
+                    setRm(null);
+                  },
+                },
+                "Keep",
+              ),
+            )
+          : E(
+              "div",
+              { className: "fnd-act" },
+              E(
+                "button",
+                {
+                  type: "button",
+                  className: "fnd-link",
+                  onClick: function () {
+                    openEdit(it);
+                  },
+                },
+                "Edit",
+              ),
+              E(
+                "button",
+                {
+                  type: "button",
+                  className: "fnd-link",
+                  onClick: function () {
+                    setRm(it.name);
+                    setForm(null);
+                    setMsg("");
+                  },
+                },
+                "Remove",
+              ),
+            ),
+      );
+    });
+    return E(
+      "div",
+      { className: "card target-panel fnd-card" },
+      E(
+        "h2",
+        null,
+        "Foundation Animals",
+        E(
+          "span",
+          { className: "metric-note", style: { fontWeight: "normal" } },
+          "used on every screen",
+        ),
+      ),
+      P.note && E("div", { className: "metric-note", style: { marginBottom: 10 } }, P.note),
+      PROGRAMS_UI &&
+        E(
+          "div",
+          { className: "fnd-prog" },
+          E("label", { className: "fnd-plab" }, "Program"),
+          E(
+            "select",
+            {
+              value: act.id,
+              onChange: function (e) {
+                setForm(null);
+                setRm(null);
+                setMsg("");
+                save({ active: e.target.value, list: pg.list });
+              },
+            },
+            pg.list.map(function (p) {
+              return E("option", { key: p.id, value: p.id }, p.name + " (" + p.items.length + ")");
+            }),
+          ),
+          E("button", { type: "button", className: "fnd-link", onClick: openNew }, "New program"),
+          !delp
+            ? E(
+                "button",
+                {
+                  type: "button",
+                  className: "fnd-link",
+                  onClick: function () {
+                    setDelp(true);
+                  },
+                },
+                "Delete program",
+              )
+            : E(
+                "span",
+                { className: "fnd-conf" },
+                "Delete " + act.name + "? ",
+                E(
+                  "button",
+                  { type: "button", className: "btn", onClick: doDelProg },
+                  "Yes, delete",
+                ),
+                E(
+                  "button",
+                  {
+                    type: "button",
+                    className: "btn secondary",
+                    onClick: function () {
+                      setDelp(false);
+                    },
+                  },
+                  "Keep",
+                ),
+              ),
+        ),
+      E("div", { className: "fnd-list" }, rows),
+      msg && E("div", { className: "metric-note warn-hint", style: { margin: "8px 0" } }, msg),
+      formEl,
+      !form &&
+        E(
+          "div",
+          { className: "fnd-btns" },
+          E(
+            "button",
+            { type: "button", className: "btn", onClick: openAdd },
+            "+ Designate a foundation animal",
+          ),
+          E("button", { type: "button", className: "btn secondary", onClick: doExport }, "Export"),
+          E(
+            "button",
+            {
+              type: "button",
+              className: "btn secondary",
+              onClick: function () {
+                fileRef.current && fileRef.current.click();
+              },
+            },
+            "Import",
+          ),
+          E("input", {
+            ref: fileRef,
+            type: "file",
+            accept: "application/json,.json",
+            style: { display: "none" },
+            onChange: doImport,
+          }),
+        ),
+      act.items.length > 6 ? null : null,
+      E(
+        "div",
+        { className: "metric-note", style: { marginTop: 8 } },
+        "Foundation animals are saved on this device. Use Export to back them up or move them to another device.",
+      ),
+    );
+  }
+  function CtBar(P) {
+    var E = b.default.createElement;
+    var ct = P.ct,
+      setCt = P.setCt,
+      pend = P.pend,
+      setPend = P.setPend,
+      sn = P.sn;
+    if (!ct.length && !pend) return null;
+    return E(
+      "div",
+      { className: "card ct-card" },
+      E(
+        "div",
+        { className: "ct-h" },
+        "Tracked on this chart",
+        E(
+          "span",
+          { className: "metric-note", style: { fontWeight: "normal", marginLeft: 8 } },
+          "temporary: not foundation animals",
+        ),
+      ),
+      E(
+        "div",
+        { className: "ancestor-chips" },
+        ct.map(function (nm) {
+          return E(
+            "div",
+            { key: nm, className: "ancestor-chip ct-chip" },
+            nm,
+            E(
+              "span",
+              {
+                className: "chip-remove",
+                title: "Stop tracking on this chart",
+                onClick: function () {
+                  setCt(
+                    ct.filter(function (x) {
+                      return x !== nm;
+                    }),
+                  );
+                },
+              },
+              "×",
+            ),
+          );
+        }),
+      ),
+      pend &&
+        E(
+          "div",
+          { className: "metric-note warn-hint" },
+          "More than " + CT_SOFT + " gets hard to read. Add " + pend + " anyway? ",
+          E(
+            "button",
+            {
+              type: "button",
+              className: "btn",
+              onClick: function () {
+                setCt(ct.concat([pend]));
+                setPend(null);
+              },
+            },
+            "Add anyway",
+          ),
+          E(
+            "button",
+            {
+              type: "button",
+              className: "btn secondary",
+              onClick: function () {
+                setPend(null);
+              },
+            },
+            "Cancel",
+          ),
+        ),
+    );
+  }
+  function tf({ founders: e, setFounders: t, allAnimals: n, note: r }) {
+    let [l, a] = (0, b.useState)(""),
+      i = (0, b.useMemo)(() => {
+        if (!l) return [];
+        let d = oe(l);
+        return n.filter((c) => c.name.includes(d) && !e.includes(c.name)).slice(0, 6);
+      }, [l, n, e]),
+      s = (d) => {
+        (d && !e.includes(d) && t([...e, d]), a(""));
+      },
+      u = (d) => {
+        e.length <= 1 || t(e.filter((c) => c !== d));
+      };
+    return (0, o.jsxs)("div", {
+      className: "card target-panel",
+      children: [
+        (0, o.jsxs)("h2", {
+          children: [
+            "Foundation Animals",
+            (0, o.jsx)("span", {
+              className: "metric-note",
+              style: { fontWeight: "normal" },
+              children: "used on every screen",
+            }),
+          ],
+        }),
+        r &&
+          (0, o.jsx)("div", { className: "metric-note", style: { marginBottom: 10 }, children: r }),
+        (0, o.jsx)("div", {
+          className: "ancestor-chips",
+          children: e.map((d) =>
+            (0, o.jsxs)(
+              "div",
+              {
+                className: "ancestor-chip",
+                children: [
+                  d,
+                  !qm.includes(d) &&
+                    (0, o.jsx)("span", {
+                      className: "tag",
+                      style: { marginLeft: 6 },
+                      title: "Calculated live rather than precomputed",
+                      children: "live",
+                    }),
+                  e.length > 1 &&
+                    (0, o.jsx)("span", {
+                      className: "chip-remove",
+                      title: "Remove from foundation animals",
+                      onClick: () => u(d),
+                      children: "\xD7",
+                    }),
+                ],
+              },
+              d,
+            ),
+          ),
+        }),
+        e.length > 6 &&
+          (0, o.jsxs)("div", {
+            className: "metric-note warn-hint",
+            style: { marginBottom: 8 },
+            children: [
+              e.length,
+              " foundation animals. Everything past the original two is calculated as you go, so herd-wide screens get slower the further this list grows.",
+            ],
+          }),
+        (0, o.jsxs)("div", {
+          className: "ancestor-add-row",
+          style: { position: "relative" },
+          children: [
+            (0, o.jsx)("input", {
+              autoCorrect: "off",
+              autoCapitalize: "off",
+              autoComplete: "off",
+              spellCheck: "false",
+              placeholder: "Add a foundation animal to track\u2026",
+              value: l,
+              onChange: (d) => a(d.target.value),
+            }),
+            (0, o.jsx)("button", {
+              className: "btn secondary",
+              onClick: () => t(as),
+              children: "Reset",
+            }),
+            i.length > 0 &&
+              (0, o.jsx)("div", {
+                className: "suggestions",
+                children: i.map((d) =>
+                  (0, o.jsx)(
+                    "div",
+                    { className: "suggestion-row", onClick: () => s(d.name), children: [d.name, sxd(d)] },
+                    d.name,
+                  ),
+                ),
+              }),
+          ],
+        }),
+      ],
+    });
+  }
+  function rh({
+    allAnimals: e,
+    sire: t,
+    dam: n,
+    names: r,
+    byName: l,
+    gen: a,
+    kinship: i,
+    selected: s,
+    setSelected: u,
+    founders: d,
+    setFounders: c,
+    pg: pgP,
+    setPg: pgS,
+  }) {
+    let [g, v] = (0, b.useState)(s),
+      y = d,
+      E = c,
+      [cTr, setCTr] = (0, b.useState)([]),
+      [pend, setPend] = (0, b.useState)(null),
+      AT = y.concat(cTr.filter((q9) => !y.includes(q9))),
+      [k, O] = (0, b.useState)(3),
+      [f, p] = (0, b.useState)(null);
+    (0, b.useEffect)(() => {
+      (v(s), setCTr([]), setPend(null));
+    }, [s]);
+    let m = (0, b.useMemo)(() => {
+        if (!g) return [];
+        let z = oe(g);
+        return e
+          .filter((S) => S.name.includes(z))
+          .sort((S, _) => S.name.indexOf(z) - _.name.indexOf(z))
+          .slice(0, 10);
+      }, [g, e]),
+      w = m.length > 0 && oe(g) !== oe(s),
+      x = (z) => {
+        z.key === "Enter" && m.length > 0 && (u(m[0].name), v(m[0].name));
+      },
+      h = l[s],
+      T = h ? i(t[s], n[s]) * 100 : 0,
+      I = !!(h && (t[s] || n[s])),
+      R = (h && h.status) || null,
+      M = (0, b.useMemo)(
+        () => (h ? nh(s, t, n, r) : { perGen: [], fullThrough: 0 }),
+        [h, s, t, n, r],
+      ),
+      U = h ? eo(s, t, n, r) : 0,
+      q = h ? qe(s, h, t, n) : "\u2013",
+      X = (z) => {
+        z &&
+          !y.includes(z) &&
+          !cTr.includes(z) &&
+          (cTr.length >= CT_SOFT ? setPend(z) : setCTr([...cTr, z]));
+      },
+      K = (0, b.useMemo)(() => {
+        if (!h) return [];
+        let { blood: z, occ: S } = Jm(s, t, n, r, a),
+          N = [...z.entries()]
+            .sort((P, $) => $[1] - P[1])
+            .slice(0, 60)
+            .map(([P, $]) => ({
+              name: P,
+              rel: rs(s, P, t, n, i) * 100,
+              blood: $ * 100,
+              occ: S.get(P) || 0,
+            }));
+        return (N.sort((P, $) => $.rel - P.rel), N.slice(0, 10));
+      }, [s, h, t, n, r, i, a]),
+      [G, Z] = (0, b.useState)(!1),
+      B = (0, b.useMemo)(
+        () => (!G || !h || !I ? null : th(s, t, n, r, a, i)),
+        [G, s, h, I, t, n, r, a, i],
+      ),
+      { siblings: Y, offspring: D } = (0, b.useMemo)(
+        () => (h ? Km(s, e, t, n) : { siblings: [], offspring: [] }),
+        [s, h, e, t, n],
+      );
+    return (0, o.jsxs)("div", {
+      className: "screen active",
+      children: [
+        (0, o.jsx)("div", { className: "breadcrumb", children: "Herd Book \u203A Hereford" }),
+        (0, o.jsxs)("div", {
+          className: "search-row",
+          children: [
+            (0, o.jsx)("input", {
+              autoCorrect: "off",
+              autoCapitalize: "off",
+              autoComplete: "off",
+              spellCheck: "false",
+              className: "search-input",
+              value: g,
+              onChange: (z) => v(z.target.value),
+              onKeyDown: x,
+              placeholder:
+                "Search animal by name or number\u2026 (press Enter to jump to top match)",
+            }),
+            w &&
+              (0, o.jsx)("div", {
+                className: "suggestions",
+                children: m.map((z) =>
+                  (0, o.jsxs)(
+                    "div",
+                    {
+                      className: "suggestion-row",
+                      onClick: () => {
+                        (u(z.name), v(z.name));
+                      },
+                      children: [z.name, z.isStub ? " (stub)" : ""],
+                    },
+                    z.name,
+                  ),
+                ),
+              }),
+          ],
+        }),
+        s
+          ? (0, o.jsxs)(o.Fragment, {
+              children: [
+                (0, o.jsxs)("div", {
+                  className: "ah-head",
+                  children: [
+                    (0, o.jsxs)("div", {
+                      className: "ah-id",
+                      children: [
+                        (0, o.jsxs)("div", {
+                          className: "ah-nmrow",
+                          children: [
+                            (0, o.jsxs)("h1", {
+                              className: "ah-nm",
+                              children: [s, h && h.isStub ? " (stub)" : ""],
+                            }),
+                            R &&
+                              (0, o.jsxs)("span", {
+                                className: "ah-badge",
+                                title: R,
+                                children: [
+                                  (0, o.jsx)("span", {
+                                    className: "ah-chk",
+                                    "aria-hidden": "true",
+                                    children: (0, o.jsx)("svg", {
+                                      viewBox: "0 0 12 12",
+                                      fill: "none",
+                                      stroke: "#fff",
+                                      strokeWidth: "2.4",
+                                      strokeLinecap: "round",
+                                      strokeLinejoin: "round",
+                                      children: (0, o.jsx)("path", { d: "M2 6.3 L4.7 9 L10 3" }),
+                                    }),
+                                  }),
+                                  "ACTIVE",
+                                ],
+                              }),
+                          ],
+                        }),
+                        (0, o.jsxs)("div", {
+                          className: "ah-meta",
+                          children: [
+                            (h && h.regNum) || "no reg",
+                            h && h.birthDate ? " \xB7 " + h.birthDate : "",
+                            " \xB7 " + (Rl(q) === "\u2014" ? "sex not recorded" : eh(q)),
+                          ],
+                        }),
+                      ],
+                    }),
+                    (0, o.jsxs)("div", {
+                      className: "ah-coi",
+                      children: [
+                        (0, o.jsx)("span", { className: "ah-k", children: "COI" }),
+                        I
+                          ? (0, o.jsxs)("span", {
+                              className: "ah-v",
+                              children: [T.toFixed(2), (0, o.jsx)("small", { children: "%" })],
+                            })
+                          : (0, o.jsx)("span", { className: "ah-v none", children: "no pedigree" }),
+                      ],
+                    }),
+                    (0, o.jsxs)("div", {
+                      className: "ah-ped",
+                      children: [
+                        (0, o.jsx)("div", { className: "ah-k", children: "Pedigree gens" }),
+                        (0, o.jsxs)("div", {
+                          className: "ah-pv",
+                          children: [
+                            (0, o.jsx)("b", { children: M.fullThrough }),
+                            " ",
+                            (0, o.jsx)("span", { children: "complete" }),
+                            (0, o.jsx)("i", { children: "/" }),
+                            (0, o.jsx)("b", { children: U }),
+                            " ",
+                            (0, o.jsx)("span", { children: "deep" }),
+                          ],
+                        }),
+                      ],
+                    }),
+                  ],
+                }),
+                (0, o.jsx)("div", {
+                  className: "ah-mating",
+                  children:
+                    t[s] || n[s]
+                      ? (0, o.jsxs)(o.Fragment, {
+                          children: [
+                            t[s]
+                              ? (0, o.jsx)("span", {
+                                  className: "ah-link",
+                                  onClick: () => {
+                                    (u(t[s]), v(t[s]));
+                                  },
+                                  children: t[s],
+                                })
+                              : (0, o.jsx)("span", {
+                                  className: "ah-none",
+                                  children: "sire not recorded",
+                                }),
+                            (0, o.jsx)("span", { className: "ah-x", children: "\xD7" }),
+                            n[s]
+                              ? (0, o.jsx)("span", {
+                                  className: "ah-link",
+                                  onClick: () => {
+                                    (u(n[s]), v(n[s]));
+                                  },
+                                  children: n[s],
+                                })
+                              : (0, o.jsx)("span", {
+                                  className: "ah-none",
+                                  children: "dam not recorded",
+                                }),
+                          ],
+                        })
+                      : (0, o.jsx)("span", {
+                          className: "ah-none",
+                          children: "no sire or dam recorded",
+                        }),
+                }),
+                (0, o.jsx)("div", {
+                  className: "card ah-found",
+                  children: (0, o.jsx)("div", {
+                    className: "table-scroll",
+                    children: (0, o.jsxs)("table", {
+                      className: "rank-table found-table",
+                      children: [
+                        (0, o.jsxs)("colgroup", {
+                          children: [
+                            (0, o.jsx)("col", { className: "fc1" }),
+                            (0, o.jsx)("col", { className: "fc2" }),
+                            (0, o.jsx)("col", { className: "fc3" }),
+                            (0, o.jsx)("col", { className: "fc4" }),
+                            (0, o.jsx)("col", { className: "fc5" }),
+                          ],
+                        }),
+                        (0, o.jsx)("thead", {
+                          children: (0, o.jsxs)("tr", {
+                            children: [
+                              (0, o.jsx)("th", {
+                                style: { textAlign: "left" },
+                                children: "Foundation animal",
+                              }),
+                              (0, o.jsx)("th", { children: "Relationship" }),
+                              (0, o.jsx)("th", { children: "% Blood" }),
+                              (0, o.jsx)("th", { children: "Times" }),
+                              (0, o.jsx)("th", {}),
+                            ],
+                          }),
+                        }),
+                        (0, o.jsx)("tbody", {
+                          children: y.map((z, S) => {
+                            let _ = ye(s, z, t, n, r) * 100,
+                              N = On(s, z, t, n, r),
+                              P = rs(s, z, t, n, i) * 100,
+                              $ = N > 0;
+                            return (0, o.jsxs)(
+                              "tr",
+                              {
+                                children: [
+                                  (0, o.jsxs)("td", {
+                                    style: { textAlign: "left" },
+                                    children: [
+                                      (0, o.jsx)("span", { className: "fdot fdot-" + (S % 5) }),
+                                      (0, o.jsx)("span", {
+                                        className: "ah-link",
+                                        onClick: () => {
+                                          (u(z), v(z));
+                                        },
+                                        children: z,
+                                      }),
+                                    ],
+                                  }),
+                                  $
+                                    ? (0, o.jsxs)(o.Fragment, {
+                                        children: [
+                                          (0, o.jsxs)("td", {
+                                            className: "fk",
+                                            children: [P.toFixed(2), "%"],
+                                          }),
+                                          (0, o.jsxs)("td", { children: [_.toFixed(2), "%"] }),
+                                          (0, o.jsx)("td", { className: "fmuted", children: N }),
+                                        ],
+                                      })
+                                    : (0, o.jsx)("td", {
+                                        colSpan: 3,
+                                        className: "fmuted",
+                                        style: { textAlign: "right" },
+                                        children: "not reached \u2014 pedigree stops too soon",
+                                      }),
+                                  (0, o.jsx)("td", {}),
+                                ],
+                              },
+                              z,
+                            );
+                          }),
+                        }),
+                      ],
+                    }),
+                  }),
+                }),
+                (0, o.jsxs)("div", {
+                  className: "card pedigree-panel",
+                  children: [
+                    (0, o.jsxs)("h2", {
+                      children: [
+                        "Pedigree",
+                        (0, o.jsxs)("select", {
+                          value: k,
+                          onChange: (z) => O(Number(z.target.value)),
+                          children: [
+                            (0, o.jsx)("option", { value: 3, children: "3 generations" }),
+                            (0, o.jsx)("option", { value: 4, children: "4 generations" }),
+                            (0, o.jsx)("option", { value: 5, children: "5 generations" }),
+                            (0, o.jsx)("option", { value: 6, children: "6 generations" }),
+                            (0, o.jsx)("option", { value: 7, children: "7 generations" }),
+                            (0, o.jsx)("option", { value: 8, children: "8 generations" }),
+                          ],
+                        }),
+                      ],
+                    }),
+                    (0, o.jsx)(_l, {
+                      name: s,
+                      sire: t,
+                      dam: n,
+                      names: r,
+                      byName: l,
+                      maxGen: k + 1,
+                      targets: AT,
+                      colors: AT.map((q9) =>
+                        y.includes(q9) ? (window.__lbProg.idx[q9] ?? 0) : "c",
+                      ),
+                      labels: AT.map((q9) => (y.includes(q9) ? "Foundation" : "Tracked")),
+                      onSelect: (z) => X(z),
+                      mode: "track",
+                      coiOf: (z) => (l[z] ? i(t[z], n[z]) * 100 : null),
+                    }),
+                    (0, o.jsx)("div", {
+                      className: "metric-note",
+                      children:
+                        "Tap a card to open or close its parents. Drag to move; pinch, ctrl-scroll or the + / \u2212 buttons to zoom. Use the + on a card to track it on this chart only.",
+                    }),
+                  ],
+                }),
+                (0, o.jsx)(CtBar, { ct: cTr, setCt: setCTr, pend: pend, setPend: setPend }),
+                (0, o.jsx)("div", {
+                  className: "metrics-below",
+                  children: AT.map((z) => {
+                    let S = ye(s, z, t, n, r) * 100,
+                      _ = On(s, z, t, n, r);
+                    return _ === 0
+                      ? null
+                      : (0, o.jsxs)(
+                          "div",
+                          {
+                            className: "card",
+                            style: f === z ? { gridColumn: "1 / -1" } : void 0,
+                            children: [
+                              (0, o.jsxs)("h2", { children: ["How ", s, " connects to ", z] }),
+                              _ > 0 &&
+                                (0, o.jsxs)(o.Fragment, {
+                                  children: [
+                                    (0, o.jsx)("div", {
+                                      style: { marginTop: 12 },
+                                      children: (0, o.jsx)("button", {
+                                        className: "btn secondary",
+                                        onClick: () => p(f === z ? null : z),
+                                        children:
+                                          f === z
+                                            ? "Hide the paths"
+                                            : `Show the ${_} path${_ === 1 ? "" : "s"}`,
+                                      }),
+                                    }),
+                                    f === z &&
+                                      (0, o.jsx)(Zm, {
+                                        animal: s,
+                                        ancestor: z,
+                                        sire: t,
+                                        dam: n,
+                                        names: r,
+                                        blood: S,
+                                        onGoToAnimal: (N) => {
+                                          (u(N), v(N), p(null));
+                                        },
+                                      }),
+                                  ],
+                                }),
+                            ],
+                          },
+                          z,
+                        );
+                  }),
+                }),
+                (0, o.jsxs)("div", {
+                  className: "card",
+                  children: [
+                    (0, o.jsxs)("h2", {
+                      children: [
+                        "Top 10 Ancestors in This Pedigree",
+                        I &&
+                          (0, o.jsx)("button", {
+                            className: "btn secondary",
+                            onClick: () => Z(!G),
+                            children: G ? "Hide what causes the COI" : "What causes the COI?",
+                          }),
+                      ],
+                    }),
+                    (0, o.jsxs)("div", {
+                      className: "metric-note",
+                      style: { marginBottom: 8 },
+                      children: [
+                        "Every distinct ancestor in ",
+                        s,
+                        "'s pedigree, ranked by additive relationship (counts every shared gene, including extra copies from inbreeding).",
+                        G &&
+                          B &&
+                          (0, o.jsxs)(o.Fragment, {
+                            children: [
+                              " The ",
+                              (0, o.jsx)("b", { children: "Causes" }),
+                              " column splits the ",
+                              T.toFixed(2),
+                              "% COI by the ancestor the two lines actually meet at \u2014 an ancestor can dominate this list and still cause none of it.",
+                            ],
+                          }),
+                      ],
+                    }),
+                    (0, o.jsx)("div", {
+                      className: "table-scroll",
+                      children: (0, o.jsxs)("table", {
+                        className: "rank-table",
+                        children: [
+                          (0, o.jsx)("thead", {
+                            children: (0, o.jsxs)("tr", {
+                              children: [
+                                (0, o.jsx)("th", { children: "Rank" }),
+                                (0, o.jsx)("th", { children: "Ancestor" }),
+                                (0, o.jsx)("th", { children: "Additive rel." }),
+                                (0, o.jsx)("th", { children: "Blood %" }),
+                                (0, o.jsx)("th", { children: "Occ." }),
+                                G && (0, o.jsx)("th", { children: "Causes" }),
+                                G && (0, o.jsx)("th", { children: "Share of COI" }),
+                              ],
+                            }),
+                          }),
+                          (0, o.jsx)("tbody", {
+                            children: K.map((z, S) => {
+                              let _ = B ? (B.credit.get(z.name) || 0) * 100 : 0;
+                              return (0, o.jsxs)(
+                                "tr",
+                                {
+                                  className: S === 0 ? "best" : "",
+                                  children: [
+                                    (0, o.jsx)("td", { children: S + 1 }),
+                                    (0, o.jsx)("td", { children: z.name }),
+                                    (0, o.jsxs)("td", { children: [z.rel.toFixed(2), "%"] }),
+                                    (0, o.jsxs)("td", { children: [z.blood.toFixed(2), "%"] }),
+                                    (0, o.jsxs)("td", { children: [z.occ, "\xD7"] }),
+                                    G &&
+                                      (0, o.jsx)("td", {
+                                        children: _ > 0.004 ? _.toFixed(2) + " pts" : "\u2014",
+                                      }),
+                                    G &&
+                                      (0, o.jsx)("td", {
+                                        children:
+                                          _ > 0.004 ? ((100 * _) / T).toFixed(1) + "%" : "\u2014",
+                                      }),
+                                  ],
+                                },
+                                z.name,
+                              );
+                            }),
+                          }),
+                        ],
+                      }),
+                    }),
+                    G &&
+                      B &&
+                      (0, o.jsxs)("div", {
+                        className: "metric-note",
+                        style: { marginTop: 10 },
+                        children: [
+                          "Biggest cause overall:",
+                          " ",
+                          (() => {
+                            let z = [...B.credit.entries()].sort((S, _) => _[1] - S[1])[0];
+                            return z
+                              ? (0, o.jsxs)(o.Fragment, {
+                                  children: [
+                                    (0, o.jsx)("b", { children: z[0] }),
+                                    " at ",
+                                    (z[1] * 100).toFixed(2),
+                                    " pts, ",
+                                    ((100 * z[1] * 100) / T).toFixed(0),
+                                    "% of the total.",
+                                  ],
+                                })
+                              : "none";
+                          })(),
+                          " ",
+                          "Parts sum to ",
+                          (B.total * 100).toFixed(4),
+                          "% against a COI of ",
+                          T.toFixed(4),
+                          "%.",
+                        ],
+                      }),
+                  ],
+                }),
+                (0, o.jsxs)("div", {
+                  className: "card",
+                  children: [
+                    (0, o.jsxs)("h2", {
+                      children: [
+                        "Siblings ",
+                        (0, o.jsxs)("span", {
+                          className: "metric-note",
+                          style: { fontWeight: "normal" },
+                          children: ["(", Y.length, ")"],
+                        }),
+                      ],
+                    }),
+                    (0, o.jsx)("div", {
+                      className: "metric-note",
+                      style: { marginBottom: 8 },
+                      children:
+                        "Full (both parents shared), Half (one parent shared), Quarter (share a grandparent \u2014 first cousins).",
+                    }),
+                    Y.length === 0
+                      ? (0, o.jsx)("div", {
+                          className: "metric-note",
+                          children: "None found in the database.",
+                        })
+                      : (0, o.jsx)("div", {
+                          className: "table-scroll",
+                          children: (0, o.jsxs)("table", {
+                            className: "rank-table",
+                            children: [
+                              (0, o.jsx)("thead", {
+                                children: (0, o.jsxs)("tr", {
+                                  children: [
+                                    (0, o.jsx)("th", { children: "Name" }),
+                                    (0, o.jsx)("th", { children: "Type" }),
+                                    (0, o.jsx)("th", { children: "Sire" }),
+                                    (0, o.jsx)("th", { children: "Dam" }),
+                                    (0, o.jsx)("th", { children: "Sex" }),
+                                  ],
+                                }),
+                              }),
+                              (0, o.jsx)("tbody", {
+                                children: Y.map((z) =>
+                                  (0, o.jsxs)(
+                                    "tr",
+                                    {
+                                      className: "clickable-row",
+                                      onClick: () => u(z.name),
+                                      children: [
+                                        (0, o.jsx)("td", {
+                                          className: "row-link",
+                                          children: z.name,
+                                        }),
+                                        (0, o.jsx)("td", { children: z.type }),
+                                        (0, o.jsx)("td", { children: z.sire || "\u2014" }),
+                                        (0, o.jsx)("td", { children: z.dam || "\u2014" }),
+                                        (0, o.jsx)("td", { children: Rl(z.sex) }),
+                                      ],
+                                    },
+                                    z.name,
+                                  ),
+                                ),
+                              }),
+                            ],
+                          }),
+                        }),
+                  ],
+                }),
+                (0, o.jsxs)("div", {
+                  className: "card",
+                  children: [
+                    (0, o.jsxs)("h2", {
+                      children: [
+                        "Offspring ",
+                        (0, o.jsxs)("span", {
+                          className: "metric-note",
+                          style: { fontWeight: "normal" },
+                          children: ["(", D.length, ")"],
+                        }),
+                      ],
+                    }),
+                    D.length === 0
+                      ? (0, o.jsx)("div", {
+                          className: "metric-note",
+                          children: "None found in the database.",
+                        })
+                      : (0, o.jsx)("div", {
+                          className: "table-scroll",
+                          children: (0, o.jsxs)("table", {
+                            className: "rank-table",
+                            children: [
+                              (0, o.jsx)("thead", {
+                                children: (0, o.jsxs)("tr", {
+                                  children: [
+                                    (0, o.jsx)("th", { children: "Name" }),
+                                    (0, o.jsx)("th", { children: "Other Parent" }),
+                                    (0, o.jsx)("th", { children: "Sex" }),
+                                  ],
+                                }),
+                              }),
+                              (0, o.jsx)("tbody", {
+                                children: D.map((z) =>
+                                  (0, o.jsxs)(
+                                    "tr",
+                                    {
+                                      className: "clickable-row",
+                                      onClick: () => u(z.name),
+                                      children: [
+                                        (0, o.jsx)("td", {
+                                          className: "row-link",
+                                          children: z.name,
+                                        }),
+                                        (0, o.jsx)("td", { children: z.otherParent || "\u2014" }),
+                                        (0, o.jsx)("td", { children: Rl(z.sex) }),
+                                      ],
+                                    },
+                                    z.name,
+                                  ),
+                                ),
+                              }),
+                            ],
+                          }),
+                        }),
+                  ],
+                }),
+              ],
+            })
+          : (0, o.jsxs)("div", {
+              className: "card",
+              children: [
+                (0, o.jsx)("h2", { children: "No Animal Selected" }),
+                (0, o.jsx)("div", {
+                  className: "metric-note",
+                  children:
+                    "Search for an animal above, or jump in from Herd Record to open a specific animal's pedigree.",
+                }),
+              ],
+            }),
+      ],
+    });
+  }
+  function oh({
+    allAnimals: e,
+    sire: t,
+    dam: n,
+    names: r,
+    kinship: l,
+    edits: a,
+    reviewed: i,
+    saveReviewed: s,
+    onGoToAnimal: u,
+    onGoToEdit: d,
+    initialCoiFilter: c,
+    clearCoiFilter: g,
+    founders: v,
+  }) {
+    let [y, E] = (0, b.useState)(c ? "coi" : "az"),
+      [k, O] = (0, b.useState)(v[0]),
+      [f, p] = (0, b.useState)(v[0]),
+      [m, w] = (0, b.useState)("all"),
+      [x, h] = (0, b.useState)(!0),
+      [T, I] = (0, b.useState)(!1),
+      [R, M] = (0, b.useState)("");
+    (0, b.useEffect)(() => {
+      c && E("coi");
+    }, [c]);
+    let U = (0, b.useMemo)(() => {
+        let S = oe(f);
+        return S ? e.filter((_) => _.name.includes(S)).slice(0, 6) : [];
+      }, [f, e]),
+      q = (0, b.useMemo)(() => {
+        let S = oe(R);
+        return S ? e.filter((_) => _.name.includes(S)).slice(0, 8) : [];
+      }, [R, e]),
+      X = (S) =>
+        a[S.name] && "livingAvailable" in a[S.name] && S.herdStatus
+          ? Zr(S)
+            ? S.herdStatus === "Historical"
+              ? "Active (marked here)"
+              : S.herdStatus
+            : S.herdStatus === "Historical"
+              ? S.herdStatus
+              : "Inactive (marked here)"
+          : S.herdStatus || (a[S.name] && a[S.name].status) || S.status || "Not set",
+      K = (0, b.useMemo)(() => {
+        let S = e.map((_) => {
+          let N = qe(_.name, _, t, n);
+          return { name: _.name, sex: N, status: X(_), avail: os(_), raw: _ };
+        });
+        if (
+          (m === "male" && (S = S.filter((_) => _.sex === "Male")),
+          m === "female" && (S = S.filter((_) => _.sex === "Female")),
+          x &&
+            (S = S.filter((_) =>
+              a[_.name] && "livingAvailable" in a[_.name]
+                ? Zr(_.raw)
+                : _.raw.herdStatus
+                  ? _.raw.herdStatus !== "Historical"
+                  : Zr(_.raw),
+            )),
+          R)
+        ) {
+          let _ = oe(R);
+          S = S.filter((N) => N.name.includes(_));
+        }
+        return y === "az"
+          ? (S.sort((_, N) => _.name.localeCompare(N.name)), S)
+          : y === "balance"
+            ? ((S = S.map((_) => {
+                let N = Gm(_.name, v, t, n, r);
+                return { ..._, fb: N, value: N.balance };
+              }).filter((_) => _.value > 0)),
+              S.sort((_, N) => N.value - _.value),
+              S)
+            : y === "coi"
+              ? ((S = S.map((_) => ({
+                  ..._,
+                  coi: l(t[_.name], n[_.name]) * 100,
+                  value: l(t[_.name], n[_.name]) * 100,
+                }))),
+                c && (S = S.filter((_) => _.coi >= c[0] && _.coi < c[1])),
+                S.sort((_, N) => N.value - _.value),
+                S)
+              : r.has(k)
+                ? ((S = S.map((_) => {
+                    let N = ye(_.name, k, t, n, r) * 100,
+                      P = On(_.name, k, t, n, r),
+                      $ = rs(_.name, k, t, n, l) * 100,
+                      W = N;
+                    return (
+                      y === "occurrences" && (W = P),
+                      y === "relationship" && (W = $),
+                      { ..._, blood: N, occ: P, rel: $, value: W }
+                    );
+                  }).filter((_) => _.blood > 0)),
+                  S.sort((_, N) => N.value - _.value),
+                  S)
+                : [];
+      }, [e, y, k, m, x, T, R, t, n, r, l, i, a, c]),
+      G = e.filter((S) => i[S.name]).length,
+      Z = e.length ? Math.round((G / e.length) * 100) : 0,
+      B = (S, _) => {
+        _.stopPropagation();
+        let N = { ...i };
+        (N[S] ? delete N[S] : (N[S] = !0), s(N));
+      },
+      Y = () => {
+        let _ = [...e].sort((N, P) => N.name.localeCompare(P.name)).find((N) => !i[N.name]);
+        _ && d(_.name);
+      },
+      D = {
+        blood: "Blood%",
+        occurrences: "Occ.",
+        relationship: "Add. rel.",
+        coi: "COI",
+        balance: "Balance",
+      }[y],
+      z = y === "blood" || y === "relationship" || y === "occurrences";
+    return (0, o.jsxs)("div", {
+      className: "screen active",
+      children: [
+        (0, o.jsx)("h1", { children: "Herd Record" }),
+        (0, o.jsxs)("div", {
+          className: "sub",
+          children: [e.length, " animals"],
+        }),
+        c &&
+          (0, o.jsx)("div", {
+            className: "card",
+            style: { background: "#fbf3d9" },
+            children: (0, o.jsxs)("div", {
+              className: "metric-note",
+              children: [
+                "Filtered from Dashboard: COI ",
+                c[0],
+                "%\u2013",
+                c[1] >= 100 ? "100+" : c[1],
+                "%",
+                " ",
+                (0, o.jsx)("span", {
+                  className: "link",
+                  onClick: g,
+                  style: { marginLeft: 8 },
+                  children: "Clear filter",
+                }),
+              ],
+            }),
+          }),
+        (0, o.jsxs)("div", {
+          className: "pairing-row",
+          children: [
+            (0, o.jsxs)("div", {
+              className: "pairing-slot",
+              style: { position: "relative" },
+              children: [
+                (0, o.jsx)("label", { children: "Search" }),
+                (0, o.jsx)("input", {
+                  autoCorrect: "off",
+                  autoCapitalize: "off",
+                  autoComplete: "off",
+                  spellCheck: "false",
+                  placeholder: "Type a name\u2026",
+                  value: R,
+                  onChange: (S) => M(S.target.value),
+                }),
+                q.length > 0 &&
+                  (0, o.jsx)("div", {
+                    className: "suggestions",
+                    children: q.map((S) =>
+                      (0, o.jsx)(
+                        "div",
+                        { className: "suggestion-row", onClick: () => d(S.name), children: [S.name, sxd(S)] },
+                        S.name,
+                      ),
+                    ),
+                  }),
+              ],
+            }),
+            (0, o.jsxs)("div", {
+              className: "pairing-slot",
+              children: [
+                (0, o.jsx)("label", { children: "Rank By" }),
+                (0, o.jsxs)("select", {
+                  value: y,
+                  onChange: (S) => E(S.target.value),
+                  children: [
+                    (0, o.jsx)("option", { value: "az", children: "A\u2013Z (list whole herd)" }),
+                    (0, o.jsx)("option", {
+                      value: "blood",
+                      children: "Blood % to target ancestor",
+                    }),
+                    (0, o.jsx)("option", {
+                      value: "relationship",
+                      children: "Relationship (additive)",
+                    }),
+                    (0, o.jsx)("option", {
+                      value: "occurrences",
+                      children: "Occurrences of target ancestor",
+                    }),
+                    (0, o.jsx)("option", { value: "coi", children: "Inbred Coefficient (COI)" }),
+                    (0, o.jsx)("option", {
+                      value: "balance",
+                      children: "Foundation Balance (all foundation animals)",
+                    }),
+                  ],
+                }),
+              ],
+            }),
+            z &&
+              (0, o.jsxs)("div", {
+                className: "pairing-slot",
+                style: { position: "relative" },
+                children: [
+                  (0, o.jsx)("label", { children: "Target Ancestor" }),
+                  (0, o.jsx)("input", {
+                    autoCorrect: "off",
+                    autoCapitalize: "off",
+                    autoComplete: "off",
+                    spellCheck: "false",
+                    value: f,
+                    onChange: (S) => p(S.target.value),
+                  }),
+                  U.length > 0 &&
+                    f !== k &&
+                    (0, o.jsx)("div", {
+                      className: "suggestions",
+                      children: U.map((S) =>
+                        (0, o.jsx)(
+                          "div",
+                          {
+                            className: "suggestion-row",
+                            onClick: () => {
+                              (O(S.name), p(S.name));
+                            },
+                            children: [S.name, sxd(S)],
+                          },
+                          S.name,
+                        ),
+                      ),
+                    }),
+                ],
+              }),
+            (0, o.jsxs)("div", {
+              className: "pairing-slot",
+              children: [
+                (0, o.jsx)("label", { children: "Sex" }),
+                (0, o.jsxs)("select", {
+                  value: m,
+                  onChange: (S) => w(S.target.value),
+                  children: [
+                    (0, o.jsx)("option", { value: "all", children: "All animals" }),
+                    (0, o.jsx)("option", { value: "male", children: "Males only" }),
+                    (0, o.jsx)("option", { value: "female", children: "Females only" }),
+                  ],
+                }),
+              ],
+            }),
+          ],
+        }),
+        (0, o.jsxs)("div", {
+          className: "card",
+          children: [
+            (0, o.jsxs)("label", {
+              style: {
+                display: "flex",
+                alignItems: "center",
+                gap: 8,
+                fontFamily: "Arial, sans-serif",
+                fontSize: 13,
+                marginBottom: 8,
+              },
+              children: [
+                (0, o.jsx)("input", {
+                  type: "checkbox",
+                  checked: x,
+                  onChange: (S) => h(S.target.checked),
+                }),
+                "Active only",
+              ],
+            }),
+          ],
+        }),
+        (0, o.jsxs)("div", {
+          className: "card",
+          children: [
+            (0, o.jsx)("h2", {
+              children:
+                y === "az"
+                  ? `All Animals (${K.length})`
+                  : y === "coi"
+                    ? `Ranked by COI (${K.length})`
+                    : y === "balance"
+                      ? `Ranked by Foundation Balance (${K.length})`
+                      : `Ranked Highest \u2192 Lowest (${K.length} carry ${k} blood)`,
+            }),
+            z && !r.has(k)
+              ? (0, o.jsxs)("div", {
+                  className: "metric-note",
+                  children: ['No animal found matching "', k, '" \u2014 pick a suggestion above.'],
+                })
+              : (0, o.jsx)("div", {
+                  className: "table-scroll",
+                  children: (0, o.jsxs)("table", {
+                    className: "rank-table",
+                    children: [
+                      (0, o.jsx)("thead", {
+                        children: (0, o.jsxs)("tr", {
+                          children: [
+                            (0, o.jsx)("th", { children: "Name" }),
+                            (0, o.jsx)("th", { children: "Sex" }),
+                            (0, o.jsx)("th", { children: "Status" }),
+                            y !== "az" && (0, o.jsx)("th", { children: D }),
+                            v.map((S) => (0, o.jsx)("th", { title: S, children: dn(S) }, S)),
+                            (0, o.jsx)("th", { children: "Avail." }),
+                          ],
+                        }),
+                      }),
+                      (0, o.jsx)("tbody", {
+                        children: K.slice(0, 150).map((S, _) =>
+                          (0, o.jsxs)(
+                            "tr",
+                            {
+                              className: (y !== "az" && _ === 0 ? "best " : "") + "clickable-row",
+                              onClick: () => d(S.name),
+                              children: [
+                                (0, o.jsx)("td", { className: "row-link", children: S.name }),
+                                (0, o.jsx)("td", { children: Rl(S.sex) }),
+                                (0, o.jsx)("td", { children: S.status }),
+                                y !== "az" &&
+                                  (0, o.jsxs)("td", {
+                                    title:
+                                      y === "balance" && S.fb
+                                        ? v
+                                            .map((N, P) => `${N}: ${S.fb.blood[P].toFixed(1)}%`)
+                                            .join(" \xB7 ")
+                                        : void 0,
+                                    children: [
+                                      y === "blood" && `${S.blood.toFixed(2)}%`,
+                                      y === "relationship" && `${S.rel.toFixed(2)}%`,
+                                      y === "occurrences" && `${S.occ}\xD7`,
+                                      y === "coi" && `${S.coi.toFixed(2)}%`,
+                                      y === "balance" && `${S.value.toFixed(2)}%`,
+                                    ],
+                                  }),
+                                v.map((N) => {
+                                  let P = ye(S.name, N, t, n, r) * 100;
+                                  return (0, o.jsx)(
+                                    "td",
+                                    { children: P > 0 ? P.toFixed(2) + "%" : "\u2014" },
+                                    N,
+                                  );
+                                }),
+                                (0, o.jsx)("td", { children: S.avail || "\u2014" }),
+                              ],
+                            },
+                            S.name,
+                          ),
+                        ),
+                      }),
+                    ],
+                  }),
+                }),
+            K.length > 150 &&
+              (0, o.jsxs)("div", {
+                className: "metric-note",
+                children: [
+                  "Showing first 150 of ",
+                  K.length,
+                  " \u2014 narrow with search or filters to see more precisely.",
+                ],
+              }),
+            K.length === 0 &&
+              y === "az" &&
+              (0, o.jsx)("div", { className: "metric-note", children: "No animals match." }),
+            (0, o.jsx)("div", {
+              className: "metric-note",
+              children: "Tap \u2713/\u25CB to bookmark. Tap a row to open that animal for editing.",
+            }),
+          ],
+        }),
+      ],
+    });
+  }
+  function lh(e, t) {
+    let n = [
+      ["Name", "Sire", "Dam", "Registration Number", "Birth Date", "Sex Override", "Notes", "Type"],
+    ];
+    return (
+      e.forEach((r) => {
+        n.push([
+          r.name,
+          r.sire || "",
+          r.dam || "",
+          r.regNum || "",
+          r.birthDate || "",
+          r.sexOverride || "",
+          r.notes || "",
+          r.isStub ? "stub" : "added",
+        ]);
+      }),
+      Object.entries(t).forEach(([r, l]) => {
+        e.some((a) => a.name === r) ||
+          n.push([
+            r,
+            "",
+            "",
+            l.regNum || "",
+            l.birthDate || "",
+            l.sexOverride || "",
+            l.notes || "",
+            "edit-only",
+          ]);
+      }),
+      n.map((r) => r.map((l) => `"${String(l).replace(/"/g, '""')}"`).join(",")).join(`
+`)
+    );
+  }
+  function ah(e) {
+    let t = [],
+      n = [],
+      r = "",
+      l = !1;
+    for (let c = 0; c < e.length; c++) {
+      let g = e[c];
+      l
+        ? g === '"'
+          ? e[c + 1] === '"'
+            ? ((r += '"'), c++)
+            : (l = !1)
+          : (r += g)
+        : g === '"'
+          ? (l = !0)
+          : g === ","
+            ? (n.push(r), (r = ""))
+            : g ===
+                  `
+` || g === "\r"
+              ? ((r !== "" || n.length) && (n.push(r), t.push(n), (n = []), (r = "")),
+                g === "\r" &&
+                  e[c + 1] ===
+                    `
+` &&
+                  c++)
+              : (r += g);
+    }
+    if (((r !== "" || n.length) && (n.push(r), t.push(n)), !t.length))
+      return { userAnimals: [], edits: {} };
+    let [a, ...i] = t,
+      s = (c) => a.indexOf(c),
+      u = [],
+      d = {};
+    return (
+      i.forEach((c) => {
+        if (!c[s("Name")]) return;
+        let g = c[s("Name")],
+          v = c[s("Type")],
+          y = c[s("Registration Number")] || null,
+          E = c[s("Birth Date")] || null,
+          k = c[s("Sex Override")] || null,
+          O = c[s("Notes")] || null;
+        v === "edit-only"
+          ? (d[g] = { regNum: y, birthDate: E, sexOverride: k, notes: O })
+          : u.push({
+              name: g,
+              sire: c[s("Sire")] || null,
+              dam: c[s("Dam")] || null,
+              regNum: y,
+              birthDate: E,
+              sexOverride: k,
+              notes: O,
+              sourcePhoto: null,
+              isStub: v === "stub",
+            });
+      }),
+      { userAnimals: u, edits: d }
+    );
+  }
+  function DashViews(P) {
+    var E = b.default.createElement;
+    var k = P.animals,
+      u = P.founders,
+      t = P.sire,
+      n = P.dam,
+      r = P.names;
+    var G = window.__lbProg || {};
+    var sn = function (x) {
+      return (G.shorts && G.shorts[x]) || dn(x);
+    };
+    var sv = b.useState("year"),
+      view = sv[0],
+      setView = sv[1];
+    var data = b.useMemo(
+      function () {
+        var bl = new Map();
+        k.forEach(function (x) {
+          bl.set(
+            x.name,
+            u.map(function (F) {
+              return ye(x.name, F, t, n, r) * 100;
+            }),
+          );
+        });
+        function avg(list) {
+          var s0 = u.map(function () {
+            return 0;
+          });
+          list.forEach(function (x) {
+            bl.get(x.name).forEach(function (v, i) {
+              s0[i] += v;
+            });
+          });
+          return s0.map(function (v) {
+            return list.length ? v / list.length : 0;
+          });
+        }
+        var yr = {};
+        k.forEach(function (x) {
+          var y = String(x.birthDate || "").slice(0, 4);
+          if (/^\d{4}$/.test(y)) (yr[y] = yr[y] || []).push(x);
+        });
+        var years = Object.keys(yr)
+          .sort()
+          .map(function (y) {
+            return { key: y, n: yr[y].length, avg: avg(yr[y]) };
+          });
+        var sl = {};
+        k.forEach(function (x) {
+          if (x.sire) (sl[x.sire] = sl[x.sire] || []).push(x);
+        });
+        var sires = Object.keys(sl)
+          .map(function (s1) {
+            return { key: s1, n: sl[s1].length, avg: avg(sl[s1]) };
+          })
+          .sort(function (x, y) {
+            return y.n - x.n;
+          })
+          .slice(0, 15);
+        function root(x) {
+          var cur = x,
+            g = 0;
+          while (n[cur] && r.has(n[cur]) && g < 60) {
+            cur = n[cur];
+            g++;
+          }
+          return cur;
+        }
+        var fam = {};
+        k.forEach(function (x) {
+          if (qe(x.name, x, t, n) === "Male") return;
+          var ro = root(x.name);
+          (fam[ro] = fam[ro] || []).push(x);
+        });
+        var fams = Object.keys(fam)
+          .map(function (f) {
+            return { key: f, n: fam[f].length, avg: avg(fam[f]) };
+          })
+          .sort(function (x, y) {
+            return y.n - x.n;
+          })
+          .slice(0, 15);
+        return { years: years, sires: sires, fams: fams };
+      },
+      [k, u, t, n, r],
+    );
+    var rows =
+      view === "year" ? data.years.slice(-25) : view === "sire" ? data.sires : data.fams;
+    var heads = {
+      year: ["Birth year", "Animals"],
+      sire: ["Sire", "Offspring"],
+      fam: ["Cow family (oldest dam in the line)", "Females"],
+    }[view];
+    return E(
+      "div",
+      { className: "card" },
+      E("h2", null, "Herd levels"),
+      E(
+        "div",
+        { className: "pl-seg", style: { marginBottom: 8 } },
+        [
+          ["year", "By birth year"],
+          ["sire", "Sire lines"],
+          ["fam", "Cow families"],
+        ].map(function (v) {
+          return E(
+            "button",
+            { key: v[0], type: "button", className: view === v[0] ? "on" : "", onClick: function () { setView(v[0]); } },
+            v[1],
+          );
+        }),
+      ),
+      E(
+        "div",
+        { className: "metric-note", style: { marginBottom: 6 } },
+        "Average foundation blood % of the animals in each group, for the scope chosen above.",
+      ),
+      rows.length === 0
+        ? E("div", { className: "metric-note" }, "Nothing to show for this scope.")
+        : E(
+            "div",
+            { className: "table-scroll" },
+            E(
+              "table",
+              { className: "rank-table" },
+              E(
+                "thead",
+                null,
+                E(
+                  "tr",
+                  null,
+                  E("th", null, heads[0]),
+                  E("th", null, heads[1]),
+                  u.map(function (F) {
+                    return E("th", { key: F, title: F }, sn(F));
+                  }),
+                ),
+              ),
+              E(
+                "tbody",
+                null,
+                rows.map(function (x) {
+                  return E(
+                    "tr",
+                    { key: x.key },
+                    E(
+                      "td",
+                      null,
+                      view === "year"
+                        ? x.key
+                        : E("span", { className: "row-link", style: { cursor: "pointer" }, onClick: function () { P.onGoToAnimal(x.key); } }, x.key),
+                    ),
+                    E("td", null, x.n),
+                    x.avg.map(function (v, i) {
+                      return E("td", { key: i }, v.toFixed(1) + "%");
+                    }),
+                  );
+                }),
+              ),
+            ),
+          ),
+    );
+  }
+  function ih({
+    allAnimals: e,
+    sire: t,
+    dam: n,
+    names: r,
+    kinship: l,
+    onGoToAnimal: a,
+    lastUpdated: i,
+    onDrilldownCoi: s,
+    founders: u,
+    setFounders: d,
+    pg: pgP,
+    setPg: pgS,
+  }) {
+    let [c, g] = (0, b.useState)("active"),
+      v = to,
+      y = e.length,
+      E = e.filter(v).length,
+      k = (0, b.useMemo)(() => (c === "active" ? e.filter(v) : e), [e, c]),
+      O = (0, b.useMemo)(() => {
+        let h = k.length || 1,
+          T = 0,
+          I = 0,
+          R = u.map(() => 0),
+          M = 0,
+          U = 0,
+          q = 0,
+          X = 0,
+          K = 0,
+          G = 0,
+          Z = null,
+          B = -1,
+          Y = null,
+          D = 2,
+          z = new Set(),
+          S = {};
+        k.forEach((P) => {
+          let $ = l(t[P.name], n[P.name]) * 100;
+          ((T += $), $ < 6.25 ? M++ : $ < 12.5 ? U++ : $ < 25 ? q++ : X++);
+          let W = 0,
+            ee = !1;
+          (u.forEach((ie, we) => {
+            let ke = ye(P.name, ie, t, n, r) * 100;
+            ((R[we] += ke), (W += ke), ke > 0 && (ee = !0));
+          }),
+            ee || I++,
+            W > B && ((B = W), (Z = P.name)),
+            W < D && ((D = W), (Y = P.name)));
+          let Ee = eo(P.name, t, n, r);
+          if (((K += Ee), P.sire && P.dam && G++, P.sire && z.add(P.sire), P.birthDate)) {
+            let ie = String(P.birthDate).slice(0, 4);
+            /^\d{4}$/.test(ie) &&
+              (S[ie] || (S[ie] = { sum: 0, count: 0 }), (S[ie].sum += $), (S[ie].count += 1));
+          }
+        });
+        let N = Object.keys(S)
+          .sort()
+          .map((P) => ({ year: P, avg: S[P].sum / S[P].count, count: S[P].count }));
+        return {
+          avgCOI: T / h,
+          avgByFounder: R.map((P) => P / h),
+          ratio: u.length === 2 && R[1] > 0 ? R[0] / R[1] : null,
+          pctZeroBoth: (I / h) * 100,
+          bandLow: M,
+          bandCaution: U,
+          bandRisk: q,
+          bandHigh: X,
+          mostConcAnimal: Z,
+          mostConcVal: B,
+          mostDilAnimal: Y,
+          mostDilVal: D,
+          avgDepth: K / h,
+          pctBothParents: (G / h) * 100,
+          uniqueSires: z.size,
+          yearRows: N,
+        };
+      }, [k, t, n, r, l, u]),
+      f = e.filter((h) => h.lastEditedAt),
+      p = [...f].sort((h, T) => new Date(T.lastEditedAt) - new Date(h.lastEditedAt)).slice(0, 5),
+      m = (h) => (h ? Math.floor((Date.now() - new Date(h).getTime()) / 864e5) : null),
+      w = m(i),
+      x = Math.max(1, ...O.yearRows.map((h) => h.count));
+    return (0, o.jsxs)("div", {
+      className: "screen active",
+      children: [
+        (0, o.jsx)("h1", { children: "Dashboard" }),
+        (0, o.jsx)("div", { className: "sub", children: "Herd-level stats and program health" }),
+        (0, o.jsxs)("div", {
+          className: "card",
+          children: [
+            (0, o.jsx)("h2", { children: "Population" }),
+            (0, o.jsxs)("div", {
+              className: "metric-row",
+              children: [
+                (0, o.jsx)("div", { className: "metric-label", children: "Total Animals" }),
+                (0, o.jsx)("div", { className: "metric-value", children: y }),
+              ],
+            }),
+            (0, o.jsxs)("div", {
+              className: "metric-row",
+              children: [
+                (0, o.jsx)("div", { className: "metric-label", children: "Active" }),
+                (0, o.jsx)("div", { className: "metric-value", children: E }),
+              ],
+            }),
+          ],
+        }),
+        (0, o.jsx)("div", {
+          className: "pairing-row",
+          children: (0, o.jsxs)("div", {
+            className: "pairing-slot",
+            children: [
+              (0, o.jsx)("label", { children: "Show stats for" }),
+              (0, o.jsxs)("select", {
+                value: c,
+                onChange: (h) => g(h.target.value),
+                children: [
+                  (0, o.jsxs)("option", { value: "active", children: ["Active Herd (", E, ")"] }),
+                  (0, o.jsxs)("option", { value: "all", children: ["Whole Database (", y, ")"] }),
+                ],
+              }),
+            ],
+          }),
+        }),
+        (0, o.jsx)(FndCard, {
+          pg: pgP,
+          setPg: pgS,
+          allAnimals: e,
+          note: "Every blood %, balance score and ranking in the app is measured against these animals.",
+        }),
+        (0, o.jsx)(DashViews, {
+          animals: k,
+          founders: u,
+          sire: t,
+          dam: n,
+          names: r,
+          onGoToAnimal: a,
+        }),
+        (0, o.jsxs)("div", {
+          className: "card",
+          children: [
+            (0, o.jsx)("h2", { children: "Linebreeding" }),
+            (0, o.jsxs)("div", {
+              className: "metric-row",
+              children: [
+                (0, o.jsx)("div", { className: "metric-label", children: "Average COI" }),
+                (0, o.jsxs)("div", {
+                  className: "metric-value",
+                  children: [O.avgCOI.toFixed(2), "%"],
+                }),
+              ],
+            }),
+            u.map((h, T) =>
+              (0, o.jsxs)(
+                "div",
+                {
+                  className: "metric-row",
+                  children: [
+                    (0, o.jsxs)("div", {
+                      className: "metric-label",
+                      children: ["Average Blood % \u2014 ", h],
+                    }),
+                    (0, o.jsxs)("div", {
+                      className: "metric-value",
+                      children: [O.avgByFounder[T].toFixed(2), "%"],
+                    }),
+                  ],
+                },
+                h,
+              ),
+            ),
+            O.ratio !== null &&
+              (0, o.jsxs)("div", {
+                className: "metric-row",
+                children: [
+                  (0, o.jsxs)("div", {
+                    className: "metric-label",
+                    children: ["Ratio (", dn(u[0]), " : ", dn(u[1]), ")"],
+                  }),
+                  (0, o.jsxs)("div", {
+                    className: "metric-value",
+                    children: [O.ratio.toFixed(2), " : 1"],
+                  }),
+                ],
+              }),
+            (0, o.jsxs)("div", {
+              className: "metric-row",
+              children: [
+                (0, o.jsx)("div", {
+                  className: "metric-label",
+                  children: "Carries no blood from any foundation animal",
+                }),
+                (0, o.jsxs)("div", {
+                  className: "metric-value",
+                  children: [O.pctZeroBoth.toFixed(1), "%"],
+                }),
+              ],
+            }),
+            (0, o.jsxs)("div", {
+              className: "metric-row",
+              children: [
+                (0, o.jsx)("div", { className: "metric-label", children: "Unique Active Sires" }),
+                (0, o.jsx)("div", { className: "metric-value", children: O.uniqueSires }),
+              ],
+            }),
+            (0, o.jsxs)("div", {
+              className: "metric-row",
+              children: [
+                (0, o.jsx)("div", {
+                  className: "metric-label",
+                  children: "Most Concentrated (all foundation blood)",
+                }),
+                (0, o.jsxs)("div", {
+                  className: "metric-value",
+                  style: { fontSize: 13 },
+                  children: [
+                    O.mostConcAnimal
+                      ? (0, o.jsx)("span", {
+                          className: "link",
+                          onClick: () => a(O.mostConcAnimal),
+                          children: O.mostConcAnimal,
+                        })
+                      : "\u2014",
+                    " (",
+                    O.mostConcVal.toFixed(1),
+                    "%)",
+                  ],
+                }),
+              ],
+            }),
+            (0, o.jsxs)("div", {
+              className: "metric-row",
+              children: [
+                (0, o.jsx)("div", {
+                  className: "metric-label",
+                  children: "Most Diluted (all foundation blood)",
+                }),
+                (0, o.jsxs)("div", {
+                  className: "metric-value",
+                  style: { fontSize: 13 },
+                  children: [
+                    O.mostDilAnimal
+                      ? (0, o.jsx)("span", {
+                          className: "link",
+                          onClick: () => a(O.mostDilAnimal),
+                          children: O.mostDilAnimal,
+                        })
+                      : "\u2014",
+                    " (",
+                    O.mostDilVal.toFixed(1),
+                    "%)",
+                  ],
+                }),
+              ],
+            }),
+            (0, o.jsxs)("div", {
+              style: { marginTop: 14, paddingTop: 12, borderTop: "1px dotted #d8d0c2" },
+              children: [
+                (0, o.jsxs)("div", {
+                  className: "metric-note",
+                  style: { marginBottom: 8 },
+                  children: [
+                    "COI Distribution ",
+                    (0, o.jsx)("span", {
+                      style: { fontStyle: "italic" },
+                      children: "(tap a band to see the animals)",
+                    }),
+                  ],
+                }),
+                [
+                  ["Under 6.25%", O.bandLow, "#8a8070", 0, 6.25],
+                  ["6.25\u201312.5%", O.bandCaution, "#8a8070", 6.25, 12.5],
+                  ["12.5\u201325%", O.bandRisk, "#8a8070", 12.5, 25],
+                  ["25%+", O.bandHigh, "#8a8070", 25, 1e3],
+                ].map(([h, T, I, R, M]) => {
+                  let U = k.length ? (T / k.length) * 100 : 0;
+                  return (0, o.jsxs)(
+                    "div",
+                    {
+                      style: { marginBottom: 8, cursor: "pointer" },
+                      onClick: () => s(R, M),
+                      children: [
+                        (0, o.jsxs)("div", {
+                          style: {
+                            display: "flex",
+                            justifyContent: "space-between",
+                            fontFamily: "Arial, sans-serif",
+                            fontSize: 12,
+                            marginBottom: 3,
+                          },
+                          children: [
+                            (0, o.jsx)("span", { className: "link", children: h }),
+                            (0, o.jsxs)("span", { children: [T, " (", U.toFixed(0), "%)"] }),
+                          ],
+                        }),
+                        (0, o.jsx)("div", {
+                          style: {
+                            background: "#eee",
+                            borderRadius: 4,
+                            height: 8,
+                            overflow: "hidden",
+                          },
+                          children: (0, o.jsx)("div", {
+                            style: { background: I, height: "100%", width: `${U}%` },
+                          }),
+                        }),
+                      ],
+                    },
+                    h,
+                  );
+                }),
+              ],
+            }),
+          ],
+        }),
+        (0, o.jsxs)("div", {
+          className: "card",
+          children: [
+            (0, o.jsx)("h2", { children: "Data Completeness" }),
+            (0, o.jsx)("div", {
+              className: "metric-note",
+              style: { marginBottom: 8 },
+              children: "Counts the group chosen above. Data Health counts the whole database.",
+            }),
+            (0, o.jsxs)("div", {
+              className: "metric-row",
+              children: [
+                (0, o.jsx)("div", {
+                  className: "metric-label",
+                  children: "Average Pedigree Depth",
+                }),
+                (0, o.jsxs)("div", {
+                  className: "metric-value",
+                  children: [O.avgDepth.toFixed(1), " generations"],
+                }),
+              ],
+            }),
+            (0, o.jsxs)("div", {
+              className: "metric-row",
+              children: [
+                (0, o.jsx)("div", {
+                  className: "metric-label",
+                  children: "Has Both Sire & Dam Recorded",
+                }),
+                (0, o.jsxs)("div", {
+                  className: "metric-value",
+                  children: [O.pctBothParents.toFixed(1), "%"],
+                }),
+              ],
+            }),
+          ],
+        }),
+        (0, o.jsxs)("div", {
+          className: "card",
+          children: [
+            (0, o.jsx)("h2", { children: "Growth Over Time \u2014 Average COI by Birth Year" }),
+            O.yearRows.length === 0
+              ? (0, o.jsx)("div", {
+                  className: "metric-note",
+                  children: "No animals in this scope have a birth year on file yet.",
+                })
+              : (0, o.jsxs)(o.Fragment, {
+                  children: [
+                    O.yearRows.map((h) =>
+                      (0, o.jsxs)(
+                        "div",
+                        {
+                          style: { marginBottom: 8 },
+                          children: [
+                            (0, o.jsxs)("div", {
+                              style: {
+                                display: "flex",
+                                justifyContent: "space-between",
+                                fontFamily: "Arial, sans-serif",
+                                fontSize: 12,
+                                marginBottom: 3,
+                              },
+                              children: [
+                                (0, o.jsxs)("span", {
+                                  children: [
+                                    h.year,
+                                    " ",
+                                    (0, o.jsxs)("span", {
+                                      style: { color: "#8a8070" },
+                                      children: [
+                                        "(",
+                                        h.count,
+                                        " animal",
+                                        h.count !== 1 ? "s" : "",
+                                        ")",
+                                      ],
+                                    }),
+                                  ],
+                                }),
+                                (0, o.jsxs)("span", { children: [h.avg.toFixed(2), "%"] }),
+                              ],
+                            }),
+                            (0, o.jsx)("div", {
+                              style: {
+                                background: "#eee",
+                                borderRadius: 4,
+                                height: 8,
+                                overflow: "hidden",
+                              },
+                              children: (0, o.jsx)("div", {
+                                style: {
+                                  background: "#7a2e2e",
+                                  height: "100%",
+                                  width: `${Math.min(100, (h.avg / 30) * 100)}%`,
+                                },
+                              }),
+                            }),
+                          ],
+                        },
+                        h.year,
+                      ),
+                    ),
+                    (0, o.jsx)("div", {
+                      className: "metric-note",
+                      style: { marginTop: 6 },
+                      children:
+                        "Bar length scaled to 30% COI. Years with very few animals may not be representative.",
+                    }),
+                  ],
+                }),
+          ],
+        }),
+        (0, o.jsxs)("div", {
+          className: "card",
+          children: [
+            (0, o.jsx)("h2", { children: "Project Health" }),
+            (0, o.jsxs)("div", {
+              className: "metric-row",
+              children: [
+                (0, o.jsx)("div", { className: "metric-label", children: "Database Last Updated" }),
+                (0, o.jsx)("div", {
+                  className: "metric-value",
+                  style: { fontSize: 14 },
+                  children:
+                    w === null
+                      ? "No edits made in-app yet"
+                      : w === 0
+                        ? "Today"
+                        : `${w} day${w !== 1 ? "s" : ""} ago`,
+                }),
+              ],
+            }),
+            (0, o.jsxs)("div", {
+              className: "metric-row",
+              children: [
+                (0, o.jsx)("div", { className: "metric-label", children: "Animals Edited In-App" }),
+                (0, o.jsxs)("div", { className: "metric-value", children: [f.length, " of ", y] }),
+              ],
+            }),
+            p.length > 0 &&
+              (0, o.jsxs)("div", {
+                style: { marginTop: 12, paddingTop: 12, borderTop: "1px dotted #d8d0c2" },
+                children: [
+                  (0, o.jsx)("div", {
+                    className: "metric-note",
+                    style: { marginBottom: 8 },
+                    children: "Most Recently Touched",
+                  }),
+                  p.map((h) => {
+                    let T = m(h.lastEditedAt);
+                    return (0, o.jsxs)(
+                      "div",
+                      {
+                        className: "metric-row",
+                        children: [
+                          (0, o.jsx)("span", {
+                            className: "link",
+                            onClick: () => a(h.name),
+                            style: { fontSize: 13 },
+                            children: h.name,
+                          }),
+                          (0, o.jsx)("span", {
+                            className: "metric-note",
+                            style: { marginTop: 0 },
+                            children: T === 0 ? "Today" : `${T} day${T !== 1 ? "s" : ""} ago`,
+                          }),
+                        ],
+                      },
+                      h.name,
+                    );
+                  }),
+                ],
+              }),
+            (0, o.jsx)("div", {
+              className: "metric-note",
+              style: { marginTop: 10 },
+              children:
+                "Per-animal staleness only tracks edits made through this app \u2014 the bulk-imported base data has no individual edit history, so most animals will show no date until touched.",
+            }),
+          ],
+        }),
+      ],
+    });
+  }
+  function sh({
+    allAnimals: e,
+    sire: t,
+    dam: n,
+    names: r,
+    byName: l,
+    kinship: a,
+    onGoToAnimal: i,
+    founders: s,
+  }) {
+    let [u, d] = (0, b.useState)(""),
+      [c, g] = (0, b.useState)(null),
+      [v, y] = (0, b.useState)(s[0]),
+      [E, k] = (0, b.useState)(35),
+      [O, f] = (0, b.useState)(100),
+      [holds, setHolds] = (0, b.useState)({}),
+      [p, m] = (0, b.useState)(3),
+      [w, x] = (0, b.useState)(40),
+      [h, T] = (0, b.useState)(null),
+      [I, R] = (0, b.useState)(!1),
+      [M, U] = (0, b.useState)("fewest"),
+      q = (D) => {
+        let z = [...D],
+          S = (N) => N.steps[N.steps.length - 1].coi,
+          _ = (N) => Math.max(...N.steps.map((P) => P.coi));
+        return (
+          M === "steadiest"
+            ? z.sort((N, P) => _(N) - _(P) || P.blood - N.blood)
+            : M === "most"
+              ? z.sort((N, P) => P.blood - N.blood || S(N) - S(P))
+              : z.sort(
+                  (N, P) => N.steps.length - P.steps.length || S(N) - S(P) || P.blood - N.blood,
+                ),
+          z
+        );
+      },
+      X = (0, b.useMemo)(() => {
+        if (!u) return [];
+        let D = oe(u);
+        return e
+          .filter((z) => z.name.includes(D) && qe(z.name, z, t, n) !== "Male")
+          .sort((z, S) => z.name.indexOf(D) - S.name.indexOf(D))
+          .slice(0, 8);
+      }, [u, e, t, n]),
+      K = c ? ye(c, v, t, n, r) * 100 : 0,
+      G = c ? a(t[c], n[c]) * 100 : 0,
+      Z = (0, b.useMemo)(
+        () =>
+          c
+            ? e
+                .filter((D) => to(D) && qe(D.name, D, t, n) === "Male" && D.name !== c)
+                .map((D) => ({ name: D.name, blood: ye(D.name, v, t, n, r) * 100 }))
+                .filter((D) => D.blood > K)
+                .sort((D, z) => z.blood - D.blood)
+                .slice(0, w)
+            : [],
+        [e, c, v, t, n, r, K, w],
+      ),
+      B = () => {
+        !c ||
+          !Z.length ||
+          (R(!0),
+          T(null),
+          setTimeout(() => {
+            let D = performance.now(),
+              z = ef({
+                startFemale: c,
+                target: v,
+                goalBloodPct: E,
+                maxCoiPct: O,
+                maxGenerations: p,
+                founders: s,
+                holds: holds,
+                candidates: Z,
+                sire: t,
+                dam: n,
+                names: r,
+                kinship: a,
+              });
+            (T({ ...z, ms: Math.round(performance.now() - D) }), R(!1));
+          }, 20));
+      },
+      Y = ({ route: D, i: z, label: S }) => {
+        let _ = D.steps[D.steps.length - 1],
+          N = Math.max(...D.steps.map(($) => $.coi));
+        return (0, o.jsxs)(
+          "div",
+          {
+            className: "card",
+            children: [
+              (0, o.jsxs)("h2", {
+                children: [
+                  S,
+                  " ",
+                  z + 1,
+                  (0, o.jsxs)("span", {
+                    className: "metric-note",
+                    style: { fontWeight: "normal" },
+                    children: [
+                      D.steps.length,
+                      " generation",
+                      D.steps.length === 1 ? "" : "s",
+                      " \xB7 ends at ",
+                      D.blood.toFixed(2),
+                      "% \xB7 final COI ",
+                      _.coi.toFixed(2),
+                      "% \xB7 peak COI ",
+                      N.toFixed(2),
+                      "%",
+                    ],
+                  }),
+                ],
+              }),
+              (0, o.jsx)("div", {
+                className: "table-scroll",
+                children: (0, o.jsxs)("table", {
+                  className: "rank-table",
+                  children: [
+                    (0, o.jsx)("thead", {
+                      children: (0, o.jsxs)("tr", {
+                        children: [
+                          (0, o.jsx)("th", { children: "Gen." }),
+                          (0, o.jsx)("th", { children: "Breed her to" }),
+                          (0, o.jsx)("th", { children: "Daughter's blood %" }),
+                          (0, o.jsx)("th", { children: "Her COI" }),
+                          s.map((F) => (0, o.jsx)("th", { title: F, children: dn(F) }, F)),
+                        ],
+                      }),
+                    }),
+                    (0, o.jsx)("tbody", {
+                      children: D.steps.map(($, W) => {
+                        let ee = lt($.coi);
+                        return (0, o.jsxs)(
+                          "tr",
+                          {
+                            children: [
+                              (0, o.jsx)("td", { children: $.generation }),
+                              (0, o.jsx)("td", {
+                                children: (0, o.jsx)("span", {
+                                  className: "row-link",
+                                  style: { cursor: "pointer" },
+                                  onClick: () => i($.sire),
+                                  children: $.sire,
+                                }),
+                              }),
+                              (0, o.jsxs)("td", { children: [$.blood.toFixed(2), "%"] }),
+                              (0, o.jsxs)("td", { children: [$.coi.toFixed(2), "%"] }),
+                              s.map((F, ix) =>
+                                (0, o.jsxs)("td", { children: [$.fb ? $.fb[ix].toFixed(1) : "\u2014", "%"] }, F),
+                              ),
+                            ],
+                          },
+                          W,
+                        );
+                      }),
+                    }),
+                  ],
+                }),
+              }),
+            ],
+          },
+          z,
+        );
+      };
+    return (0, o.jsxs)("div", {
+      className: "screen active",
+      children: [
+        (0, o.jsx)("h1", { children: "Breeding Roadmap" }),
+        (0, o.jsx)("div", {
+          className: "sub",
+          children:
+            "Pick a female and a goal \u2014 the app works out which sequences of matings get there",
+        }),
+        (0, o.jsxs)("div", {
+          className: "card",
+          children: [
+            (0, o.jsxs)("div", {
+              className: "form-grid",
+              children: [
+                (0, o.jsxs)("div", {
+                  className: "form-field full",
+                  children: [
+                    (0, o.jsx)("label", { children: "Start from this female" }),
+                    (0, o.jsx)("input", {
+                      className: "search-input",
+                      value: u,
+                      placeholder: "Search a cow or heifer by name or number...",
+                      onChange: (D) => {
+                        (d(D.target.value), T(null));
+                      },
+                    }),
+                    X.length > 0 &&
+                      oe(u) !== oe(c || "") &&
+                      (0, o.jsx)("div", {
+                        className: "suggestions",
+                        children: X.map((D) =>
+                          (0, o.jsx)(
+                            "div",
+                            {
+                              className: "suggestion-row",
+                              onClick: () => {
+                                (g(D.name), d(D.name), T(null));
+                              },
+                              children: [D.name, sxd(D)],
+                            },
+                            D.name,
+                          ),
+                        ),
+                      }),
+                  ],
+                }),
+                (0, o.jsxs)("div", {
+                  className: "form-field",
+                  children: [
+                    (0, o.jsx)("label", { children: "Target ancestor" }),
+                    (0, o.jsx)("select", {
+                      value: v,
+                      onChange: (D) => {
+                        (y(D.target.value), T(null));
+                      },
+                      children: s.map((D) => (0, o.jsx)("option", { value: D, children: D }, D)),
+                    }),
+                  ],
+                }),
+                (0, o.jsxs)("div", {
+                  className: "form-field",
+                  children: [
+                    (0, o.jsx)("label", { children: "Goal \u2014 blood % to reach" }),
+                    (0, o.jsx)("input", {
+                      type: "number",
+                      step: "0.5",
+                      value: E,
+                      onChange: (D) => {
+                        (k(parseFloat(D.target.value) || 0), T(null));
+                      },
+                    }),
+                  ],
+                }),
+                (0, o.jsxs)("div", {
+                  className: "form-field",
+                  children: [
+                    (0, o.jsx)("label", { children: "COI ceiling (optional \u2014 100 = no ceiling)" }),
+                    (0, o.jsx)("input", {
+                      type: "number",
+                      step: "0.5",
+                      value: O,
+                      onChange: (D) => {
+                        (f(parseFloat(D.target.value) || 0), T(null));
+                      },
+                    }),
+                  ],
+                }),
+                (0, o.jsxs)("div", {
+                  className: "form-field",
+                  children: [
+                    (0, o.jsx)("label", { children: "Generations to plan" }),
+                    (0, o.jsxs)("select", {
+                      value: p,
+                      onChange: (D) => {
+                        (m(parseInt(D.target.value, 10)), T(null));
+                      },
+                      children: [
+                        (0, o.jsx)("option", { value: 2, children: "2" }),
+                        (0, o.jsx)("option", { value: 3, children: "3" }),
+                        (0, o.jsx)("option", { value: 4, children: "4" }),
+                      ],
+                    }),
+                  ],
+                }),
+                (0, o.jsxs)("div", {
+                  className: "form-field",
+                  children: [
+                    (0, o.jsx)("label", { children: "Sires to consider" }),
+                    (0, o.jsxs)("select", {
+                      value: w,
+                      onChange: (D) => {
+                        (x(parseInt(D.target.value, 10)), T(null));
+                      },
+                      children: [
+                        (0, o.jsx)("option", { value: 20, children: "Top 20" }),
+                        (0, o.jsx)("option", { value: 40, children: "Top 40" }),
+                        (0, o.jsx)("option", { value: 80, children: "Top 80" }),
+                      ],
+                    }),
+                  ],
+                }),
+                s
+                  .filter((F) => F !== v)
+                  .map((F) =>
+                    (0, o.jsxs)(
+                      "div",
+                      {
+                        className: "form-field",
+                        children: [
+                          (0, o.jsx)("label", { children: "Keep " + dn(F) + " at or above (optional, %)" }),
+                          (0, o.jsx)("input", {
+                            type: "number",
+                            step: "0.5",
+                            value: holds[F] === undefined ? "" : holds[F],
+                            placeholder: "no floor",
+                            onChange: (D) => {
+                              let val = D.target.value;
+                              setHolds((cur) => {
+                                let nx = { ...cur };
+                                val === "" ? delete nx[F] : (nx[F] = parseFloat(val) || 0);
+                                return nx;
+                              });
+                              T(null);
+                            },
+                          }),
+                        ],
+                      },
+                      F,
+                    ),
+                  ),
+              ],
+            }),
+            c &&
+              (0, o.jsx)("div", {
+                className: "target-picker",
+                style: { marginTop: 16 },
+                children: (0, o.jsxs)("span", {
+                  children: [
+                    (0, o.jsx)("b", { children: c }),
+                    " starts at ",
+                    (0, o.jsxs)("b", { children: [K.toFixed(2), "%"] }),
+                    " to ",
+                    v,
+                    ", COI ",
+                    G.toFixed(2),
+                    "% \xB7 ",
+                    Z.length,
+                    " available sire",
+                    Z.length === 1 ? "" : "s",
+                    " carry more than she does",
+                  ],
+                }),
+              }),
+            (0, o.jsxs)("div", {
+              className: "save-row",
+              children: [
+                (0, o.jsx)("div", {
+                  className: "metric-note",
+                  children:
+                    "These are scenarios, not predictions: every route assumes each mating gives you a living heifer, and that the sire is still available in a later season \u2014 true for stored semen, not for a live bull. After a real calf is born, start again from her.",
+                }),
+                (0, o.jsx)("button", {
+                  className: "btn",
+                  disabled: !c || !Z.length || I,
+                  onClick: B,
+                  children: I ? "Searching\u2026" : "Find routes",
+                }),
+              ],
+            }),
+          ],
+        }),
+        h &&
+          h.reached.length > 0 &&
+          (0, o.jsxs)(o.Fragment, {
+            children: [
+              (0, o.jsxs)("div", {
+                className: "card",
+                children: [
+                  (0, o.jsxs)("h2", {
+                    children: [
+                      h.reached.length,
+                      " route",
+                      h.reached.length === 1 ? "" : "s",
+                      " reach ",
+                      E,
+                      "%",
+                    ],
+                  }),
+                  (0, o.jsx)("div", {
+                    className: "pairing-row",
+                    style: { marginBottom: 0 },
+                    children: (0, o.jsxs)("div", {
+                      className: "pairing-slot",
+                      children: [
+                        (0, o.jsx)("label", { children: "Order by" }),
+                        (0, o.jsxs)("select", {
+                          value: M,
+                          onChange: (D) => U(D.target.value),
+                          children: [
+                            (0, o.jsx)("option", {
+                              value: "fewest",
+                              children: "Fewest generations",
+                            }),
+                            (0, o.jsx)("option", {
+                              value: "most",
+                              children: "Most blood % at the end",
+                            }),
+                            (0, o.jsx)("option", {
+                              value: "steadiest",
+                              children: "Steadiest \u2014 lowest COI along the way",
+                            }),
+                          ],
+                        }),
+                      ],
+                    }),
+                  }),
+                  (0, o.jsxs)("div", {
+                    className: "metric-note",
+                    style: { marginTop: 10 },
+                    children: [
+                      "Searched ",
+                      Z.length,
+                      " sires in ",
+                      h.ms,
+                      ' ms. "Steadiest" is the Line 1 approach \u2014 hold the relationship to the foundation animal high while keeping the rise in inbreeding as slow as you can.',
+                    ],
+                  }),
+                ],
+              }),
+              q(h.reached).map((D, z) => (0, o.jsx)(Y, { route: D, i: z, label: "Route" }, z)),
+            ],
+          }),
+        h &&
+          h.reached.length === 0 &&
+          (0, o.jsxs)(o.Fragment, {
+            children: [
+              (0, o.jsxs)("div", {
+                className: "card",
+                children: [
+                  (0, o.jsxs)("h2", {
+                    children: [
+                      "Nothing reaches ",
+                      E,
+                      "% in ",
+                      p,
+                      " generation",
+                      p === 1 ? "" : "s",
+                    ],
+                  }),
+                  (0, o.jsx)("div", {
+                    className: "metric-note",
+                    children: h.bestEffort.length
+                      ? "Here's how close you can get within your limits (COI ceiling and any floors on other foundation animals). Loosen a limit, add generations, or widen the sire pool to go further."
+                      : "No mating within your limits (COI ceiling and any floors on other foundation animals) raises her blood % at all. Loosen a limit or widen the sire pool.",
+                  }),
+                  h.bestEffort.length > 0 &&
+                    (0, o.jsx)("div", {
+                      className: "pairing-row",
+                      style: { marginTop: 12, marginBottom: 0 },
+                      children: (0, o.jsxs)("div", {
+                        className: "pairing-slot",
+                        children: [
+                          (0, o.jsx)("label", { children: "Order by" }),
+                          (0, o.jsxs)("select", {
+                            value: M,
+                            onChange: (D) => U(D.target.value),
+                            children: [
+                              (0, o.jsx)("option", {
+                                value: "fewest",
+                                children: "Fewest generations",
+                              }),
+                              (0, o.jsx)("option", {
+                                value: "most",
+                                children: "Most blood % at the end",
+                              }),
+                              (0, o.jsx)("option", {
+                                value: "steadiest",
+                                children: "Steadiest \u2014 lowest COI along the way",
+                              }),
+                            ],
+                          }),
+                        ],
+                      }),
+                    }),
+                ],
+              }),
+              q(h.bestEffort).map((D, z) => (0, o.jsx)(Y, { route: D, i: z, label: "Closest" }, z)),
+            ],
+          }),
+      ],
+    });
+  }
+  function uh(P) {
+    var E = b.default.createElement;
+    var e = P.allAnimals,
+      t = P.sire,
+      n = P.dam,
+      r = P.names,
+      onGo = P.onGoToAnimal,
+      d = P.founders;
+    var G = window.__lbProg || {};
+    var sn = function (x) {
+      return (G.shorts && G.shorts[x]) || x;
+    };
+    var sGoal = b.useState("up"),
+      goal = sGoal[0],
+      setGoal = sGoal[1];
+    var sFs = b.useState("all"),
+      fsel = sFs[0],
+      setFsel = sFs[1];
+    var sMs = b.useState(["blood"]),
+      measL = sMs[0],
+      setMeasL = sMs[1];
+    var meas = measL[0];
+    var sCp = b.useState("any"),
+      coiP = sCp[0],
+      setCoiP = sCp[1];
+    var sSo = b.useState("change"),
+      sortBy = sSo[0],
+      setSortBy = sSo[1];
+    var sPg = b.useState(0),
+      page = sPg[0],
+      setPage = sPg[1];
+    var sCow = b.useState(""),
+      cowQ = sCow[0],
+      setCowQ = sCow[1];
+    var sBull = b.useState(""),
+      bullQ = sBull[0],
+      setBullQ = sBull[1];
+    var sAv = b.useState(true),
+      availOnly = sAv[0],
+      setAvailOnly = sAv[1];
+    var sBase = b.useState(null),
+      base = sBase[0],
+      setBase = sBase[1];
+    var sBusy = b.useState(false),
+      busy = sBusy[0],
+      setBusy = sBusy[1];
+
+    var fsOk = fsel === "all" || fsel === "even" || d.indexOf(fsel) >= 0;
+    var fs = fsel === "all" || fsel === "even" || !fsOk ? d : [fsel];
+    var idx = fs.map(function (F) {
+      return d.indexOf(F);
+    });
+
+    var cows = b.useMemo(
+      function () {
+        var R = e.filter(function (M) {
+          return qe(M.name, M, t, n) === "Female" && to(M);
+        });
+        if (cowQ) {
+          var u = oe(cowQ);
+          R = R.filter(function (x) {
+            return x.name.includes(u);
+          });
+        }
+        return R;
+      },
+      [e, t, n, cowQ],
+    );
+    var bulls = b.useMemo(
+      function () {
+        var R = e.filter(function (M) {
+          return qe(M.name, M, t, n) === "Male" && to(M);
+        });
+        if (availOnly)
+          R = R.filter(function (M) {
+            return Zr(M);
+          });
+        if (bullQ) {
+          var u = oe(bullQ);
+          R = R.filter(function (x) {
+            return x.name.includes(u);
+          });
+        }
+        return R;
+      },
+      [e, t, n, availOnly, bullQ],
+    );
+    var pairs = cows.length * bulls.length;
+    var LIMIT = 15000;
+
+    // ---- kinship helpers (same method as the planner) ----
+    var hp = b.useRef({ key: null });
+    function helpers() {
+      if (hp.current.t === t && hp.current.n === n && hp.current.r === r) return hp.current;
+      var closestMemo = new Map();
+      var rows = new Map();
+      function buildK(roots) {
+        var order = [],
+          seen = new Set();
+        function up(x) {
+          if (!x || !r.has(x) || seen.has(x)) return;
+          seen.add(x);
+          up(t[x]);
+          up(n[x]);
+          order.push(x);
+        }
+        roots.forEach(up);
+        var m = order.length,
+          ix = new Map();
+        order.forEach(function (x, i) {
+          ix.set(x, i);
+        });
+        var K = new Float32Array((m * (m + 1)) / 2);
+        function g(p, q) {
+          return p >= q ? K[(p * (p + 1)) / 2 + q] : K[(q * (q + 1)) / 2 + p];
+        }
+        for (var i = 0; i < m; i++) {
+          var si = ix.has(t[order[i]]) ? ix.get(t[order[i]]) : -1,
+            di = ix.has(n[order[i]]) ? ix.get(n[order[i]]) : -1;
+          var bs = (i * (i + 1)) / 2;
+          for (var j = 0; j < i; j++)
+            K[bs + j] = 0.5 * ((si >= 0 ? g(si, j) : 0) + (di >= 0 ? g(di, j) : 0));
+          K[bs + i] = 0.5 * (1 + (si >= 0 && di >= 0 ? g(si, di) : 0));
+        }
+        return { g: g, ix: ix };
+      }
+      hp.current = {
+        t: t,
+        n: n,
+        r: r,
+        phiRow: function (F) {
+          if (rows.has(F)) return rows.get(F);
+          var B = buildK([F]),
+            R = new Map();
+          B.ix.forEach(function (k, x) {
+            R.set(x, B.g(k, B.ix.get(F)));
+          });
+          var get = function (z) {
+            if (!z || !r.has(z)) return 0;
+            var hit = R.get(z);
+            if (hit !== undefined) return hit;
+            var v = 0.5 * (get(t[z]) + get(n[z]));
+            R.set(z, v);
+            return v;
+          };
+          rows.set(F, get);
+          return get;
+        },
+        closest: function (x, F) {
+          var key = x + "\0" + F,
+            hit = closestMemo.get(key);
+          if (hit !== undefined) return hit;
+          var res = null;
+          if (x === F) res = 0;
+          else {
+            var level = [x];
+            for (var i = 1; i <= 40 && level.length; i++) {
+              var nxt = new Set();
+              for (var j = 0; j < level.length; j++) {
+                var p = [t[level[j]], n[level[j]]];
+                for (var k = 0; k < 2; k++) if (p[k] && r.has(p[k])) nxt.add(p[k]);
+              }
+              if (nxt.has(F)) {
+                res = i;
+                break;
+              }
+              level = Array.from(nxt);
+            }
+          }
+          closestMemo.set(key, res);
+          return res;
+        },
+      };
+      return hp.current;
+    }
+
+    function vecOf(H, x) {
+      return d.map(function (F) {
+        return {
+          blood: ye(x, F, t, n, r) * 100,
+          rel: 2 * H.phiRow(F)(x) * 100,
+          occ: On(x, F, t, n, r),
+          cl: H.closest(x, F),
+        };
+      });
+    }
+
+    function run() {
+      if (pairs === 0 || pairs > LIMIT) return;
+      setBusy(true);
+      setTimeout(function () {
+        var H = helpers();
+        var cv = cows.map(function (x) {
+          return { name: x.name, v: vecOf(H, x.name) };
+        });
+        var bv = bulls.map(function (x) {
+          return { name: x.name, v: vecOf(H, x.name) };
+        });
+        var act = e.filter(function (x) {
+          return x.status === "Active";
+        });
+        var sums = d.map(function () {
+          return { blood: 0, rel: 0, occ: 0 };
+        });
+        act.forEach(function (x) {
+          var v = vecOf(H, x.name);
+          v.forEach(function (p, i) {
+            sums[i].blood += p.blood;
+            sums[i].rel += p.rel;
+            sums[i].occ += p.occ;
+          });
+        });
+        var avg = sums.map(function (s) {
+          var k = act.length || 1;
+          return { blood: s.blood / k, rel: s.rel / k, occ: s.occ / k };
+        });
+        setBase({ cows: cv, bulls: bv, avg: avg, nAct: act.length });
+        setPage(0);
+        setBusy(false);
+      }, 10);
+    }
+
+    var MK = meas === "blood" ? "blood" : meas === "rel" ? "rel" : meas === "occ" ? "occ" : "cl";
+    // value where higher always means "more" (closest generation: nearer = more)
+    function sv(p, kind) {
+      if (kind !== "cl") return p[kind];
+      return p === null || p.cl === null ? -45 : -p.cl;
+    }
+    function agg(vals, mk) {
+      mk = mk || MK;
+      if (fsel === "even")
+        return Math.min.apply(null, vals);
+      if (mk === "cl") return Math.max.apply(null, vals);
+      return vals.reduce(function (s, x) {
+        return s + x;
+      }, 0);
+    }
+    function calfPer(c, bl) {
+      return d.map(function (F, i) {
+        var a = c[i],
+          bb = bl[i];
+        var cl = null;
+        if (a.cl !== null) cl = a.cl;
+        if (bb.cl !== null && (cl === null || bb.cl < cl)) cl = bb.cl;
+        return {
+          blood: (a.blood + bb.blood) / 2,
+          rel: (a.rel + bb.rel) / 2,
+          occ: a.occ + bb.occ,
+          cl: cl === null ? null : cl + 1,
+        };
+      });
+    }
+    function val(per, mk) {
+      mk = mk || MK;
+      return agg(
+        idx.map(function (i) {
+          return sv(per[i], mk);
+        }),
+        mk,
+      );
+    }
+
+    var cowCoi = b.useRef(new Map());
+    function coiOfCow(H, name) {
+      if (cowCoi.current.has(name)) return cowCoi.current.get(name);
+      var s = t[name],
+        m = n[name],
+        v = 0;
+      if (s && m && r.has(s) && r.has(m)) v = H.phiRow(s)(m) * 100;
+      cowCoi.current.set(name, v);
+      return v;
+    }
+    var pairCoi = b.useRef(new Map());
+    function coiOfPair(H, cow, bull) {
+      var key = cow + "\0" + bull;
+      if (pairCoi.current.has(key)) return pairCoi.current.get(key);
+      var v = H.phiRow(cow)(bull) * 100;
+      pairCoi.current.set(key, v);
+      return v;
+    }
+
+    var ranked = b.useMemo(
+      function () {
+        if (!base) return null;
+        var H = helpers();
+        var rows = [];
+        base.cows.forEach(function (c) {
+          var cvs = measL.map(function (mk) {
+            return val(c.v, mk);
+          });
+          base.bulls.forEach(function (bl) {
+            var per = calfPer(c.v, bl.v);
+            var pks = measL.map(function (mk, mi) {
+              var v = val(per, mk);
+              var ch = v - cvs[mi];
+              return goal === "hold"
+                ? Math.abs(ch)
+                : goal === "up"
+                  ? sortBy === "change"
+                    ? -ch
+                    : -v
+                  : sortBy === "change"
+                    ? ch
+                    : v;
+            });
+            rows.push({ cow: c.name, bull: bl.name, cv: c.v, per: per, pk: pks[0], pks: pks });
+          });
+        });
+        if (measL.length > 1) {
+          measL.forEach(function (mk, mi) {
+            rows
+              .slice()
+              .sort(function (x, y) {
+                return x.pks[mi] - y.pks[mi];
+              })
+              .forEach(function (x, i) {
+                x.mr = (x.mr || 0) + i;
+              });
+          });
+          rows.forEach(function (x) {
+            x.pk = x.mr * 1e7 + x.pks[0];
+          });
+        }
+        rows.sort(function (x, y) {
+          return x.pk - y.pk;
+        });
+        if (coiP !== "any") {
+          var TOP = 100;
+          var top = rows.slice(0, TOP);
+          top.forEach(function (x, i) {
+            x.rp = i;
+            x.coi = coiOfPair(H, x.cow, x.bull);
+            var cc = coiOfCow(H, x.cow);
+            x.ck = coiP === "hi" ? -x.coi : coiP === "lo" ? x.coi : Math.abs(x.coi - cc);
+          });
+          var byC = top.slice().sort(function (x, y) {
+            return x.ck - y.ck;
+          });
+          byC.forEach(function (x, i) {
+            x.rc = i;
+          });
+          top.sort(function (x, y) {
+            return x.rp + x.rc - (y.rp + y.rc) || x.pk - y.pk;
+          });
+          rows = top.concat(rows.slice(TOP));
+        }
+        return rows;
+      },
+      [base, goal, fsel, measL.join(","), coiP, sortBy, d],
+    );
+
+    function seg(opts, value, onChange, multi) {
+      return E(
+        "div",
+        { className: "pl-seg" },
+        opts.map(function (o) {
+          return E(
+            "button",
+            {
+              key: o.v,
+              type: "button",
+              className: (multi ? value.indexOf(o.v) >= 0 : value === o.v) ? "on" : "",
+              onClick: function () {
+                onChange(o.v);
+                setPage(0);
+              },
+            },
+            o.l,
+          );
+        }),
+      );
+    }
+    function q(label, node) {
+      return E("div", { className: "pl-q" }, E("p", { className: "pl-lab" }, label), node);
+    }
+    function dl(x, dec, unit) {
+      var z = Math.abs(x) < Math.pow(10, -dec) / 2;
+      return E(
+        "span",
+        { className: "pl-dl " + (z ? "pl-eq" : x > 0 ? "pl-up" : "pl-dn") },
+        z ? "±0" : (x > 0 ? "+" : "−") + Math.abs(x).toFixed(dec) + (unit || ""),
+      );
+    }
+    var fOpts = [{ v: "all", l: "All foundation" }]
+      .concat(
+        d.map(function (F) {
+          return { v: F, l: sn(F) };
+        }),
+      )
+      .concat(d.length > 1 ? [{ v: "even", l: "Keep them even" }] : []);
+
+    var controls = E(
+      "div",
+      { className: "card pl-panel" },
+      q(
+        "1. What do you want to do?",
+        seg(
+          [
+            { v: "up", l: "Increase" },
+            { v: "hold", l: "Maintain" },
+            { v: "down", l: "Reduce" },
+          ],
+          goal,
+          setGoal,
+        ),
+      ),
+      q("2. Which foundation animals?", seg(fOpts, fsOk ? fsel : "all", setFsel)),
+      q(
+        "3. Measured by (pick one or more \u2014 several are blended)",
+        seg(
+          [
+            { v: "blood", l: "Blood %" },
+            { v: "rel", l: "Relationship" },
+            { v: "occ", l: "Occurrences" },
+            { v: "cl", l: "Closest generation" },
+          ],
+          measL,
+          function (v) {
+            setMeasL(function (cur) {
+              if (cur.indexOf(v) >= 0)
+                return cur.length > 1
+                  ? cur.filter(function (x) {
+                      return x !== v;
+                    })
+                  : cur;
+              return cur.concat([v]);
+            });
+          },
+          true,
+        ),
+      ),
+      q(
+        "4. What about COI?",
+        seg(
+          [
+            { v: "any", l: "Doesn’t matter" },
+            { v: "hi", l: "Increase" },
+            { v: "lo", l: "Decrease" },
+            { v: "same", l: "Maintain" },
+          ],
+          coiP,
+          setCoiP,
+        ),
+      ),
+      E(
+        "div",
+        { className: "pairing-row" },
+        E(
+          "div",
+          { className: "pairing-slot" },
+          E("label", null, "Narrow cows (optional)"),
+          E("input", {
+            autoCorrect: "off",
+            autoCapitalize: "off",
+            autoComplete: "off",
+            spellCheck: "false",
+            placeholder: "Name contains…",
+            value: cowQ,
+            onChange: function (ev) {
+              setCowQ(ev.target.value);
+              setBase(null);
+            },
+          }),
+        ),
+        E(
+          "div",
+          { className: "pairing-slot" },
+          E("label", null, "Narrow bulls (optional)"),
+          E("input", {
+            autoCorrect: "off",
+            autoCapitalize: "off",
+            autoComplete: "off",
+            spellCheck: "false",
+            placeholder: "Name contains…",
+            value: bullQ,
+            onChange: function (ev) {
+              setBullQ(ev.target.value);
+              setBase(null);
+            },
+          }),
+        ),
+      ),
+      E(
+        "label",
+        { style: { display: "flex", alignItems: "center", gap: 8, fontSize: 13, margin: "8px 0" } },
+        E("input", {
+          type: "checkbox",
+          checked: availOnly,
+          onChange: function (ev) {
+            setAvailOnly(ev.target.checked);
+            setBase(null);
+          },
+        }),
+        "Available bulls only (otherwise this includes bulls with no usable semen)",
+      ),
+      E(
+        "div",
+        { className: "metric-note", style: { marginBottom: 10 } },
+        cows.length +
+          " active cows × " +
+          bulls.length +
+          " candidate bulls = " +
+          pairs.toLocaleString() +
+          " pairings to check",
+      ),
+      E(
+        "button",
+        { className: "btn", onClick: run, disabled: pairs === 0 || pairs > LIMIT || busy },
+        busy ? "Computing…" : base ? "Refresh results" : "Find best matches",
+      ),
+    );
+
+    var out = null;
+    if (pairs > LIMIT)
+      out = E(
+        "div",
+        { className: "card" },
+        E(
+          "div",
+          { className: "live-checks warn" },
+          "That’s " + pairs.toLocaleString() + " combinations, too many to compute at once. Narrow the cows or bulls above and try again.",
+        ),
+      );
+    else if (ranked) {
+      var H = helpers();
+      var PS = 20,
+        pages = Math.max(1, Math.ceil(ranked.length / PS));
+      var pg = Math.min(page, pages - 1);
+      var slice = ranked.slice(pg * PS, pg * PS + PS);
+      var unitOf = function (p) {
+        return MK === "blood" ? "%" : MK === "rel" ? "" : "";
+      };
+      function fmtVal(p) {
+        if (MK === "blood") return p.blood.toFixed(1) + "%";
+        if (MK === "rel") return (p.rel / 100).toFixed(2);
+        if (MK === "occ") return String(p.occ);
+        return p.cl === null ? "–" : "Gen " + p.cl;
+      }
+      function delta(p, cp) {
+        if (MK === "blood") return dl(p.blood - cp.blood, 1);
+        if (MK === "rel") return dl((p.rel - cp.rel) / 100, 2);
+        if (MK === "occ") return dl(p.occ - cp.occ, 0);
+        if (p.cl === null && cp.cl === null) return E("span", { className: "pl-dl pl-eq" }, "\u00b10");
+        if (cp.cl === null) return E("span", { className: "pl-dl pl-up" }, "new");
+        if (p.cl === null) return E("span", { className: "pl-dl pl-dn" }, "none");
+        var df = cp.cl - p.cl;
+        return E(
+          "span",
+          { className: "pl-dl " + (df === 0 ? "pl-eq" : df > 0 ? "pl-up" : "pl-dn") },
+          df === 0 ? "\u00b10" : Math.abs(df) + (df > 0 ? " closer" : " farther"),
+        );
+      }
+      var avgLine = null;
+      if (base && MK !== "cl")
+        avgLine = E(
+          "div",
+          { className: "metric-note", style: { marginBottom: 8 } },
+          "Active herd average (" +
+            base.nAct +
+            " animals): " +
+            fs
+              .map(function (F) {
+                var i = d.indexOf(F),
+                  a = base.avg[i];
+                return (
+                  sn(F) +
+                  " " +
+                  (MK === "blood" ? a.blood.toFixed(1) + "%" : MK === "rel" ? (a.rel / 100).toFixed(2) : a.occ.toFixed(1))
+                );
+              })
+              .join(" · "),
+        );
+      out = E(
+        "div",
+        { className: "card" },
+        E("h2", null, "Best matches"),
+        avgLine,
+        goal !== "hold" &&
+          E(
+            "div",
+            { className: "pl-q", style: { marginBottom: 8 } },
+            E("p", { className: "pl-lab" }, "Sort by"),
+            seg(
+              [
+                { v: "change", l: "Change from cow" },
+                { v: "result", l: "Calf result" },
+              ],
+              sortBy,
+              setSortBy,
+            ),
+          ),
+        E(
+          "div",
+          { className: "pl-hlist" },
+          slice.map(function (x, i) {
+            var coi = x.coi !== undefined ? x.coi : coiOfPair(H, x.cow, x.bull);
+            var cc = coiOfCow(H, x.cow);
+            return E(
+              "div",
+              { key: x.cow + "\0" + x.bull, className: "pl-hrow" + (pg === 0 && i === 0 ? " best" : "") },
+              E(
+                "div",
+                { className: "pl-hhead" },
+                E("span", { className: "pl-hrank" }, pg * PS + i + 1),
+                E(
+                  "span",
+                  { className: "pl-hnames" },
+                  E("span", { className: "row-link", onClick: function () { onGo(x.cow); } }, x.cow),
+                  E("span", { className: "pl-hx" }, " \u00d7 "),
+                  E("span", { className: "row-link", onClick: function () { onGo(x.bull); } }, x.bull),
+                ),
+              ),
+              E(
+                "div",
+                { className: "pl-hmet" },
+                fs.map(function (F) {
+                  var k = d.indexOf(F);
+                  return E(
+                    "span",
+                    { key: F, className: "pl-hm" },
+                    E("span", { className: "pl-hml" }, sn(F)),
+                    " ",
+                    E("b", null, fmtVal(x.per[k])),
+                    " ",
+                    delta(x.per[k], x.cv[k]),
+                  );
+                }),
+                E(
+                  "span",
+                  { className: "pl-hm" },
+                  E("span", { className: "pl-hml" }, "Calf COI"),
+                  " ",
+                  E("b", null, coi.toFixed(2) + "%"),
+                  " ",
+                  dl(coi - cc, 1),
+                ),
+              ),
+            );
+          }),
+        ),
+        E(
+          "div",
+          { className: "pl-pager" },
+          E(
+            "button",
+            { className: "btn secondary", disabled: pg === 0, onClick: function () { setPage(pg - 1); } },
+            "← Previous",
+          ),
+          E("span", { className: "metric-note" }, "Page " + (pg + 1) + " of " + pages + " · " + ranked.length.toLocaleString() + " pairings"),
+          E(
+            "button",
+            { className: "btn", disabled: pg >= pages - 1, onClick: function () { setPage(pg + 1); } },
+            "Next →",
+          ),
+        ),
+        E(
+          "div",
+          { className: "metric-note", style: { marginTop: 8 } },
+          "Green is an increase, red a decrease, gray no change, each measured from the cow. Tap a cow or bull to open its record. To see a pairing in detail, use One cow and pick that cow.",
+        ),
+      );
+    }
+    return E(
+      "div",
+      { className: "screen active" },
+      E("h1", null, "Whole herd"),
+      E("div", { className: "sub" }, "Search your whole active herd for the best matings, using the same four questions"),
+      controls,
+      out,
+    );
+  }
+
+  var LOG_STAGES = [
+    ["considering", "Considering"],
+    ["planned", "Planned"],
+    ["bred", "Bred"],
+    ["confirmed", "Confirmed in calf"],
+    ["calved", "Calved"],
+    ["dropped", "Dropped"],
+  ];
+  function logStage(x) {
+    return x.stage || "planned";
+  }
+  function logOpen(x) {
+    var st = logStage(x);
+    return st !== "calved" && st !== "dropped";
+  }
+  function logDue(x) {
+    return logOpen(x) && x.revisitDate && x.revisitDate <= new Date().toISOString().slice(0, 10);
+  }
+  function LogRevisit(P) {
+    var E = b.default.createElement;
+    var x = P.entry;
+    var sn = b.useState(x.revisit || ""),
+      note = sn[0],
+      setNote = sn[1];
+    var sd = b.useState(x.revisitDate || ""),
+      dt = sd[0],
+      setDt = sd[1];
+    var dirty = note !== (x.revisit || "") || dt !== (x.revisitDate || "");
+    return E(
+      "div",
+      { style: { marginTop: 8, paddingTop: 8, borderTop: "1px dotted #d8d0c2" } },
+      E(
+        "div",
+        { className: "form-field" },
+        E("label", null, "Where this stands"),
+        E(
+          "select",
+          {
+            value: logStage(x),
+            onChange: function (ev) {
+              P.onChange({ stage: ev.target.value });
+            },
+          },
+          LOG_STAGES.map(function (st) {
+            return E("option", { key: st[0], value: st[0] }, st[1]);
+          }),
+        ),
+      ),
+      E(
+        "div",
+        { className: "form-field" },
+        E("label", null, "Come back to this (what to decide or check)"),
+        E("input", {
+          autoCorrect: "off",
+          autoCapitalize: "off",
+          autoComplete: "off",
+          spellCheck: "false",
+          value: note,
+          placeholder: "e.g. wait for her preg check, compare with 775",
+          onChange: function (ev) {
+            setNote(ev.target.value);
+          },
+        }),
+      ),
+      E(
+        "div",
+        { className: "form-field" },
+        E("label", null, "Revisit on (optional)"),
+        E("input", {
+          type: "date",
+          value: dt,
+          onChange: function (ev) {
+            setDt(ev.target.value);
+          },
+        }),
+      ),
+      E(
+        "div",
+        null,
+        dirty
+          ? E(
+              "button",
+              {
+                className: "btn",
+                style: { marginRight: 8 },
+                onClick: function () {
+                  P.onChange({ revisit: note || null, revisitDate: dt || null });
+                },
+              },
+              "Save note",
+            )
+          : null,
+        E(
+          "button",
+          { className: "btn secondary", onClick: P.onOpen },
+          "Open in Check a mating \u2192",
+        ),
+      ),
+    );
+  }
+  function ch({ matingLog: e, saveMatingLog: t, onGoToAnimal: n, kinship: r, sire: l, dam: a, onOpenInPlanner: P_openInPlanner }) {
+    let [i, s] = (0, b.useState)(null),
+      [u, d] = (0, b.useState)(""),
+      [c, g] = (0, b.useState)(""),
+      [v, y] = (0, b.useState)(""),
+      [E, k] = (0, b.useState)(""),
+      [O, f] = (0, b.useState)(""),
+      [logFil, setLogFil] = (0, b.useState)("open"),
+      updEntry = async (id, patch) => {
+        await t(e.map((T) => (T.id === id ? { ...T, ...patch } : T)));
+      },
+      p = (0, b.useMemo)(() => {
+        let L = [...e].sort((h, T) => new Date(T.dateLogged) - new Date(h.dateLogged));
+        if (logFil === "open") L = L.filter(logOpen);
+        else if (logFil !== "all") L = L.filter((h) => logStage(h) === logFil);
+        return L.sort((h, T) => {
+          let ho = logOpen(h) ? 0 : 1,
+            to2 = logOpen(T) ? 0 : 1;
+          if (ho !== to2) return ho - to2;
+          let hd = h.revisitDate || "9999",
+            td = T.revisitDate || "9999";
+          return hd < td ? -1 : hd > td ? 1 : 0;
+        });
+      }, [e, logFil]),
+      m = (h) => {
+        (s(h.id),
+          d(h.actualCalved === null ? "" : h.actualCalved ? "yes" : "no"),
+          g(h.calvingEase || ""),
+          y(h.vigorNotes || ""),
+          k(h.resultingCalfName || ""),
+          f(h.notes || ""));
+      },
+      w = async () => {
+        let h = e.map((T) =>
+          T.id === i
+            ? {
+                ...T,
+                actualCalved: u === "" ? null : u === "yes",
+                calvingEase: c || null,
+                vigorNotes: v || null,
+                resultingCalfName: E || null,
+                notes: O || null,
+              }
+            : T,
+        );
+        (await t(h), s(null));
+      },
+      x = async (h) => {
+        await t(e.filter((T) => T.id !== h));
+      };
+    return (0, o.jsxs)("div", {
+      className: "screen active",
+      children: [
+        (0, o.jsx)("h1", { children: "Mating Log" }),
+        (0, o.jsxs)("div", {
+          className: "sub",
+          children: [
+            e.length,
+            " logged matings \u2014 predicted numbers vs. what actually happened",
+          ],
+        }),
+        (0, o.jsxs)("div", {
+          className: "pl-seg",
+          style: { flexWrap: "wrap", marginBottom: 10 },
+          children: [
+            ["open", "Open (" + e.filter(logOpen).length + ")"],
+            ["all", "All (" + e.length + ")"],
+            ...LOG_STAGES.map((st) => [
+              st[0],
+              st[1] + " (" + e.filter((h) => logStage(h) === st[0]).length + ")",
+            ]),
+          ].map(([fv, fl]) =>
+            (0, o.jsx)(
+              "button",
+              { type: "button", className: logFil === fv ? "on" : "", onClick: () => setLogFil(fv), children: fl },
+              fv,
+            ),
+          ),
+        }),
+        p.length === 0 &&
+          (0, o.jsx)("div", {
+            className: "card",
+            children: (0, o.jsx)("div", {
+              className: "metric-note",
+              children: e.length > 0 ? "Nothing in this view." : `Nothing logged yet \u2014 use "Save to Log" on Check a mating, or "Log This Mating" in the planner, to start tracking matings you want to come back to.`,
+            }),
+          }),
+        p.map((h) => {
+          let T = lt(h.predictedCOI || 0),
+            I = i === h.id;
+          return (0, o.jsxs)(
+            "div",
+            {
+              className: "card",
+              children: [
+                (0, o.jsxs)("h2", {
+                  children: [
+                    (0, o.jsx)("span", {
+                      className: "link",
+                      onClick: () => n(h.cow),
+                      children: h.cow,
+                    }),
+                    " \xD7 ",
+                    (0, o.jsx)("span", {
+                      className: "link",
+                      onClick: () => n(h.bull),
+                      children: h.bull,
+                    }),
+                  ],
+                }),
+                (0, o.jsxs)("div", {
+                  className: "metric-note",
+                  style: { marginBottom: 8 },
+                  children: [
+                    "Logged ",
+                    new Date(h.dateLogged).toLocaleDateString(),
+                    " \u00B7 ",
+                    (LOG_STAGES.find((z) => z[0] === logStage(h)) || ["", ""])[1],
+                    logDue(h) ? " \u00B7 DUE to revisit" : "",
+                    h.revisit ? " \u2014 " + h.revisit : "",
+                  ],
+                }),
+                (0, o.jsx)(LogRevisit, {
+                  key: h.id + (h.revisit || "") + (h.revisitDate || "") + logStage(h),
+                  entry: h,
+                  onChange: (patch) => updEntry(h.id, patch),
+                  onOpen: () => P_openInPlanner(h),
+                }),
+                (0, o.jsxs)("div", {
+                  className: "metric-row",
+                  children: [
+                    (0, o.jsx)("div", { className: "metric-label", children: "Predicted COI" }),
+                    (0, o.jsxs)("div", {
+                      className: "metric-value",
+                      children: [
+                        h.predictedCOI.toFixed(2),
+                        "%",
+                      ],
+                    }),
+                  ],
+                }),
+                h.predictedB77 !== null &&
+                  (0, o.jsxs)("div", {
+                    className: "metric-row",
+                    children: [
+                      (0, o.jsx)("div", {
+                        className: "metric-label",
+                        children: "Predicted Blood \u2014 MD77 / McK43",
+                      }),
+                      (0, o.jsxs)("div", {
+                        className: "metric-value",
+                        children: [
+                          h.predictedB77.toFixed(1),
+                          "% / ",
+                          h.predictedB43.toFixed(1),
+                          "%",
+                        ],
+                      }),
+                    ],
+                  }),
+                (0, o.jsx)("div", {
+                  style: { marginTop: 10, paddingTop: 10, borderTop: "1px dotted #d8d0c2" },
+                  children: I
+                    ? (0, o.jsxs)(o.Fragment, {
+                        children: [
+                          (0, o.jsxs)("div", {
+                            className: "form-field",
+                            children: [
+                              (0, o.jsx)("label", { children: "Calved Successfully" }),
+                              (0, o.jsxs)("select", {
+                                value: u,
+                                onChange: (R) => d(R.target.value),
+                                children: [
+                                  (0, o.jsx)("option", { value: "", children: "Not recorded" }),
+                                  (0, o.jsx)("option", { value: "yes", children: "Yes" }),
+                                  (0, o.jsx)("option", { value: "no", children: "No" }),
+                                ],
+                              }),
+                            ],
+                          }),
+                          (0, o.jsxs)("div", {
+                            className: "form-field",
+                            children: [
+                              (0, o.jsx)("label", { children: "Calving Ease" }),
+                              (0, o.jsxs)("select", {
+                                value: c,
+                                onChange: (R) => g(R.target.value),
+                                children: [
+                                  (0, o.jsx)("option", { value: "", children: "\u2014" }),
+                                  (0, o.jsx)("option", {
+                                    value: "Unassisted",
+                                    children: "Unassisted",
+                                  }),
+                                  (0, o.jsx)("option", {
+                                    value: "Minor assist",
+                                    children: "Minor assist",
+                                  }),
+                                  (0, o.jsx)("option", {
+                                    value: "Major assist",
+                                    children: "Major assist",
+                                  }),
+                                  (0, o.jsx)("option", {
+                                    value: "C-section",
+                                    children: "C-section",
+                                  }),
+                                ],
+                              }),
+                            ],
+                          }),
+                          (0, o.jsxs)("div", {
+                            className: "form-field",
+                            children: [
+                              (0, o.jsx)("label", {
+                                children: "Resulting Calf Name (if added to database)",
+                              }),
+                              (0, o.jsx)("input", {
+                                autoCorrect: "off",
+                                autoCapitalize: "off",
+                                autoComplete: "off",
+                                spellCheck: "false",
+                                value: E,
+                                onChange: (R) => k(R.target.value),
+                              }),
+                            ],
+                          }),
+                          (0, o.jsxs)("div", {
+                            className: "form-field",
+                            children: [
+                              (0, o.jsx)("label", { children: "Vigor Notes" }),
+                              (0, o.jsx)("input", {
+                                autoCorrect: "off",
+                                autoCapitalize: "off",
+                                autoComplete: "off",
+                                spellCheck: "false",
+                                value: v,
+                                onChange: (R) => y(R.target.value),
+                              }),
+                            ],
+                          }),
+                          (0, o.jsxs)("div", {
+                            className: "form-field",
+                            children: [
+                              (0, o.jsx)("label", { children: "Other Notes" }),
+                              (0, o.jsx)("input", {
+                                autoCorrect: "off",
+                                autoCapitalize: "off",
+                                autoComplete: "off",
+                                spellCheck: "false",
+                                value: O,
+                                onChange: (R) => f(R.target.value),
+                              }),
+                            ],
+                          }),
+                          (0, o.jsx)("button", {
+                            className: "btn",
+                            style: { marginTop: 10 },
+                            onClick: w,
+                            children: "Save Outcome",
+                          }),
+                          " ",
+                          (0, o.jsx)("button", {
+                            className: "btn secondary",
+                            style: { marginTop: 10 },
+                            onClick: () => s(null),
+                            children: "Cancel",
+                          }),
+                        ],
+                      })
+                    : (0, o.jsxs)(o.Fragment, {
+                        children: [
+                          (0, o.jsxs)("div", {
+                            className: "metric-row",
+                            children: [
+                              (0, o.jsx)("div", {
+                                className: "metric-label",
+                                children: "Calved Successfully",
+                              }),
+                              (0, o.jsx)("div", {
+                                className: "metric-value",
+                                children:
+                                  h.actualCalved === null
+                                    ? "Not recorded"
+                                    : h.actualCalved
+                                      ? "Yes"
+                                      : "No",
+                              }),
+                            ],
+                          }),
+                          h.calvingEase &&
+                            (0, o.jsxs)("div", {
+                              className: "metric-row",
+                              children: [
+                                (0, o.jsx)("div", {
+                                  className: "metric-label",
+                                  children: "Calving Ease",
+                                }),
+                                (0, o.jsx)("div", {
+                                  className: "metric-value",
+                                  children: h.calvingEase,
+                                }),
+                              ],
+                            }),
+                          h.resultingCalfName &&
+                            (0, o.jsxs)("div", {
+                              className: "metric-row",
+                              children: [
+                                (0, o.jsx)("div", {
+                                  className: "metric-label",
+                                  children: "Resulting Calf",
+                                }),
+                                (0, o.jsx)("div", {
+                                  className: "metric-value",
+                                  children: (0, o.jsx)("span", {
+                                    className: "link",
+                                    onClick: () => n(h.resultingCalfName),
+                                    children: h.resultingCalfName,
+                                  }),
+                                }),
+                              ],
+                            }),
+                          h.vigorNotes &&
+                            (0, o.jsxs)("div", {
+                              className: "metric-note",
+                              style: { marginTop: 6 },
+                              children: ["Vigor notes: ", h.vigorNotes],
+                            }),
+                          h.notes &&
+                            (0, o.jsxs)("div", {
+                              className: "metric-note",
+                              children: ["Notes: ", h.notes],
+                            }),
+                          (0, o.jsx)("button", {
+                            className: "btn secondary",
+                            style: { marginTop: 10 },
+                            onClick: () => m(h),
+                            children: "Record Outcome",
+                          }),
+                          " ",
+                          (0, o.jsx)("button", {
+                            className: "btn secondary",
+                            style: { marginTop: 10 },
+                            onClick: () => x(h.id),
+                            children: "Remove",
+                          }),
+                        ],
+                      }),
+                }),
+              ],
+            },
+            h.id,
+          );
+        }),
+      ],
+    });
+  }
+  function dh({
+    allAnimals: e,
+    sire: t,
+    dam: n,
+    names: r,
+    onGoToAnimal: l,
+    onGoToEdit: a,
+    userAnimals: i,
+    storageBroken: s,
+    edits: u,
+    saveUserAnimals: d,
+    saveEdits: c,
+    dbMeta: g,
+    importDatabase: v,
+  }) {
+    let [y, E] = (0, b.useState)(!1),
+      [k, O] = (0, b.useState)(null),
+      f = (0, b.useMemo)(() => {
+        let x = {};
+        e.forEach((B) => {
+          x[B.name] = (x[B.name] || 0) + 1;
+        });
+        let h = Object.entries(x)
+            .filter(([, B]) => B > 1)
+            .map(([B]) => B),
+          T = new Set(Object.values(t).filter(Boolean)),
+          I = new Set(Object.values(n).filter(Boolean)),
+          R = [...new Set([...T, ...I])].filter((B) => !r.has(B)),
+          M = e.filter((B) => cn(B.name, t, n) === "Unknown").map((B) => B.name),
+          U = e.filter((B) => cn(B.name, t, n) === "Conflict").map((B) => B.name),
+          q = {},
+          X = e
+            .map((B) => ({ name: B.name, depth: eo(B.name, t, n, r, q) }))
+            .filter((B) => B.depth <= 1)
+            .sort((B, Y) => B.depth - Y.depth),
+          K = {};
+        (r.forEach((B) => {
+          K[B] = [];
+        }),
+          r.forEach((B) => {
+            (t[B] && r.has(t[B]) && K[t[B]].push(B), n[B] && r.has(n[B]) && K[n[B]].push(B));
+          }));
+        function G(B) {
+          let Y = new Set(),
+            D = [...K[B]];
+          for (; D.length;) {
+            let z = D.pop();
+            Y.has(z) || (Y.add(z), D.push(...K[z]));
+          }
+          return Y.size;
+        }
+        let Z = [...r]
+          .filter((B) => !t[B] || !n[B])
+          .map((B) => ({ name: B, impact: G(B), missingSire: !t[B], missingDam: !n[B] }))
+          .sort((B, Y) => Y.impact - B.impact);
+        return {
+          duplicates: h,
+          orphanRefs: R,
+          unclearSex: M,
+          sexConflicts: U,
+          shallow: X,
+          missingParent: Z,
+        };
+      }, [e, t, n, r]),
+      [p, m] = (0, b.useState)(null),
+      w = async (x) => {
+        if (x) {
+          m(null);
+          try {
+            let h = await x.text(),
+              T = ah(h);
+            if (T.userAnimals.length === 0 && Object.keys(T.edits).length === 0) {
+              m({
+                type: "warn",
+                text: "That file didn't have any recognizable rows \u2014 make sure it's a backup CSV downloaded from this app.",
+              });
+              return;
+            }
+            let I = new Set(T.userAnimals.map((X) => X.name)),
+              R = i.filter((X) => !I.has(X.name)).concat(T.userAnimals),
+              M = { ...u, ...T.edits },
+              U = await d(R),
+              q = await c(M);
+            m(
+              U && q
+                ? {
+                    type: "ok",
+                    text: `Restored ${T.userAnimals.length} animal(s) and ${Object.keys(T.edits).length} edit(s) from the backup, and saved successfully.`,
+                  }
+                : {
+                    type: "warn",
+                    text: `Restored ${T.userAnimals.length} animal(s) into this session, but the permanent save still failed \u2014 you'll need to keep this tab open and re-import if it reloads again.`,
+                  },
+            );
+          } catch {
+            m({
+              type: "warn",
+              text: "Couldn't read that file \u2014 make sure it's a backup CSV downloaded from this app.",
+            });
+          }
+        }
+      };
+    return (0, o.jsxs)("div", {
+      className: "screen active",
+      children: [
+        (0, o.jsx)("h1", { children: "Reports" }),
+        (0, o.jsxs)("div", {
+          className: "sub",
+          children: ["Live from your ", e.length, "-animal database"],
+        }),
+        (0, o.jsxs)("div", {
+          className: "card",
+          style: { background: g ? "#f6f6f2" : "#fbf3d9" },
+          children: [
+            (0, o.jsx)("h2", { children: "Animal Database" }),
+            g
+              ? (0, o.jsxs)(o.Fragment, {
+                  children: [
+                    (0, o.jsxs)("div", {
+                      className: "metric-row",
+                      children: [
+                        (0, o.jsx)("div", { className: "metric-label", children: "Loaded" }),
+                        (0, o.jsxs)("div", {
+                          className: "metric-value",
+                          children: [g.count.toLocaleString(), " animals"],
+                        }),
+                      ],
+                    }),
+                    (0, o.jsxs)("div", {
+                      className: "metric-row",
+                      children: [
+                        (0, o.jsx)("div", {
+                          className: "metric-label",
+                          children: g.importedAt ? "Imported" : "Data built",
+                        }),
+                        (0, o.jsx)("div", {
+                          className: "metric-value",
+                          style: { fontSize: 13 },
+                          children: (() => {
+                            let dt = new Date(g.importedAt || g.generated);
+                            return isNaN(dt.getTime()) ? "\u2014" : dt.toLocaleString();
+                          })(),
+                        }),
+                      ],
+                    }),
+                  ],
+                })
+              : (0, o.jsx)("div", {
+                  className: "live-checks warn",
+                  style: { marginBottom: 10 },
+                  children:
+                    "No database imported yet \u2014 the app is running on a 2-animal placeholder. Paste your database text below to load it.",
+                }),
+            (0, o.jsxs)("div", {
+              className: "metric-note",
+              style: { marginTop: 10, marginBottom: 6 },
+              children: [
+                g ? "Replace" : "Load",
+                " the animal database \u2014 choose the database file:",
+              ],
+            }),
+            (0, o.jsxs)("label", {
+              className: "btn",
+              style: { display: "inline-block", cursor: "pointer" },
+              children: [
+                y ? "Importing\u2026" : "Choose Database File",
+                (0, o.jsx)("input", {
+                  type: "file",
+                  accept: ".txt,.json,application/json,text/plain",
+                  style: { display: "none" },
+                  disabled: y,
+                  onChange: async (x) => {
+                    let h = x.target.files && x.target.files[0];
+                    if (h) {
+                      (E(!0), O({ type: "ok", text: "Reading file\u2026" }));
+                      try {
+                        let T = await h.text(),
+                          I = await v(T, (R, M) =>
+                            O({ type: "ok", text: `Saving chunk ${R} of ${M}\u2026` }),
+                          );
+                        I.ok
+                          ? O({
+                              type: "ok",
+                              text: `Loaded ${I.count.toLocaleString()} animals successfully.`,
+                            })
+                          : O({ type: "warn", text: I.error });
+                      } catch (T) {
+                        O({
+                          type: "warn",
+                          text:
+                            "Couldn't read that file: " + (T && T.message ? T.message : String(T)),
+                        });
+                      }
+                      E(!1);
+                    }
+                  },
+                }),
+              ],
+            }),
+            k &&
+              (0, o.jsx)("div", {
+                className: "live-checks " + (k.type === "ok" ? "ok" : "warn"),
+                style: { marginTop: 8 },
+                children: k.text,
+              }),
+            (0, o.jsx)("div", {
+              className: "metric-note",
+              style: { marginTop: 10 },
+              children:
+                "The database file is too large to paste by hand \u2014 always use the file picker above.",
+            }),
+          ],
+        }),
+        (0, o.jsxs)("div", {
+          className: "card",
+          children: [
+            (0, o.jsx)("h2", {
+              children: "Session Data \u2014 What's Actually in Memory Right Now",
+            }),
+            (0, o.jsxs)("div", {
+              className: "metric-row",
+              children: [
+                (0, o.jsx)("div", { className: "metric-label", children: "Base database" }),
+                (0, o.jsxs)("div", {
+                  className: "metric-value",
+                  children: [e.length - i.length, " animals"],
+                }),
+              ],
+            }),
+            (0, o.jsxs)("div", {
+              className: "metric-row",
+              children: [
+                (0, o.jsx)("div", {
+                  className: "metric-label",
+                  children: "Added or edited this session",
+                }),
+                (0, o.jsxs)("div", { className: "metric-value", children: [i.length, " animals"] }),
+              ],
+            }),
+            (0, o.jsxs)("div", {
+              className: "metric-row",
+              children: [
+                (0, o.jsx)("div", { className: "metric-label", children: "Storage status" }),
+                (0, o.jsx)("div", {
+                  className: "metric-value",
+                  style: { color: s ? "#7a2e2e" : "#4a5c3a", fontSize: 13 },
+                  children: s ? "Last save failed" : "OK as of last save",
+                }),
+              ],
+            }),
+            (i.length > 0 || Object.keys(u).length > 0) &&
+              (0, o.jsxs)(o.Fragment, {
+                children: [
+                  (0, o.jsx)("div", {
+                    className: "metric-note",
+                    style: { marginTop: 12, marginBottom: 6 },
+                    children:
+                      "Backup text \u2014 tap the box, select all, and copy it somewhere safe (Notes, a message to yourself) before closing this tab:",
+                  }),
+                  (0, o.jsx)("textarea", {
+                    readOnly: !0,
+                    value: lh(i, u),
+                    onClick: (x) => x.target.select(),
+                    style: {
+                      width: "100%",
+                      boxSizing: "border-box",
+                      height: 90,
+                      fontFamily: "monospace",
+                      fontSize: 10,
+                      padding: 8,
+                      border: "1px solid #d8d0c2",
+                      borderRadius: 3,
+                      marginBottom: 8,
+                    },
+                  }),
+                ],
+              }),
+            (0, o.jsxs)("div", {
+              style: { borderTop: "1px dotted #d8d0c2", paddingTop: 12, marginTop: 12 },
+              children: [
+                (0, o.jsxs)("label", {
+                  className: "btn secondary",
+                  style: { display: "inline-block", cursor: "pointer" },
+                  children: [
+                    "Import Backup (CSV)",
+                    (0, o.jsx)("input", {
+                      type: "file",
+                      accept: ".csv",
+                      style: { display: "none" },
+                      onChange: (x) => w(x.target.files && x.target.files[0]),
+                    }),
+                  ],
+                }),
+                p &&
+                  (0, o.jsx)("div", {
+                    className: "live-checks " + (p.type === "ok" ? "ok" : "warn"),
+                    style: { marginTop: 8 },
+                    children: p.text,
+                  }),
+                (0, o.jsx)("div", {
+                  className: "metric-note",
+                  style: { marginTop: 8 },
+                  children:
+                    "If this session reloaded and lost your data, upload a saved CSV to restore it. If you saved via copy/paste instead of a file, save the pasted text as a .csv file first, then import it here.",
+                }),
+              ],
+            }),
+            i.length > 0 &&
+              (0, o.jsxs)(o.Fragment, {
+                children: [
+                  (0, o.jsx)("div", {
+                    className: "metric-note",
+                    style: { marginTop: 10, marginBottom: 6 },
+                    children: "Animals added or edited this session (click to open):",
+                  }),
+                  (0, o.jsx)("ul", {
+                    className: "plain-list scroll-list",
+                    children: i.map((x) =>
+                      (0, o.jsxs)(
+                        "li",
+                        {
+                          children: [
+                            (0, o.jsx)("span", {
+                              className: "link",
+                              onClick: () => l(x.name),
+                              children: x.name,
+                            }),
+                            x.isStub ? " (stub)" : "",
+                          ],
+                        },
+                        x.name,
+                      ),
+                    ),
+                  }),
+                ],
+              }),
+            (0, o.jsx)("div", {
+              className: "metric-note",
+              style: { marginTop: 10 },
+              children:
+                "If an animal you added isn't showing here, it never made it into this session's data \u2014 re-add it. If it IS showing here but you still can't find it elsewhere in the app, that's a different bug \u2014 screenshot this list and let Claude know.",
+            }),
+          ],
+        }),
+        (0, o.jsxs)("div", {
+          className: "stat-grid",
+          children: [
+            (0, o.jsxs)("div", {
+              className: "card stat-card",
+              children: [
+                (0, o.jsx)("div", {
+                  className: "metric-value",
+                  style: { fontSize: 26, color: f.duplicates.length ? "#7a2e2e" : "#4a5c3a" },
+                  children: f.duplicates.length,
+                }),
+                (0, o.jsx)("div", { className: "metric-note", children: "Duplicate names" }),
+              ],
+            }),
+            (0, o.jsxs)("div", {
+              className: "card stat-card",
+              children: [
+                (0, o.jsx)("div", {
+                  className: "metric-value",
+                  style: { fontSize: 26, color: f.orphanRefs.length ? "#7a2e2e" : "#4a5c3a" },
+                  children: f.orphanRefs.length,
+                }),
+                (0, o.jsx)("div", { className: "metric-note", children: "Orphan parent refs" }),
+              ],
+            }),
+            (0, o.jsxs)("div", {
+              className: "card stat-card",
+              children: [
+                (0, o.jsx)("div", {
+                  className: "metric-value",
+                  style: { fontSize: 26, color: f.unclearSex.length ? "#7a2e2e" : "#4a5c3a" },
+                  children: f.unclearSex.length,
+                }),
+                (0, o.jsx)("div", { className: "metric-note", children: "Unclear sex" }),
+              ],
+            }),
+            (0, o.jsxs)("div", {
+              className: "card stat-card",
+              children: [
+                (0, o.jsx)("div", {
+                  className: "metric-value",
+                  style: { fontSize: 26, color: "#7a2e2e" },
+                  children: f.missingParent.length,
+                }),
+                (0, o.jsx)("div", { className: "metric-note", children: "Missing sire or dam" }),
+              ],
+            }),
+          ],
+        }),
+        (0, o.jsxs)("div", {
+          className: "card",
+          children: [
+            (0, o.jsx)("h2", { children: "Orphan Parent References" }),
+            f.orphanRefs.length === 0
+              ? (0, o.jsx)("div", { className: "metric-note", children: "None found." })
+              : (0, o.jsx)("ul", {
+                  className: "plain-list",
+                  children: f.orphanRefs.map((x) =>
+                    (0, o.jsx)(
+                      "li",
+                      {
+                        children: (0, o.jsx)("span", {
+                          className: "link",
+                          onClick: () => l(x),
+                          children: x,
+                        }),
+                      },
+                      x,
+                    ),
+                  ),
+                }),
+          ],
+        }),
+        (0, o.jsxs)("div", {
+          className: "card",
+          children: [
+            (0, o.jsxs)("h2", { children: ["Unclear Sex (", f.unclearSex.length, ")"] }),
+            (0, o.jsx)("div", {
+              className: "metric-note",
+              style: { marginBottom: 8 },
+              children:
+                "These animals never appear as anyone's sire or dam, so sex can't be inferred. Click one to set it manually on Edit Animal.",
+            }),
+            (0, o.jsx)("ul", {
+              className: "plain-list scroll-list",
+              children: f.unclearSex.map((x) =>
+                (0, o.jsx)(
+                  "li",
+                  {
+                    children: (0, o.jsx)("span", {
+                      className: "link",
+                      onClick: () => a(x),
+                      children: x,
+                    }),
+                  },
+                  x,
+                ),
+              ),
+            }),
+          ],
+        }),
+        (0, o.jsxs)("div", {
+          className: "card",
+          children: [
+            (0, o.jsxs)("h2", {
+              children: [
+                "Missing Sire or Dam (",
+                f.missingParent.length,
+                ") ",
+                (0, o.jsx)("span", {
+                  className: "metric-note",
+                  style: { fontWeight: "normal" },
+                  children: "ranked by impact",
+                }),
+              ],
+            }),
+            (0, o.jsx)("div", {
+              className: "metric-note",
+              style: { marginBottom: 8 },
+              children:
+                "Ranked by how many other animals' pedigree calculations depend on this one \u2014 fixing the top of this list improves the most COI/blood% numbers at once. Click a row to open that animal.",
+            }),
+            (0, o.jsx)("div", {
+              className: "table-scroll",
+              children: (0, o.jsxs)("table", {
+                className: "rank-table",
+                children: [
+                  (0, o.jsx)("thead", {
+                    children: (0, o.jsxs)("tr", {
+                      children: [
+                        (0, o.jsx)("th", { children: "Animal" }),
+                        (0, o.jsx)("th", { children: "Missing" }),
+                        (0, o.jsx)("th", { children: "Animals Affected" }),
+                      ],
+                    }),
+                  }),
+                  (0, o.jsx)("tbody", {
+                    children: f.missingParent
+                      .slice(0, 50)
+                      .map((x, h) =>
+                        (0, o.jsxs)(
+                          "tr",
+                          {
+                            className: (h === 0 ? "best " : "") + "clickable-row",
+                            onClick: () => l(x.name),
+                            children: [
+                              (0, o.jsx)("td", { className: "row-link", children: x.name }),
+                              (0, o.jsx)("td", {
+                                children:
+                                  x.missingSire && x.missingDam
+                                    ? "Both"
+                                    : x.missingSire
+                                      ? "Sire"
+                                      : "Dam",
+                              }),
+                              (0, o.jsx)("td", { children: x.impact }),
+                            ],
+                          },
+                          x.name,
+                        ),
+                      ),
+                  }),
+                ],
+              }),
+            }),
+            f.missingParent.length > 50 &&
+              (0, o.jsxs)("div", {
+                className: "metric-note",
+                children: ["Showing top 50 of ", f.missingParent.length, ", highest impact first."],
+              }),
+          ],
+        }),
+        (0, o.jsxs)("div", {
+          className: "card",
+          children: [
+            (0, o.jsxs)("h2", {
+              children: [
+                "Shallow Pedigrees \u2014 No Known Generations Back (",
+                f.shallow.length,
+                ")",
+              ],
+            }),
+            (0, o.jsx)("div", {
+              className: "metric-note",
+              style: { marginBottom: 8 },
+              children:
+                "Animals with 1 or fewer known generations overall \u2014 the starting point if you're adding brand-new lines rather than extending existing ones.",
+            }),
+            (0, o.jsx)("ul", {
+              className: "plain-list scroll-list",
+              children: f.shallow.map((x) =>
+                (0, o.jsxs)(
+                  "li",
+                  {
+                    children: [
+                      (0, o.jsx)("span", {
+                        className: "link",
+                        onClick: () => l(x.name),
+                        children: x.name,
+                      }),
+                      " \u2014 depth ",
+                      x.depth,
+                    ],
+                  },
+                  x.name,
+                ),
+              ),
+            }),
+          ],
+        }),
+      ],
+    });
+  }
+  function fh({
+    allAnimals: e,
+    names: t,
+    byName: n,
+    sire: r,
+    dam: l,
+    userAnimals: a,
+    saveUserAnimals: i,
+    edits: s,
+    saveEdits: u,
+  }) {
+    let [d, c] = (0, b.useState)("manual"),
+      [g, v] = (0, b.useState)(""),
+      [y, E] = (0, b.useState)(""),
+      [k, O] = (0, b.useState)(""),
+      [f, p] = (0, b.useState)(""),
+      [m, w] = (0, b.useState)(""),
+      [x, h] = (0, b.useState)("auto"),
+      [T, I] = (0, b.useState)(""),
+      [R, M] = (0, b.useState)(null),
+      [U, q] = (0, b.useState)(""),
+      [X, K] = (0, b.useState)(null),
+      [G, Z] = (0, b.useState)("idle"),
+      [B, Y] = (0, b.useState)(""),
+      [D, z] = (0, b.useState)(""),
+      [S, _] = (0, b.useState)([]),
+      [N, P] = (0, b.useState)(null),
+      $ = async (F) => {
+        if (F) {
+          (Z("loading"), Y(""), z(F.name), P(null));
+          try {
+            let Q = await yh(F),
+              ne = new Set(),
+              pt = Q.map((C) => {
+                let H = ne.has(C.name);
+                ne.add(C.name);
+                let me = n[C.name],
+                  te;
+                if (H) te = "batch-duplicate";
+                else if (!me) te = "new";
+                else {
+                  let ze = !me.sire && C.sire,
+                    Je = !me.dam && C.dam;
+                  te = ze || Je ? "fills-gap" : "already-complete";
+                }
+                return {
+                  ...C,
+                  statusTag: te,
+                  include: te !== "batch-duplicate" && te !== "already-complete",
+                };
+              });
+            (_(pt), Z("staged"));
+          } catch (Q) {
+            console.error(Q);
+            let ne = Q && Q.message ? Q.message : String(Q);
+            (ne === "HEIC_UNSUPPORTED"
+              ? Y(
+                  "This looks like an iPhone HEIC photo, which Claude's API can't read directly. In your Photos app, use Share \u2192 Save as JPEG (or take a quick screenshot of the photo, which saves as PNG), then upload that instead.",
+                )
+              : ne.startsWith("NETWORK_ERROR")
+                ? Y(
+                    "The request never reached the server: " +
+                      ne.replace("NETWORK_ERROR: ", "") +
+                      ". This can happen with published apps calling the API directly \u2014 if this keeps failing, upload the photo directly to Claude in chat instead, which doesn't have this limitation.",
+                  )
+                : ne.startsWith("API_ERROR")
+                  ? Y(
+                      "The API returned an error: " +
+                        ne +
+                        ". If this keeps happening, upload the photo directly to Claude in chat instead.",
+                    )
+                  : ne.startsWith("PARSE_ERROR")
+                    ? Y(
+                        "Got a response back, but couldn't make sense of it: " +
+                          ne +
+                          ". Try a clearer photo of a single chart.",
+                      )
+                    : Y("Error: " + ne),
+              Z("error"));
+          }
+        }
+      },
+      W = (F, Q, ne) => {
+        _((pt) => pt.map((C, H) => (H === F ? { ...C, [Q]: ne } : C)));
+      },
+      ee = (F) => {
+        _((Q) => Q.map((ne, pt) => (pt === F ? { ...ne, include: !ne.include } : ne)));
+      },
+      Ee = async () => {
+        let F = [],
+          Q = {},
+          ne = new Set();
+        S.forEach((te) => {
+          if (te.include) {
+            if ((te.sire && ne.add(te.sire), te.dam && ne.add(te.dam), te.statusTag === "new"))
+              F.push({
+                name: te.name,
+                sire: te.sire || null,
+                dam: te.dam || null,
+                regNum: null,
+                birthDate: null,
+                notes: `Imported from ${D}`,
+                sourcePhoto: D,
+                isStub: !1,
+                sexOverride: null,
+                lastEditedAt: new Date().toISOString(),
+              });
+            else if (te.statusTag === "fills-gap") {
+              let ze = n[te.name];
+              Q[te.name] = {
+                ...(s[te.name] || {}),
+                sire: ze.sire || te.sire || null,
+                dam: ze.dam || te.dam || null,
+                lastEditedAt: new Date().toISOString(),
+              };
+            }
+          }
+        });
+        let pt = new Set(F.map((te) => te.name)),
+          C = [];
+        ne.forEach((te) => {
+          !t.has(te) &&
+            !pt.has(te) &&
+            C.push({
+              name: te,
+              sire: null,
+              dam: null,
+              regNum: null,
+              birthDate: null,
+              notes: `Referenced as a parent on ${D} \u2014 no separate record yet`,
+              sourcePhoto: null,
+              isStub: !0,
+            });
+        });
+        let H = await i([...a, ...F, ...C]),
+          me = await u({ ...s, ...Q });
+        (P({
+          type: H && me ? "ok" : "warn",
+          text: `Added ${F.length} new animal(s), filled gaps on ${Object.keys(Q).length}, created ${C.length} parent stub(s).${H && me ? "" : " Save may not have persisted \u2014 check Reports."}`,
+        }),
+          Z("done"),
+          _([]));
+      },
+      ie = oe(g),
+      we = ie && t.has(ie),
+      ke = f && t.has(oe(f)),
+      bt = m && t.has(oe(m)),
+      j = (0, b.useMemo)(() => {
+        if (!U) return [];
+        let F = oe(U);
+        return e.filter((Q) => Q.name.includes(F)).slice(0, 8);
+      }, [U, e]),
+      J = (0, b.useMemo)(() => {
+        if (!f) return [];
+        let F = oe(f);
+        return e.filter((Q) => Q.name.includes(F)).slice(0, 6);
+      }, [f, e]),
+      A = (0, b.useMemo)(() => {
+        if (!m) return [];
+        let F = oe(m);
+        return e.filter((Q) => Q.name.includes(F)).slice(0, 6);
+      }, [m, e]),
+      se = (F) => {
+        let Q = e.find((ne) => ne.name === F);
+        Q &&
+          (p(Q.sire || ""),
+          w(Q.dam || ""),
+          I(`Sibling of ${Q.name}` + (Q.notes ? ` \u2014 ${Q.notes}` : "")),
+          E(""),
+          O(""),
+          h("auto"),
+          K(Q.name),
+          q(""),
+          v(""));
+      },
+      ce = () => {
+        (K(null), p(""), w(""), I(""), E(""), O(""));
+      },
+      pe = async () => {
+        if (!ie) {
+          M({ type: "warn", text: "Registered name is required." });
+          return;
+        }
+        if (we) {
+          M({
+            type: "warn",
+            text: "That name already exists \u2014 use a different name or add a suffix like (2).",
+          });
+          return;
+        }
+        let F = {
+            name: ie,
+            sire: f ? oe(f) : null,
+            dam: m ? oe(m) : null,
+            regNum: y || null,
+            birthDate: k || null,
+            notes: T || null,
+            sourcePhoto: null,
+            isStub: !1,
+            sexOverride: x !== "auto" ? x : null,
+            lastEditedAt: new Date().toISOString(),
+          },
+          Q = [];
+        (F.sire &&
+          !t.has(F.sire) &&
+          Q.push({
+            name: F.sire,
+            sire: null,
+            dam: null,
+            regNum: null,
+            birthDate: null,
+            notes: "Auto-created stub from Add Animal",
+            sourcePhoto: null,
+            isStub: !0,
+          }),
+          F.dam &&
+            !t.has(F.dam) &&
+            Q.push({
+              name: F.dam,
+              sire: null,
+              dam: null,
+              regNum: null,
+              birthDate: null,
+              notes: "Auto-created stub from Add Animal",
+              sourcePhoto: null,
+              isStub: !0,
+            }));
+        let ne = [...a, F, ...Q];
+        (await i(ne))
+          ? (M({
+              type: "ok",
+              text: `Saved ${ie}.${Q.length ? " " + Q.length + " stub parent(s) created \u2014 review in Reports." : ""}`,
+            }),
+            v(""),
+            E(""),
+            O(""),
+            p(""),
+            w(""),
+            h("auto"),
+            I(""),
+            K(null))
+          : M({
+              type: "warn",
+              text: `${ie} is showing on screen for this session, but the permanent save failed. Go to Reports and copy the backup text before navigating away.`,
+            });
+      };
+    return (0, o.jsxs)("div", {
+      className: "screen active",
+      children: [
+        (0, o.jsx)("h1", { children: "Add Animal" }),
+        (0, o.jsxs)("div", {
+          className: "sub",
+          children: ["New record \xB7 Hereford \xB7 ", e.length, " animals in database"],
+        }),
+        (0, o.jsxs)("div", {
+          className: "pairing-row",
+          style: { marginBottom: 8 },
+          children: [
+            (0, o.jsx)("button", {
+              className: "btn " + (d === "manual" ? "" : "secondary"),
+              onClick: () => c("manual"),
+              children: "Add Manually",
+            }),
+            (0, o.jsx)("button", {
+              className: "btn " + (d === "import" ? "" : "secondary"),
+              onClick: () => c("import"),
+              children: "Import from Photo/PDF",
+            }),
+          ],
+        }),
+        d === "manual" &&
+          (0, o.jsxs)(o.Fragment, {
+            children: [
+              (0, o.jsxs)("div", {
+                className: "card",
+                children: [
+                  (0, o.jsxs)("h2", {
+                    children: [
+                      "Clone an Existing Animal ",
+                      (0, o.jsx)("span", {
+                        className: "metric-note",
+                        style: { fontWeight: "normal" },
+                        children: "optional \u2014 for siblings",
+                      }),
+                    ],
+                  }),
+                  X
+                    ? (0, o.jsxs)("div", {
+                        className: "metric-row",
+                        children: [
+                          (0, o.jsxs)("div", {
+                            className: "metric-label",
+                            children: [
+                              "Sire and dam copied from ",
+                              (0, o.jsx)("b", { children: X }),
+                            ],
+                          }),
+                          (0, o.jsx)("button", {
+                            className: "btn secondary",
+                            onClick: ce,
+                            children: "Clear",
+                          }),
+                        ],
+                      })
+                    : (0, o.jsxs)("div", {
+                        className: "ancestor-add-row",
+                        style: { position: "relative" },
+                        children: [
+                          (0, o.jsx)("input", {
+                            autoCorrect: "off",
+                            autoCapitalize: "off",
+                            autoComplete: "off",
+                            spellCheck: "false",
+                            placeholder: "Search an animal to copy sire/dam from\u2026",
+                            value: U,
+                            onChange: (F) => q(F.target.value),
+                          }),
+                          j.length > 0 &&
+                            (0, o.jsx)("div", {
+                              className: "suggestions",
+                              children: j.map((F) =>
+                                (0, o.jsx)(
+                                  "div",
+                                  {
+                                    className: "suggestion-row",
+                                    onClick: () => se(F.name),
+                                    children: [F.name, sxd(F)],
+                                  },
+                                  F.name,
+                                ),
+                              ),
+                            }),
+                        ],
+                      }),
+                  (0, o.jsx)("div", {
+                    className: "metric-note",
+                    style: { marginTop: 8 },
+                    children:
+                      "Copies Sire and Dam only \u2014 name, registration number, and birth date always need to be entered fresh below.",
+                  }),
+                ],
+              }),
+              (0, o.jsxs)("div", {
+                className: "card",
+                children: [
+                  (0, o.jsx)("h2", { children: "Animal Details" }),
+                  (0, o.jsxs)("div", {
+                    className: "form-grid",
+                    children: [
+                      (0, o.jsxs)("div", {
+                        className: "form-field full",
+                        children: [
+                          (0, o.jsxs)("label", {
+                            children: [
+                              "Registered Name ",
+                              (0, o.jsx)("span", {
+                                className: "opt",
+                                children: "(required \u2014 unique ID)",
+                              }),
+                            ],
+                          }),
+                          (0, o.jsx)("input", {
+                            autoCorrect: "off",
+                            autoCapitalize: "off",
+                            autoComplete: "off",
+                            spellCheck: "false",
+                            value: g,
+                            onChange: (F) => v(F.target.value),
+                            placeholder: "e.g. BB Selkirk Lad 3B08",
+                          }),
+                          we &&
+                            (0, o.jsx)("span", {
+                              className: "hint warn-hint",
+                              children: "This name already exists in the database.",
+                            }),
+                        ],
+                      }),
+                      (0, o.jsxs)("div", {
+                        className: "form-field",
+                        children: [
+                          (0, o.jsxs)("label", {
+                            children: [
+                              "Registration Number ",
+                              (0, o.jsx)("span", { className: "opt", children: "(optional)" }),
+                            ],
+                          }),
+                          (0, o.jsx)("input", {
+                            autoCorrect: "off",
+                            autoCapitalize: "off",
+                            autoComplete: "off",
+                            spellCheck: "false",
+                            value: y,
+                            onChange: (F) => E(F.target.value),
+                            placeholder: "Leave blank if unknown",
+                          }),
+                        ],
+                      }),
+                      (0, o.jsxs)("div", {
+                        className: "form-field",
+                        children: [
+                          (0, o.jsxs)("label", {
+                            children: [
+                              "Birth Date ",
+                              (0, o.jsx)("span", { className: "opt", children: "(optional)" }),
+                            ],
+                          }),
+                          (0, o.jsx)("input", {
+                            autoCorrect: "off",
+                            autoCapitalize: "off",
+                            autoComplete: "off",
+                            spellCheck: "false",
+                            value: k,
+                            onChange: (F) => O(F.target.value),
+                            placeholder: "Leave blank if unknown",
+                          }),
+                        ],
+                      }),
+                      (0, o.jsxs)("div", {
+                        className: "form-field",
+                        style: { position: "relative" },
+                        children: [
+                          (0, o.jsxs)("label", {
+                            children: [
+                              "Sire ",
+                              (0, o.jsx)("span", { className: "opt", children: "(optional)" }),
+                            ],
+                          }),
+                          (0, o.jsx)("input", {
+                            autoCorrect: "off",
+                            autoCapitalize: "off",
+                            autoComplete: "off",
+                            spellCheck: "false",
+                            value: f,
+                            onChange: (F) => p(F.target.value),
+                            placeholder: "Type a name or number\u2026",
+                          }),
+                          (0, o.jsx)("span", {
+                            className: "autocomplete-note",
+                            children: f
+                              ? ke
+                                ? "Matches an existing animal."
+                                : "No match \u2014 will create a new stub animal."
+                              : "Leave blank if unknown.",
+                          }),
+                          J.length > 0 &&
+                            f !== "" &&
+                            !ke &&
+                            (0, o.jsx)("div", {
+                              className: "suggestions",
+                              children: J.map((F) =>
+                                (0, o.jsx)(
+                                  "div",
+                                  {
+                                    className: "suggestion-row",
+                                    onClick: () => p(F.name),
+                                    children: [F.name, sxd(F)],
+                                  },
+                                  F.name,
+                                ),
+                              ),
+                            }),
+                        ],
+                      }),
+                      (0, o.jsxs)("div", {
+                        className: "form-field",
+                        style: { position: "relative" },
+                        children: [
+                          (0, o.jsxs)("label", {
+                            children: [
+                              "Dam ",
+                              (0, o.jsx)("span", { className: "opt", children: "(optional)" }),
+                            ],
+                          }),
+                          (0, o.jsx)("input", {
+                            autoCorrect: "off",
+                            autoCapitalize: "off",
+                            autoComplete: "off",
+                            spellCheck: "false",
+                            value: m,
+                            onChange: (F) => w(F.target.value),
+                            placeholder: "Type a name or number\u2026",
+                          }),
+                          (0, o.jsx)("span", {
+                            className: "autocomplete-note",
+                            children: m
+                              ? bt
+                                ? "Matches an existing animal."
+                                : "No match \u2014 will create a new stub animal."
+                              : "Leave blank if unknown.",
+                          }),
+                          A.length > 0 &&
+                            m !== "" &&
+                            !bt &&
+                            (0, o.jsx)("div", {
+                              className: "suggestions",
+                              children: A.map((F) =>
+                                (0, o.jsx)(
+                                  "div",
+                                  {
+                                    className: "suggestion-row",
+                                    onClick: () => w(F.name),
+                                    children: [F.name, sxd(F)],
+                                  },
+                                  F.name,
+                                ),
+                              ),
+                            }),
+                        ],
+                      }),
+                      (0, o.jsxs)("div", {
+                        className: "form-field",
+                        children: [
+                          (0, o.jsx)("label", { children: "Sex" }),
+                          (0, o.jsxs)("select", {
+                            value: x,
+                            onChange: (F) => h(F.target.value),
+                            children: [
+                              (0, o.jsx)("option", {
+                                value: "auto",
+                                children: "Auto-detect (recommended)",
+                              }),
+                              (0, o.jsx)("option", { value: "Male", children: "Male" }),
+                              (0, o.jsx)("option", { value: "Female", children: "Female" }),
+                              (0, o.jsx)("option", { value: "Unknown", children: "Unknown" }),
+                            ],
+                          }),
+                        ],
+                      }),
+                      (0, o.jsxs)("div", {
+                        className: "form-field",
+                        children: [
+                          (0, o.jsx)("label", { children: "Breed" }),
+                          (0, o.jsx)("div", {
+                            className: "sex-readonly",
+                            children: "Hereford (fixed)",
+                          }),
+                        ],
+                      }),
+                      (0, o.jsxs)("div", {
+                        className: "form-field full",
+                        children: [
+                          (0, o.jsxs)("label", {
+                            children: [
+                              "Notes ",
+                              (0, o.jsx)("span", { className: "opt", children: "(optional)" }),
+                            ],
+                          }),
+                          (0, o.jsx)("input", {
+                            autoCorrect: "off",
+                            autoCapitalize: "off",
+                            autoComplete: "off",
+                            spellCheck: "false",
+                            value: T,
+                            onChange: (F) => I(F.target.value),
+                            placeholder: "Source chart, photo reference, uncertainty notes, etc.",
+                          }),
+                        ],
+                      }),
+                    ],
+                  }),
+                ],
+              }),
+              (0, o.jsxs)("div", {
+                className: "save-row",
+                children: [
+                  R &&
+                    (0, o.jsx)("span", {
+                      className: "live-checks " + (R.type === "ok" ? "ok" : "warn"),
+                      children: R.text,
+                    }),
+                  (0, o.jsx)("button", { className: "btn", onClick: pe, children: "Save Animal" }),
+                ],
+              }),
+            ],
+          }),
+        d === "import" &&
+          (0, o.jsxs)(o.Fragment, {
+            children: [
+              (0, o.jsxs)("div", {
+                className: "card",
+                children: [
+                  (0, o.jsxs)("label", {
+                    className: "btn",
+                    style: { display: "inline-block", cursor: "pointer" },
+                    children: [
+                      G === "loading" ? "Reading chart\u2026" : "Choose Photo or PDF",
+                      (0, o.jsx)("input", {
+                        type: "file",
+                        accept: "image/*,.pdf",
+                        style: { display: "none" },
+                        disabled: G === "loading",
+                        onChange: (F) => $(F.target.files && F.target.files[0]),
+                      }),
+                    ],
+                  }),
+                  G === "loading" &&
+                    (0, o.jsx)("div", {
+                      className: "metric-note",
+                      style: { marginTop: 10 },
+                      children: "This can take a moment for dense charts.",
+                    }),
+                  G === "error" &&
+                    (0, o.jsx)("div", {
+                      className: "live-checks warn",
+                      style: { marginTop: 10 },
+                      children: B,
+                    }),
+                  G === "done" &&
+                    N &&
+                    (0, o.jsx)("div", {
+                      className: "live-checks " + (N.type === "ok" ? "ok" : "warn"),
+                      style: { marginTop: 10 },
+                      children: N.text,
+                    }),
+                ],
+              }),
+              G === "staged" &&
+                (0, o.jsxs)(o.Fragment, {
+                  children: [
+                    (0, o.jsxs)("div", {
+                      className: "card",
+                      children: [
+                        (0, o.jsxs)("h2", { children: ["Extracted from ", D] }),
+                        (0, o.jsx)("div", {
+                          className: "metric-note",
+                          style: { marginBottom: 10 },
+                          children:
+                            "Review and correct anything below, then uncheck rows you don't want. Nothing is added to the database until you approve.",
+                        }),
+                        (0, o.jsx)("div", {
+                          className: "table-scroll",
+                          children: (0, o.jsxs)("table", {
+                            className: "rank-table",
+                            children: [
+                              (0, o.jsx)("thead", {
+                                children: (0, o.jsxs)("tr", {
+                                  children: [
+                                    (0, o.jsx)("th", { children: "Include" }),
+                                    (0, o.jsx)("th", { children: "Name" }),
+                                    (0, o.jsx)("th", { children: "Sire" }),
+                                    (0, o.jsx)("th", { children: "Dam" }),
+                                    (0, o.jsx)("th", { children: "Status" }),
+                                  ],
+                                }),
+                              }),
+                              (0, o.jsx)("tbody", {
+                                children: S.map((F, Q) =>
+                                  (0, o.jsxs)(
+                                    "tr",
+                                    {
+                                      children: [
+                                        (0, o.jsx)("td", {
+                                          children: (0, o.jsx)("input", {
+                                            type: "checkbox",
+                                            checked: F.include,
+                                            onChange: () => ee(Q),
+                                          }),
+                                        }),
+                                        (0, o.jsx)("td", {
+                                          children: (0, o.jsx)("input", {
+                                            value: F.name,
+                                            onChange: (ne) => W(Q, "name", oe(ne.target.value)),
+                                            style: { width: "100%", fontSize: 12 },
+                                          }),
+                                        }),
+                                        (0, o.jsx)("td", {
+                                          children: (0, o.jsx)("input", {
+                                            value: F.sire || "",
+                                            onChange: (ne) =>
+                                              W(
+                                                Q,
+                                                "sire",
+                                                ne.target.value ? oe(ne.target.value) : null,
+                                              ),
+                                            style: { width: "100%", fontSize: 12 },
+                                          }),
+                                        }),
+                                        (0, o.jsx)("td", {
+                                          children: (0, o.jsx)("input", {
+                                            value: F.dam || "",
+                                            onChange: (ne) =>
+                                              W(
+                                                Q,
+                                                "dam",
+                                                ne.target.value ? oe(ne.target.value) : null,
+                                              ),
+                                            style: { width: "100%", fontSize: 12 },
+                                          }),
+                                        }),
+                                        (0, o.jsxs)("td", {
+                                          children: [
+                                            F.statusTag === "new" &&
+                                              (0, o.jsx)("span", {
+                                                className: "tag ok",
+                                                children: "New",
+                                              }),
+                                            F.statusTag === "fills-gap" &&
+                                              (0, o.jsx)("span", {
+                                                className: "tag warn",
+                                                children: "Fills gap",
+                                              }),
+                                            F.statusTag === "already-complete" &&
+                                              (0, o.jsx)("span", {
+                                                className: "tag",
+                                                children: "Already complete",
+                                              }),
+                                            F.statusTag === "batch-duplicate" &&
+                                              (0, o.jsx)("span", {
+                                                className: "tag warn",
+                                                children: "Duplicate in file",
+                                              }),
+                                          ],
+                                        }),
+                                      ],
+                                    },
+                                    Q,
+                                  ),
+                                ),
+                              }),
+                            ],
+                          }),
+                        }),
+                      ],
+                    }),
+                    (0, o.jsxs)("div", {
+                      className: "save-row",
+                      children: [
+                        (0, o.jsxs)("span", {
+                          className: "metric-note",
+                          children: [
+                            S.filter((F) => F.include).length,
+                            " of ",
+                            S.length,
+                            " rows will be added or updated.",
+                          ],
+                        }),
+                        (0, o.jsx)("button", {
+                          className: "btn",
+                          onClick: Ee,
+                          children: "Approve & Add",
+                        }),
+                      ],
+                    }),
+                  ],
+                }),
+            ],
+          }),
+      ],
+    });
+  }
+  function sxd(x) {
+    return x && (x.sire || x.dam)
+      ? (0, o.jsx)("div", {
+          style: { fontSize: 11, color: "var(--text-secondary)" },
+          children: (x.sire || "?") + " \xD7 " + (x.dam || "?"),
+        })
+      : null;
+  }
+  function ph({ label: e, value: t, onChange: n, allAnimals: r }) {
+    let [l, a] = (0, b.useState)(t || "");
+    (0, b.useEffect)(() => {
+      a(t || "");
+    }, [t]);
+    let i = (0, b.useMemo)(() => {
+      if (!l) return [];
+      let s = oe(l);
+      return r.filter((u) => u.name.includes(s)).slice(0, 8);
+    }, [l, r]);
+    return (0, o.jsxs)("div", {
+      className: "pairing-slot",
+      style: { position: "relative" },
+      children: [
+        (0, o.jsx)("label", { children: e }),
+        (0, o.jsx)("input", {
+          autoCorrect: "off",
+          autoCapitalize: "off",
+          autoComplete: "off",
+          spellCheck: "false",
+          value: l,
+          onChange: (s) => {
+            (a(s.target.value), s.target.value === "" && n(""));
+          },
+          placeholder: "Search by name or number\u2026",
+        }),
+        i.length > 0 &&
+          l !== t &&
+          (0, o.jsx)("div", {
+            className: "suggestions",
+            children: i.map((s) =>
+              (0, o.jsx)(
+                "div",
+                {
+                  className: "suggestion-row",
+                  onClick: () => {
+                    (n(s.name), a(s.name));
+                  },
+                  children: [
+                    s.name,
+                    (s.sire || s.dam) &&
+                      (0, o.jsx)("div", {
+                        style: { fontSize: 11, color: "var(--text-secondary)" },
+                        children: (s.sire || "?") + " \xD7 " + (s.dam || "?"),
+                      }),
+                  ],
+                },
+                s.name,
+              ),
+            ),
+          }),
+      ],
+    });
+  }
+  var ns = [
+    {
+      id: "push",
+      label: "Push the foundation blood as high as it will go",
+      short: "Push hardest",
+      hint: "Ranks sires purely on how much foundation blood the calf ends up with.",
+    },
+    {
+      id: "capped",
+      label: "Push, but hold COI under a ceiling",
+      short: "Push within a ceiling",
+      hint: "Same ranking, but drops any mating whose calf would exceed the ceiling.",
+    },
+    {
+      id: "outcross",
+      label: "Hold steady and bring COI down",
+      short: "Outcross year",
+      hint: "Ranks on the lowest calf COI, for when she needs vigour back rather than more concentration.",
+    },
+    {
+      id: "balance",
+      label: "Even her up across the foundation animals",
+      short: "Even her up",
+      hint: "Ranks on the lowest foundation blood the calf would carry, so the thin side comes up.",
+    },
+  ];
+  function mh(e, t) {
+    let { coi: n, blood: r } = e;
+    if (n >= 15)
+      return {
+        id: "outcross",
+        why: `Her COI is already ${n.toFixed(2)}%. An outcross year would bring that back without losing what she carries.`,
+      };
+    if (t.length > 1 && r.length > 1) {
+      let l = Math.max(...r),
+        a = Math.min(...r);
+      if (l > 0 && a < l / 2)
+        return {
+          id: "balance",
+          why: `She is long on one side and short on ${t[r.indexOf(a)]} at ${a.toFixed(2)}%. Evening her up buys more than pushing further.`,
+        };
+    }
+    return n < 8
+      ? {
+          id: "push",
+          why: `At ${n.toFixed(2)}% COI she has room. You can push the foundation blood without tightening much.`,
+        }
+      : {
+          id: "capped",
+          why: `At ${n.toFixed(2)}% COI she is mid-range. Pushing with a ceiling keeps the gain without running the inbreeding up.`,
+        };
+  }
+  function hh({
+    allAnimals: e,
+    sire: t,
+    dam: n,
+    names: r,
+    byName: l,
+    kinship: a,
+    gen: i,
+    founders: s,
+    onGoToAnimal: u,
+    matingLog: d,
+    saveMatingLog: c,
+  }) {
+    let [g, v] = (0, b.useState)(""),
+      [y, E] = (0, b.useState)(null),
+      [k, O] = (0, b.useState)(null),
+      [f, p] = (0, b.useState)(15),
+      [m, w] = (0, b.useState)(null),
+      [x, h] = (0, b.useState)(null),
+      [T, I] = (0, b.useState)(!1),
+      [R, M] = (0, b.useState)(!1),
+      U = s[0],
+      q = (N) => {
+        (O(null), w(null), h(null), M(!1), N || (E(null), v("")));
+      },
+      X = (0, b.useMemo)(() => {
+        if (!g) return [];
+        let N = oe(g);
+        return e
+          .filter((P) => P.name.includes(N) && qe(P.name, P, t, n) !== "Male")
+          .sort((P, $) => P.name.indexOf(N) - $.name.indexOf(N))
+          .slice(0, 8);
+      }, [g, e, t, n]),
+      K = (0, b.useMemo)(() => {
+        if (!y) return null;
+        let N = s.map((P) => ye(y, P, t, n, r) * 100);
+        return {
+          coi: (t[y] && n[y] ? a(t[y], n[y]) : 0) * 100,
+          blood: N,
+          hasPedigree: !!(t[y] || n[y]),
+        };
+      }, [y, s, t, n, r, a]),
+      G = (0, b.useMemo)(() => (K ? mh(K, s) : null), [K, s]),
+      Z = (0, b.useMemo)(() => {
+        if (!y || !k) return [];
+        let P = e
+            .filter((W) => to(W) && qe(W.name, W, t, n) === "Male" && W.name !== y)
+            .map((W) => {
+              let ee = zl(W.name, y, U, t, n, r, a),
+                Ee = s.map((ie) => ((ye(W.name, ie, t, n, r) + ye(y, ie, t, n, r)) / 2) * 100);
+              return {
+                name: W.name,
+                coi: ee.calfCOI * 100,
+                rel: ee.rel * 100,
+                blood: ee.blood * 100,
+                occ: ee.occ,
+                calfBlood: Ee,
+                balance: Ee.length ? Math.min(...Ee) : 0,
+                avail: os(W),
+              };
+            }),
+          $ = P;
+        return (
+          k === "capped" && ($ = P.filter((W) => W.coi <= f)),
+          k === "outcross"
+            ? $.sort((W, ee) => W.coi - ee.coi)
+            : k === "balance"
+              ? $.sort((W, ee) => ee.balance - W.balance || W.coi - ee.coi)
+              : $.sort((W, ee) => ee.blood - W.blood || W.coi - ee.coi),
+          $
+        );
+      }, [y, k, f, e, s, U, t, n, r, a]),
+      B = K ? K.blood[0] : 0,
+      Y = m ? Z.find((N) => N.name === m) : null,
+      D = () => {
+        Y &&
+          (I(!0),
+          setTimeout(() => {
+            let N = e
+                .filter(($) => to($) && qe($.name, $, t, n) === "Male")
+                .map(($) => ({ name: $.name, blood: ye($.name, U, t, n, r) * 100 }))
+                .filter(($) => $.blood > Y.blood)
+                .sort(($, W) => W.blood - $.blood)
+                .slice(0, 40),
+              P = ef({
+                startFemale: y,
+                target: U,
+                goalBloodPct: Math.min(Y.blood + 10, 60),
+                maxCoiPct: Math.max(f, Y.coi + 10),
+                maxGenerations: 3,
+                candidates: N,
+                sire: t,
+                dam: n,
+                names: r,
+                kinship: a,
+              });
+            (h(P), I(!1));
+          }, 20));
+      },
+      z = () => {
+        if (!Y) return;
+        let N = {
+          id: Date.now(),
+          dam: y,
+          sire: Y.name,
+          plannedOn: new Date().toISOString().slice(0, 10),
+          intent: (ns.find((P) => P.id === k) || {}).short || k,
+          predictedCOI: Y.coi,
+          predictedFounderBlood: Object.fromEntries(s.map((P, $) => [P, Y.calfBlood[$]])),
+          predictedB77: Y.calfBlood[0] ?? null,
+          outcome: null,
+        };
+        (c([...(d || []), N]), M(!0));
+      },
+      S = ({ n: N, label: P, value: $, onEdit: W }) =>
+        (0, o.jsxs)("div", {
+          className: "mt-done",
+          children: [
+            (0, o.jsx)("span", { className: "mt-n done", children: N }),
+            (0, o.jsx)("span", { className: "mt-done-label", children: P }),
+            (0, o.jsx)("span", { className: "mt-done-value", children: $ }),
+            (0, o.jsx)("button", { className: "mt-edit", onClick: W, children: "change" }),
+          ],
+        }),
+      _ = ({ n: N, title: P, sub: $ }) =>
+        (0, o.jsxs)("div", {
+          className: "mt-head",
+          children: [
+            (0, o.jsx)("span", { className: "mt-n", children: N }),
+            (0, o.jsxs)("div", {
+              children: [
+                (0, o.jsx)("div", { className: "mt-title", children: P }),
+                $ && (0, o.jsx)("div", { className: "mt-sub", children: $ }),
+              ],
+            }),
+          ],
+        });
+    return (0, o.jsxs)("div", {
+      className: "screen active",
+      children: [
+        (0, o.jsx)("h1", { children: "Matings" }),
+        (0, o.jsx)("div", {
+          className: "sub",
+          children: "One cow, from where she stands to what to breed her to",
+        }),
+        y
+          ? (0, o.jsx)(S, { n: "1", label: "Cow", value: y, onEdit: () => q(!1) })
+          : (0, o.jsxs)("div", {
+              className: "card mt-step",
+              children: [
+                (0, o.jsx)(_, {
+                  n: "1",
+                  title: "Which cow are you breeding?",
+                  sub: "One at a time \u2014 that is the point of planning a mating.",
+                }),
+                (0, o.jsxs)("div", {
+                  className: "search-row",
+                  style: { marginTop: 14 },
+                  children: [
+                    (0, o.jsx)("input", {
+                      className: "search-input",
+                      autoCorrect: "off",
+                      autoCapitalize: "off",
+                      autoComplete: "off",
+                      spellCheck: "false",
+                      placeholder: "Search a cow or heifer by name or number\u2026",
+                      value: g,
+                      onChange: (N) => v(N.target.value),
+                    }),
+                    X.length > 0 &&
+                      (0, o.jsx)("div", {
+                        className: "suggestions",
+                        children: X.map((N) =>
+                          (0, o.jsx)(
+                            "div",
+                            {
+                              className: "suggestion-row",
+                              onClick: () => {
+                                (E(N.name), v(N.name), q(!0));
+                              },
+                              children: [N.name, sxd(N)],
+                            },
+                            N.name,
+                          ),
+                        ),
+                      }),
+                  ],
+                }),
+              ],
+            }),
+        y &&
+          !k &&
+          K &&
+          (0, o.jsxs)("div", {
+            className: "card mt-step",
+            children: [
+              (0, o.jsx)(_, { n: "2", title: `What are you doing with ${y}?` }),
+              (0, o.jsx)("div", {
+                className: "mt-where",
+                children: (0, o.jsxs)("div", {
+                  className: "mt-where-row",
+                  children: [
+                    (0, o.jsx)("span", { children: "Where she stands" }),
+                    (0, o.jsxs)("b", { children: [K.coi.toFixed(2), "% COI"] }),
+                    s.map((N, P) =>
+                      (0, o.jsxs)("b", { children: [K.blood[P].toFixed(2), "% ", dn(N)] }, N),
+                    ),
+                  ],
+                }),
+              }),
+              G &&
+                (0, o.jsxs)("div", {
+                  className: "mt-suggest",
+                  children: [(0, o.jsx)("b", { children: "Suggested:" }), " ", G.why],
+                }),
+              (0, o.jsx)("div", {
+                className: "mt-intents",
+                children: ns.map((N) =>
+                  (0, o.jsxs)(
+                    "button",
+                    {
+                      className: "mt-intent" + (G && G.id === N.id ? " rec" : ""),
+                      onClick: () => {
+                        (O(N.id), w(null), h(null));
+                      },
+                      children: [
+                        (0, o.jsxs)("div", {
+                          className: "mt-intent-label",
+                          children: [
+                            N.label,
+                            G &&
+                              G.id === N.id &&
+                              (0, o.jsx)("span", { className: "mt-rec", children: "recommended" }),
+                          ],
+                        }),
+                        (0, o.jsx)("div", { className: "mt-intent-hint", children: N.hint }),
+                      ],
+                    },
+                    N.id,
+                  ),
+                ),
+              }),
+              k === "capped" && null,
+            ],
+          }),
+        y &&
+          k &&
+          (0, o.jsx)(S, {
+            n: "2",
+            label: "Intent",
+            value:
+              (ns.find((N) => N.id === k) || {}).short +
+              (k === "capped" ? ` \xB7 ceiling ${f}%` : ""),
+            onEdit: () => {
+              (O(null), w(null), h(null), M(!1));
+            },
+          }),
+        y &&
+          k &&
+          !m &&
+          (0, o.jsxs)("div", {
+            className: "card mt-step",
+            children: [
+              (0, o.jsx)(_, {
+                n: "3",
+                title: "Which sire?",
+                sub: `${Z.length} available ${Z.length === 1 ? "sire" : "sires"}, ranked for what you picked. The whole field is here \u2014 the top three are simply first.`,
+              }),
+              k === "capped" &&
+                (0, o.jsxs)("div", {
+                  className: "mt-ceiling",
+                  children: [
+                    (0, o.jsx)("label", { children: "COI ceiling" }),
+                    (0, o.jsx)("input", {
+                      type: "number",
+                      step: "0.5",
+                      value: f,
+                      onChange: (N) => p(parseFloat(N.target.value) || 0),
+                    }),
+                    (0, o.jsx)("span", {
+                      className: "mt-sub",
+                      children: "Matings above this are dropped from the list.",
+                    }),
+                  ],
+                }),
+              Z.slice(0, 3).map((N, P) =>
+                (0, o.jsxs)(
+                  "div",
+                  {
+                    className: "mt-pick",
+                    children: [
+                      (0, o.jsx)("div", { className: "mt-pick-rank", children: P + 1 }),
+                      (0, o.jsxs)("div", {
+                        className: "mt-pick-body",
+                        children: [
+                          (0, o.jsx)("div", { className: "mt-pick-name", children: N.name }),
+                          (0, o.jsxs)("div", {
+                            className: "mt-pick-line",
+                            children: [
+                              "Takes her from ",
+                              (0, o.jsxs)("b", { children: [B.toFixed(2), "%"] }),
+                              " to ",
+                              (0, o.jsxs)("b", { children: [N.blood.toFixed(2), "%"] }),
+                              " ",
+                              dn(U),
+                              " blood. Calf COI ",
+                              (0, o.jsxs)("b", { children: [N.coi.toFixed(2), "%"] }),
+                              ".",
+                            ],
+                          }),
+                        ],
+                      }),
+                      (0, o.jsx)("button", {
+                        className: "btn",
+                        onClick: () => w(N.name),
+                        children: "Choose",
+                      }),
+                    ],
+                  },
+                  N.name,
+                ),
+              ),
+              Z.length > 3 &&
+                (0, o.jsx)("div", {
+                  className: "table-scroll",
+                  style: { marginTop: 12 },
+                  children: (0, o.jsxs)("table", {
+                    className: "rank-table",
+                    children: [
+                      (0, o.jsx)("thead", {
+                        children: (0, o.jsxs)("tr", {
+                          children: [
+                            (0, o.jsx)("th", { children: "#" }),
+                            (0, o.jsx)("th", { style: { textAlign: "left" }, children: "Sire" }),
+                            (0, o.jsx)("th", { children: "Calf COI" }),
+                            s.map((N) => (0, o.jsx)("th", { children: dn(N) }, N)),
+                            (0, o.jsx)("th", { children: "Balance" }),
+                            (0, o.jsx)("th", {}),
+                          ],
+                        }),
+                      }),
+                      (0, o.jsx)("tbody", {
+                        children: Z.slice(3, 30).map((N, P) =>
+                          (0, o.jsxs)(
+                            "tr",
+                            {
+                              children: [
+                                (0, o.jsx)("td", { children: P + 4 }),
+                                (0, o.jsx)("td", {
+                                  style: { textAlign: "left" },
+                                  children: (0, o.jsx)("span", {
+                                    className: "row-link",
+                                    style: { cursor: "pointer" },
+                                    onClick: () => u(N.name),
+                                    children: N.name,
+                                  }),
+                                }),
+                                (0, o.jsxs)("td", { children: [N.coi.toFixed(2), "%"] }),
+                                N.calfBlood.map(($, W) =>
+                                  (0, o.jsxs)("td", { children: [$.toFixed(1), "%"] }, W),
+                                ),
+                                (0, o.jsxs)("td", { children: [N.balance.toFixed(1), "%"] }),
+                                (0, o.jsx)("td", {
+                                  children: (0, o.jsx)("button", {
+                                    className: "btn secondary",
+                                    onClick: () => w(N.name),
+                                    children: "Choose",
+                                  }),
+                                }),
+                              ],
+                            },
+                            N.name,
+                          ),
+                        ),
+                      }),
+                    ],
+                  }),
+                }),
+              Z.length === 0 &&
+                (0, o.jsx)("div", {
+                  className: "metric-note",
+                  style: { marginTop: 10 },
+                  children:
+                    "Nothing available fits that intent. Loosen the ceiling or pick a different intent.",
+                }),
+            ],
+          }),
+        Y &&
+          (0, o.jsx)(S, {
+            n: "3",
+            label: "Sire",
+            value: Y.name,
+            onEdit: () => {
+              (w(null), h(null), M(!1));
+            },
+          }),
+        Y &&
+          (0, o.jsxs)("div", {
+            className: "card mt-step",
+            children: [
+              (0, o.jsx)(_, { n: "4", title: "The calf", sub: `${y} \xD7 ${Y.name}` }),
+              (0, o.jsxs)("div", {
+                className: "mt-calf",
+                children: [
+                  (0, o.jsxs)("div", {
+                    className: "mt-calf-stat",
+                    children: [
+                      (0, o.jsx)("div", { className: "ah-k", children: "Calf COI" }),
+                      (0, o.jsxs)("div", {
+                        className: "mt-calf-v",
+                        children: [Y.coi.toFixed(2), (0, o.jsx)("small", { children: "%" })],
+                      }),
+                    ],
+                  }),
+                  s.map((N, P) => {
+                    let $ = K.blood[P],
+                      W = Y.calfBlood[P],
+                      ee = W - $;
+                    return (0, o.jsxs)(
+                      "div",
+                      {
+                        className: "mt-calf-stat",
+                        children: [
+                          (0, o.jsx)("div", { className: "ah-k", children: N }),
+                          (0, o.jsxs)("div", {
+                            className: "mt-calf-v",
+                            children: [W.toFixed(2), (0, o.jsx)("small", { children: "%" })],
+                          }),
+                          (0, o.jsxs)("div", {
+                            className: "mt-sub",
+                            children: [
+                              $.toFixed(2),
+                              "% \u2192 ",
+                              W.toFixed(2),
+                              "%",
+                              " ",
+                              (0, o.jsxs)("span", {
+                                className: ee >= 0 ? "mt-up" : "mt-down",
+                                children: [ee >= 0 ? "+" : "", ee.toFixed(2)],
+                              }),
+                            ],
+                          }),
+                        ],
+                      },
+                      N,
+                    );
+                  }),
+                ],
+              }),
+            ],
+          }),
+        Y &&
+          (0, o.jsxs)("div", {
+            className: "card mt-step",
+            children: [
+              (0, o.jsx)(_, {
+                n: "5",
+                title: "What's next",
+                sub: "Where the heifer out of this mating could go in the generations after.",
+              }),
+              !x &&
+                (0, o.jsx)("button", {
+                  className: "btn secondary",
+                  disabled: T,
+                  onClick: D,
+                  children: T ? "Working\u2026" : "Show the routes on from here",
+                }),
+              x &&
+                x.reached &&
+                x.reached.length > 0 &&
+                (0, o.jsx)("div", {
+                  className: "table-scroll",
+                  style: { marginTop: 10 },
+                  children: (0, o.jsxs)("table", {
+                    className: "rank-table",
+                    children: [
+                      (0, o.jsx)("thead", {
+                        children: (0, o.jsxs)("tr", {
+                          children: [
+                            (0, o.jsx)("th", { children: "Route" }),
+                            (0, o.jsx)("th", { children: "Generations" }),
+                            (0, o.jsx)("th", { children: "Ends at" }),
+                            (0, o.jsx)("th", { children: "Peak COI" }),
+                          ],
+                        }),
+                      }),
+                      (0, o.jsx)("tbody", {
+                        children: x.reached
+                          .slice(0, 5)
+                          .map((N, P) =>
+                            (0, o.jsxs)(
+                              "tr",
+                              {
+                                children: [
+                                  (0, o.jsx)("td", { children: P + 1 }),
+                                  (0, o.jsx)("td", { children: N.steps.length }),
+                                  (0, o.jsxs)("td", { children: [N.blood.toFixed(2), "%"] }),
+                                  (0, o.jsxs)("td", {
+                                    children: [
+                                      Math.max(...N.steps.map(($) => $.coi)).toFixed(2),
+                                      "%",
+                                    ],
+                                  }),
+                                ],
+                              },
+                              P,
+                            ),
+                          ),
+                      }),
+                    ],
+                  }),
+                }),
+              x &&
+                (!x.reached || x.reached.length === 0) &&
+                (0, o.jsx)("div", {
+                  className: "metric-note",
+                  style: { marginTop: 8 },
+                  children:
+                    "No route gets meaningfully further inside the ceiling. This mating may be as far as she goes with the sires you have.",
+                }),
+            ],
+          }),
+        Y &&
+          (0, o.jsxs)("div", {
+            className: "card mt-step mt-save",
+            children: [
+              (0, o.jsx)(_, {
+                n: "6",
+                title: "Save the plan",
+                sub: "It lands in the Log, where you record what actually happened.",
+              }),
+              R
+                ? (0, o.jsxs)("div", {
+                    className: "mt-saved",
+                    children: [
+                      "Saved. ",
+                      (0, o.jsxs)("span", {
+                        className: "mt-sub",
+                        children: [y, " \xD7 ", Y.name, " is in the Log."],
+                      }),
+                      (0, o.jsx)("button", {
+                        className: "btn secondary",
+                        style: { marginLeft: 12 },
+                        onClick: () => q(!1),
+                        children: "Plan another",
+                      }),
+                    ],
+                  })
+                : (0, o.jsx)("button", {
+                    className: "btn",
+                    onClick: z,
+                    children: "Save this mating",
+                  }),
+            ],
+          }),
+      ],
+    });
+  }
+  function PlNew(P) {
+    var E = b.default.createElement;
+    var e = P.allAnimals,
+      c = P.dam,
+      D = P.damOk,
+      N = P.mateSex,
+      t = P.sire,
+      n = P.damMap,
+      r = P.names,
+      a = P.kinship,
+      d = P.founders,
+      gen = P.gen;
+    var sGoal = b.useState("up"),
+      goal = sGoal[0],
+      setGoal = sGoal[1];
+    var sFs = b.useState("all"),
+      fsel = sFs[0],
+      setFsel = sFs[1];
+    var sMs = b.useState(["blood"]),
+      measL = sMs[0],
+      setMeasL = sMs[1];
+    var meas = measL[0];
+    var sCp = b.useState("any"),
+      coiP = sCp[0],
+      setCoiP = sCp[1];
+    var sSh = b.useState(5),
+      shown = sSh[0],
+      setShown = sSh[1];
+    var G = window.__lbProg || {};
+    var sn = function (x) {
+      return (G.shorts && G.shorts[x]) || x;
+    };
+    var COL = d.map(function (F, i) {
+      return (G.colors && G.colors[F]) || FCOL[i % 8];
+    });
+    var othRef = b.useRef({});
+    var fsOk = fsel === "all" || fsel === "even" || d.indexOf(fsel) >= 0;
+    var fs = fsel === "all" || fsel === "even" || !fsOk ? d : [fsel];
+    var damRole = N === "Female" ? "Sire" : "Dam";
+    var candRole = N === "Female" ? "Dam" : "Sire";
+
+    var kids = b.useMemo(
+      function () {
+        var m = new Map();
+        e.forEach(function (x) {
+          if (!x.sire) return;
+          var o = m.get(x.sire);
+          if (!o) {
+            o = { k: 0, ka: 0 };
+            m.set(x.sire, o);
+          }
+          o.k++;
+          if (x.status === "Active" || x.livingAvailable) o.ka++;
+        });
+        return m;
+      },
+      [e],
+    );
+    var kidsF = b.useMemo(
+      function () {
+        var m = new Map();
+        e.forEach(function (x) {
+          if (!x.dam) return;
+          var o = m.get(x.dam);
+          if (!o) {
+            o = { k: 0, ka: 0 };
+            m.set(x.dam, o);
+          }
+          o.k++;
+          if (x.status === "Active" || x.livingAvailable) o.ka++;
+        });
+        return m;
+      },
+      [e],
+    );
+
+    var closestMemo = b.useRef(new Map());
+    function closest(x, F) {
+      var key = x + "\0" + F,
+        hit = closestMemo.current.get(key);
+      if (hit !== undefined) return hit;
+      var res = null;
+      if (x === F) res = 0;
+      else {
+        var level = [x];
+        for (var i = 1; i <= 40 && level.length; i++) {
+          var nxt = new Set();
+          for (var j = 0; j < level.length; j++) {
+            var p = [t[level[j]], n[level[j]]];
+            for (var k = 0; k < 2; k++) if (p[k] && r.has(p[k])) nxt.add(p[k]);
+          }
+          if (nxt.has(F)) {
+            res = i;
+            break;
+          }
+          level = Array.from(nxt);
+        }
+      }
+      closestMemo.current.set(key, res);
+      return res;
+    }
+
+    var dam = b.useMemo(
+      function () {
+        if (!D || !r.has(c)) return null;
+        return {
+          blood: d.map(function (F) {
+            return ye(c, F, t, n, r) * 100;
+          }),
+          rel: d.map(function (F) {
+            return rs(c, F, t, n, a) * 100;
+          }),
+          occ: d.map(function (F) {
+            return On(c, F, t, n, r);
+          }),
+          cl: d.map(function (F) {
+            return closest(c, F);
+          }),
+          coi: a(t[c], n[c]) * 100,
+        };
+      },
+      [c, D, t, n, r, a, d],
+    );
+
+    function buildK(roots) {
+      var order = [],
+        seen = new Set();
+      function up(x) {
+        if (!x || !r.has(x) || seen.has(x)) return;
+        seen.add(x);
+        up(t[x]);
+        up(n[x]);
+        order.push(x);
+      }
+      roots.forEach(up);
+      var m = order.length,
+        ix = new Map();
+      order.forEach(function (x, i) {
+        ix.set(x, i);
+      });
+      var K = new Float32Array((m * (m + 1)) / 2);
+      function g(p, q) {
+        return p >= q ? K[(p * (p + 1)) / 2 + q] : K[(q * (q + 1)) / 2 + p];
+      }
+      for (var i = 0; i < m; i++) {
+        var si = ix.has(t[order[i]]) ? ix.get(t[order[i]]) : -1,
+          di = ix.has(n[order[i]]) ? ix.get(n[order[i]]) : -1;
+        var base = (i * (i + 1)) / 2;
+        for (var j = 0; j < i; j++)
+          K[base + j] = 0.5 * ((si >= 0 ? g(si, j) : 0) + (di >= 0 ? g(di, j) : 0));
+        K[base + i] = 0.5 * (1 + (si >= 0 && di >= 0 ? g(si, di) : 0));
+      }
+      return {
+        g: g,
+        m: m,
+        ix: ix,
+        kin: function (x, y) {
+          var p = ix.get(x),
+            q = ix.get(y);
+          return p === undefined || q === undefined ? 0 : g(p, q);
+        },
+      };
+    }
+    var phiRef = b.useRef({ r: null, rows: new Map() });
+    function phiRow(F) {
+      if (phiRef.current.r !== r || phiRef.current.t !== t || phiRef.current.n !== n)
+        phiRef.current = { r: r, t: t, n: n, rows: new Map() };
+      var rows = phiRef.current.rows;
+      if (rows.has(F)) return rows.get(F);
+      var B = buildK([F]),
+        R = new Map();
+      B.ix.forEach(function (k, x) {
+        R.set(x, B.g(k, B.ix.get(F)));
+      });
+      var get = function (z) {
+        if (!z || !r.has(z)) return 0;
+        var hit = R.get(z);
+        if (hit !== undefined) return hit;
+        var v = 0.5 * (get(t[z]) + get(n[z]));
+        R.set(z, v);
+        return v;
+      };
+      rows.set(F, get);
+      return get;
+    }
+
+    var cands = b.useMemo(
+      function () {
+        if (!D || !N || !dam) return [];
+        return e
+          .filter(function (C) {
+            return C.name !== c && Zr(C) && qe(C.name, C, t, n) === N;
+          })
+          .map(function (C) {
+            var nm = C.name,
+              coi = null;
+            var per = d.map(function (F, i) {
+              var pr = phiRow(F);
+              var z = {
+                blood: 0.5 * ye(nm, F, t, n, r) + 0.5 * ye(c, F, t, n, r),
+                occ: On(nm, F, t, n, r) + On(c, F, t, n, r),
+                rel: pr(nm) + pr(c),
+              };
+              var c1 = closest(nm, F),
+                c2 = closest(c, F),
+                m = null;
+              if (c1 !== null) m = c1;
+              if (c2 !== null && (m === null || c2 < m)) m = c2;
+              return {
+                blood: z.blood * 100,
+                rel: z.rel * 100,
+                occ: z.occ,
+                cl: m === null ? null : m + 1,
+              };
+            });
+            return { name: nm, per: per, coi: coi };
+          });
+      },
+      [e, c, D, N, dam, t, n, r, a, d],
+    );
+
+    var ranked = b.useMemo(
+      function () {
+        if (!cands.length || !dam) return [];
+        var idx = fs.map(function (F) {
+          return d.indexOf(F);
+        });
+        function rankFor(meas) {
+        var isCl = meas === "cl";
+        function val(arr) {
+          var v = idx.map(function (i) {
+            return isCl ? -(arr[i] === null ? 45 : arr[i]) : arr[i];
+          });
+          return fsel === "even"
+            ? Math.min.apply(null, v)
+            : isCl
+              ? Math.max.apply(null, v)
+              : v.reduce(function (s, x) {
+                  return s + x;
+                }, 0);
+        }
+        var mk = meas === "blood" ? "blood" : meas === "rel" ? "rel" : meas === "cl" ? "cl" : "occ";
+        var dv = val(dam[mk]);
+        var rows = cands.map(function (C) {
+          var v = val(
+            C.per.map(function (p) {
+              return p[mk];
+            }),
+          );
+          var pk = goal === "up" ? -v : goal === "down" ? v : Math.abs(v - dv);
+          return { C: C, pk: pk };
+        });
+        return rows;
+        }
+        var rows = rankFor(measL[0]);
+        if (measL.length > 1) {
+          var byC0 = new Map();
+          rows.forEach(function (x) {
+            x.pks = [x.pk];
+            byC0.set(x.C, x);
+          });
+          measL.slice(1).forEach(function (m2) {
+            rankFor(m2).forEach(function (y) {
+              byC0.get(y.C).pks.push(y.pk);
+            });
+          });
+          for (var mi = 0; mi < measL.length; mi++) {
+            rows
+              .slice()
+              .sort(function (x, y) {
+                return x.pks[mi] - y.pks[mi];
+              })
+              .forEach(function (x, i) {
+                x.mr = (x.mr || 0) + i;
+              });
+          }
+          rows.forEach(function (x) {
+            x.pk = x.mr * 1e6 + x.pks[0];
+          });
+        }
+        rows.sort(function (x, y) {
+          return x.pk - y.pk;
+        });
+        rows.forEach(function (x, i) {
+          x.rp = i;
+        });
+        if (coiP !== "any") {
+          var top = rows.slice(0, 30);
+          top.forEach(function (x) {
+            if (x.C.coi === null) x.C.coi = phiRow(c)(x.C.name) * 100;
+            x.ck = coiP === "hi" ? -x.C.coi : coiP === "lo" ? x.C.coi : Math.abs(x.C.coi - dam.coi);
+          });
+          var byC = top.slice().sort(function (x, y) {
+            return x.ck - y.ck;
+          });
+          byC.forEach(function (x, i) {
+            x.rc = i;
+          });
+          top.sort(function (x, y) {
+            return x.rp + x.rc - (y.rp + y.rc) || x.pk - y.pk;
+          });
+          rows = top.concat(rows.slice(30));
+        }
+        return rows.map(function (x) {
+          return x.C;
+        });
+      },
+      [cands, dam, fs.join("|"), fsel, measL.join(","), goal, coiP, d],
+    );
+
+    var gm = b.useMemo(
+      function () {
+        var m = new Map();
+        return function (x) {
+          var v = m.get(x);
+          if (v === undefined) {
+            v = gen(x);
+            m.set(x, v);
+          }
+          return v;
+        };
+      },
+      [gen],
+    );
+    var byN = b.useMemo(
+      function () {
+        var m = new Map();
+        e.forEach(function (x) {
+          m.set(x.name, x);
+        });
+        return m;
+      },
+      [e],
+    );
+    var kRef = b.useRef({ key: null });
+    var detail = b.useMemo(
+      function () {
+        if (!dam) return [];
+        var WE = "(Hypothetical Calf)";
+        var shownList = ranked.slice(0, shown);
+        var roots = [c];
+        shownList.forEach(function (C) {
+          roots.push(C.name);
+        });
+        var kkey = roots.join("\u0001");
+        var KB = kRef.current.key === kkey && kRef.current.r === r ? kRef.current.B : buildK(roots);
+        kRef.current = { key: kkey, r: r, B: KB };
+        return shownList.map(function (C) {
+          var sireName = N === "Female" ? c : C.name,
+            damName2 = N === "Female" ? C.name : c;
+          var A2 = Object.assign({}, t);
+          A2[WE] = sireName;
+          var B2 = Object.assign({}, n);
+          B2[WE] = damName2;
+          var C2 = new Set(r);
+          C2.add(WE);
+          var wd = 1 + Math.max(gm(sireName), gm(damName2));
+          var depth = function (x) {
+            return x === WE ? wd : gm(x);
+          };
+          var coiFrac = KB.kin(sireName, damName2);
+          if (C.coi === null) C.coi = coiFrac * 100;
+          var jm2 = Jm(WE, A2, B2, C2, depth);
+          var top = Array.from(jm2.blood.entries())
+            .sort(function (x, y) {
+              return y[1] - x[1];
+            })
+            .slice(0, 60)
+            .filter(function (x) {
+              return d.indexOf(x[0]) < 0 && x[0] !== sireName && x[0] !== damName2;
+            })
+            .map(function (x) {
+              var pc = 0.5 * (KB.kin(sireName, x[0]) + KB.kin(damName2, x[0]));
+
+              return {
+                name: x[0],
+                rel: 100 * pc * 2,
+                blood: x[1] * 100,
+                occ: jm2.occ.get(x[0]) || 0,
+              };
+            })
+            .sort(function (x, y) {
+              return y.rel - x.rel;
+            })
+            .slice(0, 5);
+          var k = (N === "Female" ? kidsF : kids).get(C.name) || { k: 0, ka: 0 };
+          return {
+            C: C,
+            sireName: sireName,
+            damName2: damName2,
+            top: top,
+            kids: k,
+            cg: nh(C.name, t, n, r).fullThrough,
+          };
+        });
+      },
+      [ranked, shown, dam, N, c, t, n, r, a, d, gm, kids, kidsF],
+    );
+
+    var shS = b.useState({}),
+      shares = shS[0],
+      setShares = shS[1];
+    var jobKey = detail
+      .map(function (X) {
+        return X.sireName + "\0" + X.damName2;
+      })
+      .join("\u0001");
+    b.useEffect(
+      function () {
+        return; // COI-from-founders tile removed; worker disabled
+        if (!dam || !r.has(c)) {
+          setShares({});
+          return;
+        }
+        var W;
+        try {
+          var code =
+            "var th=" +
+            th.toString() +
+            ";" +
+            "onmessage=function(ev){var D=ev.data,t=D.t,n=D.n,r=new Set(D.names),F=D.founders,WE='(Hypothetical Calf)';" +
+            "var dm=new Map();function dp(x){if(!x||!r.has(x))return 0;if(dm.has(x))return dm.get(x);dm.set(x,0);var v=1+Math.max(dp(t[x]),dp(n[x]));dm.set(x,v);return v}" +
+            "var km=new Map();function a(x,y){if(!x||!y)return 0;var k=x<y?x+'|'+y:y+'|'+x;if(km.has(k))return km.get(k);var v;if(x===y){v=.5*(1+(t[x]&&n[x]?a(t[x],n[x]):0))}else if(dp(x)>=dp(y)){v=.5*(a(t[x],y)+a(n[x],y))}else{v=.5*(a(x,t[y])+a(x,n[y]))}km.set(k,v);return v}" +
+            "D.jobs.forEach(function(J){var T=t,N=n,R=r,res=null,dd=dp;" +
+            "if(J.calf){T=Object.assign({},t);N=Object.assign({},n);T[WE]=J.sire;N[WE]=J.dam;R=new Set(r);R.add(WE);var w=1+Math.max(dp(J.sire),dp(J.dam));dd=function(x){return x===WE?w:dp(x)};J.root=WE}" +
+            "var cr=th(J.root,T,N,R,dd,a),s=null;if(cr.total>0){var q=0;F.forEach(function(f){q+=cr.credit.get(f)||0});s=q/cr.total*100}" +
+            "postMessage({key:J.key,share:s})})};";
+          W = new Worker(URL.createObjectURL(new Blob([code], { type: "text/javascript" })));
+        } catch (err) {
+          return;
+        }
+        var jobs = [{ key: "dam", root: c }];
+        detail.forEach(function (X) {
+          jobs.push({
+            key: X.sireName + "\0" + X.damName2,
+            calf: true,
+            sire: X.sireName,
+            dam: X.damName2,
+          });
+        });
+        W.onmessage = function (ev) {
+          setShares(function (o) {
+            var q = Object.assign({}, o);
+            q[ev.data.key] = ev.data.share;
+            return q;
+          });
+        };
+        W.postMessage({ t: t, n: n, names: Array.from(r), founders: d, jobs: jobs });
+        return function () {
+          W.terminate();
+        };
+      },
+      [dam, c, jobKey, d],
+    );
+    var damShare = shares.dam === undefined ? undefined : shares.dam;
+    var damGens = b.useMemo(
+      function () {
+        return dam ? nh(c, t, n, r).fullThrough : 0;
+      },
+      [dam, c, t, n, r],
+    );
+
+    function seg(opts, value, onChange, multi) {
+      return E(
+        "div",
+        { className: "pl-seg" },
+        opts.map(function (o) {
+          return E(
+            "button",
+            {
+              key: o.v,
+              type: "button",
+              className: (multi ? value.indexOf(o.v) >= 0 : value === o.v) ? "on" : "",
+              onClick: function () {
+                onChange(o.v);
+                setShown(5);
+              },
+            },
+            o.l,
+          );
+        }),
+      );
+    }
+    function q(label, node) {
+      return E("div", { className: "pl-q" }, E("p", { className: "pl-lab" }, label), node);
+    }
+    function dl(x, dec) {
+      var z = Math.abs(x) < Math.pow(10, -dec) / 2;
+      return E(
+        "span",
+        { className: "pl-dl " + (z ? "pl-eq" : x > 0 ? "pl-up" : "pl-dn") },
+        z ? "±0" : (x > 0 ? "+" : "−") + Math.abs(x).toFixed(dec),
+      );
+    }
+    function donut(per) {
+      var R = 40,
+        K = 2 * Math.PI * R,
+        off = 0,
+        tot = 0;
+      var segs = per.map(function (p, i) {
+        var v = Math.max(0, Math.min(p.blood, 100 - tot));
+        tot += v;
+        var len = (K * v) / 100,
+          el = E("circle", {
+            key: i,
+            cx: 56,
+            cy: 56,
+            r: R,
+            stroke: COL[i],
+            strokeDasharray: len + " " + (K - len),
+            strokeDashoffset: -off,
+          });
+        off += len;
+        return el;
+      });
+      return E(
+        "svg",
+        {
+          className: "pl-dn-svg",
+          viewBox: "0 0 112 112",
+          role: "img",
+          "aria-label": "Calf foundation ancestry",
+        },
+        E(
+          "g",
+          { transform: "rotate(-90 56 56)", fill: "none", strokeWidth: 14 },
+          E("circle", { cx: 56, cy: 56, r: R, stroke: "var(--border-strong)", strokeOpacity: 0.5 }),
+          segs,
+        ),
+        E(
+          "text",
+          { x: 56, y: 54, textAnchor: "middle", className: "pl-dn-big" },
+          tot.toFixed(1) + "%",
+        ),
+        E("text", { x: 56, y: 70, textAnchor: "middle", className: "pl-dn-sm" }, "foundation"),
+      );
+    }
+
+    var fOpts = [{ v: "all", l: "All foundation" }]
+      .concat(
+        d.map(function (F) {
+          return { v: F, l: sn(F) };
+        }),
+      )
+      .concat(d.length > 1 ? [{ v: "even", l: "Keep them even" }] : []);
+    var controls = E(
+      "div",
+      { className: "card pl-panel" },
+      E(
+        "div",
+        { className: "pairing-row" },
+        E(ph, { label: "Dam", value: c, onChange: P.onDamChange, allAnimals: e }),
+      ),
+      q(
+        "1. What do you want to do?",
+        seg(
+          [
+            { v: "up", l: "Increase" },
+            { v: "hold", l: "Maintain" },
+            { v: "down", l: "Reduce" },
+          ],
+          goal,
+          setGoal,
+        ),
+      ),
+      q(
+        "2. Which foundation animals?",
+        seg(fOpts, fsOk ? fsel : "all", function (v) {
+          setFsel(v);
+          if (d.indexOf(v) >= 0) P.onTarget(v);
+        }),
+      ),
+      q(
+        "3. Measured by (pick one or more — several are blended)",
+        seg(
+          [
+            { v: "blood", l: "Blood %" },
+            { v: "rel", l: "Relationship" },
+            { v: "occ", l: "Occurrences" },
+            { v: "cl", l: "Closest generation" },
+          ],
+          measL,
+          function (v) {
+            setMeasL(function (cur) {
+              var has = cur.indexOf(v) >= 0;
+              if (has) return cur.length > 1 ? cur.filter(function (x) { return x !== v; }) : cur;
+              return cur.concat([v]);
+            });
+          },
+          true,
+        ),
+      ),
+      q(
+        "4. What about COI?",
+        seg(
+          [
+            { v: "any", l: "Doesn’t matter" },
+            { v: "hi", l: "Increase" },
+            { v: "lo", l: "Decrease" },
+            { v: "same", l: "Maintain" },
+          ],
+          coiP,
+          setCoiP,
+        ),
+      ),
+      E(
+        "div",
+        { className: "metric-note" },
+        "Blood % is the calf’s share of ancestry from the foundation animal. Relationship counts every shared gene, so it can pass 100%. Closest generation is how far back a foundation animal first appears: nearer is higher. COI re-orders the list.",
+      ),
+    );
+
+    if (!D) return E("div", null, controls);
+    var damBar =
+      dam &&
+      E(
+        "div",
+        { className: "pl-dambar" },
+        E(
+          "div",
+          { className: "pl-top" },
+          E("span", { className: "pl-role pl-role-d" }, damRole),
+          E("span", { className: "pl-big" }, c),
+          byN.get(c) && byN.get(c).regNum
+            ? E("span", { className: "pl-reg" }, "Reg " + byN.get(c).regNum)
+            : null,
+        ),
+        t[c] || n[c]
+          ? E(
+              "div",
+              { className: "pl-par" },
+              t[c] && n[c] ? t[c] + " \u00d7 " + n[c] : t[c] ? "Sire " + t[c] : "Dam " + n[c],
+            )
+          : null,
+        E(
+          "div",
+          { className: "pl-stats" },
+          d.map(function (F, i) {
+            return E(
+              "span",
+              { key: F },
+              E("i", { className: "pl-sw", style: { background: COL[i] } }),
+              sn(F) + " ",
+              E("b", null, dam.blood[i].toFixed(1) + "%"),
+            );
+          }),
+          E("span", null, "COI ", E("b", null, dam.coi.toFixed(1) + "%")),
+        ),
+      );
+    if (!N)
+      return E(
+        "div",
+        null,
+        controls,
+        damBar,
+        E(
+          "div",
+          { className: "card" },
+          E(
+            "div",
+            { className: "metric-note" },
+            c + "’s sex isn’t set — correct it on Edit Animal to enable this.",
+          ),
+        ),
+      );
+    if (!ranked.length)
+      return E(
+        "div",
+        null,
+        controls,
+        damBar,
+        E(
+          "div",
+          { className: "card" },
+          E(
+            "div",
+            { className: "metric-note" },
+            "No available " +
+              (N === "Male" ? "sires" : "mates") +
+              " found — mark some as Available on Edit Animal first.",
+          ),
+        ),
+      );
+
+    var cards = detail.map(function (X, i) {
+      var C = X.C,
+        sd = 0;
+      fs.forEach(function (F) {
+        var j = d.indexOf(F);
+        sd += C.per[j].blood - dam.blood[j];
+      });
+      var chipCls = Math.abs(sd) < 0.05 ? "pl-eq" : sd > 0 ? "pl-up" : "pl-dn";
+      var chipTxt =
+        (fs.length === 1 ? sn(fs[0]) + " blood " : "Foundation blood ") +
+        (Math.abs(sd) < 0.05
+          ? "unchanged"
+          : (sd > 0 ? "up " : "down ") + Math.abs(sd).toFixed(1) + " points");
+      var totBlood = 0;
+      C.per.forEach(function (p) {
+        totBlood += p.blood;
+      });
+      var other = Math.max(0, 100 - totBlood);
+      var shortCG = X.cg < 6;
+      return E(
+        "div",
+        {
+          key: C.name,
+          className: "pl-card",
+          onClick: function () {
+            P.onPick(C.name);
+          },
+        },
+        E(
+          "div",
+          { className: "pl-head" },
+          E("span", { className: "pl-rank" }, i + 1),
+          E("span", { className: "pl-role" }, candRole),
+          byN.get(C.name) && byN.get(C.name).regNum
+            ? E("span", { className: "pl-reg" }, "Reg " + byN.get(C.name).regNum)
+            : null,
+        ),
+        E("div", { className: "pl-name" }, C.name),
+        t[C.name] || n[C.name]
+          ? E(
+              "div",
+              { className: "pl-par" },
+              t[C.name] && n[C.name]
+                ? t[C.name] + " \u00d7 " + n[C.name]
+                : t[C.name]
+                  ? "Sire " + t[C.name]
+                  : "Dam " + n[C.name],
+            )
+          : null,
+        (function () {
+          var os = PROGRAMS_UI ? G.others || [] : [];
+          if (!os.length) return null;
+          var parts = os.map(function (p) {
+            var key = C.name + "|" + p.name + "|" + p.items.join(",");
+            var v = othRef.current[key];
+            if (v === undefined) {
+              v = 0;
+              p.items.forEach(function (F) {
+                v += ye(C.name, F, t, n, r) * 100;
+              });
+              othRef.current[key] = v;
+            }
+            return p.name + " " + (v < 0.05 ? "0" : v.toFixed(v < 10 ? 1 : 0)) + "%";
+          });
+          return E("div", { className: "pl-other" }, "Other program: " + parts.join(" \u00b7 "));
+        })(),
+        E(
+          "div",
+          { className: "pl-mid" },
+          E(
+            "div",
+            { className: "pl-dwrap" },
+            donut(C.per),
+            E(
+              "div",
+              { className: "pl-delta " + chipCls },
+              E(
+                "span",
+                { className: "pl-arrow" },
+                chipCls === "pl-eq" ? "\u25CF" : chipCls === "pl-up" ? "\u25B2" : "\u25BC",
+              ),
+              E(
+                "div",
+                null,
+                E(
+                  "div",
+                  { className: "pl-dnum" },
+                  chipCls === "pl-eq" ? "No change" : Math.abs(sd).toFixed(1) + " pts",
+                ),
+                E(
+                  "div",
+                  { className: "pl-dlab" },
+                  (fs.length === 1 ? sn(fs[0]) : "Foundation") + " blood",
+                ),
+              ),
+            ),
+          ),
+          E(
+            "div",
+            { className: "pl-tb" },
+            E(
+              "table",
+              { className: "pl-table pl-ftable" },
+              E(
+                "thead",
+                null,
+                E(
+                  "tr",
+                  null,
+                  ["Foundation", "Blood %", "Relation", "Times", "Closest"].map(function (h) {
+                    return E("th", { key: h }, h);
+                  }),
+                ),
+              ),
+              E(
+                "tbody",
+                null,
+                d.map(function (F, j) {
+                  var p = C.per[j];
+                  return E(
+                    "tr",
+                    { key: F },
+                    E(
+                      "td",
+                      null,
+                      E("i", { className: "pl-sw", style: { background: COL[j] } }),
+                      sn(F),
+                    ),
+                    E("td", null, p.blood.toFixed(1) + "%", dl(p.blood - dam.blood[j], 1)),
+                    E("td", null, (p.rel / 100).toFixed(2), dl((p.rel - dam.rel[j]) / 100, 2)),
+                    E("td", null, p.occ),
+                    E("td", null, p.cl === null ? "—" : "Gen " + p.cl),
+                  );
+                }),
+                E(
+                  "tr",
+                  { key: "other" },
+                  E(
+                    "td",
+                    null,
+                    E("i", { className: "pl-sw", style: { background: "var(--border-strong)" } }),
+                    "All other ancestors",
+                  ),
+                  E("td", null, other.toFixed(1) + "%", dl(-sd, 1)),
+                  E("td", null),
+                  E("td", null),
+                  E("td", null),
+                ),
+              ),
+            ),
+          ),
+        ),
+        E(
+          "div",
+          { className: "pl-tiles" },
+          E(
+            "div",
+            { className: "pl-tile" },
+            E("div", { className: "pl-l" }, "Calf COI"),
+            E("div", { className: "pl-v" }, C.coi.toFixed(1) + "%", dl(C.coi - dam.coi, 1)),
+            E("div", { className: "pl-s" }, damRole.toLowerCase() + " " + dam.coi.toFixed(1) + "%"),
+          ),
+          E(
+            "div",
+            { className: "pl-tile" },
+            E("div", { className: "pl-l" }, "Complete generations"),
+            E("div", { className: "pl-v" }, X.cg + " / " + damGens),
+            E(
+              "div",
+              { className: "pl-s" },
+              candRole.toLowerCase() + " / " + damRole.toLowerCase() + ", goal 10",
+            ),
+          ),
+          E(
+            "div",
+            { className: "pl-tile" },
+            E("div", { className: "pl-l" }, "Calves in database"),
+            E("div", { className: "pl-v" }, X.kids.k),
+            E("div", { className: "pl-s" }, X.kids.ka + " still active"),
+          ),
+        ),
+        E("p", { className: "pl-hd" }, "Other ancestors this mating concentrates"),
+        E(
+          "p",
+          { className: "pl-sub" },
+          "Ranked by relationship to the calf. Foundation animals and the two parents are left out.",
+        ),
+        E(
+          "table",
+          { className: "pl-table" },
+          E(
+            "thead",
+            null,
+            E(
+              "tr",
+              null,
+              ["Rank", "Ancestor", "Rel. coef.", "Blood %", "Occ."].map(function (h) {
+                return E("th", { key: h }, h);
+              }),
+            ),
+          ),
+          E(
+            "tbody",
+            null,
+            X.top.map(function (o, j) {
+              return E(
+                "tr",
+                { key: o.name },
+                E("td", null, j + 1),
+                E("td", null, o.name),
+                E("td", null, o.rel.toFixed(1) + "%"),
+                E("td", null, o.blood.toFixed(1) + "%"),
+                E("td", null, o.occ + "×"),
+              );
+            }),
+          ),
+        ),
+        shortCG &&
+          E(
+            "div",
+            { className: "pl-note" },
+            "Short pedigree: only " +
+              X.cg +
+              " complete generations on the " +
+              candRole.toLowerCase() +
+              " side, so these numbers may be low.",
+          ),
+      );
+    });
+    return E(
+      "div",
+      null,
+      controls,
+      damBar,
+      E(
+        "p",
+        { className: "pl-count" },
+        ranked.length +
+          " available " +
+          (N === "Male" ? "sires" : "mates") +
+          " ranked for " +
+          c +
+          ". Changes are compared with " +
+          c +
+          ": green is an increase, red is a decrease.",
+      ),
+      cards,
+      ranked.length > shown &&
+        E(
+          "button",
+          {
+            type: "button",
+            className: "btn secondary",
+            onClick: function () {
+              setShown(shown + 5);
+            },
+          },
+          "Show 5 more",
+        ),
+      E(
+        "div",
+        { className: "metric-note", style: { marginTop: 8 } },
+        "Tap a card to add it to the comparison below and see full detail.",
+      ),
+    );
+  }
+
+  function cmOrd(k) {
+    var s = ["th", "st", "nd", "rd"],
+      v = k % 100;
+    return k + (s[(v - 20) % 10] || s[v] || s[0]);
+  }
+  function cmClosest(x, F, t, n, r) {
+    if (!x) return null;
+    if (x === F) return 0;
+    var level = [x];
+    for (var i = 1; i <= 40 && level.length; i++) {
+      var nxt = new Set();
+      for (var j = 0; j < level.length; j++) {
+        var p = [t[level[j]], n[level[j]]];
+        for (var k = 0; k < 2; k++) if (p[k] && r.has(p[k])) nxt.add(p[k]);
+      }
+      if (nxt.has(F)) return i;
+      level = Array.from(nxt);
+    }
+    return null;
+  }
+  function cmGens(x, F, t, n, r) {
+    var res = [];
+    if (!x || !r.has(x)) return res;
+    var level = new Map([[x, 1]]);
+    for (var k = 0; k <= 40 && level.size; k++) {
+      res.push(level.get(F) || 0);
+      var nxt = new Map();
+      level.forEach(function (c, nm) {
+        [t[nm], n[nm]].forEach(function (p) {
+          if (p && r.has(p)) nxt.set(p, (nxt.get(p) || 0) + c);
+        });
+      });
+      level = nxt;
+    }
+    return res;
+  }
+  function cmGenLine(cntB, cntC) {
+    var len = Math.max(cntB.length, cntC.length),
+      parts = [];
+    for (var k = 0; k < len; k++) {
+      var c = (cntB[k] || 0) + (cntC[k] || 0);
+      if (c > 0) parts.push(cmOrd(k + 1) + (c > 1 ? " x" + c : ""));
+    }
+    if (!parts.length) return "";
+    return parts.join(", ");
+  }
+  var CM_REF_COL = ["#6b6a64", "#a09e96", "#4f4e4a"];
+  var CM_MAX_REF = 3;
+
+  function cmExtend(t, n, r, a, e, gen, cow, bull) {
+    var CALF = "Calf of " + cow + " \u00D7 " + bull;
+    var t2 = Object.assign({}, t),
+      n2 = Object.assign({}, n);
+    t2[CALF] = bull;
+    n2[CALF] = cow;
+    var r2 = new Set(r);
+    r2.add(CALF);
+    var e2 = e.concat([{ name: CALF, sire: bull, dam: cow, sexOverride: "Female" }]);
+    var cg = 1 + Math.max(gen(bull), gen(cow));
+    var self = 0.5 * (1 + a(bull, cow));
+    function a2(x, y) {
+      if (!x || !y) return 0;
+      if (x === CALF && y === CALF) return self;
+      if (x === CALF) return 0.5 * (a(bull, y) + a(cow, y));
+      if (y === CALF) return 0.5 * (a(x, bull) + a(x, cow));
+      return a(x, y);
+    }
+    function gen2(x) {
+      return x === CALF ? cg : gen(x);
+    }
+    return { CALF: CALF, t2: t2, n2: n2, r2: r2, e2: e2, a2: a2, gen2: gen2 };
+  }
+  function CheckMate(P) {
+    var E = b.default.createElement;
+    var e = P.allAnimals,
+      t = P.sire,
+      n = P.dam,
+      r = P.names,
+      a = P.kinship,
+      d = P.founders,
+      gen = P.gen;
+    var LAST = P.last || { cow: "", bull: "", extra: [], key: 0 };
+    var FIX = P.fixed || null;
+    var sC = b.useState(LAST.cow),
+      cow = FIX ? FIX.cow : sC[0],
+      setCow = sC[1];
+    var sB = b.useState(LAST.bull),
+      bull = FIX ? FIX.bull : sB[0],
+      setBull = sB[1];
+    var sX = b.useState(LAST.extra || []),
+      extra = FIX ? FIX.extra || [] : sX[0],
+      setExtra = sX[1];
+    var sMt = b.useState(""),
+      mate = sMt[0],
+      setMate = sMt[1];
+    var sLm = b.useState(null),
+      logMsg = sLm[0],
+      setLogMsg = sLm[1];
+    b.useEffect(
+      function () {
+        setCow(LAST.cow);
+        setBull(LAST.bull);
+        setExtra(LAST.extra || []);
+        setLogMsg(null);
+      },
+      [LAST.key],
+    );
+    b.useEffect(
+      function () {
+        if (P.setLast && !FIX)
+          P.setLast(function (prev) {
+            return { cow: cow, bull: bull, extra: extra, key: prev.key };
+          });
+      },
+      [cow, bull, extra],
+    );
+    var sA = b.useState(""),
+      addv = sA[0],
+      setAddv = sA[1];
+    var G = window.__lbProg || {};
+    var sn = function (x) {
+      return (G.shorts && G.shorts[x]) || x;
+    };
+    var byN = b.useMemo(
+      function () {
+        var m = new Map();
+        e.forEach(function (x) {
+          m.set(x.name, x);
+        });
+        return m;
+      },
+      [e],
+    );
+    var refs = extra.filter(function (x) {
+      return d.indexOf(x) < 0 && r.has(x);
+    });
+    var targets = d.concat(refs);
+    var COL = targets.map(function (F, i) {
+      return i < d.length
+        ? (G.colors && G.colors[F]) || FCOL[i % 8]
+        : CM_REF_COL[(i - d.length) % CM_REF_COL.length];
+    });
+    var ok = !!(cow && bull && r.has(cow) && r.has(bull));
+    var cowRec = byN.get(cow),
+      bullRec = byN.get(bull);
+    var cowSex = cowRec ? qe(cow, cowRec, t, n) : null,
+      bullSex = bullRec ? qe(bull, bullRec, t, n) : null;
+
+    var calc = b.useMemo(
+      function () {
+        if (!ok) return null;
+        var per = targets.map(function (F) {
+          var cb = ye(cow, F, t, n, r) * 100,
+            bb = ye(bull, F, t, n, r);
+          var c1 = cmClosest(bull, F, t, n, r),
+            c2 = cmClosest(cow, F, t, n, r),
+            m = null;
+          if (c1 !== null) m = c1;
+          if (c2 !== null && (m === null || c2 < m)) m = c2;
+          return {
+            name: F,
+            blood: 0.5 * bb * 100 + 0.5 * cb,
+            rel: (a(bull, F) + a(cow, F)) * 100,
+            occ: On(bull, F, t, n, r) + On(cow, F, t, n, r),
+            cl: m === null ? null : m + 1,
+            gens: cmGenLine(cmGens(bull, F, t, n, r), cmGens(cow, F, t, n, r)),
+            dBlood: cb,
+            dRel: 2 * a(cow, F) * 100,
+          };
+        });
+        var WE = "(Hypothetical Calf)";
+        var A2 = Object.assign({}, t);
+        A2[WE] = bull;
+        var B2 = Object.assign({}, n);
+        B2[WE] = cow;
+        var C2 = new Set(r);
+        C2.add(WE);
+        var wd = 1 + Math.max(gen(bull), gen(cow));
+        var jm = Jm(WE, A2, B2, C2, function (x) {
+          return x === WE ? wd : gen(x);
+        });
+        var skip = new Set(targets.concat([bull, cow]));
+        var top = Array.from(jm.blood.entries())
+          .sort(function (x, y) {
+            return y[1] - x[1];
+          })
+          .slice(0, 80)
+          .filter(function (x) {
+            return !skip.has(x[0]);
+          })
+          .map(function (x) {
+            return {
+              name: x[0],
+              rel: 100 * (a(bull, x[0]) + a(cow, x[0])),
+              blood: x[1] * 100,
+              occ: jm.occ.get(x[0]) || 0,
+            };
+          })
+          .sort(function (x, y) {
+            return y.rel - x.rel;
+          })
+          .slice(0, 5);
+        var kids = { k: 0, ka: 0 };
+        e.forEach(function (x) {
+          if (x.sire === bull) {
+            kids.k++;
+            if (x.status === "Active" || x.livingAvailable) kids.ka++;
+          }
+        });
+        return {
+          per: per,
+          top: top,
+          kids: kids,
+          coi: a(bull, cow) * 100,
+          cowCoi: a(t[cow], n[cow]) * 100,
+          cgBull: nh(bull, t, n, r).fullThrough,
+          cgCow: nh(cow, t, n, r).fullThrough,
+        };
+      },
+      [ok, cow, bull, targets.join("\u0001"), t, n, r, a, gen, e],
+    );
+
+    function dl(x, dec) {
+      var z = Math.abs(x) < Math.pow(10, -dec) / 2;
+      return E(
+        "span",
+        { className: "pl-dl " + (z ? "pl-eq" : x > 0 ? "pl-up" : "pl-dn") },
+        z ? "±0" : (x > 0 ? "+" : "−") + Math.abs(x).toFixed(dec),
+      );
+    }
+    function donut(per) {
+      var R = 40,
+        K = 2 * Math.PI * R,
+        off = 0,
+        tot = 0;
+      var segs = per.slice(0, d.length).map(function (p, i) {
+        var v = Math.max(0, Math.min(p.blood, 100 - tot));
+        tot += v;
+        var len = (K * v) / 100,
+          el = E("circle", {
+            key: i,
+            cx: 56,
+            cy: 56,
+            r: R,
+            stroke: COL[i],
+            strokeDasharray: len + " " + (K - len),
+            strokeDashoffset: -off,
+          });
+        off += len;
+        return el;
+      });
+      return E(
+        "svg",
+        {
+          className: "pl-dn-svg",
+          viewBox: "0 0 112 112",
+          role: "img",
+          "aria-label": "Calf foundation ancestry",
+        },
+        E(
+          "g",
+          { transform: "rotate(-90 56 56)", fill: "none", strokeWidth: 14 },
+          E("circle", { cx: 56, cy: 56, r: R, stroke: "var(--border-strong)", strokeOpacity: 0.5 }),
+          segs,
+        ),
+        E("text", { x: 56, y: 54, textAnchor: "middle", className: "pl-dn-big" }, tot.toFixed(1) + "%"),
+        E("text", { x: 56, y: 70, textAnchor: "middle", className: "pl-dn-sm" }, "foundation"),
+      );
+    }
+    function addRef(name) {
+      if (!name || !r.has(name)) return;
+      if (d.indexOf(name) >= 0 || extra.indexOf(name) >= 0 || extra.length >= CM_MAX_REF) return;
+      setExtra(extra.concat([name]));
+      setAddv("");
+    }
+
+    var controls = E(
+      "div",
+      { className: "card pl-panel" },
+      E(
+        "div",
+        { className: "pairing-row" },
+        E(ph, { label: "Cow", value: cow, onChange: setCow, allAnimals: e }),
+        E(ph, { label: "Bull", value: bull, onChange: setBull, allAnimals: e }),
+      ),
+      E(
+        "div",
+        { className: "pl-q" },
+        E("p", { className: "pl-lab" }, "Also measure against (up to " + CM_MAX_REF + ")"),
+        E(
+          "div",
+          { className: "pl-refs" },
+          refs.map(function (F, i) {
+            return E(
+              "span",
+              { key: F, className: "pl-refchip" },
+              E("i", { className: "pl-sw", style: { background: CM_REF_COL[i % CM_REF_COL.length] } }),
+              F,
+              E(
+                "button",
+                {
+                  type: "button",
+                  "aria-label": "Remove " + F,
+                  onClick: function () {
+                    setExtra(
+                      extra.filter(function (x) {
+                        return x !== F;
+                      }),
+                    );
+                  },
+                },
+                "×",
+              ),
+            );
+          }),
+        ),
+        extra.length < CM_MAX_REF &&
+          E(ph, { key: "add" + extra.length, label: "Add an animal (a reference sire, any bull, or a cow)", value: addv, onChange: addRef, allAnimals: e }),
+      ),
+      E(
+        "div",
+        { className: "metric-note" },
+        "Pick a cow and a bull to see the calf. The bull can be any animal, available or not. Foundation animals are always measured; any animal you add is measured the same way, on this screen only.",
+      ),
+    );
+
+    var ext = b.useMemo(
+      function () {
+        return ok ? cmExtend(t, n, r, a, e, gen, cow, bull) : null;
+      },
+      [ok, cow, bull, t, n, r, a, e, gen],
+    );
+    if (!ok) return E("div", null, FIX ? null : controls);
+
+    var C = calc;
+    if (!C) return E("div", null, FIX ? null : controls);
+    var fper = C.per.slice(0, d.length);
+    var totBlood = 0;
+    fper.forEach(function (p) {
+      totBlood += p.blood;
+    });
+    var other = Math.max(0, 100 - totBlood);
+    var sd = 0;
+    fper.forEach(function (p) {
+      sd += p.blood - p.dBlood;
+    });
+    var chipCls = Math.abs(sd) < 0.05 ? "pl-eq" : sd > 0 ? "pl-up" : "pl-dn";
+    var sexWarn = [];
+    if (cowSex === "Male") sexWarn.push(cow + " is recorded as a bull.");
+    if (bullSex === "Female") sexWarn.push(bull + " is recorded as a cow.");
+    var card = E(
+      "div",
+      { className: "pl-card pl-card-static" },
+      E(
+        "div",
+        { className: "pl-head" },
+        E("span", { className: "pl-role" }, "Sire"),
+        bullRec && bullRec.regNum ? E("span", { className: "pl-reg" }, "Reg " + bullRec.regNum) : null,
+      ),
+      E("div", { className: "pl-name" }, bull),
+      t[bull] || n[bull]
+        ? E(
+            "div",
+            { className: "pl-par" },
+            t[bull] && n[bull] ? t[bull] + " × " + n[bull] : t[bull] ? "Sire " + t[bull] : "Dam " + n[bull],
+          )
+        : null,
+      E(
+        "div",
+        { className: "pl-mid" },
+        E(
+          "div",
+          { className: "pl-dwrap" },
+          donut(fper),
+          E(
+            "div",
+            { className: "pl-delta " + chipCls },
+            E(
+              "span",
+              { className: "pl-arrow" },
+              chipCls === "pl-eq" ? "●" : chipCls === "pl-up" ? "▲" : "▼",
+            ),
+            E(
+              "div",
+              null,
+              E("div", { className: "pl-dnum" }, chipCls === "pl-eq" ? "No change" : Math.abs(sd).toFixed(1) + " pts"),
+              E("div", { className: "pl-dlab" }, "Foundation blood"),
+            ),
+          ),
+        ),
+        E(
+          "div",
+          { className: "pl-tb" },
+          E(
+            "table",
+            { className: "pl-table pl-ftable" },
+            E(
+              "thead",
+              null,
+              E(
+                "tr",
+                null,
+                ["Foundation", "Blood %", "Relation", "Times", "Closest"].map(function (h) {
+                  return E("th", { key: h }, h);
+                }),
+              ),
+            ),
+            E(
+              "tbody",
+              null,
+              C.per.map(function (p, j) {
+                return [
+                  E(
+                    "tr",
+                    { key: p.name },
+                    E("td", null, E("i", { className: "pl-sw", style: { background: COL[j] } }), sn(p.name)),
+                    E("td", null, p.blood.toFixed(1) + "%", dl(p.blood - p.dBlood, 1)),
+                    E("td", null, (p.rel / 100).toFixed(2), dl((p.rel - p.dRel) / 100, 2)),
+                    E("td", null, p.occ),
+                    E("td", null, p.cl === null ? "\u2014" : "Gen " + p.cl),
+                  ),
+                  p.gens
+                    ? E(
+                        "tr",
+                        { key: p.name + "|g", className: "pl-genrow" },
+                        E("td", { colSpan: 5 }, "In generations: " + p.gens),
+                      )
+                    : null,
+                ];
+              }),
+              E(
+                "tr",
+                { key: "other" },
+                E(
+                  "td",
+                  null,
+                  E("i", { className: "pl-sw", style: { background: "var(--border-strong)" } }),
+                  "All other ancestors",
+                ),
+                E("td", null, other.toFixed(1) + "%", dl(-sd, 1)),
+                E("td", null),
+                E("td", null),
+                E("td", null),
+              ),
+            ),
+          ),
+        ),
+      ),
+      E(
+        "div",
+        { className: "pl-tiles" },
+        E(
+          "div",
+          { className: "pl-tile" },
+          E("div", { className: "pl-l" }, "Calf COI"),
+          E("div", { className: "pl-v" }, C.coi.toFixed(1) + "%", dl(C.coi - C.cowCoi, 1)),
+          E("div", { className: "pl-s" }, "dam " + C.cowCoi.toFixed(1) + "%"),
+        ),
+        E(
+          "div",
+          { className: "pl-tile" },
+          E("div", { className: "pl-l" }, "Complete generations"),
+          E("div", { className: "pl-v" }, C.cgBull + " / " + C.cgCow),
+          E("div", { className: "pl-s" }, "sire / dam, goal 10"),
+        ),
+        E(
+          "div",
+          { className: "pl-tile" },
+          E("div", { className: "pl-l" }, "Calves in database"),
+          E("div", { className: "pl-v" }, C.kids.k),
+          E("div", { className: "pl-s" }, C.kids.ka + " still active"),
+        ),
+      ),
+      E("p", { className: "pl-hd" }, "Other ancestors this mating concentrates"),
+      E(
+        "p",
+        { className: "pl-sub" },
+        "Ranked by relationship to the calf. Foundation animals, the animals you added, and the two parents are left out.",
+      ),
+      E(
+        "table",
+        { className: "pl-table" },
+        E(
+          "thead",
+          null,
+          E(
+            "tr",
+            null,
+            ["Rank", "Ancestor", "Rel. coef.", "Blood %", "Occ."].map(function (h) {
+              return E("th", { key: h }, h);
+            }),
+          ),
+        ),
+        E(
+          "tbody",
+          null,
+          C.top.map(function (o, j) {
+            return E(
+              "tr",
+              { key: o.name },
+              E("td", null, j + 1),
+              E("td", null, o.name),
+              E("td", null, o.rel.toFixed(1) + "%"),
+              E("td", null, o.blood.toFixed(1) + "%"),
+              E("td", null, o.occ + "×"),
+            );
+          }),
+        ),
+      ),
+      C.cgBull < 6
+        ? E(
+            "div",
+            { className: "pl-note" },
+            "Short pedigree: only " + C.cgBull + " complete generations on the sire side, so these numbers may be low.",
+          )
+        : null,
+    );
+    var dambar = E(
+      "div",
+      { className: "pl-dambar" },
+      E(
+        "div",
+        { className: "pl-top" },
+        E("span", { className: "pl-role pl-role-d" }, "Dam"),
+        E("span", { className: "pl-big" }, cow),
+        cowRec && cowRec.regNum ? E("span", { className: "pl-reg" }, "Reg " + cowRec.regNum) : null,
+      ),
+      t[cow] || n[cow]
+        ? E(
+            "div",
+            { className: "pl-par" },
+            t[cow] && n[cow] ? t[cow] + " × " + n[cow] : t[cow] ? "Sire " + t[cow] : "Dam " + n[cow],
+          )
+        : null,
+      E(
+        "div",
+        { className: "pl-stats" },
+        C.per.map(function (p, i) {
+          return E(
+            "span",
+            { key: p.name },
+            E("i", { className: "pl-sw", style: { background: COL[i] } }),
+            sn(p.name) + " ",
+            E("b", null, p.dBlood.toFixed(1) + "%"),
+          );
+        }),
+        E("span", null, "COI ", E("b", null, C.cowCoi.toFixed(1) + "%")),
+      ),
+    );
+    var nextGen = E(
+      "div",
+      { style: { marginTop: 16, paddingTop: 12, borderTop: "1px dotted #d8d0c2" } },
+      E("p", { className: "pl-lab" }, "Plan the next generation"),
+      E(
+        "div",
+        { className: "metric-note", style: { marginBottom: 6 } },
+        "Pick a mate for this calf (assumed to be a heifer) to see the same card for her calf. You can keep going.",
+      ),
+      E(ph, { key: "mate" + cow + bull, label: "Mate for the calf", value: mate, onChange: setMate, allAnimals: e }),
+      mate && r.has(mate) && ext
+        ? E(CheckMate, {
+            key: ext.CALF + "|" + mate,
+            fixed: { cow: ext.CALF, bull: mate, extra: extra },
+            allAnimals: ext.e2,
+            sire: ext.t2,
+            dam: ext.n2,
+            names: ext.r2,
+            kinship: ext.a2,
+            founders: d,
+            gen: ext.gen2,
+          })
+        : null,
+    );
+    return E(
+      "div",
+      null,
+      FIX ? null : controls,
+      dambar,
+      sexWarn.length ? E("div", { className: "pl-note" }, sexWarn.join(" ")) : null,
+      E(
+        "p",
+        { className: "pl-count" },
+        "The calf from " + cow + " × " + bull + ". Changes are compared with " + cow + ": green is an increase, red is a decrease.",
+      ),
+      card,
+      E(
+        "div",
+        { className: "metric-note", style: { marginTop: 8 } },
+        "These are expected values from the pedigree. Real calves vary.",
+      ),
+      P.saveMatingLog && !FIX
+        ? E(
+            "div",
+            { style: { marginTop: 10 } },
+            E(
+              "button",
+              {
+                className: "btn secondary",
+                onClick: function () {
+                  var byName = {};
+                  C.per.slice(0, d.length).forEach(function (p) {
+                    byName[p.name] = p.blood;
+                  });
+                  var entry = {
+                    id: cow + "__" + bull + "__" + Date.now(),
+                    cow: cow,
+                    bull: bull,
+                    dateLogged: new Date().toISOString(),
+                    predictedCOI: C.coi,
+                    predictedFounderBlood: byName,
+                    predictedB77: byName["MARK DONALD 77"] === undefined ? null : byName["MARK DONALD 77"],
+                    predictedB43: byName["MCK DONALD DHU 43"] === undefined ? null : byName["MCK DONALD DHU 43"],
+                    actualCalved: null,
+                    calvingEase: null,
+                    vigorNotes: null,
+                    resultingCalfName: null,
+                    notes: null,
+                    stage: "considering",
+                  };
+                  Promise.resolve(P.saveMatingLog((P.matingLog || []).concat([entry]))).then(function (ok) {
+                    setLogMsg(ok ? "Saved to the Log as Considering." : "Save may not have persisted.");
+                  });
+                },
+              },
+              "Save to Log",
+            ),
+            logMsg ? E("span", { className: "metric-note", style: { marginLeft: 10 } }, logMsg) : null,
+          )
+        : null,
+      nextGen,
+    );
+  }
+
+  function vh({
+    allAnimals: e,
+    sire: t,
+    dam: n,
+    names: r,
+    byName: l,
+    kinship: a,
+    onGoToAnimal: i,
+    matingLog: s,
+    saveMatingLog: u,
+    founders: d,
+    gen: gen,
+  }) {
+    let [c, g] = (0, b.useState)(""),
+      [v, y] = (0, b.useState)(""),
+      [E, k] = (0, b.useState)([]),
+      [O, f] = (0, b.useState)(d[0]),
+      [p, m] = (0, b.useState)(d[0]),
+      [w, x] = (0, b.useState)("coi-high"),
+      [h, T] = (0, b.useState)(null),
+      [I, R] = (0, b.useState)(""),
+      [M, U] = (0, b.useState)(null),
+      [q, X] = (0, b.useState)(null),
+      K = (0, b.useMemo)(() => {
+        if (!v) return [];
+        let C = oe(v);
+        return e.filter((H) => H.name.includes(C) && !E.includes(H.name)).slice(0, 6);
+      }, [v, e, E]),
+      G = (0, b.useMemo)(() => {
+        if (!p) return [];
+        let C = oe(p);
+        return e.filter((H) => H.name.includes(C)).slice(0, 6);
+      }, [p, e]),
+      Z = (C) => {
+        (C && !E.includes(C) && k([...E, C]), y(""));
+      },
+      B = () => {
+        K.length > 0 && Z(K[0].name);
+      },
+      Y = (C) => {
+        (k(E.filter((H) => H !== C)), h === C && (T(null), U(null)));
+      },
+      D = c && r.has(c),
+      z = O && r.has(O),
+      S = D ? e.find((C) => C.name === c) : null,
+      _ = S ? qe(c, S, t, n) : null,
+      N = _ === "Male" ? "Female" : _ === "Female" ? "Male" : null,
+      P = () => {
+        if (!N) return;
+        let C = e
+          .filter((H) => H.name !== c && Zr(H) && qe(H.name, H, t, n) === N)
+          .map((H) => H.name);
+        k([...new Set([...E, ...C])]);
+      },
+      $ = [],
+      W = (0, b.useMemo)(
+        () =>
+          !D || !z
+            ? []
+            : E.filter((C) => r.has(C))
+                .map((C) => {
+                  let H = zl(C, c, O, t, n, r, a),
+                    me = e.find((Je) => Je.name === C),
+                    te = d.map((Je) => ((ye(C, Je, t, n, r) + ye(c, Je, t, n, r)) / 2) * 100),
+                    ze = te.length ? Math.min(...te) : 0;
+                  return {
+                    name: C,
+                    coi: H.calfCOI * 100,
+                    rel: H.rel * 100,
+                    blood: H.blood * 100,
+                    occ: H.occ,
+                    avail: os(me),
+                    calfBlood: te,
+                    balance: ze,
+                  };
+                })
+                .sort((C, H) =>
+                  w === "coi-low"
+                    ? C.coi - H.coi
+                    : w === "coi-high"
+                      ? H.coi - C.coi
+                      : w === "blood-high"
+                        ? H.blood - C.blood
+                        : w === "rel-high"
+                          ? H.rel - C.rel
+                          : w === "occ-high"
+                            ? H.occ - C.occ
+                            : w === "balance-high"
+                              ? H.balance - C.balance
+                              : 0,
+                ),
+        [E, c, O, D, z, t, n, r, a, w, e, d],
+      ),
+      ee = h && D ? Ym(c, h, t, n, r) : [],
+      Ee = h && D ? a(c, h) * 100 : null,
+      ie = h && D && z ? zl(c, h, O, t, n, r, a) : null,
+      we = "(Hypothetical Calf)",
+      ke = h ? e.find((C) => C.name === h) : null,
+      bt = ke ? qe(h, ke, t, n) : null,
+      j = h,
+      J = c;
+    (_ === "Male" || bt === "Female") && ((j = c), (J = h));
+    let A = (0, b.useMemo)(() => ({ ...t, [we]: j }), [t, j]),
+      se = (0, b.useMemo)(() => ({ ...n, [we]: J }), [n, J]),
+      ce = (0, b.useMemo)(() => new Set([...r, we]), [r]),
+      pe =
+        h && D
+          ? (() => {
+              let C = d.map((H) => ((ye(c, H, t, n, r) + ye(h, H, t, n, r)) / 2) * 100);
+              return { blood: C, byName: Object.fromEntries(d.map((H, me) => [H, C[me]])) };
+            })()
+          : null,
+      F = (0, b.useMemo)(() => {
+        if (!I) return [];
+        let C = oe(I);
+        return e.filter((H) => H.name.includes(C) && H.name !== h && H.name !== c).slice(0, 6);
+      }, [I, e, h, c]),
+      Q = "(Hypothetical Grandcalf)",
+      ne = (0, b.useMemo)(() => {
+        if (!M || !h || !D || !r.has(M)) return null;
+        let C = { ...A, [Q]: we },
+          H = { ...se, [Q]: M },
+          me = new Set([...ce, Q]),
+          tm = {},
+          te = (ae, Se = tm) => {
+            if (!ae || !me.has(ae)) return 0;
+            if (ae in Se) return Se[ae];
+            Se[ae] = 0;
+            let mt = 1 + Math.max(te(C[ae], Se), te(H[ae], Se));
+            return ((Se[ae] = mt), mt);
+          },
+          ze = {},
+          Je = (ae, Se) => {
+            if (!ae || !Se) return 0;
+            if (ae === Se) {
+              let no = ae + "|self";
+              if (ze[no] !== void 0) return ze[no];
+              if (!me.has(ae)) return ((ze[no] = 0.5), 0.5);
+              let ss = 0.5 + 0.5 * Je(C[ae], H[ae]);
+              return ((ze[no] = ss), ss);
+            }
+            let mt = ae < Se ? ae + "|" + Se : Se + "|" + ae;
+            if (ze[mt] !== void 0) return ze[mt];
+            if (!me.has(ae) || !me.has(Se)) return ((ze[mt] = 0), 0);
+            let of = te(ae),
+              lf = te(Se),
+              is =
+                of <= lf
+                  ? 0.5 * (Je(ae, C[Se]) + Je(ae, H[Se]))
+                  : 0.5 * (Je(C[ae], Se) + Je(H[ae], Se));
+            return ((ze[mt] = is), is);
+          },
+          mls = {},
+          Ml = (ae, Se) => {
+            let mm = mls[Se] || (mls[Se] = new Map()),
+              f = (x) => {
+                if (!x || !me.has(x)) return 0;
+                if (x === Se) return 1;
+                let v = mm.get(x);
+                if (v !== void 0) return v;
+                return ((v = 0.5 * (f(C[x]) + f(H[x]))), mm.set(x, v), v);
+              };
+            return f(ae);
+          },
+          nf = Je(we, M) * 100,
+          rf = d.map((ae) => Ml(Q, ae) * 100);
+        return { coi: nf, blood: rf, gSire: C, gDam: H, gNames: me };
+      }, [M, h, D, r, A, se, ce, c, d]),
+      pt = async () => {
+        if (!h || !D || !ie) return;
+        let C = {
+            id: `${c}__${h}__${Date.now()}`,
+            cow: c,
+            bull: h,
+            dateLogged: new Date().toISOString(),
+            predictedCOI: Ee,
+            predictedFounderBlood: pe ? pe.byName : null,
+            predictedB77: pe ? (pe.byName["MARK DONALD 77"] ?? null) : null,
+            predictedB43: pe ? (pe.byName["MCK DONALD DHU 43"] ?? null) : null,
+            actualCalved: null,
+            calvingEase: null,
+            vigorNotes: null,
+            resultingCalfName: null,
+            notes: null,
+            stage: "considering",
+          },
+          H = await u([...s, C]);
+        X(
+          H
+            ? { type: "ok", text: "Logged \u2014 see Mating Log tab." }
+            : { type: "warn", text: "Save may not have persisted." },
+        );
+      };
+    return (0, o.jsxs)("div", {
+      className: "screen active",
+      children: [
+        (0, o.jsx)("h1", { children: "Mating Planner" }),
+        (0, o.jsx)("div", {
+          className: "sub",
+          children: "Pick a dam, say what you want, and compare available sires against her",
+        }),
+        (0, o.jsx)(PlNew, {
+          allAnimals: e,
+          dam: c,
+          damOk: D,
+          mateSex: N,
+          sire: t,
+          damMap: n,
+          names: r,
+          kinship: a,
+          gen: gen,
+          founders: d,
+          onDamChange: (C) => {
+            (g(C), T(null));
+          },
+          onPick: (C) => {
+            (Z(C), T(C), U(null));
+          },
+          onTarget: (C) => {
+            (f(C), m(C));
+          },
+        }),
+        (0, o.jsxs)("div", {
+          className: "card target-panel",
+          children: [
+            (0, o.jsx)("h2", { children: "Candidate Sires to Compare" }),
+            D &&
+              N &&
+              (0, o.jsxs)("button", {
+                className: "btn secondary",
+                style: { marginBottom: 10 },
+                onClick: P,
+                children: ["+ Add all available ", N === "Male" ? "sires" : "mates"],
+              }),
+            D &&
+              !N &&
+              (0, o.jsxs)("div", {
+                className: "metric-note",
+                style: { marginBottom: 10 },
+                children: [
+                  c,
+                  "'s sex isn't set \u2014 correct it on Edit Animal to enable auto-populating available mates.",
+                ],
+              }),
+            (0, o.jsxs)("div", {
+              className: "ancestor-chips",
+              children: [
+                E.map((C) =>
+                  (0, o.jsxs)(
+                    "div",
+                    {
+                      className: "ancestor-chip",
+                      children: [
+                        C,
+                        (0, o.jsx)("span", {
+                          className: "chip-remove",
+                          onClick: () => Y(C),
+                          children: "\xD7",
+                        }),
+                      ],
+                    },
+                    C,
+                  ),
+                ),
+                E.length === 0 &&
+                  (0, o.jsx)("span", {
+                    className: "metric-note",
+                    children: "Search and add candidates below, or use the buttons above.",
+                  }),
+              ],
+            }),
+            (0, o.jsxs)("div", {
+              className: "ancestor-add-row",
+              style: { position: "relative" },
+              children: [
+                (0, o.jsx)("input", {
+                  autoCorrect: "off",
+                  autoCapitalize: "off",
+                  autoComplete: "off",
+                  spellCheck: "false",
+                  placeholder: "Search a sire by name or number\u2026",
+                  value: v,
+                  onChange: (C) => y(C.target.value),
+                }),
+                (0, o.jsx)("button", {
+                  className: "btn secondary",
+                  onClick: B,
+                  disabled: K.length === 0,
+                  title: "Add top match",
+                  children: "+",
+                }),
+                K.length > 0 &&
+                  (0, o.jsx)("div", {
+                    className: "suggestions",
+                    children: K.map((C) =>
+                      (0, o.jsx)(
+                        "div",
+                        { className: "suggestion-row", onClick: () => Z(C.name), children: [C.name, sxd(C)] },
+                        C.name,
+                      ),
+                    ),
+                  }),
+              ],
+            }),
+          ],
+        }),
+        D
+          ? (0, o.jsxs)("div", {
+              className: "card",
+              children: [
+                (0, o.jsx)("h2", { children: "Compare Sires" }),
+                W.length === 0
+                  ? (0, o.jsx)("div", {
+                      className: "metric-note",
+                      children: "Add candidates above to compare.",
+                    })
+                  : (0, o.jsxs)(o.Fragment, {
+                      children: [
+                        (0, o.jsx)("div", {
+                          className: "table-scroll",
+                          children: (0, o.jsxs)("table", {
+                            className: "rank-table",
+                            children: [
+                              (0, o.jsx)("thead", {
+                                children: (0, o.jsxs)("tr", {
+                                  children: [
+                                    (0, o.jsx)("th", { children: "Rank" }),
+                                    (0, o.jsx)("th", { children: "Sire" }),
+                                    (0, o.jsx)("th", { children: "Calf COI" }),
+                                    (0, o.jsx)("th", { children: "Add. rel." }),
+                                    (0, o.jsx)("th", { children: "Blood%" }),
+                                    (0, o.jsx)("th", { children: "Occ." }),
+                                    d.map((C) =>
+                                      (0, o.jsx)(
+                                        "th",
+                                        { title: `Calf blood % to ${C}`, children: dn(C) },
+                                        C,
+                                      ),
+                                    ),
+                                    (0, o.jsx)("th", { children: "Balance" }),
+                                    (0, o.jsx)("th", { children: "Avail." }),
+                                  ],
+                                }),
+                              }),
+                              (0, o.jsx)("tbody", {
+                                children: W.map((C, H) => {
+                                  let me = lt(C.coi);
+                                  return (0, o.jsxs)(
+                                    "tr",
+                                    {
+                                      className:
+                                        (H === 0 ? "best " : "") +
+                                        "clickable-row" +
+                                        (h === C.name ? " selected-row" : ""),
+                                      onClick: () => {
+                                        (T(h === C.name ? null : C.name), U(null));
+                                      },
+                                      children: [
+                                        (0, o.jsx)("td", { children: H + 1 }),
+                                        (0, o.jsxs)("td", {
+                                          className: "row-link",
+                                          children: [h === C.name ? "\u25BE " : "\u25B8 ", C.name],
+                                        }),
+                                        (0, o.jsxs)("td", { children: [C.coi.toFixed(2), "%"] }),
+                                        (0, o.jsxs)("td", { children: [C.rel.toFixed(2), "%"] }),
+                                        (0, o.jsxs)("td", { children: [C.blood.toFixed(2), "%"] }),
+                                        (0, o.jsxs)("td", { children: [C.occ, "\xD7"] }),
+                                        C.calfBlood.map((te, ze) =>
+                                          (0, o.jsxs)("td", { children: [te.toFixed(1), "%"] }, ze),
+                                        ),
+                                        (0, o.jsxs)("td", {
+                                          title: d
+                                            .map(
+                                              (te, ze) => `${te}: ${C.calfBlood[ze].toFixed(1)}%`,
+                                            )
+                                            .join(" \xB7 "),
+                                          children: [C.balance.toFixed(1), "%"],
+                                        }),
+                                        (0, o.jsx)("td", { children: C.avail || "\u2014" }),
+                                      ],
+                                    },
+                                    C.name,
+                                  );
+                                }),
+                              }),
+                            ],
+                          }),
+                        }),
+                        (0, o.jsx)("div", {
+                          className: "metric-note",
+                          style: { marginTop: 8 },
+                          children:
+                            "Tap a row for the full pairing detail and a 4-generation pedigree of the resulting calf.",
+                        }),
+                      ],
+                    }),
+              ],
+            })
+          : (0, o.jsx)("div", {
+              className: "card",
+              children: (0, o.jsx)("div", {
+                className: "metric-note",
+                children: "Pick a cow above.",
+              }),
+            }),
+        h &&
+          r.has(h) &&
+          (0, o.jsxs)("div", {
+            className: "card",
+            children: [
+              (0, o.jsxs)("h2", { children: ["Pairing Detail: ", c, " \xD7 ", h] }),
+              (() => {
+                let C = lt(Ee);
+                return (0, o.jsxs)("div", {
+                  className: "metric-row",
+                  children: [
+                    (0, o.jsx)("div", {
+                      className: "metric-label",
+                      children: "Calf Coefficient of Inbreeding",
+                    }),
+                    (0, o.jsxs)("div", {
+                      className: "metric-value",
+                      children: [Ee.toFixed(2), "%"],
+                    }),
+                  ],
+                });
+              })(),
+              (0, o.jsxs)("div", {
+                className: "metric-row",
+                children: [
+                  (0, o.jsx)("div", {
+                    className: "metric-label",
+                    children: "Shared Ancestors (source of inbreeding)",
+                  }),
+                  (0, o.jsx)("div", { className: "metric-value", children: ee.length }),
+                ],
+              }),
+              pe &&
+                (0, o.jsx)(o.Fragment, {
+                  children: d.map((C, H) =>
+                    (0, o.jsxs)(
+                      "div",
+                      {
+                        className: "metric-row",
+                        children: [
+                          (0, o.jsxs)("div", {
+                            className: "metric-label",
+                            children: ["Calf Blood % \u2014 ", C],
+                          }),
+                          (0, o.jsxs)("div", {
+                            className: "metric-value",
+                            children: [pe.blood[H].toFixed(2), "%"],
+                          }),
+                        ],
+                      },
+                      C,
+                    ),
+                  ),
+                }),
+              h &&
+                D &&
+                d.map((F) => {
+                  let Q = zl(c, h, F, t, n, r, a);
+                  return (0, o.jsxs)(
+                    o.Fragment,
+                    {
+                      children: [
+                        (0, o.jsxs)("div", {
+                          className: "metric-row",
+                          children: [
+                            (0, o.jsx)("div", {
+                              className: "metric-label",
+                              children: ["Additive rel. vs. ", F],
+                            }),
+                            (0, o.jsxs)("div", {
+                              className: "metric-value",
+                              children: [(Q.rel * 100).toFixed(2), "%"],
+                            }),
+                          ],
+                        }),
+                        (0, o.jsxs)("div", {
+                          className: "metric-row",
+                          children: [
+                            (0, o.jsx)("div", {
+                              className: "metric-label",
+                              children: ["Occurrences of ", F],
+                            }),
+                            (0, o.jsxs)("div", {
+                              className: "metric-value",
+                              children: [Q.occ, "\xD7"],
+                            }),
+                          ],
+                        }),
+                      ],
+                    },
+                    "pd" + F,
+                  );
+                }),
+              (0, o.jsxs)("button", {
+                className: "btn secondary",
+                style: { marginTop: 10 },
+                onClick: () => i(c),
+                children: ["View ", c, " \u2192"],
+              }),
+              " ",
+              (0, o.jsxs)("button", {
+                className: "btn secondary",
+                style: { marginTop: 10 },
+                onClick: () => i(h),
+                children: ["View ", h, " \u2192"],
+              }),
+              " ",
+              (0, o.jsx)("button", {
+                className: "btn secondary",
+                style: { marginTop: 10 },
+                onClick: pt,
+                children: "Log This Mating",
+              }),
+              q &&
+                (0, o.jsx)("div", {
+                  className: "live-checks " + (q.type === "ok" ? "ok" : "warn"),
+                  style: { marginTop: 8 },
+                  children: q.text,
+                }),
+              ee.length > 0 &&
+                (0, o.jsxs)("div", {
+                  style: { marginTop: 12, paddingTop: 12, borderTop: "1px dotted #d8d0c2" },
+                  children: [
+                    (0, o.jsx)("div", {
+                      className: "metric-note",
+                      style: { marginBottom: 8 },
+                      children:
+                        "These animals appear on both sides \u2014 they're the source of this pairing's inbreeding:",
+                    }),
+                    (0, o.jsx)("ul", {
+                      className: "plain-list scroll-list",
+                      children: ee.map((C) =>
+                        (0, o.jsx)(
+                          "li",
+                          {
+                            children: (0, o.jsx)("span", {
+                              className: "link",
+                              onClick: () => i(C),
+                              children: C,
+                            }),
+                          },
+                          C,
+                        ),
+                      ),
+                    }),
+                  ],
+                }),
+              (0, o.jsxs)("div", {
+                style: { marginTop: 14, paddingTop: 12, borderTop: "1px dotted #d8d0c2" },
+                children: [
+                  (0, o.jsx)("h2", {
+                    style: { marginBottom: 10 },
+                    children: "Resulting Calf \u2014 4-Generation Pedigree",
+                  }),
+                  (0, o.jsx)(_l, {
+                    name: we,
+                    sire: A,
+                    dam: se,
+                    names: ce,
+                    byName: l,
+                    maxGen: 5,
+                    targets: [O],
+                    mode: "open",
+                    onSelect: (C) => {
+                      C !== we && i(C);
+                    },
+                  }),
+                  (0, o.jsx)("div", {
+                    className: "metric-note",
+                    style: { marginTop: 8 },
+                    children:
+                      "Hypothetical \u2014 this calf doesn't exist yet. Tap any real ancestor to open its record.",
+                  }),
+                ],
+              }),
+              (0, o.jsxs)("div", {
+                style: { marginTop: 14, paddingTop: 12, borderTop: "1px dotted #d8d0c2" },
+                children: [
+                  (0, o.jsx)("h2", {
+                    style: { marginBottom: 10 },
+                    children: "Plan the Next Generation",
+                  }),
+                  (0, o.jsx)("div", {
+                    className: "metric-note",
+                    style: { marginBottom: 8 },
+                    children:
+                      "Pick a real mate for this hypothetical calf to see what the grandcalf would look like.",
+                  }),
+                  (0, o.jsxs)("div", {
+                    className: "ancestor-add-row",
+                    style: { position: "relative" },
+                    children: [
+                      (0, o.jsx)("input", {
+                        autoCorrect: "off",
+                        autoCapitalize: "off",
+                        autoComplete: "off",
+                        spellCheck: "false",
+                        placeholder: "Search a mate for the hypothetical calf\u2026",
+                        value: I,
+                        onChange: (C) => {
+                          (R(C.target.value), U(null));
+                        },
+                      }),
+                      F.length > 0 &&
+                        (0, o.jsx)("div", {
+                          className: "suggestions",
+                          children: F.map((C) =>
+                            (0, o.jsx)(
+                              "div",
+                              {
+                                className: "suggestion-row",
+                                onClick: () => {
+                                  (U(C.name), R(C.name));
+                                },
+                                children: [C.name, sxd(C)],
+                              },
+                              C.name,
+                            ),
+                          ),
+                        }),
+                    ],
+                  }),
+                  ne &&
+                    (() => {
+                      let C = lt(ne.coi);
+                      return (0, o.jsxs)("div", {
+                        style: { marginTop: 12 },
+                        children: [
+                          (0, o.jsxs)("div", {
+                            className: "metric-note",
+                            style: { marginBottom: 6 },
+                            children: [
+                              "Chain: ",
+                              c,
+                              " \xD7 ",
+                              h,
+                              " \u2192 (Hypothetical Calf) \xD7 ",
+                              M,
+                              " \u2192 (Hypothetical Grandcalf)",
+                            ],
+                          }),
+                          (0, o.jsxs)("div", {
+                            className: "metric-row",
+                            children: [
+                              (0, o.jsx)("div", {
+                                className: "metric-label",
+                                children: "Grandcalf COI",
+                              }),
+                              (0, o.jsxs)("div", {
+                                className: "metric-value",
+                                children: [ne.coi.toFixed(2), "%"],
+                              }),
+                            ],
+                          }),
+                          d.map((H, me) =>
+                            (0, o.jsxs)(
+                              "div",
+                              {
+                                className: "metric-row",
+                                children: [
+                                  (0, o.jsxs)("div", {
+                                    className: "metric-label",
+                                    children: ["Grandcalf Blood % \u2014 ", H],
+                                  }),
+                                  (0, o.jsxs)("div", {
+                                    className: "metric-value",
+                                    children: [ne.blood[me].toFixed(2), "%"],
+                                  }),
+                                ],
+                              },
+                              H,
+                            ),
+                          ),
+                          (0, o.jsxs)("button", {
+                            className: "btn secondary",
+                            style: { marginTop: 10 },
+                            onClick: () => i(M),
+                            children: ["View ", M, " \u2192"],
+                          }),
+                        ],
+                      });
+                    })(),
+                ],
+              }),
+            ],
+          }),
+      ],
+    });
+  }
+  function gh({
+    allAnimals: e,
+    names: t,
+    byName: n,
+    sire: r,
+    dam: l,
+    edits: a,
+    saveEdits: i,
+    onGoToAnimal: s,
+    selected: u,
+    setSelected: d,
+    userAnimals: c,
+    saveUserAnimals: g,
+    reviewed: v,
+    saveReviewed: y,
+  }) {
+    let [E, k] = (0, b.useState)(u || ""),
+      [O, f] = (0, b.useState)(""),
+      [p, m] = (0, b.useState)(""),
+      [w, x] = (0, b.useState)("auto"),
+      [h, T] = (0, b.useState)("Active"),
+      [I, R] = (0, b.useState)(""),
+      [M, U] = (0, b.useState)(!1),
+      [q, X] = (0, b.useState)(null),
+      [K, G] = (0, b.useState)(!1);
+    (0, b.useEffect)(() => {
+      if (u) {
+        k(u);
+        let A = n[u];
+        (A &&
+          (f(A.regNum || ""),
+          m(A.birthDate || ""),
+          x(A.sexOverride || "auto"),
+          T(A.status || "Active"),
+          R(A.notes || ""),
+          U(!!(A.livingAvailable || A.semenAvailable))),
+          X(null),
+          G(!1));
+      }
+    }, [u]);
+    let Z = (0, b.useMemo)(() => {
+        if (!E) return [];
+        let A = oe(E);
+        return e.filter((se) => se.name.includes(A)).slice(0, 10);
+      }, [E, e]),
+      B = Z.length > 0 && oe(E) !== oe(u || ""),
+      Y = (A) => {
+        A.key === "Enter" && Z.length > 0 && d(Z[0].name);
+      },
+      D = u ? n[u] : null,
+      z = D ? qe(u, D, r, l) : null,
+      S = w !== "auto" ? w : z,
+      _ = async () => {
+        if (!u) return;
+        let A = {
+            ...a,
+            [u]: {
+              ...(a[u] || {}),
+              regNum: O || null,
+              birthDate: p || null,
+              sexOverride: w !== "auto" ? w : null,
+              status: h !== "Active" ? h : null,
+              notes: I || null,
+              livingAvailable: M,
+              semenAvailable: !1,
+              lastEditedAt: new Date().toISOString(),
+            },
+          },
+          se = await i(A);
+        X(
+          se
+            ? { type: "ok", text: `Saved changes to ${u}.` }
+            : {
+                type: "warn",
+                text: "Changes are showing for this session, but the permanent save failed. Go to Reports and copy the backup text before navigating away.",
+              },
+        );
+      },
+      N = u ? !!v[u] : !1,
+      P = () => {
+        if (!u) return;
+        let A = { ...v };
+        (A[u] ? delete A[u] : (A[u] = !0), y(A));
+      },
+      $ = async () => {
+        await _();
+        let A = { ...v, [u]: !0 };
+        await y(A);
+        let se = [...e].sort((F, Q) => F.name.localeCompare(Q.name)),
+          ce = se.findIndex((F) => F.name === u),
+          pe = se.slice(ce + 1).find((F) => !A[F.name]) || se.find((F) => !A[F.name]);
+        pe && d(pe.name);
+      },
+      W = D ? c.some((A) => A.name === u) : !1,
+      ee = D ? !!a[u] : !1,
+      Ee = D ? e.filter((A) => A.sire === u || A.dam === u).map((A) => A.name) : [],
+      ie = (0, b.useMemo)(() => new Set(c.map((A) => A.name)), [c]),
+      we = (0, b.useMemo)(() => {
+        if (!u || !W) return [];
+        let A = new Set();
+        return (Dl(r[u], r, l, ie, 1, A), Dl(l[u], r, l, ie, 1, A), [...A]);
+      }, [u, W, r, l, ie]),
+      [ke, bt] = (0, b.useState)(!1),
+      j = async () => {
+        let A = new Set([u, ...(ke ? we : [])]),
+          se = c.filter((Q) => !A.has(Q.name)),
+          ce = { ...a };
+        A.forEach((Q) => delete ce[Q]);
+        let pe = await g(se),
+          F = await i(ce);
+        (X(
+          pe && F
+            ? { type: "ok", text: `Removed ${A.size} animal(s) from the database.` }
+            : {
+                type: "warn",
+                text: "Removal may not have saved permanently \u2014 check Reports.",
+              },
+        ),
+          d(null),
+          k(""),
+          G(!1),
+          bt(!1));
+      },
+      J = async () => {
+        let A = { ...a };
+        delete A[u];
+        let se = await i(A);
+        (X({
+          type: se ? "ok" : "warn",
+          text: se
+            ? `Reverted your changes to ${u} back to the original data.`
+            : "Revert may not have saved permanently \u2014 check Reports.",
+        }),
+          f(""),
+          m(""),
+          x("auto"),
+          R(""),
+          U(!1),
+          G(!1));
+      };
+    return (0, o.jsxs)("div", {
+      className: "screen active",
+      children: [
+        (0, o.jsx)("h1", { children: "Edit Animal" }),
+        (0, o.jsx)("div", {
+          className: "sub",
+          children:
+            "Add or correct registration number, birth date, sex, and notes for an existing record",
+        }),
+        (0, o.jsxs)("div", {
+          className: "search-row",
+          children: [
+            (0, o.jsx)("input", {
+              autoCorrect: "off",
+              autoCapitalize: "off",
+              autoComplete: "off",
+              spellCheck: "false",
+              className: "search-input",
+              value: E,
+              onChange: (A) => {
+                k(A.target.value);
+              },
+              onKeyDown: Y,
+              placeholder:
+                "Search animal by name or number\u2026 (press Enter to jump to top match)",
+            }),
+            B &&
+              (0, o.jsx)("div", {
+                className: "suggestions",
+                children: Z.map((A) =>
+                  (0, o.jsxs)(
+                    "div",
+                    {
+                      className: "suggestion-row",
+                      onClick: () => d(A.name),
+                      children: [A.name, A.isStub ? " (stub)" : ""],
+                    },
+                    A.name,
+                  ),
+                ),
+              }),
+          ],
+        }),
+        D
+          ? (0, o.jsxs)(o.Fragment, {
+              children: [
+                (0, o.jsxs)("div", {
+                  className: "card",
+                  children: [
+                    (0, o.jsxs)("h2", {
+                      children: [u, D.isStub ? " (stub \u2014 no pedigree yet)" : ""],
+                    }),
+                    (0, o.jsxs)("div", {
+                      className: "metric-row",
+                      children: [
+                        (0, o.jsx)("div", { className: "metric-label", children: "Sire" }),
+                        (0, o.jsx)("div", {
+                          className: "metric-value",
+                          style: { fontSize: 13 },
+                          children: r[u] || "Unknown",
+                        }),
+                      ],
+                    }),
+                    (0, o.jsxs)("div", {
+                      className: "metric-row",
+                      children: [
+                        (0, o.jsx)("div", { className: "metric-label", children: "Dam" }),
+                        (0, o.jsx)("div", {
+                          className: "metric-value",
+                          style: { fontSize: 13 },
+                          children: l[u] || "Unknown",
+                        }),
+                      ],
+                    }),
+                    (0, o.jsxs)("div", {
+                      className: "metric-row",
+                      children: [
+                        (0, o.jsx)("div", { className: "metric-label", children: "Current Sex" }),
+                        (0, o.jsx)("div", {
+                          className: "metric-value",
+                          style: { fontSize: 13 },
+                          children: z,
+                        }),
+                      ],
+                    }),
+                    (0, o.jsxs)("div", {
+                      className: "metric-note",
+                      style: { marginTop: 8 },
+                      children: [
+                        "Status: added by you = ",
+                        W ? "yes" : "no",
+                        " \xB7 has your edits = ",
+                        ee ? "yes" : "no",
+                        " \xB7 ",
+                        W || ee
+                          ? "Remove/Revert options shown below."
+                          : "No Remove/Revert shown \u2014 this animal is original historical data with no edits, so there's nothing to remove or revert here.",
+                      ],
+                    }),
+                    (0, o.jsx)("button", {
+                      className: "btn secondary",
+                      style: { marginTop: 10 },
+                      onClick: () => s(u),
+                      children: "View full pedigree record \u2192",
+                    }),
+                    (W || ee) &&
+                      (0, o.jsx)("div", {
+                        style: { marginTop: 14, paddingTop: 12, borderTop: "1px dotted #d8d0c2" },
+                        children: K
+                          ? (0, o.jsxs)("div", {
+                              children: [
+                                W
+                                  ? (0, o.jsxs)(o.Fragment, {
+                                      children: [
+                                        (0, o.jsxs)("div", {
+                                          className: "metric-note",
+                                          style: { color: "#7a2e2e", marginBottom: 8 },
+                                          children: [
+                                            "This permanently removes ",
+                                            u,
+                                            " from the database",
+                                            Ee.length > 0
+                                              ? ` \u2014 but ${Ee.length} other animal(s) list it as a parent (${Ee.slice(0, 3).join(", ")}${Ee.length > 3 ? "\u2026" : ""}). They'll show it as missing afterward, flagged in Reports.`
+                                              : ".",
+                                          ],
+                                        }),
+                                        we.length > 0 &&
+                                          (0, o.jsx)(o.Fragment, {
+                                            children: (0, o.jsxs)("label", {
+                                              style: {
+                                                display: "flex",
+                                                alignItems: "flex-start",
+                                                gap: 8,
+                                                fontFamily: "Arial, sans-serif",
+                                                fontSize: 13,
+                                                marginBottom: 8,
+                                              },
+                                              children: [
+                                                (0, o.jsx)("input", {
+                                                  type: "checkbox",
+                                                  checked: ke,
+                                                  onChange: (A) => bt(A.target.checked),
+                                                  style: { marginTop: 2 },
+                                                }),
+                                                (0, o.jsxs)("span", {
+                                                  children: [
+                                                    "Also remove ",
+                                                    we.length,
+                                                    " ancestor(s) in this pedigree that you added \u2014 ",
+                                                    (0, o.jsx)("b", {
+                                                      children: "only animals you added",
+                                                    }),
+                                                    ", never original historical data: ",
+                                                    we.slice(0, 6).join(", "),
+                                                    we.length > 6 ? `, +${we.length - 6} more` : "",
+                                                  ],
+                                                }),
+                                              ],
+                                            }),
+                                          }),
+                                        (0, o.jsxs)("button", {
+                                          className: "btn",
+                                          style: { background: "#7a2e2e", borderColor: "#7a2e2e" },
+                                          onClick: j,
+                                          children: [
+                                            "Yes, remove ",
+                                            ke ? `${we.length + 1} animals` : "it",
+                                          ],
+                                        }),
+                                        " ",
+                                      ],
+                                    })
+                                  : (0, o.jsxs)(o.Fragment, {
+                                      children: [
+                                        (0, o.jsxs)("div", {
+                                          className: "metric-note",
+                                          style: { color: "#7a2e2e", marginBottom: 8 },
+                                          children: [
+                                            "This clears any Reg#, DOB, sex override, notes, or availability you've set on ",
+                                            u,
+                                            " here, back to the original data. It won't delete the animal itself.",
+                                          ],
+                                        }),
+                                        (0, o.jsx)("button", {
+                                          className: "btn",
+                                          style: { background: "#7a2e2e", borderColor: "#7a2e2e" },
+                                          onClick: J,
+                                          children: "Yes, revert",
+                                        }),
+                                        " ",
+                                      ],
+                                    }),
+                                (0, o.jsx)("button", {
+                                  className: "btn secondary",
+                                  onClick: () => G(!1),
+                                  children: "Cancel",
+                                }),
+                              ],
+                            })
+                          : (0, o.jsx)("button", {
+                              className: "btn secondary",
+                              style: { borderColor: "#7a2e2e", color: "#7a2e2e" },
+                              onClick: () => G(!0),
+                              children: W ? "Remove this animal\u2026" : "Revert my changes\u2026",
+                            }),
+                      }),
+                  ],
+                }),
+                (0, o.jsxs)("div", {
+                  className: "card",
+                  children: [
+                    (0, o.jsx)("h2", { children: "Editable Details" }),
+                    (0, o.jsxs)("div", {
+                      className: "form-grid",
+                      children: [
+                        (0, o.jsxs)("div", {
+                          className: "form-field",
+                          children: [
+                            (0, o.jsxs)("label", {
+                              children: [
+                                "Registration Number ",
+                                (0, o.jsx)("span", { className: "opt", children: "(optional)" }),
+                              ],
+                            }),
+                            (0, o.jsx)("input", {
+                              autoCorrect: "off",
+                              autoCapitalize: "off",
+                              autoComplete: "off",
+                              spellCheck: "false",
+                              value: O,
+                              onChange: (A) => f(A.target.value),
+                              placeholder: "Leave blank if unknown",
+                            }),
+                          ],
+                        }),
+                        (0, o.jsxs)("div", {
+                          className: "form-field",
+                          children: [
+                            (0, o.jsxs)("label", {
+                              children: [
+                                "Birth Date ",
+                                (0, o.jsx)("span", { className: "opt", children: "(optional)" }),
+                              ],
+                            }),
+                            (0, o.jsx)("input", {
+                              autoCorrect: "off",
+                              autoCapitalize: "off",
+                              autoComplete: "off",
+                              spellCheck: "false",
+                              value: p,
+                              onChange: (A) => m(A.target.value),
+                              placeholder: "Leave blank if unknown",
+                            }),
+                          ],
+                        }),
+                        (0, o.jsxs)("div", {
+                          className: "form-field",
+                          children: [
+                            (0, o.jsx)("label", { children: "Sex" }),
+                            (0, o.jsxs)("select", {
+                              value: w,
+                              onChange: (A) => x(A.target.value),
+                              children: [
+                                (0, o.jsxs)("option", {
+                                  value: "auto",
+                                  children: ["Auto-detect (currently: ", cn(u, r, l), ")"],
+                                }),
+                                (0, o.jsx)("option", { value: "Male", children: "Male" }),
+                                (0, o.jsx)("option", { value: "Female", children: "Female" }),
+                                (0, o.jsx)("option", { value: "Unknown", children: "Unknown" }),
+                              ],
+                            }),
+                          ],
+                        }),
+                        (0, o.jsxs)("div", {
+                          className: "form-field",
+                          children: [
+                            (0, o.jsx)("label", { children: "Status" }),
+                            (0, o.jsxs)("select", {
+                              value: h,
+                              onChange: (A) => T(A.target.value),
+                              children: [
+                                (0, o.jsx)("option", { value: "Active", children: "Active" }),
+                                (0, o.jsx)("option", { value: "Inactive", children: "Inactive" }),
+                                (0, o.jsx)("option", { value: "Deceased", children: "Deceased" }),
+                              ],
+                            }),
+                          ],
+                        }),
+                        (0, o.jsxs)("div", {
+                          className: "form-field",
+                          children: [
+                            (0, o.jsx)("label", { children: "Breed" }),
+                            (0, o.jsx)("div", {
+                              className: "sex-readonly",
+                              children: "Hereford (fixed)",
+                            }),
+                          ],
+                        }),
+                        (0, o.jsxs)("div", {
+                          className: "form-field full",
+                          children: [
+                            (0, o.jsxs)("label", {
+                              children: [
+                                "Notes ",
+                                (0, o.jsx)("span", { className: "opt", children: "(optional)" }),
+                              ],
+                            }),
+                            (0, o.jsx)("input", {
+                              autoCorrect: "off",
+                              autoCapitalize: "off",
+                              autoComplete: "off",
+                              spellCheck: "false",
+                              value: I,
+                              onChange: (A) => R(A.target.value),
+                              placeholder: "Source chart, photo reference, uncertainty notes, etc.",
+                            }),
+                          ],
+                        }),
+                      ],
+                    }),
+                  ],
+                }),
+                (0, o.jsxs)("div", {
+                  className: "card",
+                  children: [
+                    (0, o.jsxs)("h2", {
+                      children: [
+                        "Availability ",
+                        (0, o.jsx)("span", {
+                          className: "metric-note",
+                          style: { fontWeight: "normal" },
+                          children: "for Mating Planner",
+                        }),
+                      ],
+                    }),
+                    S !== "Male" && S !== "Female"
+                      ? (0, o.jsx)("div", {
+                          className: "metric-note",
+                          children:
+                            "Sex needs to be Male or Female (not Unknown) before availability can be set \u2014 correct it above first.",
+                        })
+                      : (0, o.jsxs)(o.Fragment, {
+                          children: [
+                            (0, o.jsxs)("label", {
+                              style: {
+                                display: "flex",
+                                alignItems: "center",
+                                gap: 8,
+                                fontFamily: "Arial, sans-serif",
+                                fontSize: 13,
+                                padding: "6px 0",
+                              },
+                              children: [
+                                (0, o.jsx)("input", {
+                                  type: "checkbox",
+                                  checked: M,
+                                  onChange: (A) => U(A.target.checked),
+                                }),
+                                "Available ",
+                                S === "Male"
+                                  ? "(can be used as a sire \u2014 living or semen)"
+                                  : "(can be used as a dam)",
+                              ],
+                            }),
+                            (0, o.jsx)("div", {
+                              className: "metric-note",
+                              style: { marginTop: 4 },
+                              children:
+                                "Ticking this marks the animal Active in the Herd list; unticking marks it Inactive. It is saved on this device only \u2014 your spreadsheet's Herd Status is not changed.",
+                            }),
+                            (0, o.jsx)("div", {
+                              className: "metric-note",
+                              style: { marginTop: 6 },
+                              children:
+                                "Defaults to unavailable \u2014 nothing is marked available unless you check it here.",
+                            }),
+                          ],
+                        }),
+                  ],
+                }),
+                (0, o.jsxs)("div", {
+                  className: "save-row",
+                  children: [
+                    q && (0, o.jsx)("span", { className: "live-checks ok", children: q.text }),
+                    (0, o.jsx)("button", {
+                      className: "btn",
+                      onClick: _,
+                      children: "Save Changes",
+                    }),
+                  ],
+                }),
+              ],
+            })
+          : (0, o.jsx)("div", {
+              className: "card",
+              children: (0, o.jsx)("div", {
+                className: "metric-note",
+                children: "Search for an animal above to edit its details.",
+              }),
+            }),
+      ],
+    });
+  }
+  var qd = `This is a photo or scan of a Hereford cattle pedigree chart. Extract every individual animal visible on the chart along with their sire and dam, based on the chart's structure (lines/boxes connecting animals to their parents).
+
+Return ONLY a JSON array, nothing else \u2014 no markdown code fences, no explanation, no extra text. Exact format:
+[{"name":"ANIMAL NAME","sire":"SIRE NAME","dam":"DAM NAME"}]
+
+Rules:
+- Use uppercase for all names, exactly as written on the chart (correct obvious OCR-type ambiguity only if very confident).
+- If a parent is missing, illegible, or not shown on the chart, use null for that field (not an empty string, not "Unknown").
+- Include every animal on the chart, including ones with no further ancestors shown (leave their sire/dam null).
+- Do not invent animals or relationships not shown on the chart.`;
+  async function yh(e) {
+    let t = e.type === "application/pdf";
+    if (/heic|heif/i.test(e.type) || /\.(heic|heif)$/i.test(e.name || ""))
+      throw new Error("HEIC_UNSUPPORTED");
+    let r = await new Promise((c, g) => {
+        let v = new FileReader();
+        ((v.onload = () => c(v.result.split(",")[1])),
+          (v.onerror = () => g(new Error("Could not read the file from your device."))),
+          v.readAsDataURL(e));
+      }),
+      l = t
+        ? [
+            {
+              type: "document",
+              source: { type: "base64", media_type: "application/pdf", data: r },
+            },
+            { type: "text", text: qd },
+          ]
+        : [
+            {
+              type: "image",
+              source: { type: "base64", media_type: e.type || "image/jpeg", data: r },
+            },
+            { type: "text", text: qd },
+          ],
+      a;
+    try {
+      a = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: "claude-sonnet-4-6",
+          max_tokens: 1e3,
+          messages: [{ role: "user", content: l }],
+        }),
+      });
+    } catch (c) {
+      throw new Error(
+        "NETWORK_ERROR: " + (c && c.message ? c.message : "the request never reached the server"),
+      );
+    }
+    if (!a.ok) {
+      let c = "";
+      try {
+        let g = await a.json();
+        c = g && g.error && g.error.message ? g.error.message : JSON.stringify(g).slice(0, 200);
+      } catch {
+        c = await a.text().catch(() => "");
+      }
+      throw new Error(`API_ERROR (status ${a.status}): ${c}`);
+    }
+    let u = (await a.json()).content
+        .map((c) => c.text || "")
+        .join(
+          `
+`,
+        )
+        .replace(/```json|```/g, "")
+        .trim(),
+      d;
+    try {
+      d = JSON.parse(u);
+    } catch {
+      throw new Error(
+        "PARSE_ERROR: response wasn't valid JSON \u2014 raw reply started with: " + u.slice(0, 150),
+      );
+    }
+    if (!Array.isArray(d))
+      throw new Error("PARSE_ERROR: expected a list of animals but got something else.");
+    return d.map((c) => ({
+      name: oe(c.name),
+      sire: c.sire ? oe(c.sire) : null,
+      dam: c.dam ? oe(c.dam) : null,
+    }));
+  }
+  var wh = `
+  /* ==========================================================================
+     LineBred app \u2014 component styles. Tokens come from tokens.css.
+     Every class the app renders is covered here.
+     ====================================================================== */
+
+  .app-root {
+    font-family: var(--font);
+    background: var(--surface-sunken);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: var(--t-body);
+    line-height: var(--lh-body);
+  }
+
+  /* ---- app bar + tabs -------------------------------------------------- */
+  .toolbar {
+    display: flex; align-items: center; gap: 2px;
+    padding: 0 var(--s-4);
+    background: var(--surface);
+    border-bottom: var(--bw) solid var(--border-strong);
+    overflow-x: auto;
+    scrollbar-width: none;
+    position: sticky; top: 0; z-index: 20;
+  }
+  .toolbar::-webkit-scrollbar { display: none; }
+  .toolbar > span {
+    flex: none;
+    display: inline-flex; align-items: center;
+    margin-right: var(--s-4); padding: 10px 0;
+  }
+  .toolbar > span img { display: block; height: 32px; width: auto; max-width: none; }
+  .toolbar button {
+    font: inherit;
+    font-size: var(--t-sm); font-weight: var(--w-med);
+    padding: 14px 12px;
+    border: 0; border-bottom: 2px solid transparent;
+    background: none; color: var(--text-muted);
+    cursor: pointer; white-space: nowrap;
+  }
+  .toolbar button:hover { color: var(--text); }
+  .toolbar button.active { color: var(--text); font-weight: var(--w-semi); border-bottom-color: var(--accent); }
+
+  .storage-warning {
+    background: var(--high-bg); color: var(--high);
+    border-bottom: var(--bw) solid var(--high-border);
+    font-size: var(--t-sm); padding: 10px var(--s-4); text-align: center;
+  }
+
+  /* ---- page shell ------------------------------------------------------ */
+  .screen { padding: var(--s-5) var(--s-4) var(--s-8); max-width: 1060px; margin: 0 auto; }
+  .app-root h1 { font-size: var(--t-h1); line-height: var(--lh-h1); font-weight: var(--w-bold);
+                 letter-spacing: var(--track-tight); margin: 0 0 2px; }
+  .sub {
+    font-size: var(--t-xs); line-height: var(--lh-xs); font-weight: var(--w-semi);
+    color: var(--text-muted); text-transform: uppercase; letter-spacing: var(--track-label);
+    margin-bottom: var(--s-4);
+  }
+  .breadcrumb { font-size: var(--t-xs); color: var(--text-faint); margin-bottom: 6px; }
+
+  /* ---- cards ----------------------------------------------------------- */
+  .card {
+    background: var(--surface);
+    border: var(--bw) solid var(--border);
+    border-radius: var(--r-md);
+    padding: var(--s-4);
+    margin-bottom: var(--s-3);
+  }
+  .card h2 {
+    font-size: var(--t-xs); font-weight: var(--w-semi);
+    text-transform: uppercase; letter-spacing: var(--track-label);
+    color: var(--text-muted);
+    margin: 0 0 var(--s-3); padding-bottom: var(--s-2);
+    border-bottom: var(--bw) solid var(--border);
+    display: flex; justify-content: space-between; align-items: center; gap: var(--s-2);
+  }
+  .card h3 { font-size: var(--t-h3); font-weight: var(--w-semi); margin: 0 0 var(--s-2); }
+
+  /* ---- metric rows ----------------------------------------------------- */
+  .metric-row {
+    display: flex; justify-content: space-between; align-items: baseline; gap: var(--s-3);
+    padding: 9px 0; border-bottom: var(--bw) solid var(--border);
+  }
+  .metric-row:last-child { border-bottom: 0; }
+  .metric-label { font-size: var(--t-sm); color: var(--text-muted); }
+  .metric-value {
+    font-size: var(--t-h3); font-weight: var(--w-semi); color: var(--text);
+    font-variant-numeric: tabular-nums lining-nums; white-space: nowrap;
+  }
+  .metric-note { font-size: var(--t-sm); color: var(--text-muted); margin-top: 6px; line-height: 1.45; }
+  .metrics-below { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-3); margin-top: var(--s-3); }
+
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: var(--s-3); margin-bottom: var(--s-3); }
+  .stat-card { text-align: left; padding: var(--s-3) var(--s-4); margin-bottom: 0; }
+  .stat-card .metric-value { font-size: var(--t-metric); line-height: var(--lh-metric); display: block; margin-top: 2px; }
+  .stat-card .metric-label { font-size: var(--t-xs); font-weight: var(--w-semi);
+                             text-transform: uppercase; letter-spacing: var(--track-label); }
+
+  /* ---- buttons --------------------------------------------------------- */
+  .btn {
+    font: inherit; font-size: var(--t-sm); font-weight: var(--w-semi); line-height: 1;
+    padding: 10px 16px; border-radius: var(--r-md);
+    border: var(--bw) solid var(--accent); background: var(--accent); color: var(--accent-on);
+    cursor: pointer; white-space: nowrap;
+    transition: background-color .12s ease, border-color .12s ease, color .12s ease;
+  }
+  .btn:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+  .btn:active { background: var(--accent-press); border-color: var(--accent-press); }
+  .btn.secondary { background: var(--surface); color: var(--text); border-color: var(--text); }
+  .btn.secondary:hover { background: var(--surface-panel); }
+  .btn:disabled { opacity: .45; cursor: default; }
+
+  /* ---- inputs ---------------------------------------------------------- */
+  .app-root input, .app-root select, .app-root textarea {
+    font: inherit; font-size: var(--t-body);
+    padding: 9px 11px;
+    border: var(--bw) solid var(--border-strong); border-radius: var(--r-sm);
+    background: var(--surface); color: var(--text);
+  }
+  .app-root input:focus, .app-root select:focus, .app-root textarea:focus {
+    outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-subtle);
+  }
+  .app-root input::placeholder { color: var(--text-faint); }
+
+  .search-row { position: relative; max-width: 440px; margin-bottom: var(--s-3); }
+  .search-input { width: 100%; }
+  .suggestions {
+    position: relative; z-index: 5;
+    background: var(--surface); border: var(--bw) solid var(--border-strong); border-top: 0;
+    border-radius: 0 0 var(--r-sm) var(--r-sm);
+    max-height: 280px; overflow-y: auto;
+  }
+  .suggestion-row {
+    padding: 9px 11px; font-size: var(--t-sm); cursor: pointer;
+    border-bottom: var(--bw) solid var(--border);
+  }
+  .suggestion-row:last-child { border-bottom: 0; }
+  .suggestion-row:hover { background: var(--surface-hover); }
+
+  /* ---- forms ----------------------------------------------------------- */
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-3) var(--s-4); }
+  .form-field { display: flex; flex-direction: column; gap: 5px; position: relative; }
+  .form-field.full { grid-column: 1 / -1; }
+  .form-field input, .form-field select { width: 100%; }
+  .form-field label {
+    font-size: var(--t-xs); font-weight: var(--w-semi);
+    text-transform: uppercase; letter-spacing: var(--track-label);
+    color: var(--text-muted); display: flex; align-items: center; gap: 6px;
+  }
+  .form-field label .opt { font-weight: var(--w-reg); text-transform: none; letter-spacing: 0; color: var(--text-faint); }
+  .form-field .hint { font-size: var(--t-sm); color: var(--text-muted); margin-top: 2px; }
+  .form-field .warn-hint { color: var(--high); }
+  .autocomplete-note { font-size: var(--t-xs); color: var(--text-faint); }
+  .sex-readonly {
+    padding: 9px 11px; border: var(--bw) solid var(--border); border-radius: var(--r-sm);
+    background: var(--surface-panel); color: var(--text-muted); font-size: var(--t-sm);
+  }
+  .save-row { display: flex; justify-content: space-between; align-items: center;
+              margin-top: var(--s-4); gap: var(--s-4); flex-wrap: wrap; }
+  .live-checks { font-size: var(--t-sm); }
+  .live-checks.ok { color: var(--good); }
+  .live-checks.warn { color: var(--high); }
+
+  /* ---- animal record header (locked design) --------------------------- */
+  /* Identity on the left, COI centred in the gap between it and the pedigree
+     block, pedigree hard right. The three-zone flex is what keeps COI centred
+     as the animal name changes length. */
+  .ah-head { display: flex; align-items: flex-start; gap: 14px; }
+  .ah-id { flex: 0 1 auto; min-width: 0; }
+  .ah-nmrow { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .ah-nm {
+    font-size: 20px; font-weight: var(--w-bold); letter-spacing: -0.02em;
+    margin: 0; line-height: 1.15;
+  }
+  .ah-meta {
+    font-size: 10.5px; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--text-muted); font-weight: var(--w-semi); margin-top: 5px;
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+  .ah-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: var(--good-bg); border: var(--bw) solid #cfdcd3; color: var(--good);
+    border-radius: 11px; padding: 2px 9px 2px 3px;
+    font-size: 10px; font-weight: var(--w-bold); letter-spacing: 0.06em; white-space: nowrap;
+  }
+  .ah-chk {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 14px; height: 14px; border-radius: 50%; background: var(--good); flex-shrink: 0;
+  }
+  .ah-chk svg { width: 8px; height: 8px; display: block; }
+
+  .ah-coi {
+    flex: 1 1 0; display: flex; justify-content: center; align-items: baseline;
+    gap: 7px; padding-top: 3px; min-width: 0;
+  }
+  .ah-k {
+    font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--text-muted); font-weight: var(--w-semi);
+  }
+  .ah-v {
+    font-size: 25px; font-weight: var(--w-semi); line-height: 1; white-space: nowrap;
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+  .ah-v small { font-size: 13px; font-weight: var(--w-reg); color: var(--text-muted); }
+  .ah-v.none { font-size: 15px; color: var(--text-muted); }
+
+  .ah-ped { flex: 0 0 auto; text-align: right; line-height: 1.3; padding-top: 2px; }
+  .ah-pv {
+    font-size: 13.5px; margin-top: 4px; white-space: nowrap;
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+  .ah-pv b { font-weight: var(--w-semi); }
+  .ah-pv span { color: var(--text-muted); }
+  .ah-pv i { font-style: normal; color: var(--border-strong); margin: 0 4px; }
+
+  .ah-mating { font-size: 12.5px; margin-top: 11px; line-height: 1.4; }
+  .ah-link {
+    color: var(--text); font-weight: var(--w-med); cursor: pointer;
+    text-decoration: underline; text-decoration-color: var(--border-strong);
+    text-underline-offset: 2px;
+  }
+  .ah-link:hover { color: var(--accent); text-decoration-color: var(--accent); }
+  .ah-x { color: var(--text-faint); margin: 0 6px; }
+  .ah-none { color: var(--text-faint); }
+
+  /* ---- foundation animals table (locked design) ----------------------- */
+  /* Fixed columns: the name column was absorbing all the spare width and
+     flinging the figures to the right edge. The tail column keeps Times off
+     the border. */
+  .ah-found { margin-top: 9px; padding: 10px 14px; }
+  .found-table { table-layout: fixed; }
+  col.fc1 { width: 34%; } col.fc2 { width: 21%; }
+  col.fc3 { width: 21%; } col.fc4 { width: 16%; } col.fc5 { width: 8%; }
+  .found-table td { white-space: nowrap; }
+  .found-table td.fk { font-weight: var(--w-semi); }
+  .found-table td.fmuted { color: var(--text-muted); }
+  .fdot {
+    display: inline-block; width: 3px; height: 11px; border-radius: 1px;
+    margin-right: 7px; vertical-align: -1px;
+  }
+  .fdot-0 { background: var(--accent); }
+  .fdot-1 { background: #1F3A5F; }
+  .fdot-2 { background: var(--good); }
+  .fdot-3 { background: var(--caution); }
+  .fdot-4 { background: #6B4A7A; }
+
+  /* ---- sub navigation under Animals ------------------------------------ */
+  .subnav {
+    display: flex; gap: 2px; padding: 8px 32px 0; background: var(--surface);
+    border-bottom: var(--bw) solid var(--border); overflow-x: auto;
+  }
+  .subnav button {
+    font-size: 12.5px; font-weight: var(--w-med); color: var(--text-muted);
+    background: none; border: none; border-bottom: 2px solid transparent;
+    padding: 7px 12px 9px; cursor: pointer; white-space: nowrap;
+  }
+  .subnav button:hover { color: var(--text); }
+  .subnav button.active { color: var(--text); font-weight: var(--w-semi); border-bottom-color: var(--accent); }
+
+  /* ---- matings progression ---------------------------------------------- */
+  /* Completed steps collapse to one line so the whole decision stays visible
+     as you move down it, rather than a wizard that hides what you chose. */
+  .mt-step { padding: 16px 18px; }
+  .mt-head { display: flex; align-items: flex-start; gap: 11px; }
+  .mt-n {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 21px; height: 21px; border-radius: 50%; flex-shrink: 0;
+    background: var(--surface-panel); border: var(--bw) solid var(--border-strong);
+    color: var(--text-muted); font-size: 11px; font-weight: var(--w-bold);
+    font-variant-numeric: tabular-nums;
+  }
+  .mt-n.done { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .mt-title { font-size: 15px; font-weight: var(--w-semi); line-height: 1.3; }
+  .mt-sub { font-size: 12px; color: var(--text-muted); margin-top: 3px; line-height: 1.5; }
+
+  .mt-done {
+    display: flex; align-items: center; gap: 11px; background: var(--surface);
+    border: var(--bw) solid var(--border); border-radius: var(--r-md);
+    padding: 9px 14px; margin-bottom: var(--s-2);
+  }
+  .mt-done-label {
+    font-size: 9.5px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--text-muted); font-weight: var(--w-semi);
+  }
+  .mt-done-value { font-size: 13.5px; font-weight: var(--w-semi); }
+  .mt-edit {
+    margin-left: auto; background: none; border: none; cursor: pointer;
+    font-size: 11.5px; color: var(--text-muted); text-decoration: underline;
+    text-decoration-color: var(--border-strong); text-underline-offset: 2px;
+  }
+  .mt-edit:hover { color: var(--accent); }
+
+  .mt-where { margin: 13px 0 11px; }
+  .mt-where-row {
+    display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap;
+    background: var(--surface-panel); border: var(--bw) solid var(--border);
+    border-radius: var(--r-sm); padding: 9px 13px;
+    font-size: 12.5px; color: var(--text-muted);
+  }
+  .mt-where-row b { color: var(--text); font-variant-numeric: tabular-nums lining-nums; }
+  .mt-suggest {
+    font-size: 12.5px; line-height: 1.55; background: var(--accent-subtle);
+    border: var(--bw) solid #E6D2D0; border-left: 3px solid var(--accent);
+    border-radius: var(--r-sm); padding: 9px 13px; margin-bottom: 12px;
+  }
+  .mt-suggest b { color: var(--accent); }
+
+  .mt-intents { display: grid; gap: 8px; }
+  .mt-intent {
+    text-align: left; background: var(--surface); cursor: pointer;
+    border: var(--bw) solid var(--border-strong); border-radius: var(--r-md);
+    padding: 11px 14px; font-family: inherit;
+  }
+  .mt-intent:hover { border-color: var(--accent); }
+  .mt-intent.rec { border-color: var(--accent); background: var(--accent-subtle); }
+  .mt-intent-label { font-size: 13.5px; font-weight: var(--w-semi); display: flex; align-items: center; gap: 9px; }
+  .mt-intent-hint { font-size: 12px; color: var(--text-muted); margin-top: 3px; line-height: 1.5; }
+  .mt-rec {
+    font-size: 9px; letter-spacing: 0.07em; text-transform: uppercase;
+    color: var(--accent); background: #fff; border: var(--bw) solid #E6D2D0;
+    border-radius: 9px; padding: 1px 7px; font-weight: var(--w-bold);
+  }
+
+  .mt-ceiling { display: flex; align-items: center; gap: 10px; margin: 12px 0; flex-wrap: wrap; }
+  .mt-ceiling label {
+    font-size: 9.5px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--text-muted); font-weight: var(--w-semi);
+  }
+  .mt-ceiling input { width: 86px; }
+
+  .mt-pick {
+    display: flex; align-items: center; gap: 13px; padding: 12px 0;
+    border-top: var(--bw) solid var(--border);
+  }
+  .mt-pick-rank {
+    width: 22px; flex-shrink: 0; text-align: center; font-weight: var(--w-bold);
+    color: var(--text-faint); font-variant-numeric: tabular-nums;
+  }
+  .mt-pick-body { flex: 1 1 auto; min-width: 0; }
+  .mt-pick-name { font-size: 14px; font-weight: var(--w-semi); }
+  .mt-pick-line {
+    font-size: 12.5px; color: var(--text-muted); margin-top: 3px; line-height: 1.55;
+  }
+  .mt-pick-line b { color: var(--text); font-variant-numeric: tabular-nums lining-nums; }
+
+  .mt-calf { display: flex; gap: 0; flex-wrap: wrap; margin-top: 13px; }
+  .mt-calf-stat {
+    padding: 0 18px; border-left: var(--bw) solid var(--border-strong); min-width: 140px;
+  }
+  .mt-calf-stat:first-child { border-left: none; padding-left: 0; }
+  .mt-calf-v {
+    font-size: 23px; font-weight: var(--w-semi); line-height: 1; margin-top: 4px;
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+  .mt-calf-v small { font-size: 12px; font-weight: var(--w-reg); color: var(--text-muted); }
+  .mt-up { color: var(--good); font-weight: var(--w-semi); }
+  .mt-down { color: var(--high); font-weight: var(--w-semi); }
+  .mt-saved { font-size: 13.5px; font-weight: var(--w-semi); margin-top: 11px; }
+
+  @media (max-width: 560px) {
+    .mt-calf-stat { border-left: none; padding-left: 0; }
+    .subnav { padding-left: 16px; padding-right: 16px; }
+  }
+
+  /* ---- tables ---------------------------------------------------------- */
+  /* The table stays ONE table so the header and body share a single set of
+     column widths. Setting display:table on thead and tbody separately - the
+     old approach to sideways scrolling - makes them two independent tables that
+     size their columns from their own content, which drifted the headers out of
+     line with the data by as much as 336px. Horizontal scrolling now lives on
+     the .table-scroll wrapper instead. */
+  .table-scroll {
+    overflow-x: auto; -webkit-overflow-scrolling: touch;
+    border: var(--bw) solid var(--border); border-radius: var(--r-md);
+    background: var(--surface);
+  }
+  .rank-table {
+    width: 100%; min-width: max-content;
+    border-collapse: separate; border-spacing: 0;
+    font-size: var(--t-sm);
+    background: var(--surface);
+  }
+  .rank-table th, .rank-table td { white-space: nowrap; }
+  .rank-table th {
+    text-align: left; font-size: var(--t-xs); font-weight: var(--w-semi);
+    text-transform: uppercase; letter-spacing: var(--track-label); color: var(--text-muted);
+    background: var(--surface-panel);
+    border-bottom: var(--bw) solid var(--border-strong);
+    padding: 9px 10px;
+    position: sticky; top: 0; z-index: 1;
+  }
+  .rank-table td {
+    padding: 9px 10px; border-bottom: var(--bw) solid var(--border);
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+  .rank-table tbody tr:last-child td { border-bottom: 0; }
+  /* "Best" means top-ranked, not a good/safe status - so it takes the accent
+     tint rather than the green used for status. */
+  .rank-table tr.best td { background: var(--accent-subtle); font-weight: var(--w-semi); }
+  .rank-table td:first-child, .rank-table th:first-child { font-variant-numeric: normal; }
+
+  .clickable-row { cursor: pointer; }
+  .clickable-row:hover td { background: var(--surface-hover); }
+  .selected-row td { background: var(--surface-selected) !important; }
+  .selected-row td:first-child { box-shadow: inset 3px 0 0 var(--accent); }
+  /* Names stay charcoal: the brief reserves red for primary buttons, active
+     states and the selected animal. A table of 150 red links is not that. */
+  .row-link { color: var(--text); text-decoration: underline; text-decoration-color: var(--border-strong); text-underline-offset: 2px; }
+  .clickable-row:hover .row-link, .row-link:hover { color: var(--accent); text-decoration-color: var(--accent); }
+  .link { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
+  .link:hover { color: var(--accent-hover); }
+
+  .plain-list { font-size: var(--t-sm); margin: 0; padding-left: 18px; }
+  .plain-list li { padding: 3px 0; }
+  .scroll-list { max-height: 240px; overflow-y: auto; }
+
+  /* ---- status tags ----------------------------------------------------- */
+  .tag {
+    font-size: var(--t-xs); font-weight: var(--w-semi);
+    letter-spacing: var(--track-label); text-transform: uppercase;
+    padding: 3px 8px; border-radius: var(--r-sm);
+    background: var(--surface-panel); color: var(--text-muted);
+    border: var(--bw) solid var(--border-strong);
+    display: inline-block; white-space: nowrap;
+  }
+  .tag.warn { background: var(--high-bg); color: var(--high); border-color: var(--high-border); }
+  .tag.ok   { background: var(--good-bg); color: var(--good); border-color: var(--good-border); }
+  .info-dot {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 15px; height: 15px; border-radius: 50%;
+    border: var(--bw) solid var(--text-faint); color: var(--text-faint);
+    font-size: 9px; margin-right: 5px; flex-shrink: 0; cursor: default;
+  }
+
+  /* ---- target / ancestor chips ----------------------------------------- */
+  .target-panel { margin-bottom: var(--s-3); }
+  .target-picker {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--surface-panel); border: var(--bw) solid var(--border);
+    border-radius: var(--r-md); padding: 10px var(--s-3);
+    margin-bottom: var(--s-3); font-size: var(--t-sm);
+  }
+  .target-picker b { color: var(--accent); }
+  .ancestor-chips { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-bottom: var(--s-3); }
+  .ancestor-chip {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--surface-panel); border: var(--bw) solid var(--border-strong);
+    border-radius: var(--r-sm); padding: 5px 6px 5px 10px;
+    font-size: var(--t-sm); color: var(--text);
+  }
+  .chip-remove { cursor: pointer; color: var(--text-faint); font-size: 15px; line-height: 1; padding: 0 4px; }
+  .chip-remove:hover { color: var(--accent); }
+  .ancestor-add-row { display: flex; gap: var(--s-2); align-items: center; flex-wrap: wrap; }
+  .ancestor-add-row input { flex: 1; min-width: 200px; }
+
+  /* ---- mating pairing -------------------------------------------------- */
+  .pairing-row { display: flex; gap: var(--s-3); align-items: flex-end; margin-bottom: var(--s-4); flex-wrap: wrap; }
+  .pairing-slot { flex: 1; min-width: 190px; }
+  .pairing-slot label {
+    font-size: var(--t-xs); font-weight: var(--w-semi);
+    text-transform: uppercase; letter-spacing: var(--track-label);
+    color: var(--text-muted); display: block; margin-bottom: 5px;
+  }
+  .pairing-slot input, .pairing-slot select { width: 100%; }
+
+  /* ==========================================================================
+     Pedigree bracket \u2014 drawn exactly like the logo stem: straight lines,
+     square 90\xB0 corners, sire above and dam below, no curves or terminal dots.
+     ====================================================================== */
+  .pedigree-panel { padding: var(--s-3) var(--s-4) var(--s-4); }
+  .pedigree-wide {
+    border: var(--bw) solid var(--border);
+    border-radius: var(--r-md);
+    background: var(--surface);
+    overflow-x: auto; -webkit-overflow-scrolling: touch;
+    padding: var(--s-4) var(--s-3);
+  }
+  .line-pedigree { display: flex; align-items: center; min-width: 1400px; padding: var(--s-2) 0; }
+  .lp-node { display: flex; align-items: center; }
+  .lp-box {
+    border: var(--bw) solid var(--border-strong);
+    border-left: 3px solid var(--rule-chart);
+    border-radius: var(--r-sm);
+    background: var(--surface);
+    font-size: var(--t-xs); line-height: 1.3; font-weight: var(--w-med);
+    font-variant-numeric: tabular-nums lining-nums;
+    padding: 6px 8px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    cursor: pointer; width: 148px; text-align: left; box-sizing: border-box;
+    color: var(--text);
+  }
+  .lp-box:hover { border-color: var(--accent); }
+  .line-pedigree > .lp-node > .lp-box { border-left-color: var(--accent); border-left-width: 3px; }
+  .lp-box.selected {
+    border-color: var(--accent); border-left-color: var(--accent);
+    background: var(--accent-subtle); font-weight: var(--w-semi); color: var(--text);
+  }
+  .lp-box.blank {
+    color: var(--text-faint); border-style: dashed; border-left-style: dashed;
+    border-left-color: var(--border-strong);
+    background: var(--surface-sunken); cursor: default; font-weight: var(--w-reg);
+  }
+  /* the bracket: square corners, no radius, no caps */
+  .lp-branch { display: flex; flex-direction: column; position: relative; margin-left: 16px; }
+  .lp-branch::before {
+    content: ''; position: absolute; left: 0; top: 25%; bottom: 25%;
+    border-left: var(--chart-w) solid var(--rule-chart);
+  }
+  .lp-child { display: flex; align-items: center; flex: 1; position: relative; padding-left: 16px; min-height: 22px; }
+  .lp-child::before {
+    content: ''; position: absolute; left: 0; top: 50%; width: 16px;
+    border-top: var(--chart-w) solid var(--rule-chart);
+  }
+
+  /* ==========================================================================
+     Interactive pedigree chart: click a card to open or close its parents,
+     drag to move, pinch / ctrl-scroll / +,- to zoom. Square corners, bracket
+     lines drawn as SVG so uneven branches stay connected.
+     ======================================================================== */
+  .pdg { position: relative; }
+  .pdg-view {
+    position: relative; height: 460px; overflow: hidden;
+    border: var(--bw) solid var(--border); border-radius: var(--r-md);
+    background: var(--surface-sunken); touch-action: none; cursor: grab; outline: none;
+  }
+  .pdg-view:active { cursor: grabbing; }
+  .pdg-view:focus-visible { border-color: var(--accent); }
+  .pdg-world { position: absolute; top: 0; left: 0; transform-origin: 0 0; }
+  .pdg-lines { position: absolute; top: 0; left: 0; overflow: visible; pointer-events: none; }
+  .pdg-lines line { stroke: var(--rule-chart); stroke-width: var(--chart-w); }
+  .pdg-cards { position: absolute; inset: 0; }
+  .pdg-card {
+    position: absolute; box-sizing: border-box;
+    background: var(--surface); color: var(--text);
+    border: var(--bw) solid var(--border-strong);
+    border-left: 3px solid var(--rule-chart);
+    border-radius: var(--r-sm);
+    padding: 5px 8px 6px; font-size: var(--t-xs); line-height: 1.3;
+    font-variant-numeric: tabular-nums lining-nums;
+    box-shadow: 0 1px 2px rgba(34, 36, 40, 0.10);
+    --fc: var(--accent);
+  }
+  .pdg-card.is-subject { border-left-color: var(--text); border-left-width: 4px; border-color: var(--text); }
+  .pdg-card.fc-0 { --fc: var(--accent); }
+  .pdg-card.fc-1 { --fc: #1F3A5F; }
+  .pdg-card.fc-2 { --fc: var(--good); }
+  .pdg-card.fc-3 { --fc: var(--caution); }
+  .pdg-card.fc-4 { --fc: #6B4A7A; }
+  .pdg-card.fc-5 { --fc: #1E7F86; }
+  .pdg-card.fc-6 { --fc: #A33A5A; }
+  .pdg-card.fc-7 { --fc: #7A5C2E; }
+  .pdg-card.fc-c { --fc: #6B6F76; }
+  .pdg-card.fc-c.is-tracked { border-style: dashed; border-left-style: solid; background: color-mix(in srgb, var(--fc) 8%, var(--surface)); }
+  .pdg-card.is-expandable { cursor: pointer; }
+  .pdg-card.is-expandable .pdg-name, .pdg-card.is-expandable .pdg-coi { padding-right: 14px; }
+  .pdg-card.is-expandable:hover { border-color: var(--accent); }
+  .pdg-card.is-tracked {
+    border-color: var(--fc); border-left-color: var(--fc); border-left-width: 5px;
+    background: color-mix(in srgb, var(--fc) 12%, var(--surface));
+  }
+  .pdg-card.is-unknown { border-style: dashed; border-left-style: dashed; opacity: 0.75; }
+  .pdg-card.is-blank { border-style: dashed; border-left-style: dashed; border-left-color: var(--border-strong); background: var(--surface-sunken); color: var(--text-faint); }
+  .pdg-head { display: flex; align-items: center; justify-content: space-between; gap: 6px; min-height: 18px; }
+  .pdg-head-right { display: flex; align-items: center; gap: 6px; margin-left: auto; }
+  .pdg-role {
+    font-size: 10px; font-weight: var(--w-semi); letter-spacing: 0.08em; text-transform: uppercase;
+    background: var(--text); color: var(--surface); padding: 1px 5px; border-radius: 2px;
+  }
+  .pdg-role.none { display: none; }
+  .pdg-reg { color: var(--text-muted); font-size: 11px; }
+  .pdg-plus {
+    display: inline-grid; place-items: center; width: 18px; height: 18px; padding: 0; margin: 0;
+    border: var(--bw) solid var(--border-strong); border-radius: 2px; background: var(--surface);
+    color: var(--text); font: inherit; font-size: 13px; font-weight: var(--w-semi); line-height: 1; cursor: pointer;
+  }
+  .pdg-plus:hover { border-color: var(--accent); color: var(--accent); }
+  .pdg-line {
+    position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: var(--fc); color: #fff; border-radius: 2px 2px 0 0;
+    font-size: 9px; font-weight: var(--w-semi); line-height: 15px; height: 15px; padding: 0 6px; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; pointer-events: none;
+  }
+  .pdg-card.is-tracked .pdg-name { color: color-mix(in srgb, var(--fc) 82%, var(--text)); }
+  .pdg-name { margin: 4px 0 0; font-weight: var(--w-semi); font-size: 13px; line-height: 1.25; overflow-wrap: anywhere; }
+  .pdg-born, .pdg-note { margin: 3px 0 0; color: var(--text-muted); font-size: 11px; }
+  .pdg-note { font-style: italic; }
+  .pdg-coi { margin: 3px 0 0; color: var(--text-muted); font-size: 11px; }
+  .pdg-chevron {
+    position: absolute; bottom: 8px; right: 7px; width: 6px; height: 6px;
+    border-right: 1.5px solid var(--text-faint); border-bottom: 1.5px solid var(--text-faint); transform: rotate(-45deg);
+  }
+  .pdg-card.is-expandable[aria-expanded="true"] .pdg-chevron { transform: rotate(45deg); }
+  .pdg-controls { position: absolute; right: 8px; bottom: 8px; display: flex; align-items: center; background: var(--surface); border: var(--bw) solid var(--border); border-radius: var(--r-sm); }
+  .pdg-controls button {
+    min-width: 32px; height: 30px; margin: 0; padding: 0 6px; border: 0; background: transparent;
+    color: var(--text); font: inherit; font-size: 15px; font-weight: var(--w-semi); cursor: pointer;
+  }
+  .pdg-controls button.pdg-fit { font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; }
+  .pdg-controls button:hover { color: var(--accent); }
+  .pdg-controls span { min-width: 40px; text-align: center; font-size: 11px; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+  @media (min-width: 900px) { .pdg-view { height: 600px; } }
+
+    /* ---- mating planner v2 ---- */
+  .pl-panel { margin-bottom: 14px; }
+  .pl-q { margin: 14px 0 0; }
+  .pl-lab { margin: 0 0 6px; font-size: 12px; color: var(--text-muted); }
+  .pl-seg { display: flex; flex-wrap: wrap; gap: 6px; }
+  .pl-seg button { padding: 6px 12px; font: inherit; font-size: 13px; background: var(--surface); color: var(--text); border: 1px solid var(--border-strong); border-radius: 2px; cursor: pointer; }
+  .pl-seg button:hover { border-color: var(--accent); }
+  .pl-seg button.on { background: var(--surface-selected); border-color: var(--accent); color: var(--text-accent); font-weight: 600; }
+  .pl-dambar { background: var(--surface-selected); border: 1px solid var(--accent-subtle-b); border-left: 5px solid var(--accent); padding: 12px 14px; margin-bottom: 12px; }
+  .pl-top { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .pl-big { font-size: 22px; font-weight: 600; line-height: 1.2; overflow-wrap: anywhere; }
+  .pl-role { font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; padding: 2px 7px; border-radius: 2px; background: var(--text); color: var(--surface); }
+  .pl-role-d { background: var(--accent); color: var(--accent-on); }
+  .pl-stats { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 6px; font-size: 13px; }
+  .pl-sw { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; }
+  .pl-count { font-size: 13px; color: var(--text-muted); margin: 0 0 10px; }
+  .pl-card { background: var(--surface); border: 1px solid var(--border); padding: 14px 16px; margin-bottom: 12px; cursor: pointer; }
+  .pl-card:hover { border-color: var(--accent); }
+  .pl-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .pl-rank { width: 28px; height: 28px; border-radius: 50%; background: var(--surface-selected); color: var(--text-accent); font-weight: 600; display: inline-flex; align-items: center; justify-content: center; flex: none; }
+  .pl-name { font-size: 22px; font-weight: 600; line-height: 1.2; margin-top: 8px; overflow-wrap: anywhere; }
+  .pl-reg { font-size: 13px; color: var(--text-secondary); }
+  .pl-par { font-size: 14px; color: var(--text-secondary); margin-top: 4px; overflow-wrap: anywhere; }
+  .pl-chipline { margin-top: 8px; }
+  .pl-chip { font-size: 12px; padding: 3px 10px; border-radius: 2px; border: 1px solid var(--border); }
+  .pl-chip.pl-up { color: var(--good); background: var(--good-bg); border-color: var(--good-border); }
+  .pl-chip.pl-dn { color: var(--high); background: var(--high-bg); border-color: var(--high-border); }
+  .pl-chip.pl-eq { color: var(--text-muted); background: var(--surface-sunken); }
+  .pl-mid { display: flex; gap: 14px; align-items: center; margin-top: 12px; flex-wrap: wrap; }
+  .pl-dn-svg { flex: none; width: 112px; height: 112px; }
+  .pl-dn-big { font-size: 18px; font-weight: 600; fill: var(--text); }
+  .pl-dn-sm { font-size: 11px; fill: var(--text-muted); }
+  .pl-tb { flex: 1; min-width: 260px; overflow-x: auto; }
+  .pl-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .pl-table th { font-weight: 400; color: var(--text-muted); text-align: left; font-size: 12px; padding: 0 8px 6px 0; }
+  .pl-table td { padding: 6px 8px 6px 0; border-top: 1px solid var(--border); vertical-align: middle; }
+  .pl-dl { font-size: 10.5px; font-weight: 600; margin-left: 4px; white-space: nowrap; }
+  .pl-up { color: var(--good); }
+  .pl-dn { color: var(--high); }
+  .pl-eq { color: var(--text-muted); }
+  .pl-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; margin-top: 12px; }
+  .pl-tile { background: var(--surface-sunken); padding: 8px 10px; }
+  .pl-l { font-size: 12px; color: var(--text-muted); }
+  .pl-v { font-size: 18px; font-weight: 600; }
+  .pl-s { font-size: 12px; color: var(--text-muted); }
+  .pl-hd { font-size: 13px; font-weight: 600; margin: 14px 0 2px; }
+  .pl-sub { font-size: 12px; color: var(--text-muted); margin: 0 0 6px; }
+  .pl-note { margin-top: 10px; font-size: 12px; padding: 6px 10px; background: var(--caution-bg); color: var(--caution); border: 1px solid var(--caution-border); }
+
+  .pl-dwrap { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+  .pl-delta { display: flex; align-items: center; gap: 8px; }
+  .pl-arrow { font-size: 26px; line-height: 1; }
+  .pl-dnum { font-size: 20px; font-weight: 600; line-height: 1.1; }
+  .pl-dlab { font-size: 12px; color: var(--text-muted); }
+  .pl-dn-sm { font-size: 10px; }
+  .pl-ftable { max-width: 680px; }
+  @media (max-width: 759px) {
+    .pl-ftable { table-layout: fixed; }
+    .pl-ftable th:nth-child(1) { width: 31%; } .pl-ftable th:nth-child(2) { width: 22%; } .pl-ftable th:nth-child(3) { width: 20%; }
+    .pl-ftable th:nth-child(4) { width: 10%; } .pl-ftable th:nth-child(5) { width: 17%; }
+    .pl-ftable td:first-child { font-size: 13px; }
+    .pl-ftable th, .pl-ftable td { overflow-wrap: anywhere; }
+    .pl-ftable td:nth-child(n+2), .pl-ftable th { white-space: nowrap; }
+    .pl-ftable th { font-size: 11px; }
+  }
+  .pl-mid { align-items: flex-start; }
+  .pl-tb { flex-basis: 100%; }
+  @media (min-width: 760px) { .pl-dwrap { flex-direction: column; align-items: flex-start; } .pl-tb { flex-basis: 0; min-width: 380px; } }
+
+  .pl-other { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+  .pl-ftable tr.pl-genrow td { border-top: 0; padding-top: 0; font-size: 11px; color: var(--text-secondary); white-space: normal !important; overflow-wrap: normal; }
+  .pl-refs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 6px; }
+  .pl-refchip { display: inline-flex; align-items: center; border: 1px solid var(--border-strong); padding: 3px 4px 3px 8px; font-size: 12px; }
+  .pl-refchip button { border: 0; background: transparent; font-size: 16px; line-height: 1; padding: 0 6px; cursor: pointer; color: var(--text-secondary); }
+  .pl-card-static { cursor: default; }
+  .pl-hlist { display: flex; flex-direction: column; }
+  .pl-hrow { padding: 10px 6px; border-top: var(--bw) solid var(--border); }
+  .pl-hrow.best { background: var(--accent-soft, rgba(139, 26, 26, 0.06)); }
+  .pl-hhead { display: flex; gap: 10px; align-items: baseline; }
+  .pl-hrank { color: var(--text-muted); min-width: 24px; font-size: 13px; }
+  .pl-hnames { font-weight: 600; overflow-wrap: anywhere; }
+  .pl-hx { color: var(--text-muted); font-weight: normal; }
+  .pl-hmet { display: flex; flex-wrap: wrap; gap: 4px 16px; margin: 4px 0 0 34px; font-size: 13px; }
+  .pl-hml { color: var(--text-muted); }
+  .pl-pager { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+
+  
+  /* ---- foundation programs ---- */
+  .fnd-prog { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 10px; }
+  .fnd-plab { font-size: 12px; font-weight: var(--w-semi); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; }
+  .fnd-prog select { max-width: 100%; }
+  .fnd-link { background: none; border: 0; padding: 4px 2px; color: var(--accent); font: inherit; font-size: 13px; cursor: pointer; text-decoration: underline; }
+  .fnd-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 8px; }
+  .fnd-row { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border: var(--bw) solid var(--border); border-radius: 4px; background: var(--surface); flex-wrap: wrap; }
+  .fnd-dot { width: 14px; height: 14px; border-radius: 3px; flex: none; }
+  .fnd-main { flex: 1 1 200px; min-width: 0; }
+  .fnd-nm { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; }
+  .fnd-short { font-size: 15px; }
+  .fnd-full { color: var(--text-secondary); font-size: 13px; overflow-wrap: anywhere; }
+  .fnd-note { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+  .fnd-act { display: flex; gap: 10px; }
+  .fnd-conf { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; font-size: 13px; }
+  .fnd-form { border: var(--bw) solid var(--border-strong); border-radius: 4px; padding: 12px; margin: 8px 0; background: var(--surface-sunken); display: flex; flex-direction: column; gap: 10px; }
+  .fnd-ft { font-weight: var(--w-semi); font-size: 15px; }
+  .fnd-fn { font-size: 12px; color: var(--text-muted); }
+  .fnd-lab { display: flex; flex-direction: column; gap: 4px; font-size: 12px; font-weight: var(--w-semi); color: var(--text-muted); }
+  .fnd-lab input { font-weight: normal; }
+  .fnd-hint { font-weight: normal; font-size: 11px; color: var(--text-muted); }
+  .fnd-picked { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-weight: normal; color: var(--text); }
+  .fnd-reg { color: var(--text-muted); font-size: 11px; }
+  .fnd-sw-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .fnd-sw { width: 28px; height: 28px; border-radius: 4px; border: 2px solid transparent; cursor: pointer; padding: 0; }
+  .fnd-sw.on { border-color: var(--text); box-shadow: 0 0 0 2px var(--surface) inset; }
+  .fnd-sw.off { opacity: 0.25; cursor: not-allowed; }
+  .fnd-btns { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-top: 4px; }
+  .ct-card { padding: 10px 12px; }
+  .ct-h { font-weight: var(--w-semi); font-size: 14px; margin-bottom: 6px; }
+  .ct-chip { border-style: dashed; }
+
+  /* ---- responsive ------------------------------------------------------ */
+  @media (max-width: 520px) {
+    .ah-head { flex-wrap: wrap; }
+    .ah-coi { order: 3; justify-content: flex-start; width: 100%; padding-top: 0; }
+    .ah-ped { text-align: left; }
+  }
+  @media (max-width: 720px) {
+    .screen { padding: var(--s-4) var(--s-3) var(--s-7); }
+    .form-grid { grid-template-columns: 1fr; }
+    .metrics-below { grid-template-columns: 1fr; }
+    .toolbar { padding: 0 var(--s-3); }
+    .toolbar > span { margin-right: var(--s-3); }
+    .toolbar > span img { height: 26px; }
+    .toolbar button { padding: 13px 10px; }
+  }
+`,
+    kh = Jd.createRoot(document.getElementById("root"));
+  kh.render(b.default.createElement(Xm));
+})();
+/*! Bundled license information:
+
+react/cjs/react.production.min.js:
+  (**
+   * @license React
+   * react.production.min.js
+   *
+   * Copyright (c) Facebook, Inc. and its affiliates.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE file in the root directory of this source tree.
+   *)
+
+scheduler/cjs/scheduler.production.min.js:
+  (**
+   * @license React
+   * scheduler.production.min.js
+   *
+   * Copyright (c) Facebook, Inc. and its affiliates.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE file in the root directory of this source tree.
+   *)
+
+react-dom/cjs/react-dom.production.min.js:
+  (**
+   * @license React
+   * react-dom.production.min.js
+   *
+   * Copyright (c) Facebook, Inc. and its affiliates.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE file in the root directory of this source tree.
+   *)
+
+react/cjs/react-jsx-runtime.production.min.js:
+  (**
+   * @license React
+   * react-jsx-runtime.production.min.js
+   *
+   * Copyright (c) Facebook, Inc. and its affiliates.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE file in the root directory of this source tree.
+   *)
+*/
