@@ -16928,6 +16928,117 @@ Error generating stack: ` +
       ],
     });
   }
+  function DamBar(P) {
+    var E = b.default.createElement;
+    var s = P.name,
+      h = P.rec,
+      t = P.sire,
+      n = P.dam,
+      r = P.names,
+      a = P.kinship,
+      targets = P.targets,
+      COL = P.colors,
+      sn = P.short;
+    var per = targets.map(function (F) {
+      var cl = cmClosest(s, F, t, n, r);
+      return { name: F, blood: ye(s, F, t, n, r) * 100, occ: On(s, F, t, n, r), cl: cl };
+    });
+    var kids = b.useMemo(
+      function () {
+        var k = 0,
+          ka = 0;
+        P.allAnimals.forEach(function (x) {
+          if (x.sire === s || x.dam === s) {
+            k++;
+            if (x.status === "Active" || x.livingAvailable) ka++;
+          }
+        });
+        return { k: k, ka: ka };
+      },
+      [s, P.allAnimals],
+    );
+    var coi = t[s] || n[s] ? a(t[s], n[s]) * 100 : null;
+    var cg = nh(s, t, n, r).fullThrough;
+    var R = 40,
+      K = 2 * Math.PI * R,
+      off = 0,
+      tot = 0;
+    var segs = per.map(function (p, i) {
+      var v = Math.max(0, Math.min(p.blood, 100 - tot));
+      tot += v;
+      var len = (K * v) / 100,
+        el = E("circle", {
+          key: i,
+          cx: 56,
+          cy: 56,
+          r: R,
+          stroke: COL[i],
+          strokeDasharray: len + " " + (K - len),
+          strokeDashoffset: -off,
+        });
+      off += len;
+      return el;
+    });
+    var donut = E(
+      "svg",
+      { className: "pl-dn-svg", viewBox: "0 0 112 112", role: "img", "aria-label": "Foundation ancestry" },
+      E(
+        "g",
+        { transform: "rotate(-90 56 56)", fill: "none", strokeWidth: 14 },
+        E("circle", { cx: 56, cy: 56, r: R, stroke: "var(--border-strong)", strokeOpacity: 0.5 }),
+        segs,
+      ),
+      E("text", { x: 56, y: 54, textAnchor: "middle", className: "pl-dn-big" }, tot.toFixed(1) + "%"),
+      E("text", { x: 56, y: 70, textAnchor: "middle", className: "pl-dn-sm" }, "foundation"),
+    );
+    var status = h && (h.herdStatus || h.status);
+    return E(
+      "div",
+      { className: "pl-dambar pl-dambar-rich" },
+      E("div", { className: "pl-dwrap" }, donut),
+      E(
+        "div",
+        { className: "pl-dbody" },
+        E(
+          "div",
+          { className: "pl-top" },
+          E("span", { className: "pl-role pl-role-d" }, P.role),
+          E("span", { className: "pl-big" }, s),
+          h && h.regNum ? E("span", { className: "pl-reg" }, "Reg " + h.regNum) : null,
+          h && h.birthDate ? E("span", { className: "pl-reg" }, "Born " + h.birthDate) : null,
+          status ? E("span", { className: "pl-reg" }, status) : null,
+        ),
+        t[s] || n[s]
+          ? E(
+              "div",
+              { className: "pl-par" },
+              t[s] && n[s] ? t[s] + " × " + n[s] : t[s] ? "Sire " + t[s] : "Dam " + n[s],
+            )
+          : null,
+        E(
+          "div",
+          { className: "pl-stats" },
+          per.map(function (p, i) {
+            return E(
+              "span",
+              { key: p.name },
+              E("i", { className: "pl-sw", style: { background: COL[i] } }),
+              sn(p.name) + " ",
+              E("b", null, p.blood.toFixed(1) + "%"),
+              p.occ > 0 && p.cl !== null ? E("small", { className: "pl-dgen" }, " (Gen " + p.cl + ")") : null,
+            );
+          }),
+        ),
+        E(
+          "div",
+          { className: "pl-stats" },
+          E("span", null, "COI ", E("b", null, coi === null ? "—" : coi.toFixed(1) + "%")),
+          E("span", null, "Complete generations ", E("b", null, cg)),
+          E("span", null, "Calves in database ", E("b", null, kids.k), E("small", { className: "pl-dgen" }, " (" + kids.ka + " active)")),
+        ),
+      ),
+    );
+  }
   function PlNew(P) {
     var E = b.default.createElement;
     var e = P.allAnimals,
@@ -17543,40 +17654,19 @@ Error generating stack: ` +
     if (!D) return E("div", null, controls);
     var damBar =
       dam &&
-      E(
-        "div",
-        { className: "pl-dambar" },
-        E(
-          "div",
-          { className: "pl-top" },
-          E("span", { className: "pl-role pl-role-d" }, damRole),
-          E("span", { className: "pl-big" }, c),
-          byN.get(c) && byN.get(c).regNum
-            ? E("span", { className: "pl-reg" }, "Reg " + byN.get(c).regNum)
-            : null,
-        ),
-        t[c] || n[c]
-          ? E(
-              "div",
-              { className: "pl-par" },
-              t[c] && n[c] ? t[c] + " \u00d7 " + n[c] : t[c] ? "Sire " + t[c] : "Dam " + n[c],
-            )
-          : null,
-        E(
-          "div",
-          { className: "pl-stats" },
-          d.map(function (F, i) {
-            return E(
-              "span",
-              { key: F },
-              E("i", { className: "pl-sw", style: { background: COL[i] } }),
-              sn(F) + " ",
-              E("b", null, dam.blood[i].toFixed(1) + "%"),
-            );
-          }),
-          E("span", null, "COI ", E("b", null, dam.coi.toFixed(1) + "%")),
-        ),
-      );
+      E(DamBar, {
+        role: damRole,
+        name: c,
+        rec: byN.get(c),
+        sire: t,
+        dam: n,
+        names: r,
+        kinship: a,
+        allAnimals: e,
+        targets: d,
+        colors: COL,
+        short: sn,
+      });
     if (!N)
       return E(
         "div",
@@ -18396,38 +18486,19 @@ Error generating stack: ` +
           )
         : null,
     );
-    var dambar = E(
-      "div",
-      { className: "pl-dambar" },
-      E(
-        "div",
-        { className: "pl-top" },
-        E("span", { className: "pl-role pl-role-d" }, "Dam"),
-        E("span", { className: "pl-big" }, cow),
-        cowRec && cowRec.regNum ? E("span", { className: "pl-reg" }, "Reg " + cowRec.regNum) : null,
-      ),
-      t[cow] || n[cow]
-        ? E(
-            "div",
-            { className: "pl-par" },
-            t[cow] && n[cow] ? t[cow] + " × " + n[cow] : t[cow] ? "Sire " + t[cow] : "Dam " + n[cow],
-          )
-        : null,
-      E(
-        "div",
-        { className: "pl-stats" },
-        C.per.map(function (p, i) {
-          return E(
-            "span",
-            { key: p.name },
-            E("i", { className: "pl-sw", style: { background: COL[i] } }),
-            sn(p.name) + " ",
-            E("b", null, p.dBlood.toFixed(1) + "%"),
-          );
-        }),
-        E("span", null, "COI ", E("b", null, C.cowCoi.toFixed(1) + "%")),
-      ),
-    );
+    var dambar = E(DamBar, {
+      role: "Dam",
+      name: cow,
+      rec: cowRec,
+      sire: t,
+      dam: n,
+      names: r,
+      kinship: a,
+      allAnimals: e,
+      targets: targets,
+      colors: COL,
+      short: sn,
+    });
     var nextGen = E(
       "div",
       { className: "pl-nextgen" },
@@ -20443,6 +20514,9 @@ Rules:
   .pl-seg button { padding: 6px 12px; font: inherit; font-size: 13px; background: var(--surface); color: var(--text); border: 1px solid var(--border-strong); border-radius: 2px; cursor: pointer; }
   .pl-seg button:hover { border-color: var(--accent); }
   .pl-seg button.on { background: var(--surface-selected); border-color: var(--accent); color: var(--text-accent); font-weight: 600; }
+  .pl-dambar-rich { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+  .pl-dbody { flex: 1; min-width: 220px; }
+  .pl-dgen { color: var(--text-secondary); font-weight: 400; }
   .pl-dambar { background: var(--surface-selected); border: 1px solid var(--accent-subtle-b); border-left: 5px solid var(--accent); padding: 12px 14px; margin-bottom: 12px; }
   .pl-top { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
   .pl-big { font-size: 22px; font-weight: 600; line-height: 1.2; overflow-wrap: anywhere; }
