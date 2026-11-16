@@ -9705,6 +9705,7 @@ Error generating stack: ` +
                     setFounders: Z,
                     pg: PG,
                     setPg: SPG,
+                    matingLog: E,
                   }),
                 w === "animal" &&
                   (0, o.jsx)(rh, {
@@ -9740,18 +9741,28 @@ Error generating stack: ` +
                   }),
                 w === "matings" &&
                   mm === "check" &&
-                  (0, o.jsx)(CheckMate, {
-                    last: cmLast,
-                    setLast: setCmLast,
-                    matingLog: E,
-                    saveMatingLog: D,
-                    allAnimals: S,
-                    sire: _,
-                    dam: N,
-                    names: P,
-                    kinship: ee,
-                    founders: K,
-                    gen: W,
+                  (0, o.jsxs)("div", {
+                    className: "screen active",
+                    children: [
+                      (0, o.jsx)("h1", { children: "Check a Mating" }),
+                      (0, o.jsx)("div", {
+                        className: "sub",
+                        children: "Pick a cow and a bull to see the calf, then plan the next generation",
+                      }),
+                      (0, o.jsx)(CheckMate, {
+                        last: cmLast,
+                        setLast: setCmLast,
+                        matingLog: E,
+                        saveMatingLog: D,
+                        allAnimals: S,
+                        sire: _,
+                        dam: N,
+                        names: P,
+                        kinship: ee,
+                        founders: K,
+                        gen: W,
+                      }),
+                    ],
                   }),
                 (w === "mating" || w === "matings") &&
                   mm === "cow" &&
@@ -12257,6 +12268,275 @@ Error generating stack: ` +
       { userAnimals: u, edits: d }
     );
   }
+  function DashTiles(P) {
+    var E = b.default.createElement;
+    var e = P.allAnimals,
+      t = P.sire,
+      n = P.dam,
+      log = P.matingLog || [];
+    var d = b.useMemo(
+      function () {
+        var act = e.filter(to);
+        var bulls = 0,
+          females = 0,
+          semen = 0;
+        act.forEach(function (x) {
+          var sx = qe(x.name, x, t, n);
+          if (sx === "Male") {
+            bulls++;
+            if (x.semenAvailable) semen++;
+          } else if (sx === "Female") females++;
+        });
+        return { act: act.length, bulls: bulls, females: females, semen: semen };
+      },
+      [e, t, n],
+    );
+    var open = log.filter(logOpen).length,
+      due = log.filter(logDue).length;
+    function tile(label, val, cls) {
+      return E(
+        "div",
+        { key: label, className: "dash-tile " + (cls || "") },
+        E("div", { className: "dash-tv" }, val),
+        E("div", { className: "dash-tl" }, label),
+      );
+    }
+    return E(
+      "div",
+      { className: "dash-tiles" },
+      tile("Animals in database", e.length.toLocaleString()),
+      tile("Active animals", d.act),
+      tile("Active bulls", d.bulls),
+      tile("Active females", d.females),
+      tile("Bulls with semen on hand", d.semen),
+      tile(due ? "Matings due to revisit" : "Open matings in the Log", due || open, due ? "dash-due" : ""),
+    );
+  }
+  function DashAttention(P) {
+    var E = b.default.createElement;
+    var k = P.animals,
+      t = P.sire,
+      n = P.dam,
+      r = P.names,
+      log = P.matingLog || [];
+    var d = b.useMemo(
+      function () {
+        var noParent = 0,
+          shortPed = 0,
+          noBirth = 0;
+        k.forEach(function (x) {
+          if (!x.sire || !x.dam) noParent++;
+          if (nh(x.name, t, n, r).fullThrough < 6) shortPed++;
+          if (!x.birthDate) noBirth++;
+        });
+        return { noParent: noParent, shortPed: shortPed, noBirth: noBirth };
+      },
+      [k, t, n, r],
+    );
+    function row(label, val) {
+      return E(
+        "div",
+        { key: label, className: "dash-row" },
+        E("span", null, label),
+        E("b", { className: val ? "" : "dash-zero" }, val),
+      );
+    }
+    return E(
+      "div",
+      { className: "card" },
+      E("h2", null, "Needs attention"),
+      E("div", { className: "metric-note" }, P.scopeLabel + " · " + k.length + " animals"),
+      row("Matings due to revisit (Log)", log.filter(logDue).length),
+      row("Open matings in the Log", log.filter(logOpen).length),
+      row("Missing a sire or dam", d.noParent),
+      row("Under 6 complete generations", d.shortPed),
+      row("No birth date", d.noBirth),
+    );
+  }
+  function HerdGlance(P) {
+    var E = b.default.createElement;
+    var k = P.animals,
+      u = P.founders,
+      t = P.sire,
+      n = P.dam,
+      r = P.names,
+      S = P.stats;
+    var G = window.__lbProg || {};
+    var sn = function (x) {
+      return (G.shorts && G.shorts[x]) || dn(x);
+    };
+    var COL = u.map(function (F, i) {
+      return (G.colors && G.colors[F]) || FCOL[i % 8];
+    });
+    var d = b.useMemo(
+      function () {
+        var bulls = 0,
+          females = 0;
+        k.forEach(function (x) {
+          var sx = qe(x.name, x, t, n);
+          if (sx === "Male") bulls++;
+          else if (sx === "Female") females++;
+        });
+        var per = u.map(function (F) {
+          var carry = 0,
+            top = null,
+            topV = -1;
+          k.forEach(function (x) {
+            var v = ye(x.name, F, t, n, r) * 100;
+            if (v > 0) carry++;
+            if (v > topV) {
+              topV = v;
+              top = x.name;
+            }
+          });
+          return { carry: carry, top: top, topV: topV };
+        });
+        var cgSum = 0,
+          cgShort = 0;
+        k.forEach(function (x) {
+          var f = nh(x.name, t, n, r).fullThrough;
+          cgSum += f;
+          if (f < 6) cgShort++;
+        });
+        return { bulls: bulls, females: females, per: per, cgAvg: k.length ? cgSum / k.length : 0, cgShort: cgShort };
+      },
+      [k, u, t, n, r],
+    );
+    var tot = 0;
+    var R = 40,
+      K = 2 * Math.PI * R,
+      off = 0;
+    var segs = u.map(function (F, i) {
+      var v = Math.max(0, Math.min(S.avgByFounder[i], 100 - tot));
+      tot += v;
+      var len = (K * v) / 100,
+        el = E("circle", {
+          key: i,
+          cx: 56,
+          cy: 56,
+          r: R,
+          stroke: COL[i],
+          strokeDasharray: len + " " + (K - len),
+          strokeDashoffset: -off,
+        });
+      off += len;
+      return el;
+    });
+    return E(
+      "div",
+      { className: "card" },
+      E("h2", null, "Herd at a glance"),
+      E(
+        "div",
+        { className: "metric-note" },
+        P.scopeLabel + " · " + k.length + " animals (" + d.bulls + " bulls, " + d.females + " females)",
+      ),
+      E(
+        "div",
+        { className: "pl-mid" },
+        E(
+          "div",
+          { className: "pl-dwrap" },
+          E(
+            "svg",
+            { className: "pl-dn-svg", viewBox: "0 0 112 112", role: "img", "aria-label": "Average foundation ancestry" },
+            E(
+              "g",
+              { transform: "rotate(-90 56 56)", fill: "none", strokeWidth: 14 },
+              E("circle", { cx: 56, cy: 56, r: R, stroke: "var(--border-strong)", strokeOpacity: 0.5 }),
+              segs,
+            ),
+            E("text", { x: 56, y: 54, textAnchor: "middle", className: "pl-dn-big" }, tot.toFixed(1) + "%"),
+            E("text", { x: 56, y: 70, textAnchor: "middle", className: "pl-dn-sm" }, "foundation"),
+          ),
+        ),
+        E(
+          "div",
+          { className: "pl-tb" },
+          E(
+            "table",
+            { className: "pl-table pl-ftable" },
+            E(
+              "thead",
+              null,
+              E(
+                "tr",
+                null,
+                ["Foundation", "Avg blood %", "Animals carrying", "Highest"].map(function (h) {
+                  return E("th", { key: h }, h);
+                }),
+              ),
+            ),
+            E(
+              "tbody",
+              null,
+              u.map(function (F, i) {
+                var p = d.per[i];
+                return E(
+                  "tr",
+                  { key: F },
+                  E("td", null, E("i", { className: "pl-sw", style: { background: COL[i] } }), sn(F)),
+                  E("td", null, S.avgByFounder[i].toFixed(1) + "%"),
+                  E("td", null, p.carry + " of " + k.length),
+                  E(
+                    "td",
+                    null,
+                    p.top
+                      ? E(
+                          "span",
+                          { className: "row-link", style: { cursor: "pointer" }, onClick: function () { P.onGoToAnimal(p.top); } },
+                          p.top + " " + p.topV.toFixed(1) + "%",
+                        )
+                      : "—",
+                  ),
+                );
+              }),
+              E(
+                "tr",
+                { key: "other" },
+                E("td", null, E("i", { className: "pl-sw", style: { background: "var(--border-strong)" } }), "All other ancestors"),
+                E("td", null, Math.max(0, 100 - tot).toFixed(1) + "%"),
+                E("td", null),
+                E("td", null),
+              ),
+            ),
+          ),
+        ),
+      ),
+      E(
+        "div",
+        { className: "pl-tiles" },
+        E(
+          "div",
+          { className: "pl-tile" },
+          E("div", { className: "pl-l" }, "Average COI"),
+          E("div", { className: "pl-v" }, S.avgCOI.toFixed(1) + "%"),
+          E("div", { className: "pl-s" }, "across " + k.length + " animals"),
+        ),
+        E(
+          "div",
+          { className: "pl-tile" },
+          E("div", { className: "pl-l" }, "Average complete generations"),
+          E("div", { className: "pl-v" }, d.cgAvg.toFixed(1)),
+          E("div", { className: "pl-s" }, "goal 10 \u00B7 " + d.cgShort + " under 6"),
+        ),
+        E(
+          "div",
+          { className: "pl-tile" },
+          E("div", { className: "pl-l" }, "Bulls / females"),
+          E("div", { className: "pl-v" }, d.bulls + " / " + d.females),
+          E("div", { className: "pl-s" }, S.uniqueSires + " unique sires"),
+        ),
+        E(
+          "div",
+          { className: "pl-tile" },
+          E("div", { className: "pl-l" }, "Both parents known"),
+          E("div", { className: "pl-v" }, S.pctBothParents.toFixed(0) + "%"),
+          E("div", { className: "pl-s" }, "of the animals shown"),
+        ),
+      ),
+    );
+  }
   function DashViews(P) {
     var E = b.default.createElement;
     var k = P.animals,
@@ -12375,6 +12655,57 @@ Error generating stack: ` +
         { className: "metric-note", style: { marginBottom: 6 } },
         "Average foundation blood % of the animals in each group, for the scope chosen above.",
       ),
+      view === "year" && rows.length > 1
+        ? (function () {
+            var W = 520,
+              H = 150,
+              pl = 34,
+              pb = 22,
+              mx = 1;
+            rows.forEach(function (x) {
+              x.avg.forEach(function (v) {
+                if (v > mx) mx = v;
+              });
+            });
+            mx = Math.ceil(mx / 5) * 5;
+            var xs = function (i) {
+              return pl + ((W - pl - 8) * i) / (rows.length - 1);
+            };
+            var ys = function (v) {
+              return 6 + (H - pb - 6) * (1 - v / mx);
+            };
+            var G2 = window.__lbProg || {};
+            return E(
+              "svg",
+              { viewBox: "0 0 " + W + " " + H, style: { width: "100%", height: "auto", marginBottom: 8 }, role: "img", "aria-label": "Foundation blood by birth year" },
+              [0, 0.5, 1].map(function (f) {
+                return E(
+                  "g",
+                  { key: f },
+                  E("line", { x1: pl, x2: W - 8, y1: ys(mx * f), y2: ys(mx * f), stroke: "var(--border)" }),
+                  E("text", { x: pl - 4, y: ys(mx * f) + 4, textAnchor: "end", fontSize: 10, fill: "var(--text-muted)" }, Math.round(mx * f) + "%"),
+                );
+              }),
+              [0, rows.length - 1].map(function (i) {
+                return E("text", { key: i, x: xs(i), y: H - 6, textAnchor: i === 0 ? "start" : "end", fontSize: 10, fill: "var(--text-muted)" }, rows[i].key);
+              }),
+              u.map(function (F, j) {
+                var col = (G2.colors && G2.colors[F]) || FCOL[j % 8];
+                return E("polyline", {
+                  key: F,
+                  fill: "none",
+                  stroke: col,
+                  strokeWidth: 2,
+                  points: rows
+                    .map(function (x, i) {
+                      return xs(i) + "," + ys(x.avg[j]);
+                    })
+                    .join(" "),
+                });
+              }),
+            );
+          })()
+        : null,
       rows.length === 0
         ? E("div", { className: "metric-note" }, "Nothing to show for this scope.")
         : E(
@@ -12434,6 +12765,7 @@ Error generating stack: ` +
     setFounders: d,
     pg: pgP,
     setPg: pgS,
+    matingLog: P_log,
   }) {
     let [c, g] = (0, b.useState)("active"),
       v = to,
@@ -12508,26 +12840,7 @@ Error generating stack: ` +
       children: [
         (0, o.jsx)("h1", { children: "Dashboard" }),
         (0, o.jsx)("div", { className: "sub", children: "Herd-level stats and program health" }),
-        (0, o.jsxs)("div", {
-          className: "card",
-          children: [
-            (0, o.jsx)("h2", { children: "Population" }),
-            (0, o.jsxs)("div", {
-              className: "metric-row",
-              children: [
-                (0, o.jsx)("div", { className: "metric-label", children: "Total Animals" }),
-                (0, o.jsx)("div", { className: "metric-value", children: y }),
-              ],
-            }),
-            (0, o.jsxs)("div", {
-              className: "metric-row",
-              children: [
-                (0, o.jsx)("div", { className: "metric-label", children: "Active" }),
-                (0, o.jsx)("div", { className: "metric-value", children: E }),
-              ],
-            }),
-          ],
-        }),
+        (0, o.jsx)(DashTiles, { allAnimals: e, sire: t, dam: n, matingLog: P_log }),
         (0, o.jsx)("div", {
           className: "pairing-row",
           children: (0, o.jsxs)("div", {
@@ -12545,6 +12858,27 @@ Error generating stack: ` +
             ],
           }),
         }),
+        (0, o.jsxs)("div", {
+          className: "dash-grid",
+          children: [
+        (0, o.jsx)(HerdGlance, {
+          animals: k,
+          founders: u,
+          sire: t,
+          dam: n,
+          names: r,
+          stats: O,
+          scopeLabel: c === "active" ? "Active herd" : "Whole database",
+          onGoToAnimal: a,
+        }),
+        (0, o.jsx)(DashAttention, {
+          animals: k,
+          sire: t,
+          dam: n,
+          names: r,
+          matingLog: P_log,
+          scopeLabel: c === "active" ? "Active herd" : "Whole database",
+        }),
         (0, o.jsx)(FndCard, {
           pg: pgP,
           setPg: pgS,
@@ -12558,6 +12892,8 @@ Error generating stack: ` +
           dam: n,
           names: r,
           onGoToAnimal: a,
+        }),
+          ],
         }),
         (0, o.jsxs)("div", {
           className: "card",
@@ -18005,11 +18341,11 @@ Error generating stack: ` +
     );
     var nextGen = E(
       "div",
-      { style: { marginTop: 16, paddingTop: 12, borderTop: "1px dotted #d8d0c2" } },
-      E("p", { className: "pl-lab" }, "Plan the next generation"),
+      { className: "pl-nextgen" },
+      E("h3", { className: "pl-ng-title" }, FIX ? "Next generation" : "Plan the next generation"),
       E(
         "div",
-        { className: "metric-note", style: { marginBottom: 6 } },
+        { className: "pl-ng-help" },
         "Pick a mate for this calf (assumed to be a heifer) to see the same card for her calf. You can keep going.",
       ),
       E(ph, { key: "mate" + cow + bull, label: "Mate for the calf", value: mate, onChange: setMate, allAnimals: e }),
@@ -18041,13 +18377,12 @@ Error generating stack: ` +
       card,
       E(
         "div",
-        { className: "metric-note", style: { marginTop: 8 } },
-        "These are expected values from the pedigree. Real calves vary.",
-      ),
+        { className: "pl-actions" },
+        E("div", { className: "pl-foot" }, "These are expected values from the pedigree. Real calves vary."),
       P.saveMatingLog && !FIX
         ? E(
             "div",
-            { style: { marginTop: 10 } },
+            { className: "pl-actions-row" },
             E(
               "button",
               {
@@ -18080,9 +18415,10 @@ Error generating stack: ` +
               },
               "Save to Log",
             ),
-            logMsg ? E("span", { className: "metric-note", style: { marginLeft: 10 } }, logMsg) : null,
+            logMsg ? E("span", { className: "pl-logmsg" }, logMsg) : null,
           )
         : null,
+      ),
       nextGen,
     );
   }
@@ -20057,6 +20393,26 @@ Rules:
   .pl-s { font-size: 12px; color: var(--text-muted); }
   .pl-hd { font-size: 13px; font-weight: 600; margin: 14px 0 2px; }
   .pl-sub { font-size: 12px; color: var(--text-muted); margin: 0 0 6px; }
+  .dash-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin: 10px 0 16px; }
+  .dash-tile { background: var(--surface); border: 2px solid var(--border-strong); padding: 14px 12px; text-align: center; }
+  .dash-tv { font-size: 34px; font-weight: 700; line-height: 1.1; color: var(--accent); }
+  .dash-tl { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+  .dash-due { border-color: var(--accent); background: var(--caution-bg); }
+  .dash-grid { display: grid; grid-template-columns: 1fr; gap: 0 14px; align-items: start; }
+  .dash-grid > :first-child { grid-column: 1 / -1; }
+  @media (min-width: 900px) { .dash-grid { grid-template-columns: 1fr 1fr; } }
+  .dash-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-top: 1px solid var(--border); font-size: 14px; }
+  .dash-row b { font-size: 22px; color: var(--accent); }
+  .dash-row b.dash-zero { color: var(--text-muted); font-weight: 400; }
+  .pl-actions { margin: 4px 0 14px; }
+  .pl-foot { font-size: 12px; color: var(--text-muted); margin: 0 0 10px; padding: 0 2px; }
+  .pl-actions-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .pl-logmsg { font-size: 13px; color: var(--text-secondary); }
+  .pl-nextgen { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--accent); padding: 14px 16px 6px; margin: 0 0 14px; }
+  .pl-nextgen .pl-nextgen { margin-left: 10px; margin-top: 12px; }
+  .pl-ng-title { margin: 0 0 4px; font-size: 15px; font-weight: 600; color: var(--text); }
+  .pl-ng-help { font-size: 13px; color: var(--text-secondary); margin: 0 0 10px; }
+  .pl-nextgen .pairing-slot { margin-bottom: 12px; }
   .pl-note { margin-top: 10px; font-size: 12px; padding: 6px 10px; background: var(--caution-bg); color: var(--caution); border: 1px solid var(--caution-border); }
 
   .pl-dwrap { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
