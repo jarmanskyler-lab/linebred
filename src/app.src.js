@@ -12377,18 +12377,24 @@ Error generating stack: ` +
             if (x.semenAvailable) semen++;
           } else if (sx === "Female") females++;
         });
-        return { act: act.length, bulls: bulls, females: females, semen: semen };
+        var kc = herdComplete(act, P.founders || [], t, n, P.names);
+        var cs = 0;
+        kc.forEach(function (x) {
+          cs += P.kinship(t[x.name], n[x.name]) * 100;
+        });
+        return { act: act.length, bulls: bulls, females: females, semen: semen, nc: kc.length, coi: kc.length ? cs / kc.length : null };
       },
-      [e, t, n],
+      [e, t, n, P.founders, P.names, P.kinship],
     );
     var open = log.filter(logOpen).length,
       due = log.filter(logDue).length;
-    function tile(label, val, cls) {
+    function tile(label, val, cls, sub) {
       return E(
         "div",
         { key: label, className: "dash-tile " + (cls || "") },
         E("div", { className: "dash-tv" }, val),
         E("div", { className: "dash-tl" }, label),
+        sub ? E("div", { className: "dash-ts" }, sub) : null,
       );
     }
     return E(
@@ -12398,7 +12404,7 @@ Error generating stack: ` +
       tile("Active animals", d.act),
       tile("Active bulls", d.bulls),
       tile("Active females", d.females),
-      tile("Bulls with semen on hand", d.semen),
+      tile("Herd average COI", d.coi === null ? "\u2014" : d.coi.toFixed(1) + "%", "", d.nc + " complete pedigrees"),
       tile(due ? "Matings due to revisit" : "Open matings in the Log", due || open, due ? "dash-due" : ""),
     );
   }
@@ -12443,14 +12449,26 @@ Error generating stack: ` +
       row("No birth date", d.noBirth),
     );
   }
-  function trendCell(v, dec, tip) {
+  var hcCache = new WeakMap();
+  function herdComplete(k, u, t, n, r) {
+    var key = u.join("\u0001");
+    var c = hcCache.get(k);
+    if (c && c.key === key && c.t === t && c.n === n) return c.v;
+    var inc = [];
+    k.forEach(function (x) {
+      for (var i = 0; i < u.length; i++) if (!(ye(x.name, u[i], t, n, r) > 0)) return;
+      inc.push(x);
+    });
+    hcCache.set(k, { key: key, t: t, n: n, v: inc });
+    return inc;
+  }
+  function dSm(x, dec) {
     var E = b.default.createElement;
-    if (v === null || v === undefined) return "\u2014";
-    var z = Math.abs(v) < 0.05;
+    var z = Math.abs(x) < Math.pow(10, -dec) / 2;
     return E(
       "span",
-      { className: "pl-dl " + (z ? "pl-eq" : v > 0 ? "pl-up" : "pl-dn"), title: tip || "" },
-      z ? "\u25CF 0.0 pts" : (v > 0 ? "\u25B2 " : "\u25BC ") + Math.abs(v).toFixed(dec) + " pts",
+      { className: "pl-dl " + (z ? "pl-eq" : x > 0 ? "pl-up" : "pl-dn") },
+      z ? "±0" : (x > 0 ? "+" : "−") + Math.abs(x).toFixed(dec),
     );
   }
   function HerdGlance(P) {
@@ -12460,7 +12478,7 @@ Error generating stack: ` +
       t = P.sire,
       n = P.dam,
       r = P.names,
-      S = P.stats;
+      kin = P.kinship;
     var G = window.__lbProg || {};
     var sn = function (x) {
       return (G.shorts && G.shorts[x]) || dn(x);
@@ -12477,48 +12495,44 @@ Error generating stack: ` +
           if (sx === "Male") bulls++;
           else if (sx === "Female") females++;
         });
-        var yrs = k.map(function (x) {
-          var y = parseInt(String(x.birthDate || "").slice(0, 4), 10);
-          return y >= 1900 && y <= 2100 ? y : null;
-        });
-        var maxY = 0;
-        yrs.forEach(function (y) {
-          if (y && y > maxY) maxY = y;
-        });
-        var kin = P.kinship;
-        var tw = { rS: 0, rN: 0, pS: 0, pN: 0 };
+        var kc = herdComplete(k, u, t, n, r);
         var per = u.map(function (F) {
-          var carry = 0,
-            top = null,
-            topV = -1,
+          var bl = 0,
             rel = 0,
-            occ = 0,
-            rS = 0,
-            rN = 0,
-            pS = 0,
-            pN = 0;
-          k.forEach(function (x, xi) {
-            var v = ye(x.name, F, t, n, r) * 100;
-            if (v > 0) carry++;
-            if (v > topV) {
-              topV = v;
-              top = x.name;
-            }
-            if (k.length <= 2500) {
-              rel += rs(x.name, F, t, n, kin);
-              occ += On(x.name, F, t, n, r);
-            }
+            occ = 0;
+          kc.forEach(function (x) {
+            bl += ye(x.name, F, t, n, r) * 100;
+            rel += rs(x.name, F, t, n, kin);
+            occ += On(x.name, F, t, n, r);
           });
-          return {
-            carry: carry,
-            top: top,
-            topV: topV,
-            rel: k.length && k.length <= 2500 ? rel / k.length : null,
-            occ: k.length && k.length <= 2500 ? occ / k.length : null,
-          };
+          var m = kc.length || 1;
+          return { blood: bl / m, rel: rel / m, occ: occ / m };
         });
-        var totTrend = null;
-        var yr = null;
+        var coiSum = 0;
+        kc.forEach(function (x) {
+          coiSum += kin(t[x.name], n[x.name]) * 100;
+        });
+        var cgSum = 0,
+          cgShort = 0;
+        k.forEach(function (x) {
+          var f = nh(x.name, t, n, r).fullThrough;
+          cgSum += f;
+          if (f < 6) cgShort++;
+        });
+        var sires = new Set();
+        k.forEach(function (x) {
+          if (x.sire) sires.add(x.sire);
+        });
+        var both = 0;
+        k.forEach(function (x) {
+          if (x.sire && x.dam) both++;
+        });
+        // 3-year trend: all animals in the database with complete data, by birth year
+        var totTrend = null,
+          yr = null,
+          trends = u.map(function () {
+            return null;
+          });
         var allA = P.byAll || k;
         var ay = allA.map(function (x) {
           var y = parseInt(String(x.birthDate || "").slice(0, 4), 10);
@@ -12529,48 +12543,89 @@ Error generating stack: ` +
           if (y && y > aMax) aMax = y;
         });
         if (aMax) {
-          yr = { recent: aMax - 2 + "\u2013" + aMax, prior: aMax - 5 + "\u2013" + (aMax - 3) };
-          var R2 = u.map(function () { return { s: 0, n: 0 }; }),
-            P2 = u.map(function () { return { s: 0, n: 0 }; });
+          var ys = {};
           allA.forEach(function (x, xi) {
             var y = ay[xi];
-            if (!y || y < aMax - 5) return;
-            var rec = y >= aMax - 2;
-            u.forEach(function (F, i) {
-              var v = ye(x.name, F, t, n, r) * 100;
-              var g = rec ? R2[i] : P2[i];
-              g.s += v;
-              g.n++;
+            if (!y) return;
+            var vs = u.map(function (F) {
+              return ye(x.name, F, t, n, r) * 100;
+            });
+            if (
+              vs.some(function (v) {
+                return !(v > 0);
+              })
+            )
+              return;
+            var g = ys[y] || (ys[y] = { n: 0, s: u.map(function () { return 0; }) });
+            g.n++;
+            vs.forEach(function (v, i) {
+              g.s[i] += v;
             });
           });
-          per.forEach(function (p, i) {
-            p.rN = R2[i].n;
-            p.pN = P2[i].n;
-            p.trend = R2[i].n >= 3 && P2[i].n >= 3 ? R2[i].s / R2[i].n - P2[i].s / P2[i].n : null;
-          });
-          if (per.length && per.every(function (p) { return p.trend !== null; })) {
-            totTrend = 0;
-            per.forEach(function (p) { totTrend += p.trend; });
+          var win = function (e) {
+            var o2 = { n: 0, s: u.map(function () { return 0; }) };
+            for (var y = e - 2; y <= e; y++)
+              if (ys[y]) {
+                o2.n += ys[y].n;
+                ys[y].s.forEach(function (v, i) {
+                  o2.s[i] += v;
+                });
+              }
+            return o2;
+          };
+          var cur = win(aMax);
+          var prior = null,
+            pe = 0;
+          for (var e2 = aMax - 3; e2 >= 1950 && !prior; e2--) {
+            var w2 = win(e2);
+            if (w2.n >= 3) {
+              prior = w2;
+              pe = e2;
+            }
+          }
+          if (cur.n >= 3 && prior) {
+            trends = u.map(function (F, i) {
+              return cur.s[i] / cur.n - prior.s[i] / prior.n;
+            });
+            totTrend = trends.reduce(function (a, v) {
+              return a + v;
+            }, 0);
+            yr = {
+              recent: aMax - 2 + "\u2013" + aMax,
+              prior: pe - 2 + "\u2013" + pe,
+              nr: cur.n,
+              np: prior.n,
+            };
           }
         }
-        var cgSum = 0,
-          cgShort = 0;
-        k.forEach(function (x) {
-          var f = nh(x.name, t, n, r).fullThrough;
-          cgSum += f;
-          if (f < 6) cgShort++;
-        });
-        return { bulls: bulls, females: females, per: per, cgAvg: k.length ? cgSum / k.length : 0, cgShort: cgShort, totTrend: totTrend, yr: yr };
+        return {
+          bulls: bulls,
+          females: females,
+          per: per,
+          nc: kc.length,
+          coi: kc.length ? coiSum / kc.length : null,
+          cgAvg: k.length ? cgSum / k.length : 0,
+          cgShort: cgShort,
+          totTrend: totTrend,
+          trends: trends,
+          yr: yr,
+          uniqueSires: sires.size,
+          pctBoth: k.length ? (both / k.length) * 100 : 0,
+        };
       },
-      [k, u, t, n, r, P.kinship, P.byAll],
+      [k, u, t, n, r, kin, P.byAll],
     );
     var tot = 0;
+    d.per.forEach(function (p) {
+      tot += p.blood;
+    });
     var R = 40,
       K = 2 * Math.PI * R,
-      off = 0;
+      off = 0,
+      acc = 0;
     var segs = u.map(function (F, i) {
-      var v = Math.max(0, Math.min(S.avgByFounder[i], 100 - tot));
-      tot += v;
+      var v = Math.max(0, Math.min(d.per[i].blood, 100 - acc));
+      acc += v;
       var len = (K * v) / 100,
         el = E("circle", {
           key: i,
@@ -12584,14 +12639,27 @@ Error generating stack: ` +
       off += len;
       return el;
     });
+    var tt = d.totTrend;
+    var chipCls = tt === null ? "pl-eq" : Math.abs(tt) < 0.05 ? "pl-eq" : tt > 0 ? "pl-up" : "pl-dn";
+    var excl = k.length - d.nc;
     return E(
       "div",
       { className: "card" },
-      E("h2", null, "Herd at a glance"),
+      E("h2", null, "Herd averages"),
       E(
         "div",
         { className: "metric-note" },
-        P.scopeLabel + " · " + k.length + " animals (" + d.bulls + " bulls, " + d.females + " females)",
+        P.scopeLabel +
+          " · " +
+          k.length +
+          " animals (" +
+          d.bulls +
+          " bulls, " +
+          d.females +
+          " females). Averages use the " +
+          d.nc +
+          " animals whose pedigree reaches every foundation animal" +
+          (excl > 0 ? "; " + excl + " with a zero in any foundation animal are left out as incomplete." : "."),
       ),
       E(
         "div",
@@ -12611,6 +12679,21 @@ Error generating stack: ` +
             E("text", { x: 56, y: 54, textAnchor: "middle", className: "pl-dn-big" }, tot.toFixed(1) + "%"),
             E("text", { x: 56, y: 70, textAnchor: "middle", className: "pl-dn-sm" }, "foundation"),
           ),
+          E(
+            "div",
+            { className: "pl-delta " + chipCls, title: d.yr ? "Animals born " + d.yr.recent + " (" + d.yr.nr + ") vs " + d.yr.prior + " (" + d.yr.np + "), complete pedigrees, whole database" : "" },
+            E(
+              "span",
+              { className: "pl-arrow" },
+              tt === null || chipCls === "pl-eq" ? "●" : chipCls === "pl-up" ? "▲" : "▼",
+            ),
+            E(
+              "div",
+              null,
+              E("div", { className: "pl-dnum" }, tt === null ? "—" : chipCls === "pl-eq" ? "No change" : Math.abs(tt).toFixed(1) + " pts"),
+              E("div", { className: "pl-dlab" }, "Foundation blood, 3-yr avg"),
+            ),
+          ),
         ),
         E(
           "div",
@@ -12624,7 +12707,7 @@ Error generating stack: ` +
               E(
                 "tr",
                 null,
-                ["Foundation", "Avg blood %", "3-yr trend", "Avg relation", "Avg times", "Animals carrying", "Highest"].map(function (h) {
+                ["Foundation", "% Blood", "Relationship", "Times"].map(function (h) {
                   return E("th", { key: h }, h);
                 }),
               ),
@@ -12638,32 +12721,16 @@ Error generating stack: ` +
                   "tr",
                   { key: F },
                   E("td", null, E("i", { className: "pl-sw", style: { background: COL[i] } }), sn(F)),
-                  E("td", null, S.avgByFounder[i].toFixed(1) + "%"),
-                  E("td", null, trendCell(p.trend, 1, "All animals in the database born " + (d.yr ? d.yr.recent : "") + " (" + p.rN + ") vs " + (d.yr ? d.yr.prior : "") + " (" + p.pN + ")")),
-                  E("td", null, p.rel === null ? "\u2014" : p.rel.toFixed(2)),
-                  E("td", null, p.occ === null ? "\u2014" : p.occ.toFixed(1)),
-                  E("td", null, p.carry + " of " + k.length),
-                  E(
-                    "td",
-                    null,
-                    p.top
-                      ? E(
-                          "span",
-                          { className: "row-link", style: { cursor: "pointer" }, onClick: function () { P.onGoToAnimal(p.top); } },
-                          p.top + " " + p.topV.toFixed(1) + "%",
-                        )
-                      : "—",
-                  ),
+                  E("td", null, p.blood.toFixed(1) + "%", d.trends[i] === null ? null : dSm(d.trends[i], 1)),
+                  E("td", null, (p.rel).toFixed(2)),
+                  E("td", null, p.occ.toFixed(1)),
                 );
               }),
               E(
                 "tr",
                 { key: "other" },
                 E("td", null, E("i", { className: "pl-sw", style: { background: "var(--border-strong)" } }), "All other ancestors"),
-                E("td", null, Math.max(0, 100 - tot).toFixed(1) + "%"),
-                E("td", null, d.totTrend === null ? "\u2014" : trendCell(-d.totTrend, 1, "All other ancestors move the opposite way")),
-                E("td", null),
-                E("td", null),
+                E("td", null, Math.max(0, 100 - tot).toFixed(1) + "%", tt === null ? null : dSm(-tt, 1)),
                 E("td", null),
                 E("td", null),
               ),
@@ -12674,13 +12741,9 @@ Error generating stack: ` +
       E(
         "div",
         { className: "metric-note" },
-        d.yr && d.totTrend !== null
-          ? [
-              "Foundation blood in all animals in the database born " + d.yr.recent + " vs " + d.yr.prior + ": ",
-              trendCell(d.totTrend, 1, ""),
-              ". Trend is the herd-wide rolling three birth years against the three before, whatever view is chosen. Avg relation and Avg times are per animal in this view (shown for views under 2,500 animals).",
-            ]
-          : "Trend needs at least 3 animals born in each three-year window. Avg relation and Avg times are per animal in this view.",
+        d.yr && tt !== null
+          ? "Arrow and small +/− compare animals born " + d.yr.recent + " (" + d.yr.nr + ") with those born in the most recent earlier three-year span that has data, " + d.yr.prior + " (" + d.yr.np + "). Complete pedigrees only, across the whole database. Relationship is the average additive relationship to the foundation animal; Times is the average number of times it appears in the pedigree."
+          : "The trend needs at least 3 complete-pedigree animals in the latest three birth years and in an earlier three-year span. Relationship is the average additive relationship to the foundation animal; Times is the average number of times it appears in the pedigree.",
       ),
       E(
         "div",
@@ -12689,28 +12752,28 @@ Error generating stack: ` +
           "div",
           { className: "pl-tile" },
           E("div", { className: "pl-l" }, "Average COI"),
-          E("div", { className: "pl-v" }, S.avgCOI.toFixed(1) + "%"),
-          E("div", { className: "pl-s" }, "across " + k.length + " animals"),
+          E("div", { className: "pl-v" }, d.coi === null ? "—" : d.coi.toFixed(1) + "%"),
+          E("div", { className: "pl-s" }, "across " + d.nc + " complete pedigrees"),
         ),
         E(
           "div",
           { className: "pl-tile" },
           E("div", { className: "pl-l" }, "Average complete generations"),
           E("div", { className: "pl-v" }, d.cgAvg.toFixed(1)),
-          E("div", { className: "pl-s" }, "goal 10 \u00B7 " + d.cgShort + " under 6"),
+          E("div", { className: "pl-s" }, "goal 10 · " + d.cgShort + " under 6"),
         ),
         E(
           "div",
           { className: "pl-tile" },
           E("div", { className: "pl-l" }, "Bulls / females"),
           E("div", { className: "pl-v" }, d.bulls + " / " + d.females),
-          E("div", { className: "pl-s" }, S.uniqueSires + " unique sires"),
+          E("div", { className: "pl-s" }, d.uniqueSires + " unique sires"),
         ),
         E(
           "div",
           { className: "pl-tile" },
           E("div", { className: "pl-l" }, "Both parents known"),
-          E("div", { className: "pl-v" }, S.pctBothParents.toFixed(0) + "%"),
+          E("div", { className: "pl-v" }, d.pctBoth.toFixed(0) + "%"),
           E("div", { className: "pl-s" }, "of the animals shown"),
         ),
       ),
@@ -12743,6 +12806,10 @@ Error generating stack: ` +
           });
         });
         var skip = new Set(u);
+        var fromFnd = function (nm) {
+          for (var i = 0; i < u.length; i++) if (ye(nm, u[i], t, n, r) > 0) return true;
+          return false;
+        };
         var byN = new Map();
         P.byAll.forEach(function (x) {
           byN.set(x.name, x);
@@ -12753,6 +12820,9 @@ Error generating stack: ` +
           })
           .sort(function (x, y) {
             return y[1] - x[1];
+          })
+          .filter(function (x) {
+            return fromFnd(x[0]);
           })
           .slice(0, 10)
           .map(function (x) {
@@ -12779,7 +12849,7 @@ Error generating stack: ` +
         P.scopeLabel +
           " \u00B7 ranked by average share of ancestry across the " +
           k.length +
-          " animals shown. Foundation animals are left out; they are in the table above.",
+          " animals shown. Only animals descended from a foundation animal count, so older lines are left out; the foundation animals themselves are in the table above.",
       ),
       !run
         ? E(
@@ -13006,6 +13076,10 @@ Error generating stack: ` +
       rows.length === 0
         ? E("div", { className: "metric-note" }, "Nothing to show for this scope.")
         : E(
+          "details",
+          { className: "dash-det" },
+          E("summary", null, "Show the list (" + rows.length + " rows)"),
+          E(
             "div",
             { className: "table-scroll" },
             E(
@@ -13046,6 +13120,7 @@ Error generating stack: ` +
                 }),
               ),
             ),
+          ),
           ),
     );
   }
@@ -13138,7 +13213,7 @@ Error generating stack: ` +
       children: [
         (0, o.jsx)("h1", { children: "Dashboard" }),
         (0, o.jsx)("div", { className: "sub", children: "Herd-level stats and program health" }),
-        (0, o.jsx)(DashTiles, { allAnimals: e, sire: t, dam: n, matingLog: P_log }),
+        (0, o.jsx)(DashTiles, { allAnimals: e, sire: t, dam: n, matingLog: P_log, founders: u, names: r, kinship: l }),
         (0, o.jsx)("div", {
           className: "pairing-row",
           children: (0, o.jsxs)("div", {
@@ -13156,9 +13231,6 @@ Error generating stack: ` +
             ],
           }),
         }),
-        (0, o.jsxs)("div", {
-          className: "dash-grid",
-          children: [
         (0, o.jsx)(HerdGlance, {
           animals: k,
           founders: u,
@@ -13170,41 +13242,6 @@ Error generating stack: ` +
           byAll: e,
           scopeLabel: c === "active" ? "Active herd" : "Whole database",
           onGoToAnimal: a,
-        }),
-        (0, o.jsx)(DashInfluence, {
-          animals: k,
-          founders: u,
-          sire: t,
-          dam: n,
-          names: r,
-          gen: gen,
-          byAll: e,
-          scopeLabel: c === "active" ? "Active herd" : "Whole database",
-          onGoToAnimal: a,
-        }),
-        (0, o.jsx)(DashAttention, {
-          animals: k,
-          sire: t,
-          dam: n,
-          names: r,
-          matingLog: P_log,
-          scopeLabel: c === "active" ? "Active herd" : "Whole database",
-        }),
-        (0, o.jsx)(FndCard, {
-          pg: pgP,
-          setPg: pgS,
-          allAnimals: e,
-          note: "Every blood %, balance score and ranking in the app is measured against these animals.",
-        }),
-        (0, o.jsx)(DashViews, {
-          animals: k,
-          founders: u,
-          sire: t,
-          dam: n,
-          names: r,
-          onGoToAnimal: a,
-        }),
-          ],
         }),
         (0, o.jsxs)("div", {
           className: "card",
@@ -13323,14 +13360,15 @@ Error generating stack: ` +
                 }),
               ],
             }),
-            (0, o.jsxs)("div", {
-              style: { marginTop: 14, paddingTop: 12, borderTop: "1px dotted #d8d0c2" },
+            (0, o.jsxs)("details", {
+              className: "dash-det",
               children: [
+                (0, o.jsx)("summary", { children: "COI distribution" }),
                 (0, o.jsxs)("div", {
                   className: "metric-note",
                   style: { marginBottom: 8 },
                   children: [
-                    "COI Distribution ",
+                    "Bands ",
                     (0, o.jsx)("span", {
                       style: { fontStyle: "italic" },
                       children: "(tap a band to see the animals)",
@@ -13381,49 +13419,10 @@ Error generating stack: ` +
                 }),
               ],
             }),
-          ],
-        }),
-        (0, o.jsxs)("div", {
-          className: "card",
+                    (0, o.jsxs)("details", {
+          className: "dash-det",
           children: [
-            (0, o.jsx)("h2", { children: "Data Completeness" }),
-            (0, o.jsx)("div", {
-              className: "metric-note",
-              style: { marginBottom: 8 },
-              children: "Counts the group chosen above. Data Health counts the whole database.",
-            }),
-            (0, o.jsxs)("div", {
-              className: "metric-row",
-              children: [
-                (0, o.jsx)("div", {
-                  className: "metric-label",
-                  children: "Average Pedigree Depth",
-                }),
-                (0, o.jsxs)("div", {
-                  className: "metric-value",
-                  children: [O.avgDepth.toFixed(1), " generations"],
-                }),
-              ],
-            }),
-            (0, o.jsxs)("div", {
-              className: "metric-row",
-              children: [
-                (0, o.jsx)("div", {
-                  className: "metric-label",
-                  children: "Has Both Sire & Dam Recorded",
-                }),
-                (0, o.jsxs)("div", {
-                  className: "metric-value",
-                  children: [O.pctBothParents.toFixed(1), "%"],
-                }),
-              ],
-            }),
-          ],
-        }),
-        (0, o.jsxs)("div", {
-          className: "card",
-          children: [
-            (0, o.jsx)("h2", { children: "Growth Over Time \u2014 Average COI by Birth Year" }),
+            (0, o.jsx)("summary", { children: "COI by birth year" }),
             O.yearRows.length === 0
               ? (0, o.jsx)("div", {
                   className: "metric-note",
@@ -13493,6 +13492,83 @@ Error generating stack: ` +
                     }),
                   ],
                 }),
+          ],
+        })
+          ],
+        }),
+        (0, o.jsxs)("div", {
+          className: "dash-grid",
+          children: [
+        (0, o.jsx)(FndCard, {
+          pg: pgP,
+          setPg: pgS,
+          allAnimals: e,
+          note: "Every blood %, balance score and ranking in the app is measured against these animals.",
+        }),
+        (0, o.jsx)(DashAttention, {
+          animals: k,
+          sire: t,
+          dam: n,
+          names: r,
+          matingLog: P_log,
+          scopeLabel: c === "active" ? "Active herd" : "Whole database",
+        }),
+        (0, o.jsx)(DashInfluence, {
+          animals: k,
+          founders: u,
+          sire: t,
+          dam: n,
+          names: r,
+          gen: gen,
+          byAll: e,
+          scopeLabel: c === "active" ? "Active herd" : "Whole database",
+          onGoToAnimal: a,
+        }),
+        (0, o.jsx)(DashViews, {
+          animals: k,
+          founders: u,
+          sire: t,
+          dam: n,
+          names: r,
+          onGoToAnimal: a,
+        }),
+          ],
+        }),
+        (0, o.jsxs)("div", {
+          className: "card",
+          children: [
+            (0, o.jsx)("h2", { children: "Data Completeness" }),
+            (0, o.jsx)("div", {
+              className: "metric-note",
+              style: { marginBottom: 8 },
+              children: "Counts the group chosen above. Data Health counts the whole database.",
+            }),
+            (0, o.jsxs)("div", {
+              className: "metric-row",
+              children: [
+                (0, o.jsx)("div", {
+                  className: "metric-label",
+                  children: "Average Pedigree Depth",
+                }),
+                (0, o.jsxs)("div", {
+                  className: "metric-value",
+                  children: [O.avgDepth.toFixed(1), " generations"],
+                }),
+              ],
+            }),
+            (0, o.jsxs)("div", {
+              className: "metric-row",
+              children: [
+                (0, o.jsx)("div", {
+                  className: "metric-label",
+                  children: "Has Both Sire & Dam Recorded",
+                }),
+                (0, o.jsxs)("div", {
+                  className: "metric-value",
+                  children: [O.pctBothParents.toFixed(1), "%"],
+                }),
+              ],
+            }),
           ],
         }),
         (0, o.jsxs)("div", {
@@ -20798,6 +20874,9 @@ Rules:
   .pl-s { font-size: 12px; color: var(--text-muted); }
   .pl-hd { font-size: 13px; font-weight: 600; margin: 14px 0 2px; }
   .pl-sub { font-size: 12px; color: var(--text-muted); margin: 0 0 6px; }
+  .dash-ts { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
+  .dash-det { margin-top: 10px; }
+  .dash-det > summary { cursor: pointer; font-size: 13px; font-weight: 600; color: var(--accent); padding: 6px 0; }
   .dash-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin: 10px 0 16px; }
   .dash-tile { background: var(--surface); border: 2px solid var(--border-strong); padding: 14px 12px; text-align: center; }
   .dash-tv { font-size: 34px; font-weight: 700; line-height: 1.1; color: var(--accent); }
