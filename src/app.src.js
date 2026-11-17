@@ -12805,13 +12805,14 @@ Error generating stack: ` +
   }
   function DashInfluence(P) {
     var E = b.default.createElement;
-    var k = P.animals,
+    var kAll = P.animals,
       u = P.founders,
       t = P.sire,
       n = P.dam,
       r = P.names,
       gen = P.gen;
     var G = window.__lbProg || {};
+    var k = herdComplete(kAll, u, t, n, r);
     var big = k.length > 1500;
     var sGo = b.useState(false),
       go = sGo[0],
