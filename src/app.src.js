@@ -14060,7 +14060,7 @@ Error generating stack: ` +
     var sCp = b.useState("any"),
       coiP = sCp[0],
       setCoiP = sCp[1];
-    var sSo = b.useState("change"),
+    var sSo = b.useState("result"),
       sortBy = sSo[0],
       setSortBy = sSo[1];
     var sPg = b.useState(0),
@@ -14619,8 +14619,8 @@ Error generating stack: ` +
             E("p", { className: "pl-lab" }, "Sort by"),
             seg(
               [
-                { v: "change", l: "Change from cow" },
-                { v: "result", l: "Calf result" },
+                { v: "result", l: "Highest calf total" },
+                { v: "change", l: "Biggest change from cow" },
               ],
               sortBy,
               setSortBy,
