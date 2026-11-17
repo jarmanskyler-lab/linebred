@@ -12617,11 +12617,16 @@ Error generating stack: ` +
     var d = b.useMemo(
       function () {
         var bulls = 0,
+          usableSires = 0,
           females = 0;
         k.forEach(function (x) {
           var sx = qe(x.name, x, t, n);
-          if (sx === "Male") bulls++;
-          else if (sx === "Female") females++;
+          if (sx === "Male") {
+            bulls++;
+          } else if (sx === "Female") females++;
+        });
+        (P.scopeAll || k).forEach(function (x) {
+          if (qe(x.name, x, t, n) === "Male" && Zr(x)) usableSires++;
         });
         var kc = herdComplete(k, u, t, n, r);
         var per = u.map(function (F) {
@@ -12728,6 +12733,7 @@ Error generating stack: ` +
         }
         return {
           bulls: bulls,
+          usableSires: usableSires,
           females: females,
           per: per,
           nc: kc.length,
@@ -12872,6 +12878,12 @@ Error generating stack: ` +
           { className: "pl-tile" },
           E("div", { className: "pl-l" }, u.length === 2 ? "Ratio " + sn(u[0]) + " : " + sn(u[1]) : "Foundation Ratio"),
           E("div", { className: "pl-v" }, u.length === 2 && d.per[1].blood > 0 ? (d.per[0].blood / d.per[1].blood).toFixed(2) + " : 1" : "\u2014"),
+        ),        E(
+          "div",
+          { className: "pl-tile" },
+          E("div", { className: "pl-l" }, "Sires Available"),
+          E("div", { className: "pl-v" }, d.usableSires),
+          E("div", { className: "pl-s" }, "living or semen on hand"),
         ),
       ),
       E(DashInfluence, {
@@ -13393,6 +13405,7 @@ Error generating stack: ` +
           stats: O,
           kinship: l,
           total: k0.length,
+          scopeAll: k0,
           byAll: e,
           gen: gen,
           scopeLabel: c === "active" ? "Active herd" : "Whole database",
