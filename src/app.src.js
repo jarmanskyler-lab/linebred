@@ -12898,7 +12898,7 @@ Error generating stack: ` +
                     E(
                       "tr",
                       null,
-                      ["#", "Animal", "Avg Share", "Avg Rel", "Carriers", "Born"].map(function (h) {
+                      ["#", "Animal", "% Blood", "Avg Rel", "Carriers", "Born"].map(function (h) {
                         return E("th", { key: h }, h);
                       }),
                     ),
