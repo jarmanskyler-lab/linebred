@@ -10946,7 +10946,7 @@ Error generating stack: ` +
       E(
         "div",
         { className: "metric-note", style: { marginTop: 8 } },
-        "Foundation animals are saved on this device. Use Export to back them up or move them to another device.",
+        "Saved on this device. Export to back up.",
       ),
     );
   }
@@ -12382,7 +12382,14 @@ Error generating stack: ` +
         kc.forEach(function (x) {
           cs += P.kinship(t[x.name], n[x.name]) * 100;
         });
-        return { act: act.length, bulls: bulls, females: females, semen: semen, nc: kc.length, coi: kc.length ? cs / kc.length : null };
+        var fb = (P.founders || []).map(function (F) {
+          var v = 0;
+          kc.forEach(function (x) {
+            v += ye(x.name, F, t, n, P.names) * 100;
+          });
+          return kc.length ? v / kc.length : 0;
+        });
+        return { act: act.length, bulls: bulls, females: females, semen: semen, nc: kc.length, coi: kc.length ? cs / kc.length : null, fb: fb };
       },
       [e, t, n, P.founders, P.names, P.kinship],
     );
@@ -12402,10 +12409,15 @@ Error generating stack: ` +
       { className: "dash-tiles" },
       tile("Animals in database", e.length.toLocaleString()),
       tile("Active animals", d.act),
+      tile("Herd Avg COI", d.coi === null ? "\u2014" : d.coi.toFixed(1) + "%"),
+      tile(
+        "Foundation % Blood",
+        d.fb.reduce(function (a, v) { return a + v; }, 0).toFixed(1) + "%",
+        "",
+        (P.founders || []).map(function (F, i) { return (((window.__lbProg || {}).shorts || {})[F] || dn(F)) + " " + d.fb[i].toFixed(1); }).join(" \u00b7 "),
+      ),
       tile("Active bulls", d.bulls),
       tile("Active females", d.females),
-      tile("Herd average COI", d.coi === null ? "\u2014" : d.coi.toFixed(1) + "%", "", d.nc + " complete pedigrees"),
-      tile(due ? "Matings due to revisit" : "Open matings in the Log", due || open, due ? "dash-due" : ""),
     );
   }
   function DashAttention(P) {
@@ -12441,7 +12453,6 @@ Error generating stack: ` +
       "div",
       { className: "card" },
       E("h2", null, "Needs attention"),
-      E("div", { className: "metric-note" }, P.scopeLabel + " · " + k.length + " animals"),
       row("Matings due to revisit (Log)", log.filter(logDue).length),
       row("Open matings in the Log", log.filter(logOpen).length),
       row("Missing a sire or dam", d.noParent),
@@ -12645,22 +12656,7 @@ Error generating stack: ` +
     return E(
       "div",
       { className: "card" },
-      E("h2", null, "Herd averages"),
-      E(
-        "div",
-        { className: "metric-note" },
-        P.scopeLabel +
-          " · " +
-          k.length +
-          " animals (" +
-          d.bulls +
-          " bulls, " +
-          d.females +
-          " females). Averages use the " +
-          d.nc +
-          " animals whose pedigree reaches every foundation animal" +
-          (excl > 0 ? "; " + excl + " with a zero in any foundation animal are left out as incomplete." : "."),
-      ),
+      E("h2", { title: d.nc + " of " + k.length + " animals have a pedigree that reaches every foundation animal" }, "Herd averages"),
       E(
         "div",
         { className: "pl-mid" },
@@ -12740,41 +12736,25 @@ Error generating stack: ` +
       ),
       E(
         "div",
-        { className: "metric-note" },
-        d.yr && tt !== null
-          ? "Arrow and small +/− compare animals born " + d.yr.recent + " (" + d.yr.nr + ") with those born in the most recent earlier three-year span that has data, " + d.yr.prior + " (" + d.yr.np + "). Complete pedigrees only, across the whole database. Relationship is the average additive relationship to the foundation animal; Times is the average number of times it appears in the pedigree."
-          : "The trend needs at least 3 complete-pedigree animals in the latest three birth years and in an earlier three-year span. Relationship is the average additive relationship to the foundation animal; Times is the average number of times it appears in the pedigree.",
-      ),
-      E(
-        "div",
         { className: "pl-tiles" },
         E(
           "div",
           { className: "pl-tile" },
-          E("div", { className: "pl-l" }, "Average COI"),
-          E("div", { className: "pl-v" }, d.coi === null ? "—" : d.coi.toFixed(1) + "%"),
-          E("div", { className: "pl-s" }, "across " + d.nc + " complete pedigrees"),
-        ),
-        E(
-          "div",
-          { className: "pl-tile" },
-          E("div", { className: "pl-l" }, "Average complete generations"),
+          E("div", { className: "pl-l" }, "Avg Complete Gens"),
           E("div", { className: "pl-v" }, d.cgAvg.toFixed(1)),
-          E("div", { className: "pl-s" }, "goal 10 · " + d.cgShort + " under 6"),
+          E("div", { className: "pl-s" }, "goal 10 \u00B7 " + d.cgShort + " under 6"),
         ),
         E(
           "div",
           { className: "pl-tile" },
-          E("div", { className: "pl-l" }, "Bulls / females"),
-          E("div", { className: "pl-v" }, d.bulls + " / " + d.females),
-          E("div", { className: "pl-s" }, d.uniqueSires + " unique sires"),
+          E("div", { className: "pl-l" }, "Unique Sires"),
+          E("div", { className: "pl-v" }, d.uniqueSires),
         ),
         E(
           "div",
           { className: "pl-tile" },
-          E("div", { className: "pl-l" }, "Both parents known"),
+          E("div", { className: "pl-l" }, "Parents Known"),
           E("div", { className: "pl-v" }, d.pctBoth.toFixed(0) + "%"),
-          E("div", { className: "pl-s" }, "of the animals shown"),
         ),
       ),
     );
@@ -12793,6 +12773,9 @@ Error generating stack: ` +
       go = sGo[0],
       setGo = sGo[1];
     var run = !big || go;
+    var sShow = b.useState(10),
+      shown = sShow[0],
+      setShown = sShow[1];
     var rows = b.useMemo(
       function () {
         if (!run || !gen) return null;
@@ -12824,7 +12807,7 @@ Error generating stack: ` +
           .filter(function (x) {
             return fromFnd(x[0]);
           })
-          .slice(0, 10)
+          .slice(0, 50)
           .map(function (x) {
             var rec = byN.get(x[0]) || {};
             return {
@@ -12843,65 +12826,105 @@ Error generating stack: ` +
       "div",
       { className: "card" },
       E("h2", null, "Most influential animals"),
-      E(
-        "div",
-        { className: "metric-note" },
-        P.scopeLabel +
-          " \u00B7 ranked by average share of ancestry across the " +
-          k.length +
-          " animals shown. Only animals descended from a foundation animal count, so older lines are left out; the foundation animals themselves are in the table above.",
-      ),
       !run
         ? E(
             "button",
             { className: "btn secondary", onClick: function () { setGo(true); } },
-            "Calculate for " + k.length + " animals (takes a few seconds)",
+            "Calculate for " + k.length + " animals",
           )
         : !rows
           ? null
           : E(
               "div",
-              { className: "table-scroll" },
+              null,
               E(
-                "table",
-                { className: "pl-table" },
+                "div",
+                { className: "table-scroll" },
                 E(
-                  "thead",
-                  null,
+                  "table",
+                  { className: "pl-table dash-inf" },
                   E(
-                    "tr",
+                    "thead",
                     null,
-                    ["Rank", "Animal", "Share of herd ancestry", "Animals carrying", "Born", "Status"].map(function (h) {
-                      return E("th", { key: h }, h);
+                    E(
+                      "tr",
+                      null,
+                      ["#", "Animal", "Avg Share", "Carriers", "Born"].map(function (h) {
+                        return E("th", { key: h }, h);
+                      }),
+                    ),
+                  ),
+                  E(
+                    "tbody",
+                    null,
+                    rows.slice(0, shown).map(function (x, i) {
+                      return E(
+                        "tr",
+                        { key: x.name },
+                        E("td", null, i + 1),
+                        E(
+                          "td",
+                          null,
+                          E(
+                            "span",
+                            { className: "row-link", style: { cursor: "pointer" }, onClick: function () { P.onGoToAnimal(x.name); } },
+                            x.name,
+                          ),
+                        ),
+                        E("td", null, x.share.toFixed(1) + "%"),
+                        E("td", null, x.carry),
+                        E("td", null, x.born || "\u2014"),
+                      );
                     }),
                   ),
                 ),
-                E(
-                  "tbody",
-                  null,
-                  rows.map(function (x, i) {
-                    return E(
-                      "tr",
-                      { key: x.name },
-                      E("td", null, i + 1),
-                      E(
-                        "td",
-                        null,
-                        E(
-                          "span",
-                          { className: "row-link", style: { cursor: "pointer" }, onClick: function () { P.onGoToAnimal(x.name); } },
-                          x.name,
-                        ),
-                      ),
-                      E("td", null, x.share.toFixed(1) + "%"),
-                      E("td", null, x.carry + " of " + k.length),
-                      E("td", null, x.born || "\u2014"),
-                      E("td", null, x.live ? "Living / semen" : x.sex === "Male" ? "Bull" : x.sex === "Female" ? "Cow" : "\u2014"),
-                    );
-                  }),
-                ),
               ),
+              rows.length > 10
+                ? E(
+                    "div",
+                    { className: "dash-more" },
+                    shown < rows.length
+                      ? E("button", { type: "button", onClick: function () { setShown(Math.min(rows.length, shown + 10)); } }, "Show next 10")
+                      : null,
+                    shown > 10
+                      ? E("button", { type: "button", onClick: function () { setShown(10); } }, "Show fewer")
+                      : null,
+                  )
+                : null,
             ),
+    );
+  }
+  function LineStats(P) {
+    var E = b.default.createElement;
+    var O = P.O,
+      u = P.founders;
+    var G = window.__lbProg || {};
+    var sn = function (x) {
+      return (G.shorts && G.shorts[x]) || dn(x);
+    };
+    function tile(l, v, sub) {
+      return E(
+        "div",
+        { key: l, className: "pl-tile" },
+        E("div", { className: "pl-l" }, l),
+        E("div", { className: "pl-v" }, v),
+        sub,
+      );
+    }
+    function link(nm, val) {
+      return E(
+        "div",
+        { className: "pl-s" },
+        nm ? E("span", { className: "row-link", style: { cursor: "pointer" }, onClick: function () { P.onGoToAnimal(nm); } }, nm) : "\u2014",
+      );
+    }
+    return E(
+      "div",
+      { className: "pl-tiles" },
+      O.ratio !== null && u.length === 2 ? tile("Ratio " + sn(u[0]) + " : " + sn(u[1]), O.ratio.toFixed(2) + " : 1") : null,
+      tile("No Foundation Blood", O.pctZeroBoth.toFixed(1) + "%"),
+      tile("Most Concentrated", O.mostConcVal.toFixed(1) + "%", link(O.mostConcAnimal, O.mostConcVal)),
+      tile("Most Diluted", O.mostDilVal.toFixed(1) + "%", link(O.mostDilAnimal, O.mostDilVal)),
     );
   }
   function DashViews(P) {
@@ -13016,11 +13039,6 @@ Error generating stack: ` +
             v[1],
           );
         }),
-      ),
-      E(
-        "div",
-        { className: "metric-note", style: { marginBottom: 6 } },
-        "Average foundation blood % of the animals in each group, for the scope chosen above.",
       ),
       view === "year" && rows.length > 1
         ? (function () {
@@ -13247,134 +13265,11 @@ Error generating stack: ` +
           className: "card",
           children: [
             (0, o.jsx)("h2", { children: "Linebreeding" }),
-            (0, o.jsxs)("div", {
-              className: "metric-row",
-              children: [
-                (0, o.jsx)("div", { className: "metric-label", children: "Average COI" }),
-                (0, o.jsxs)("div", {
-                  className: "metric-value",
-                  children: [O.avgCOI.toFixed(2), "%"],
-                }),
-              ],
-            }),
-            u.map((h, T) =>
-              (0, o.jsxs)(
-                "div",
-                {
-                  className: "metric-row",
-                  children: [
-                    (0, o.jsxs)("div", {
-                      className: "metric-label",
-                      children: ["Average Blood % \u2014 ", h],
-                    }),
-                    (0, o.jsxs)("div", {
-                      className: "metric-value",
-                      children: [O.avgByFounder[T].toFixed(2), "%"],
-                    }),
-                  ],
-                },
-                h,
-              ),
-            ),
-            O.ratio !== null &&
-              (0, o.jsxs)("div", {
-                className: "metric-row",
-                children: [
-                  (0, o.jsxs)("div", {
-                    className: "metric-label",
-                    children: ["Ratio (", dn(u[0]), " : ", dn(u[1]), ")"],
-                  }),
-                  (0, o.jsxs)("div", {
-                    className: "metric-value",
-                    children: [O.ratio.toFixed(2), " : 1"],
-                  }),
-                ],
-              }),
-            (0, o.jsxs)("div", {
-              className: "metric-row",
-              children: [
-                (0, o.jsx)("div", {
-                  className: "metric-label",
-                  children: "Carries no blood from any foundation animal",
-                }),
-                (0, o.jsxs)("div", {
-                  className: "metric-value",
-                  children: [O.pctZeroBoth.toFixed(1), "%"],
-                }),
-              ],
-            }),
-            (0, o.jsxs)("div", {
-              className: "metric-row",
-              children: [
-                (0, o.jsx)("div", { className: "metric-label", children: "Unique Active Sires" }),
-                (0, o.jsx)("div", { className: "metric-value", children: O.uniqueSires }),
-              ],
-            }),
-            (0, o.jsxs)("div", {
-              className: "metric-row",
-              children: [
-                (0, o.jsx)("div", {
-                  className: "metric-label",
-                  children: "Most Concentrated (all foundation blood)",
-                }),
-                (0, o.jsxs)("div", {
-                  className: "metric-value",
-                  style: { fontSize: 13 },
-                  children: [
-                    O.mostConcAnimal
-                      ? (0, o.jsx)("span", {
-                          className: "link",
-                          onClick: () => a(O.mostConcAnimal),
-                          children: O.mostConcAnimal,
-                        })
-                      : "\u2014",
-                    " (",
-                    O.mostConcVal.toFixed(1),
-                    "%)",
-                  ],
-                }),
-              ],
-            }),
-            (0, o.jsxs)("div", {
-              className: "metric-row",
-              children: [
-                (0, o.jsx)("div", {
-                  className: "metric-label",
-                  children: "Most Diluted (all foundation blood)",
-                }),
-                (0, o.jsxs)("div", {
-                  className: "metric-value",
-                  style: { fontSize: 13 },
-                  children: [
-                    O.mostDilAnimal
-                      ? (0, o.jsx)("span", {
-                          className: "link",
-                          onClick: () => a(O.mostDilAnimal),
-                          children: O.mostDilAnimal,
-                        })
-                      : "\u2014",
-                    " (",
-                    O.mostDilVal.toFixed(1),
-                    "%)",
-                  ],
-                }),
-              ],
-            }),
+            (0, o.jsx)(LineStats, { O: O, founders: u, onGoToAnimal: a }),
             (0, o.jsxs)("details", {
               className: "dash-det",
               children: [
                 (0, o.jsx)("summary", { children: "COI distribution" }),
-                (0, o.jsxs)("div", {
-                  className: "metric-note",
-                  style: { marginBottom: 8 },
-                  children: [
-                    "Bands ",
-                    (0, o.jsx)("span", {
-                      style: { fontStyle: "italic" },
-                      children: "(tap a band to see the animals)",
-                    }),
-                  ],
-                }),
                 [
                   ["Under 6.25%", O.bandLow, "#8a8070", 0, 6.25],
                   ["6.25\u201312.5%", O.bandCaution, "#8a8070", 6.25, 12.5],
@@ -13484,12 +13379,6 @@ Error generating stack: ` +
                         h.year,
                       ),
                     ),
-                    (0, o.jsx)("div", {
-                      className: "metric-note",
-                      style: { marginTop: 6 },
-                      children:
-                        "Bar length scaled to 30% COI. Years with very few animals may not be representative.",
-                    }),
                   ],
                 }),
           ],
@@ -13503,8 +13392,8 @@ Error generating stack: ` +
           pg: pgP,
           setPg: pgS,
           allAnimals: e,
-          note: "Every blood %, balance score and ranking in the app is measured against these animals.",
         }),
+        (0, o.jsxs)("div", { className: "dash-col", children: [
         (0, o.jsx)(DashAttention, {
           animals: k,
           sire: t,
@@ -13512,17 +13401,6 @@ Error generating stack: ` +
           names: r,
           matingLog: P_log,
           scopeLabel: c === "active" ? "Active herd" : "Whole database",
-        }),
-        (0, o.jsx)(DashInfluence, {
-          animals: k,
-          founders: u,
-          sire: t,
-          dam: n,
-          names: r,
-          gen: gen,
-          byAll: e,
-          scopeLabel: c === "active" ? "Active herd" : "Whole database",
-          onGoToAnimal: a,
         }),
         (0, o.jsx)(DashViews, {
           animals: k,
@@ -13532,43 +13410,18 @@ Error generating stack: ` +
           names: r,
           onGoToAnimal: a,
         }),
-          ],
-        }),
-        (0, o.jsxs)("div", {
-          className: "card",
-          children: [
-            (0, o.jsx)("h2", { children: "Data Completeness" }),
-            (0, o.jsx)("div", {
-              className: "metric-note",
-              style: { marginBottom: 8 },
-              children: "Counts the group chosen above. Data Health counts the whole database.",
-            }),
-            (0, o.jsxs)("div", {
-              className: "metric-row",
-              children: [
-                (0, o.jsx)("div", {
-                  className: "metric-label",
-                  children: "Average Pedigree Depth",
-                }),
-                (0, o.jsxs)("div", {
-                  className: "metric-value",
-                  children: [O.avgDepth.toFixed(1), " generations"],
-                }),
-              ],
-            }),
-            (0, o.jsxs)("div", {
-              className: "metric-row",
-              children: [
-                (0, o.jsx)("div", {
-                  className: "metric-label",
-                  children: "Has Both Sire & Dam Recorded",
-                }),
-                (0, o.jsxs)("div", {
-                  className: "metric-value",
-                  children: [O.pctBothParents.toFixed(1), "%"],
-                }),
-              ],
-            }),
+        ] }),
+        (0, o.jsx)("div", { className: "dash-col", children: (0, o.jsx)(DashInfluence, {
+          animals: k,
+          founders: u,
+          sire: t,
+          dam: n,
+          names: r,
+          gen: gen,
+          byAll: e,
+          scopeLabel: c === "active" ? "Active herd" : "Whole database",
+          onGoToAnimal: a,
+        }) }),
           ],
         }),
         (0, o.jsxs)("div", {
@@ -13636,7 +13489,7 @@ Error generating stack: ` +
               className: "metric-note",
               style: { marginTop: 10 },
               children:
-                "Per-animal staleness only tracks edits made through this app \u2014 the bulk-imported base data has no individual edit history, so most animals will show no date until touched.",
+                "Counts edits made in this app only.",
             }),
           ],
         }),
@@ -20874,6 +20727,10 @@ Rules:
   .pl-s { font-size: 12px; color: var(--text-muted); }
   .pl-hd { font-size: 13px; font-weight: 600; margin: 14px 0 2px; }
   .pl-sub { font-size: 12px; color: var(--text-muted); margin: 0 0 6px; }
+  .dash-col { min-width: 0; }
+  .dash-more { display: flex; gap: 14px; padding: 8px 0 2px; }
+  .dash-more button { background: none; border: 0; padding: 4px 0; color: var(--accent); font-weight: 600; font-size: 13px; cursor: pointer; }
+  .dash-inf th:first-child, .dash-inf td:first-child { width: 34px; padding-left: 10px; text-align: left; }
   .dash-ts { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
   .dash-det { margin-top: 10px; }
   .dash-det > summary { cursor: pointer; font-size: 13px; font-weight: 600; color: var(--accent); padding: 6px 0; }
