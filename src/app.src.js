@@ -12441,9 +12441,11 @@ Error generating stack: ` +
           cg = 0;
         act.forEach(function (x) {
           if (qe(x.name, x, t, n) === "Male" && Zr(x)) usable++;
+        });
+        kc.forEach(function (x) {
           cg += nh(x.name, t, n, P.names).fullThrough;
         });
-        return { act: act.length, bulls: bulls, females: females, semen: semen, nc: kc.length, coi: kc.length ? cs / kc.length : null, fb: fb, rl: rl, oc: oc, tr: tr, usable: usable, cg: act.length ? cg / act.length : 0 };
+        return { act: act.length, bulls: bulls, females: females, semen: semen, nc: kc.length, coi: kc.length ? cs / kc.length : null, fb: fb, rl: rl, oc: oc, tr: tr, usable: usable, cg: kc.length ? cg / kc.length : 0 };
       },
       [e, t, n, P.founders, P.names, P.kinship],
     );
@@ -13002,7 +13004,7 @@ Error generating stack: ` +
                           ),
                         ),
                         E("td", null, x.share.toFixed(1) + "%"),
-                        E("td", null, x.rel.toFixed(2)),
+                        E("td", null, (x.rel * 100).toFixed(0) + "%"),
                         E("td", null, x.carry),
                         E("td", null, x.born || "\u2014"),
                       );
