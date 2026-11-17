@@ -12832,8 +12832,8 @@ Error generating stack: ` +
             carry.set(nm, (carry.get(nm) || 0) + 1);
           });
         });
-        var skip = new Set(u);
         var fromFnd = function (nm) {
+          if (u.indexOf(nm) >= 0) return true;
           for (var i = 0; i < u.length; i++) if (ye(nm, u[i], t, n, r) > 0) return true;
           return false;
         };
@@ -12842,9 +12842,6 @@ Error generating stack: ` +
           byN.set(x.name, x);
         });
         return Array.from(sum.entries())
-          .filter(function (x) {
-            return !skip.has(x[0]);
-          })
           .sort(function (x, y) {
             return y[1] - x[1];
           })
@@ -12854,8 +12851,13 @@ Error generating stack: ` +
           .slice(0, 50)
           .map(function (x) {
             var rec = byN.get(x[0]) || {};
+            var rl = 0;
+            k.forEach(function (a2) {
+              rl += rs(a2.name, x[0], t, n, P.kinship);
+            });
             return {
               name: x[0],
+              rel: rl / (k.length || 1),
               share: (x[1] / (k.length || 1)) * 100,
               carry: carry.get(x[0]),
               sex: rec.name ? qe(x[0], rec, t, n) : "",
@@ -12864,7 +12866,7 @@ Error generating stack: ` +
             };
           });
       },
-      [run, k, u, t, n, r, gen, P.byAll],
+      [run, k, u, t, n, r, gen, P.byAll, P.kinship],
     );
     return E(
       "div",
@@ -12893,7 +12895,7 @@ Error generating stack: ` +
                     E(
                       "tr",
                       null,
-                      ["#", "Animal", "Avg Share", "Carriers", "Born"].map(function (h) {
+                      ["#", "Animal", "Avg Share", "Avg Rel", "Carriers", "Born"].map(function (h) {
                         return E("th", { key: h }, h);
                       }),
                     ),
@@ -12916,6 +12918,7 @@ Error generating stack: ` +
                           ),
                         ),
                         E("td", null, x.share.toFixed(1) + "%"),
+                        E("td", null, x.rel.toFixed(2)),
                         E("td", null, x.carry),
                         E("td", null, x.born || "\u2014"),
                       );
@@ -13461,6 +13464,7 @@ Error generating stack: ` +
         }),
         ] }),
         (0, o.jsx)("div", { className: "dash-col", children: (0, o.jsx)(DashInfluence, {
+          kinship: l,
           animals: k,
           founders: u,
           sire: t,
