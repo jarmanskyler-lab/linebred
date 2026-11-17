@@ -12398,13 +12398,52 @@ Error generating stack: ` +
           });
           return kc.length ? v / kc.length : null;
         });
+        var oc = (P.founders || []).map(function (F) {
+          var v = 0;
+          kc.forEach(function (x) {
+            v += On(x.name, F, t, n, P.names);
+          });
+          return kc.length ? v / kc.length : null;
+        });
+        var fu = P.founders || [],
+          tr = fu.map(function () { return null; }),
+          ys = {},
+          aMax = 0;
+        e.forEach(function (x) {
+          var y = parseInt(String(x.birthDate || "").slice(0, 4), 10);
+          if (!(y >= 1900 && y <= 2100)) return;
+          var vs = fu.map(function (F) { return ye(x.name, F, t, n, P.names) * 100; });
+          if (vs.some(function (v) { return !(v > 0); })) return;
+          if (y > aMax) aMax = y;
+          var g = ys[y] || (ys[y] = { n: 0, s: fu.map(function () { return 0; }) });
+          g.n++;
+          vs.forEach(function (v, i) { g.s[i] += v; });
+        });
+        if (aMax) {
+          var win = function (en) {
+            var o2 = { n: 0, s: fu.map(function () { return 0; }) };
+            for (var y = en - 2; y <= en; y++)
+              if (ys[y]) {
+                o2.n += ys[y].n;
+                ys[y].s.forEach(function (v, i) { o2.s[i] += v; });
+              }
+            return o2;
+          };
+          var cur = win(aMax),
+            prior = null;
+          for (var e2 = aMax - 3; e2 >= 1950 && !prior; e2--) {
+            var w2 = win(e2);
+            if (w2.n >= 3) prior = w2;
+          }
+          if (cur.n >= 3 && prior) tr = fu.map(function (F, i) { return cur.s[i] / cur.n - prior.s[i] / prior.n; });
+        }
         var usable = 0,
           cg = 0;
         act.forEach(function (x) {
           if (qe(x.name, x, t, n) === "Male" && Zr(x)) usable++;
           cg += nh(x.name, t, n, P.names).fullThrough;
         });
-        return { act: act.length, bulls: bulls, females: females, semen: semen, nc: kc.length, coi: kc.length ? cs / kc.length : null, fb: fb, rl: rl, usable: usable, cg: act.length ? cg / act.length : 0 };
+        return { act: act.length, bulls: bulls, females: females, semen: semen, nc: kc.length, coi: kc.length ? cs / kc.length : null, fb: fb, rl: rl, oc: oc, tr: tr, usable: usable, cg: act.length ? cg / act.length : 0 };
       },
       [e, t, n, P.founders, P.names, P.kinship],
     );
@@ -12431,7 +12470,8 @@ Error generating stack: ` +
           "div",
           { className: "dash-fpair" },
           E("div", null, E("div", { className: "dash-tv" }, d.rl[i] == null ? "\u2014" : (d.rl[i] * 100).toFixed(0) + "%"), E("div", { className: "dash-ts" }, "Relationship")),
-          E("div", null, E("div", { className: "dash-tv" }, d.fb[i].toFixed(1) + "%"), E("div", { className: "dash-ts" }, "Blood")),
+          E("div", null, E("div", { className: "dash-tv" }, d.fb[i].toFixed(1) + "%"), E("div", { className: "dash-ts" }, "Blood", d.tr[i] === null ? null : dSm(d.tr[i], 1))),
+          E("div", null, E("div", { className: "dash-tv" }, d.oc[i] == null ? "\u2014" : d.oc[i].toFixed(1)), E("div", { className: "dash-ts" }, "Times")),
         ),
       );
     }
@@ -20841,8 +20881,8 @@ Rules:
   .dash-ftile { grid-column: span 2; }
   @media (max-width: 640px) { .dash-tiles { grid-template-columns: repeat(2, 1fr); } }
   .dash-fn { font-weight: 700; font-size: 13px; margin: 0 0 6px; line-height: 1.2; }
-  .dash-fpair { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-  .dash-fpair .dash-tv { font-size: 28px; }
+  .dash-fpair { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .dash-fpair .dash-tv { font-size: 26px; }
   .dash-tile.dash-warn { border-color: #b3261e; }
   .dash-tile.dash-warn .dash-tv { color: #b3261e; }
   .dash-tv { font-size: 34px; font-weight: 700; line-height: 1.1; color: var(--accent); }
