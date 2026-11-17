@@ -10850,11 +10850,6 @@ Error generating stack: ` +
         "h2",
         null,
         "Foundation Animals",
-        E(
-          "span",
-          { className: "metric-note", style: { fontWeight: "normal" } },
-          "used on every screen",
-        ),
       ),
       P.note && E("div", { className: "metric-note", style: { marginBottom: 10 } }, P.note),
       PROGRAMS_UI &&
@@ -10945,11 +10940,6 @@ Error generating stack: ` +
           }),
         ),
       act.items.length > 6 ? null : null,
-      E(
-        "div",
-        { className: "metric-note", style: { marginTop: 8 } },
-        "Saved on this device. Export to back up.",
-      ),
     );
   }
   function CtBar(P) {
@@ -13625,12 +13615,6 @@ Error generating stack: ` +
                   }),
                 ],
               }),
-            (0, o.jsx)("div", {
-              className: "metric-note",
-              style: { marginTop: 10 },
-              children:
-                "Counts edits made in this app only.",
-            }),
           ],
         }),
       ],
