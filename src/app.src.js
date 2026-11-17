@@ -12439,14 +12439,21 @@ Error generating stack: ` +
       function () {
         var noParent = [],
           shortPed = [],
-          noBirth = [];
+          noBirth = [],
+          noFnd = [];
+        var fu = P.founders || [];
+        var okSet = new Set(herdComplete(k, fu, t, n, r).map(function (x) { return x.name; }));
         k.forEach(function (x) {
+          if (!okSet.has(x.name)) {
+            var miss = fu.filter(function (F) { return !(ye(x.name, F, t, n, r) > 0); });
+            noFnd.push({ name: x.name, info: "no " + miss.map(function (F) { return (((window.__lbProg || {}).shorts || {})[F] || dn(F)); }).join(", ") + " blood" });
+          }
           if (!x.sire || !x.dam) noParent.push({ name: x.name, info: (x.sire || "no sire") + " \u00d7 " + (x.dam || "no dam") });
           var f = nh(x.name, t, n, r).fullThrough;
           if (f < 6) shortPed.push({ name: x.name, info: f + " complete gens" });
           if (!x.birthDate) noBirth.push({ name: x.name, info: x.regNum ? "Reg " + x.regNum : "no reg" });
         });
-        return { noParent: noParent, shortPed: shortPed, noBirth: noBirth };
+        return { noParent: noParent, shortPed: shortPed, noBirth: noBirth, noFnd: noFnd };
       },
       [k, t, n, r],
     );
@@ -12480,6 +12487,7 @@ Error generating stack: ` +
       row("noParent", "Missing a sire or dam", d.noParent.length),
       row("shortPed", "Under 6 complete generations", d.shortPed.length),
       row("noBirth", "No birth date", d.noBirth.length),
+      row("noFnd", "Pedigree misses a foundation animal", d.noFnd.length),
       list
         ? E(
             "div",
@@ -12700,7 +12708,7 @@ Error generating stack: ` +
     return E(
       "div",
       { className: "card" },
-      E("h2", { title: d.nc + " of " + k.length + " animals have a pedigree that reaches every foundation animal" }, "Herd averages"),
+      E("h2", { title: d.nc + " of " + (P.total || k.length) + " animals have a pedigree that reaches every foundation animal; the rest are left out of every average" }, "Herd averages"),
       E(
         "div",
         { className: "pl-mid" },
@@ -12793,12 +12801,6 @@ Error generating stack: ` +
           { className: "pl-tile" },
           E("div", { className: "pl-l" }, "Unique Sires"),
           E("div", { className: "pl-v" }, d.uniqueSires),
-        ),
-        E(
-          "div",
-          { className: "pl-tile" },
-          E("div", { className: "pl-l" }, "Parents Known"),
-          E("div", { className: "pl-v" }, d.pctBoth.toFixed(0) + "%"),
         ),
       ),
     );
@@ -12970,7 +12972,6 @@ Error generating stack: ` +
       "div",
       { className: "pl-tiles" },
       O.ratio !== null && u.length === 2 ? tile("Ratio " + sn(u[0]) + " : " + sn(u[1]), O.ratio.toFixed(2) + " : 1") : null,
-      tile("No Foundation Blood", O.pctZeroBoth.toFixed(1) + "%"),
       tile("Most Concentrated", O.mostConcVal.toFixed(1) + "%", link(O.mostConcAnimal, O.mostConcVal)),
       tile("Most Diluted", O.mostDilVal.toFixed(1) + "%", link(O.mostDilAnimal, O.mostDilVal)),
     );
@@ -13212,7 +13213,8 @@ Error generating stack: ` +
       v = to,
       y = e.length,
       E = e.filter(v).length,
-      k = (0, b.useMemo)(() => (c === "active" ? e.filter(v) : e), [e, c]),
+      k0 = (0, b.useMemo)(() => (c === "active" ? e.filter(v) : e), [e, c]),
+      k = (0, b.useMemo)(() => herdComplete(k0, u, t, n, r), [k0, u, t, n, r]),
       O = (0, b.useMemo)(() => {
         let h = k.length || 1,
           T = 0,
@@ -13307,6 +13309,7 @@ Error generating stack: ` +
           names: r,
           stats: O,
           kinship: l,
+          total: k0.length,
           byAll: e,
           scopeLabel: c === "active" ? "Active herd" : "Whole database",
           onGoToAnimal: a,
@@ -13448,7 +13451,8 @@ Error generating stack: ` +
           onGoToEdit: onEdit,
           onGoToLog: onLog,
           onGoToAnimal: a,
-          animals: k,
+          founders: u,
+          animals: k0,
           sire: t,
           dam: n,
           names: r,
