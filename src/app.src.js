@@ -12792,6 +12792,12 @@ Error generating stack: ` +
         E(
           "div",
           { className: "pl-tile" },
+          E("div", { className: "pl-l" }, "Herd Avg COI"),
+          E("div", { className: "pl-v" }, d.coi === null ? "\u2014" : d.coi.toFixed(1) + "%"),
+        ),
+        E(
+          "div",
+          { className: "pl-tile" },
           E("div", { className: "pl-l" }, "Avg Complete Gens"),
           E("div", { className: "pl-v" }, d.cgAvg.toFixed(1)),
           E("div", { className: "pl-s" }, "goal 10 \u00B7 " + d.cgShort + " under 6"),
@@ -12803,6 +12809,18 @@ Error generating stack: ` +
           E("div", { className: "pl-v" }, d.uniqueSires),
         ),
       ),
+      E(DashInfluence, {
+        embedded: true,
+        kinship: kin,
+        animals: k,
+        founders: u,
+        sire: t,
+        dam: n,
+        names: r,
+        gen: P.gen,
+        byAll: P.byAll,
+        onGoToAnimal: P.onGoToAnimal,
+      }),
     );
   }
   function DashInfluence(P) {
@@ -12873,8 +12891,8 @@ Error generating stack: ` +
     );
     return E(
       "div",
-      { className: "card" },
-      E("h2", null, "Most influential animals"),
+      P.embedded ? null : { className: "card" },
+      P.embedded ? E("p", { className: "pl-hd" }, "Most influential animals") : E("h2", null, "Most influential animals"),
       !run
         ? E(
             "button",
@@ -12891,14 +12909,14 @@ Error generating stack: ` +
                 { className: "table-scroll" },
                 E(
                   "table",
-                  { className: "pl-table dash-inf" },
+                  { className: "pl-table" },
                   E(
                     "thead",
                     null,
                     E(
                       "tr",
                       null,
-                      ["#", "Animal", "% Blood", "Avg Rel", "Carriers", "Born"].map(function (h) {
+                      ["Rank", "Animal", "% Blood", "Avg Rel", "Carriers", "Born"].map(function (h) {
                         return E("th", { key: h }, h);
                       }),
                     ),
@@ -13311,6 +13329,7 @@ Error generating stack: ` +
           kinship: l,
           total: k0.length,
           byAll: e,
+          gen: gen,
           scopeLabel: c === "active" ? "Active herd" : "Whole database",
           onGoToAnimal: a,
         }),
@@ -13446,8 +13465,7 @@ Error generating stack: ` +
           setPg: pgS,
           allAnimals: e,
         }),
-        (0, o.jsxs)("div", { className: "dash-col", children: [
-        (0, o.jsx)(DashAttention, {
+        (0, o.jsx)("div", { className: "dash-col", children: (0, o.jsx)(DashAttention, {
           onGoToEdit: onEdit,
           onGoToLog: onLog,
           onGoToAnimal: a,
@@ -13458,26 +13476,13 @@ Error generating stack: ` +
           names: r,
           matingLog: P_log,
           scopeLabel: c === "active" ? "Active herd" : "Whole database",
-        }),
-        (0, o.jsx)(DashViews, {
+        }) }),
+        (0, o.jsx)("div", { className: "dash-col", children: (0, o.jsx)(DashViews, {
           animals: k,
           founders: u,
           sire: t,
           dam: n,
           names: r,
-          onGoToAnimal: a,
-        }),
-        ] }),
-        (0, o.jsx)("div", { className: "dash-col", children: (0, o.jsx)(DashInfluence, {
-          kinship: l,
-          animals: k,
-          founders: u,
-          sire: t,
-          dam: n,
-          names: r,
-          gen: gen,
-          byAll: e,
-          scopeLabel: c === "active" ? "Active herd" : "Whole database",
           onGoToAnimal: a,
         }) }),
           ],
