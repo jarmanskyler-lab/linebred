@@ -12419,13 +12419,28 @@ Error generating stack: ` +
         sub ? E("div", { className: "dash-ts" }, sub) : null,
       );
     }
+    var shorts = (window.__lbProg || {}).shorts || {};
+    var cols = FCOL || [];
+    function fTile(F, i) {
+      var nm = shorts[F] || dn(F);
+      return E(
+        "div",
+        { key: F, className: "dash-tile dash-ftile" },
+        E("div", { className: "dash-tl dash-fn" }, E("i", { className: "pl-sw", style: { background: cols[i] } }), nm),
+        E(
+          "div",
+          { className: "dash-fpair" },
+          E("div", null, E("div", { className: "dash-tv" }, d.rl[i] == null ? "\u2014" : (d.rl[i] * 100).toFixed(0) + "%"), E("div", { className: "dash-ts" }, "Relationship")),
+          E("div", null, E("div", { className: "dash-tv" }, d.fb[i].toFixed(1) + "%"), E("div", { className: "dash-ts" }, "Blood")),
+        ),
+      );
+    }
     return E(
       "div",
       { className: "dash-tiles" },
-      tile("Sires Available", d.usable, "", "living or semen on hand"),
-      tile("Matings to Revisit", due, due ? "dash-warn" : "", open + " open in the Log"),
-      tile("Complete Pedigrees", d.nc + " of " + d.act, "", d.act ? Math.round((d.nc / d.act) * 100) + "% reach every foundation animal" : ""),
-      tile("Avg Complete Gens", d.cg.toFixed(1), "", "goal 10"),
+      tile("Herd Size", d.act, "", ""),
+      tile("Animals in Database", e.length.toLocaleString(), "", ""),
+      (P.founders || []).map(fTile),
     );
   }
   function DashAttention(P) {
@@ -12776,7 +12791,7 @@ Error generating stack: ` +
                   { key: F },
                   E("td", null, E("i", { className: "pl-sw", style: { background: COL[i] } }), sn(F)),
                   E("td", null, p.blood.toFixed(1) + "%", d.trends[i] === null ? null : dSm(d.trends[i], 1)),
-                  E("td", null, (p.rel).toFixed(2)),
+                  E("td", null, (p.rel * 100).toFixed(0) + "%"),
                   E("td", null, p.occ.toFixed(1)),
                 );
               }),
@@ -20821,6 +20836,10 @@ Rules:
   .dash-det > summary { cursor: pointer; font-size: 13px; font-weight: 600; color: var(--accent); padding: 6px 0; }
   .dash-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin: 10px 0 16px; }
   .dash-tile { background: var(--surface); border: 2px solid var(--border-strong); padding: 14px 12px; text-align: center; }
+  .dash-ftile { grid-column: span 2; }
+  .dash-fn { font-weight: 700; font-size: 14px; margin: 0 0 6px; }
+  .dash-fpair { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .dash-fpair .dash-tv { font-size: 28px; }
   .dash-tile.dash-warn { border-color: #b3261e; }
   .dash-tile.dash-warn .dash-tv { color: #b3261e; }
   .dash-tv { font-size: 34px; font-weight: 700; line-height: 1.1; color: var(--accent); }
