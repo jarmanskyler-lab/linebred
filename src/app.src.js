@@ -9705,6 +9705,8 @@ Error generating stack: ` +
                     setPg: SPG,
                     matingLog: E,
                     gen: W,
+                    onGoToEdit: bt,
+                    onGoToLog: () => x("matinglog"),
                   }),
                 w === "animal" &&
                   (0, o.jsx)(rh, {
@@ -12427,37 +12429,79 @@ Error generating stack: ` +
       n = P.dam,
       r = P.names,
       log = P.matingLog || [];
+    var sO = b.useState(null),
+      openKey = sO[0],
+      setOpenKey = sO[1];
+    var sM = b.useState(50),
+      more = sM[0],
+      setMore = sM[1];
     var d = b.useMemo(
       function () {
-        var noParent = 0,
-          shortPed = 0,
-          noBirth = 0;
+        var noParent = [],
+          shortPed = [],
+          noBirth = [];
         k.forEach(function (x) {
-          if (!x.sire || !x.dam) noParent++;
-          if (nh(x.name, t, n, r).fullThrough < 6) shortPed++;
-          if (!x.birthDate) noBirth++;
+          if (!x.sire || !x.dam) noParent.push({ name: x.name, info: (x.sire || "no sire") + " \u00d7 " + (x.dam || "no dam") });
+          var f = nh(x.name, t, n, r).fullThrough;
+          if (f < 6) shortPed.push({ name: x.name, info: f + " complete gens" });
+          if (!x.birthDate) noBirth.push({ name: x.name, info: x.regNum ? "Reg " + x.regNum : "no reg" });
         });
         return { noParent: noParent, shortPed: shortPed, noBirth: noBirth };
       },
       [k, t, n, r],
     );
-    function row(label, val) {
+    function row(key, label, val, onClick) {
+      var isOpen = openKey === key;
       return E(
         "div",
-        { key: label, className: "dash-row" },
+        {
+          key: label,
+          className: "dash-row" + (val || onClick ? " dash-click" : "") + (isOpen ? " dash-open" : ""),
+          onClick: function () {
+            if (onClick) return onClick();
+            if (!val) return;
+            setOpenKey(isOpen ? null : key);
+            setMore(50);
+          },
+        },
         E("span", null, label),
-        E("b", { className: val ? "" : "dash-zero" }, val),
+        E("b", { className: val ? "" : "dash-zero" }, typeof val === "number" ? val : val),
       );
     }
+    var list = openKey ? d[openKey] : null;
+    var logDueN = log.filter(logDue).length,
+      logOpenN = log.filter(logOpen).length;
     return E(
       "div",
       { className: "card" },
       E("h2", null, "Needs attention"),
-      row("Matings due to revisit (Log)", log.filter(logDue).length),
-      row("Open matings in the Log", log.filter(logOpen).length),
-      row("Missing a sire or dam", d.noParent),
-      row("Under 6 complete generations", d.shortPed),
-      row("No birth date", d.noBirth),
+      row("log1", "Matings due to revisit (Log)", logDueN, logDueN ? P.onGoToLog : null),
+      row("log2", "Open matings in the Log", logOpenN, logOpenN ? P.onGoToLog : null),
+      row("noParent", "Missing a sire or dam", d.noParent.length),
+      row("shortPed", "Under 6 complete generations", d.shortPed.length),
+      row("noBirth", "No birth date", d.noBirth.length),
+      list
+        ? E(
+            "div",
+            { className: "dash-list" },
+            list.slice(0, more).map(function (x) {
+              return E(
+                "div",
+                { key: x.name, className: "dash-li" },
+                E(
+                  "span",
+                  { className: "row-link", style: { cursor: "pointer" }, onClick: function () { P.onGoToAnimal(x.name); } },
+                  x.name,
+                ),
+                E("span", { className: "dash-li-i" }, x.info),
+                E("button", { type: "button", className: "dash-li-e", onClick: function () { P.onGoToEdit(x.name); } }, "Edit"),
+              );
+            }),
+            list.length > more
+              ? E("div", { className: "dash-more" }, E("button", { type: "button", onClick: function () { setMore(more + 50); } }, "Show next 50"))
+              : null,
+          )
+        : null,
     );
   }
   var hcCache = new WeakMap();
@@ -13157,6 +13201,8 @@ Error generating stack: ` +
     setPg: pgS,
     matingLog: P_log,
     gen: gen,
+    onGoToEdit: onEdit,
+    onGoToLog: onLog,
   }) {
     let [c, g] = (0, b.useState)("active"),
       v = to,
@@ -13395,6 +13441,9 @@ Error generating stack: ` +
         }),
         (0, o.jsxs)("div", { className: "dash-col", children: [
         (0, o.jsx)(DashAttention, {
+          onGoToEdit: onEdit,
+          onGoToLog: onLog,
+          onGoToAnimal: a,
           animals: k,
           sire: t,
           dam: n,
@@ -20727,6 +20776,14 @@ Rules:
   .pl-s { font-size: 12px; color: var(--text-muted); }
   .pl-hd { font-size: 13px; font-weight: 600; margin: 14px 0 2px; }
   .pl-sub { font-size: 12px; color: var(--text-muted); margin: 0 0 6px; }
+  .dash-click { cursor: pointer; }
+  .dash-click:hover { background: var(--surface-hover); }
+  .dash-open { background: var(--surface-selected); }
+  .dash-list { max-height: 360px; overflow: auto; border-top: 1px solid var(--border); margin-top: 4px; }
+  .dash-li { display: flex; align-items: center; gap: 10px; padding: 7px 4px; border-bottom: 1px solid var(--border); font-size: 13px; }
+  .dash-li .row-link { flex: 1; min-width: 0; }
+  .dash-li-i { color: var(--text-secondary); font-size: 12px; }
+  .dash-li-e { background: none; border: 1px solid var(--border-strong); padding: 2px 10px; cursor: pointer; font-size: 12px; }
   .dash-col { min-width: 0; }
   .dash-more { display: flex; gap: 14px; padding: 8px 0 2px; }
   .dash-more button { background: none; border: 0; padding: 4px 0; color: var(--accent); font-weight: 600; font-size: 13px; cursor: pointer; }
