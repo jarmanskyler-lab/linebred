@@ -12398,7 +12398,13 @@ Error generating stack: ` +
           });
           return kc.length ? v / kc.length : null;
         });
-        return { act: act.length, bulls: bulls, females: females, semen: semen, nc: kc.length, coi: kc.length ? cs / kc.length : null, fb: fb, rl: rl };
+        var usable = 0,
+          cg = 0;
+        act.forEach(function (x) {
+          if (qe(x.name, x, t, n) === "Male" && Zr(x)) usable++;
+          cg += nh(x.name, t, n, P.names).fullThrough;
+        });
+        return { act: act.length, bulls: bulls, females: females, semen: semen, nc: kc.length, coi: kc.length ? cs / kc.length : null, fb: fb, rl: rl, usable: usable, cg: act.length ? cg / act.length : 0 };
       },
       [e, t, n, P.founders, P.names, P.kinship],
     );
@@ -12416,19 +12422,10 @@ Error generating stack: ` +
     return E(
       "div",
       { className: "dash-tiles" },
-      tile("Herd Avg COI", d.coi === null ? "\u2014" : d.coi.toFixed(1) + "%"),
-      tile(
-        "Foundation % Blood",
-        d.fb.reduce(function (a, v) { return a + v; }, 0).toFixed(1) + "%",
-        "",
-        (P.founders || []).map(function (F, i) { return (((window.__lbProg || {}).shorts || {})[F] || dn(F)) + " " + d.fb[i].toFixed(1); }).join(" \u00b7 "),
-      ),
-      (P.founders || []).map(function (F, i) {
-        var nm = ((window.__lbProg || {}).shorts || {})[F] || dn(F);
-        return tile("Avg Relationship " + nm, d.rl[i] === null ? "\u2014" : d.rl[i].toFixed(2));
-      }),
-      tile("Active herd", d.act),
-      tile("Animals in database", e.length.toLocaleString()),
+      tile("Sires Available", d.usable, "", "living or semen on hand"),
+      tile("Matings to Revisit", due, due ? "dash-warn" : "", open + " open in the Log"),
+      tile("Complete Pedigrees", d.nc + " of " + d.act, "", d.act ? Math.round((d.nc / d.act) * 100) + "% reach every foundation animal" : ""),
+      tile("Avg Complete Gens", d.cg.toFixed(1), "", "goal 10"),
     );
   }
   function DashAttention(P) {
@@ -20824,6 +20821,8 @@ Rules:
   .dash-det > summary { cursor: pointer; font-size: 13px; font-weight: 600; color: var(--accent); padding: 6px 0; }
   .dash-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin: 10px 0 16px; }
   .dash-tile { background: var(--surface); border: 2px solid var(--border-strong); padding: 14px 12px; text-align: center; }
+  .dash-tile.dash-warn { border-color: #b3261e; }
+  .dash-tile.dash-warn .dash-tv { color: #b3261e; }
   .dash-tv { font-size: 34px; font-weight: 700; line-height: 1.1; color: var(--accent); }
   .dash-tl { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
   .dash-due { border-color: var(--accent); background: var(--caution-bg); }
