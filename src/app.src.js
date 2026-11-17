@@ -9392,7 +9392,7 @@ Error generating stack: ` +
       [O, f] = (0, b.useState)(null),
       [p, m] = (0, b.useState)(!1),
       [w, x] = (0, b.useState)("dashboard"),
-      [mm, setMm] = (0, b.useState)("check"),
+      [mm, setMm] = (0, b.useState)("find"),
       [cmLast, setCmLast] = (0, b.useState)({ cow: "", bull: "", extra: [], key: 0 }),
       [h, T] = (0, b.useState)(""),
       [I, R] = (0, b.useState)(null),
@@ -9615,14 +9615,9 @@ Error generating stack: ` +
               children: "Animals",
             }),
             (0, o.jsx)("button", {
-              className: w === "matings" ? "active" : "",
+              className: w === "matings" || w === "matinglog" ? "active" : "",
               onClick: () => x("matings"),
               children: "Matings",
-            }),
-            (0, o.jsx)("button", {
-              className: w === "matinglog" ? "active" : "",
-              onClick: () => x("matinglog"),
-              children: "Log",
             }),
             (0, o.jsx)("button", {
               className: w === "reports" ? "active" : "",
@@ -9664,18 +9659,24 @@ Error generating stack: ` +
               ),
             ),
           }),
-        w === "matings" &&
+        (w === "matings" || w === "matinglog") &&
           (0, o.jsx)("div", {
             className: "subnav subnav2",
             children: [
-              ["check", "Check a mating"],
-              ["cow", "One cow"],
-              ["herd", "Whole herd"],
+              ["find", "Matings"],
+              ["log", "Log"],
               ["road", "Roadmap"],
             ].map(([j, J]) =>
               (0, o.jsx)(
                 "button",
-                { className: mm === j ? "active" : "", onClick: () => setMm(j), children: J },
+                {
+                  className: (j === "log" ? w === "matinglog" : w === "matings" && mm === j) ? "active" : "",
+                  onClick: () => {
+                    if (j === "log") x("matinglog");
+                    else (setMm(j), x("matings"));
+                  },
+                  children: J,
+                },
                 j,
               ),
             ),
@@ -9741,33 +9742,12 @@ Error generating stack: ` +
                     founders: K,
                   }),
                 w === "matings" &&
-                  mm === "check" &&
-                  (0, o.jsxs)("div", {
-                    className: "screen active",
-                    children: [
-                      (0, o.jsx)("h1", { children: "Check a Mating" }),
-                      (0, o.jsx)("div", {
-                        className: "sub",
-                        children: "Pick a cow and a bull to see the calf, then plan the next generation",
-                      }),
-                      (0, o.jsx)(CheckMate, {
-                        last: cmLast,
-                        setLast: setCmLast,
-                        matingLog: E,
-                        saveMatingLog: D,
-                        allAnimals: S,
-                        sire: _,
-                        dam: N,
-                        names: P,
-                        kinship: ee,
-                        founders: K,
-                        gen: W,
-                      }),
-                    ],
-                  }),
-                (w === "mating" || w === "matings") &&
-                  mm === "cow" &&
-                  (0, o.jsx)(vh, {
+                  mm === "find" &&
+                  (0, o.jsx)(MatingHub, {
+                    last: cmLast,
+                    setLast: setCmLast,
+                    matingLog: E,
+                    saveMatingLog: D,
                     allAnimals: S,
                     sire: _,
                     dam: N,
@@ -9775,8 +9755,6 @@ Error generating stack: ` +
                     byName: $,
                     kinship: ee,
                     onGoToAnimal: ke,
-                    matingLog: E,
-                    saveMatingLog: D,
                     founders: K,
                     gen: W,
                   }),
@@ -9791,7 +9769,7 @@ Error generating stack: ` +
                     onGoToAnimal: ke,
                     founders: K,
                   }),
-                (w === "opportunities" || (w === "matings" && mm === "herd")) &&
+                w === "opportunities" &&
                   (0, o.jsx)(uh, {
                     allAnimals: S,
                     sire: _,
@@ -9804,7 +9782,7 @@ Error generating stack: ` +
                 w === "matinglog" &&
                   (0, o.jsx)(ch, {
                     onOpenInPlanner: (h) => {
-                      (setCmLast({ cow: h.cow, bull: h.bull, extra: [], key: Date.now() }), setMm("check"), x("matings"));
+                      (setCmLast({ cow: h.cow, bull: h.bull, extra: [], key: Date.now() }), setMm("find"), x("matings"));
                     },
                     matingLog: E,
                     saveMatingLog: D,
@@ -14541,7 +14519,7 @@ Error generating stack: ` +
           setCoiP,
         ),
       ),
-      E(
+      P.embedded ? null : E(
         "div",
         { className: "pairing-row" },
         E(
@@ -14710,6 +14688,7 @@ Error generating stack: ` +
                   E("span", { className: "pl-hx" }, " \u00d7 "),
                   E("span", { className: "row-link", onClick: function () { onGo(x.bull); } }, x.bull),
                 ),
+                P.onOpenPair ? E("button", { type: "button", className: "btn secondary pl-hopen", onClick: function () { P.onOpenPair(x.cow, x.bull); } }, "Open") : null,
               ),
               E(
                 "div",
@@ -14764,15 +14743,15 @@ Error generating stack: ` +
         E(
           "div",
           { className: "metric-note", style: { marginTop: 8 } },
-          "Green is an increase, red a decrease, gray no change, each measured from the cow. Tap a cow or bull to open its record. To see a pairing in detail, use One cow and pick that cow.",
+          "Green is an increase, red a decrease, gray no change, each measured from the cow.",
         ),
       );
     }
     return E(
       "div",
       { className: "screen active" },
-      E("h1", null, "Whole herd"),
-      E("div", { className: "sub" }, "Search your whole active herd for the best matings, using the same four questions"),
+      P.embedded ? null : E("h1", null, "Whole herd"),
+      P.embedded ? null : E("div", { className: "sub" }, "Search your whole active herd for the best matings, using the same four questions"),
       controls,
       out,
     );
@@ -14873,7 +14852,7 @@ Error generating stack: ` +
         E(
           "button",
           { className: "btn secondary", onClick: P.onOpen },
-          "Open in Check a mating \u2192",
+          "Open in Matings \u2192",
         ),
       ),
     );
@@ -14962,7 +14941,7 @@ Error generating stack: ` +
             className: "card",
             children: (0, o.jsx)("div", {
               className: "metric-note",
-              children: e.length > 0 ? "Nothing in this view." : `Nothing logged yet \u2014 use "Save to Log" on Check a mating, or "Log This Mating" in the planner, to start tracking matings you want to come back to.`,
+              children: e.length > 0 ? "Nothing in this view." : `Nothing logged yet \u2014 use "Save to Log" on a mating, to start tracking matings you want to come back to.`,
             }),
           }),
         p.map((h) => {
@@ -16548,7 +16527,7 @@ Error generating stack: ` +
         })
       : null;
   }
-  function ph({ label: e, value: t, onChange: n, allAnimals: r, accept: acc }) {
+  function ph({ label: e, value: t, onChange: n, allAnimals: r, accept: acc, placeholder: phd }) {
     let [l, a] = (0, b.useState)(t || "");
     (0, b.useEffect)(() => {
       a(t || "");
@@ -16572,7 +16551,7 @@ Error generating stack: ` +
           onChange: (s) => {
             (a(s.target.value), s.target.value === "" && n(""));
           },
-          placeholder: "Search by name or number\u2026",
+          placeholder: phd || "Search by name or number\u2026",
         }),
         i.length > 0 &&
           l !== t &&
@@ -17890,7 +17869,7 @@ Error generating stack: ` +
     var controls = E(
       "div",
       { className: "card pl-panel" },
-      E(
+      P.hideDam ? null : E(
         "div",
         { className: "pairing-row" },
         E(ph, { label: "Dam", value: c, onChange: P.onDamChange, allAnimals: e, accept: function (x) { return Zr(x) && qe(x.name, x, t, n) !== "Male"; } }),
@@ -18551,7 +18530,7 @@ Error generating stack: ` +
     var controls = E(
       "div",
       { className: "card pl-panel" },
-      E(
+      P.noPick ? null : E(
         "div",
         { className: "pairing-row" },
         E(ph, { label: "Cow", value: cow, onChange: setCow, allAnimals: e, accept: function (x) { return Zr(x) && qe(x.name, x, t, n) !== "Male"; } }),
@@ -18886,6 +18865,89 @@ Error generating stack: ` +
     );
   }
 
+  function MatingHub(P) {
+    var E = b.default.createElement;
+    var e = P.allAnimals,
+      t = P.sire,
+      n = P.dam;
+    var L = P.last || { cow: "", bull: "", extra: [], key: 0 };
+    function setPick(which, v) {
+      P.setLast(function (prev) {
+        if ((prev[which] || "") === (v || "")) return prev;
+        var nx = Object.assign({}, prev);
+        nx[which] = v || "";
+        nx.key = (prev.key || 0) + 1;
+        return nx;
+      });
+    }
+    var cowOk = !!(L.cow && P.names.has(L.cow)),
+      bullOk = !!(L.bull && P.names.has(L.bull));
+    var body;
+    if (cowOk && bullOk) {
+      body = E(CheckMate, {
+        key: "check",
+        noPick: true,
+        last: L,
+        setLast: P.setLast,
+        matingLog: P.matingLog,
+        saveMatingLog: P.saveMatingLog,
+        allAnimals: e,
+        sire: t,
+        dam: n,
+        names: P.names,
+        kinship: P.kinship,
+        founders: P.founders,
+        gen: P.gen,
+      });
+    } else if (cowOk || bullOk) {
+      body = E(vh, {
+        key: "one",
+        presetDam: cowOk ? L.cow : L.bull,
+        allAnimals: e,
+        sire: t,
+        dam: n,
+        names: P.names,
+        byName: P.byName,
+        kinship: P.kinship,
+        onGoToAnimal: P.onGoToAnimal,
+        matingLog: P.matingLog,
+        saveMatingLog: P.saveMatingLog,
+        founders: P.founders,
+        gen: P.gen,
+      });
+    } else {
+      body = E(uh, {
+        key: "herd",
+        embedded: true,
+        allAnimals: e,
+        sire: t,
+        dam: n,
+        names: P.names,
+        kinship: P.kinship,
+        onGoToAnimal: P.onGoToAnimal,
+        founders: P.founders,
+        onOpenPair: function (c, bl) {
+          P.setLast({ cow: c, bull: bl, extra: [], key: Date.now() });
+        },
+      });
+    }
+    return E(
+      "div",
+      { className: "screen active" },
+      E("h1", null, "Matings"),
+      E(
+        "div",
+        { className: "card pl-panel" },
+        E(
+          "div",
+          { className: "pairing-row" },
+          E(ph, { label: "Cow", value: L.cow, onChange: function (v) { setPick("cow", v); }, allAnimals: e, placeholder: "Any cow", accept: function (x) { return Zr(x) && qe(x.name, x, t, n) !== "Male"; } }),
+          E(ph, { label: "Bull", value: L.bull, onChange: function (v) { setPick("bull", v); }, allAnimals: e, placeholder: "Any bull", accept: function (x) { return Zr(x) && qe(x.name, x, t, n) !== "Female"; } }),
+        ),
+      ),
+      body,
+    );
+  }
   function vh({
     allAnimals: e,
     sire: t,
@@ -18898,8 +18960,9 @@ Error generating stack: ` +
     saveMatingLog: u,
     founders: d,
     gen: gen,
+    presetDam: presetDam,
   }) {
-    let [c, g] = (0, b.useState)(""),
+    let [c, g] = (0, b.useState)(presetDam || ""),
       [v, y] = (0, b.useState)(""),
       [E, k] = (0, b.useState)([]),
       [O, f] = (0, b.useState)(d[0]),
@@ -19079,15 +19142,23 @@ Error generating stack: ` +
             : { type: "warn", text: "Save may not have persisted." },
         );
       };
+    (0, b.useEffect)(() => {
+      if (presetDam !== undefined && presetDam !== c) {
+        g(presetDam || "");
+        T(null);
+        U(null);
+      }
+    }, [presetDam]);
     return (0, o.jsxs)("div", {
       className: "screen active",
       children: [
-        (0, o.jsx)("h1", { children: "Mating Planner" }),
-        (0, o.jsx)("div", {
+        presetDam ? null : (0, o.jsx)("h1", { children: "Mating Planner" }),
+        presetDam ? null : (0, o.jsx)("div", {
           className: "sub",
           children: "Pick a dam, say what you want, and compare available sires against her",
         }),
         (0, o.jsx)(PlNew, {
+          hideDam: !!presetDam,
           allAnimals: e,
           dam: c,
           damOk: D,
@@ -19111,7 +19182,7 @@ Error generating stack: ` +
         (0, o.jsxs)("div", {
           className: "card target-panel",
           children: [
-            (0, o.jsx)("h2", { children: "Candidate Sires to Compare" }),
+            (0, o.jsx)("h2", { children: N === "Female" ? "Candidate Cows to Compare" : "Candidate Sires to Compare" }),
             D &&
               N &&
               (0, o.jsxs)("button", {
@@ -19166,7 +19237,7 @@ Error generating stack: ` +
                   autoCapitalize: "off",
                   autoComplete: "off",
                   spellCheck: "false",
-                  placeholder: "Search a sire by name or number\u2026",
+                  placeholder: N === "Female" ? "Search a cow by name or number\u2026" : "Search a sire by name or number\u2026",
                   value: v,
                   onChange: (C) => y(C.target.value),
                 }),
@@ -19196,7 +19267,7 @@ Error generating stack: ` +
           ? (0, o.jsxs)("div", {
               className: "card",
               children: [
-                (0, o.jsx)("h2", { children: "Compare Sires" }),
+                (0, o.jsx)("h2", { children: N === "Female" ? "Compare Cows" : "Compare Sires" }),
                 W.length === 0
                   ? (0, o.jsx)("div", {
                       className: "metric-note",
@@ -20934,6 +21005,7 @@ Rules:
   .pl-hrow { padding: 10px 6px; border-top: var(--bw) solid var(--border); }
   .pl-hrow.best { background: var(--accent-soft, rgba(139, 26, 26, 0.06)); }
   .pl-hhead { display: flex; gap: 10px; align-items: baseline; }
+  .pl-hopen { margin-left: auto; padding: 2px 10px; font-size: 12px; }
   .pl-hrank { color: var(--text-muted); min-width: 24px; font-size: 13px; }
   .pl-hnames { font-weight: 600; overflow-wrap: anywhere; }
   .pl-hx { color: var(--text-muted); font-weight: normal; }
