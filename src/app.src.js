@@ -12805,8 +12805,8 @@ Error generating stack: ` +
         E(
           "div",
           { className: "pl-tile" },
-          E("div", { className: "pl-l" }, "Unique Sires"),
-          E("div", { className: "pl-v" }, d.uniqueSires),
+          E("div", { className: "pl-l" }, u.length === 2 ? "Ratio " + sn(u[0]) + " : " + sn(u[1]) : "Foundation Ratio"),
+          E("div", { className: "pl-v" }, u.length === 2 && d.per[1].blood > 0 ? (d.per[0].blood / d.per[1].blood).toFixed(2) + " : 1" : "\u2014"),
         ),
       ),
       E(DashInfluence, {
@@ -13334,10 +13334,39 @@ Error generating stack: ` +
           onGoToAnimal: a,
         }),
         (0, o.jsxs)("div", {
+          className: "dash-grid",
+          children: [
+        (0, o.jsx)(FndCard, {
+          pg: pgP,
+          setPg: pgS,
+          allAnimals: e,
+        }),
+        (0, o.jsx)("div", { className: "dash-col", children: (0, o.jsx)(DashAttention, {
+          onGoToEdit: onEdit,
+          onGoToLog: onLog,
+          onGoToAnimal: a,
+          founders: u,
+          animals: k0,
+          sire: t,
+          dam: n,
+          names: r,
+          matingLog: P_log,
+          scopeLabel: c === "active" ? "Active herd" : "Whole database",
+        }) }),
+        (0, o.jsx)("div", { className: "dash-col", children: (0, o.jsx)(DashViews, {
+          animals: k,
+          founders: u,
+          sire: t,
+          dam: n,
+          names: r,
+          onGoToAnimal: a,
+        }) }),
+          ],
+        }),
+        (0, o.jsxs)("div", {
           className: "card",
           children: [
             (0, o.jsx)("h2", { children: "Linebreeding" }),
-            (0, o.jsx)(LineStats, { O: O, founders: u, onGoToAnimal: a }),
             (0, o.jsxs)("details", {
               className: "dash-det",
               children: [
@@ -13455,36 +13484,6 @@ Error generating stack: ` +
                 }),
           ],
         })
-          ],
-        }),
-        (0, o.jsxs)("div", {
-          className: "dash-grid",
-          children: [
-        (0, o.jsx)(FndCard, {
-          pg: pgP,
-          setPg: pgS,
-          allAnimals: e,
-        }),
-        (0, o.jsx)("div", { className: "dash-col", children: (0, o.jsx)(DashAttention, {
-          onGoToEdit: onEdit,
-          onGoToLog: onLog,
-          onGoToAnimal: a,
-          founders: u,
-          animals: k0,
-          sire: t,
-          dam: n,
-          names: r,
-          matingLog: P_log,
-          scopeLabel: c === "active" ? "Active herd" : "Whole database",
-        }) }),
-        (0, o.jsx)("div", { className: "dash-col", children: (0, o.jsx)(DashViews, {
-          animals: k,
-          founders: u,
-          sire: t,
-          dam: n,
-          names: r,
-          onGoToAnimal: a,
-        }) }),
           ],
         }),
         (0, o.jsxs)("div", {
