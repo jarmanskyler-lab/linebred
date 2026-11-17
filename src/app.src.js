@@ -12422,7 +12422,7 @@ Error generating stack: ` +
     var shorts = (window.__lbProg || {}).shorts || {};
     var cols = FCOL || [];
     function fTile(F, i) {
-      var nm = shorts[F] || dn(F);
+      var nm = F;
       return E(
         "div",
         { key: F, className: "dash-tile dash-ftile" },
@@ -12440,6 +12440,8 @@ Error generating stack: ` +
       { className: "dash-tiles" },
       tile("Herd Size", d.act, "", ""),
       tile("Animals in Database", e.length.toLocaleString(), "", ""),
+      tile("Herd COI", d.coi == null ? "\u2014" : d.coi.toFixed(1) + "%", "", ""),
+      tile("Avg Complete Gens", d.cg.toFixed(1), "", ""),
       (P.founders || []).map(fTile),
     );
   }
@@ -20834,10 +20836,11 @@ Rules:
   .dash-ts { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
   .dash-det { margin-top: 10px; }
   .dash-det > summary { cursor: pointer; font-size: 13px; font-weight: 600; color: var(--accent); padding: 6px 0; }
-  .dash-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin: 10px 0 16px; }
+  .dash-tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 10px 0 16px; }
   .dash-tile { background: var(--surface); border: 2px solid var(--border-strong); padding: 14px 12px; text-align: center; }
   .dash-ftile { grid-column: span 2; }
-  .dash-fn { font-weight: 700; font-size: 14px; margin: 0 0 6px; }
+  @media (max-width: 640px) { .dash-tiles { grid-template-columns: repeat(2, 1fr); } }
+  .dash-fn { font-weight: 700; font-size: 13px; margin: 0 0 6px; line-height: 1.2; }
   .dash-fpair { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
   .dash-fpair .dash-tv { font-size: 28px; }
   .dash-tile.dash-warn { border-color: #b3261e; }
