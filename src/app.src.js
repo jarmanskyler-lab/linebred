@@ -12391,7 +12391,14 @@ Error generating stack: ` +
           });
           return kc.length ? v / kc.length : 0;
         });
-        return { act: act.length, bulls: bulls, females: females, semen: semen, nc: kc.length, coi: kc.length ? cs / kc.length : null, fb: fb };
+        var rl = (P.founders || []).map(function (F) {
+          var v = 0;
+          kc.forEach(function (x) {
+            v += rs(x.name, F, t, n, P.kinship);
+          });
+          return kc.length ? v / kc.length : null;
+        });
+        return { act: act.length, bulls: bulls, females: females, semen: semen, nc: kc.length, coi: kc.length ? cs / kc.length : null, fb: fb, rl: rl };
       },
       [e, t, n, P.founders, P.names, P.kinship],
     );
@@ -12409,8 +12416,6 @@ Error generating stack: ` +
     return E(
       "div",
       { className: "dash-tiles" },
-      tile("Animals in database", e.length.toLocaleString()),
-      tile("Active animals", d.act),
       tile("Herd Avg COI", d.coi === null ? "\u2014" : d.coi.toFixed(1) + "%"),
       tile(
         "Foundation % Blood",
@@ -12418,8 +12423,12 @@ Error generating stack: ` +
         "",
         (P.founders || []).map(function (F, i) { return (((window.__lbProg || {}).shorts || {})[F] || dn(F)) + " " + d.fb[i].toFixed(1); }).join(" \u00b7 "),
       ),
-      tile("Active bulls", d.bulls),
-      tile("Active females", d.females),
+      (P.founders || []).map(function (F, i) {
+        var nm = ((window.__lbProg || {}).shorts || {})[F] || dn(F);
+        return tile("Avg Relationship " + nm, d.rl[i] === null ? "\u2014" : d.rl[i].toFixed(2));
+      }),
+      tile("Active herd", d.act),
+      tile("Animals in database", e.length.toLocaleString()),
     );
   }
   function DashAttention(P) {
