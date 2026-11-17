@@ -9759,7 +9759,7 @@ Error generating stack: ` +
                     gen: W,
                   }),
                 (w === "path" || (w === "matings" && mm === "road")) &&
-                  (0, o.jsx)(sh, {
+                  (0, o.jsx)(RoadmapV2, {
                     allAnimals: S,
                     sire: _,
                     dam: N,
@@ -13597,6 +13597,420 @@ Error generating stack: ` +
         }),
       ],
     });
+  }
+  function roadSearch(o) {
+    var t = o.sire,
+      n = o.dam,
+      r = o.names,
+      k = o.kinship,
+      T = o.targets,
+      cow = o.cow,
+      bull = o.bull,
+      maxG = o.maxGens || 8,
+      beam = 24;
+    var cands = o.sires
+      .map(function (nm) {
+        var fb = T.map(function (X) {
+          return ye(nm, X, t, n, r) * 100;
+        });
+        return { name: nm, fb: fb, sc: fb.reduce(function (a, b2) { return a + b2; }, 0) };
+      })
+      .sort(function (a, b2) {
+        return b2.sc - a.sc;
+      })
+      .slice(0, 60);
+    var g = cands.map(function (c) {
+      return c.name;
+    });
+    var kv = {};
+    g.forEach(function (a) {
+      kv[a] = {};
+    });
+    for (var i = 0; i < g.length; i++)
+      for (var j = i; j < g.length; j++) {
+        var kk = k(g[i], g[j]);
+        kv[g[i]][g[j]] = kk;
+        kv[g[j]][g[i]] = kk;
+      }
+    function score(fb) {
+      return o.even
+        ? Math.min.apply(null, fb)
+        : fb.reduce(function (a, b2) {
+            return a + b2;
+          }, 0);
+    }
+    var cfb = T.map(function (X) {
+      return ye(cow, X, t, n, r) * 100;
+    });
+    var start = { vec: {}, steps: [], coi: 0 };
+    if (bull) {
+      var bfb = T.map(function (X) {
+        return ye(bull, X, t, n, r) * 100;
+      });
+      start.fb = cfb.map(function (v, q) {
+        return (v + bfb[q]) / 2;
+      });
+      g.forEach(function (h) {
+        start.vec[h] = (k(cow, h) + k(bull, h)) / 2;
+      });
+      start.coi = k(cow, bull) * 100;
+    } else {
+      start.fb = cfb;
+      g.forEach(function (h) {
+        start.vec[h] = k(cow, h);
+      });
+      start.coi = t[cow] || n[cow] ? k(t[cow], n[cow]) * 100 : 0;
+    }
+    start.score = score(start.fb);
+    var cur = [start],
+      bestPrev = start.score,
+      finalBeam = null,
+      bestState = start;
+    for (var gen = 1; gen <= maxG; gen++) {
+      var pool = [];
+      cur.forEach(function (x) {
+        cands.forEach(function (c) {
+          var fb = x.fb.map(function (v, q) {
+            return (v + c.fb[q]) / 2;
+          });
+          for (var q2 = 0; q2 < fb.length; q2++) if (fb[q2] < x.fb[q2] - 1e-9) return;
+          pool.push({ x: x, h: c.name, fb: fb, coi: x.vec[c.name] * 100, score: score(fb) });
+        });
+      });
+      pool.sort(function (a, b2) {
+        return Math.floor(b2.score) - Math.floor(a.score) || a.coi - b2.coi;
+      });
+      var seen = {},
+        keep = [];
+      for (var q = 0; q < pool.length && keep.length < beam; q++) {
+        var p = pool[q],
+          sig = p.fb.map(function (v) { return v.toFixed(3); }).join("|") + p.h;
+        if (seen[sig]) continue;
+        seen[sig] = 1;
+        keep.push(p);
+      }
+      var nx = keep.map(function (p) {
+        var vec = {};
+        g.forEach(function (u) {
+          vec[u] = (p.x.vec[u] + kv[p.h][u]) / 2;
+        });
+        return { vec: vec, fb: p.fb, coi: p.coi, score: p.score, steps: p.x.steps.concat({ sire: p.h, fb: p.fb, coi: p.coi, gen: gen }) };
+      });
+      if (!nx.length) break;
+      if (nx[0].score < bestPrev + 1) break;
+      bestPrev = nx[0].score;
+      bestState = nx[0];
+      finalBeam = nx;
+      cur = nx;
+    }
+    var alts = [];
+    if (finalBeam) {
+      var sg = {};
+      finalBeam.forEach(function (s) {
+        var key = s.steps[0].sire;
+        if (s === bestState || sg[key] || alts.length >= 4) return;
+        sg[key] = 1;
+        alts.push(s);
+      });
+    }
+    return { start: start, best: bestState, alts: alts, cands: g.length };
+  }
+  function RoadmapV2(P) {
+    var E = b.default.createElement;
+    var e = P.allAnimals,
+      t = P.sire,
+      n = P.dam,
+      r = P.names,
+      k = P.kinship,
+      F0 = P.founders;
+    var G = window.__lbProg || {};
+    var shorts = G.shorts || {},
+      fcol = G.colors || {};
+    var st1 = b.useState([]),
+      extra = st1[0],
+      setExtra = st1[1];
+    var st2 = b.useState({}),
+      off = st2[0],
+      setOff = st2[1];
+    var st3 = b.useState(""),
+      cow = st3[0],
+      setCow = st3[1];
+    var st4 = b.useState(""),
+      bull = st4[0],
+      setBull = st4[1];
+    var st5 = b.useState(false),
+      even = st5[0],
+      setEven = st5[1];
+    var st6 = b.useState(""),
+      addv = st6[0],
+      setAddv = st6[1];
+    var all = F0.concat(extra);
+    var targets = all.filter(function (x) {
+      return !off[x];
+    });
+    function lab(F) {
+      return shorts[F] || dn(F);
+    }
+    function col(F) {
+      var j = F0.indexOf(F);
+      return j >= 0 ? fcol[F] || FCOL[j % 8] : CM_REF_COL[(all.indexOf(F) - F0.length) % CM_REF_COL.length];
+    }
+    var herd = b.useMemo(
+      function () {
+        var act = e.filter(to);
+        var comp = herdComplete(act, F0, t, n, r);
+        var females = comp.filter(function (x) {
+          return qe(x.name, x, t, n) === "Female";
+        });
+        var sires = act.filter(function (x) {
+          return qe(x.name, x, t, n) === "Male" && Zr(x);
+        });
+        var mean = function (a) {
+          return a.length ? a.reduce(function (s, v) { return s + v; }, 0) / a.length : null;
+        };
+        var rows = targets.map(function (X) {
+          var avg = mean(comp.map(function (x) { return ye(x.name, X, t, n, r) * 100; }));
+          var fAvg = mean(females.map(function (x) { return ye(x.name, X, t, n, r) * 100; }));
+          var best = null;
+          sires.forEach(function (s) {
+            var v = ye(s.name, X, t, n, r) * 100;
+            if (!best || v > best.v) best = { name: s.name, v: v };
+          });
+          return { X: X, avg: avg, best: best, next: fAvg !== null && best ? fAvg / 2 + best.v / 2 : null };
+        });
+        var ys = {},
+          aMax = 0;
+        e.forEach(function (x) {
+          var y = parseInt(String(x.birthDate || "").slice(0, 4), 10);
+          if (!(y >= 1900 && y <= 2100)) return;
+          for (var i = 0; i < F0.length; i++) if (!(ye(x.name, F0[i], t, n, r) > 0)) return;
+          if (y > aMax) aMax = y;
+          var g2 = ys[y] || (ys[y] = { n: 0, s: targets.map(function () { return 0; }) });
+          g2.n++;
+          targets.forEach(function (X, i) {
+            g2.s[i] += ye(x.name, X, t, n, r) * 100;
+          });
+        });
+        var tr = targets.map(function () { return null; });
+        if (aMax) {
+          var win = function (en) {
+            var o2 = { n: 0, s: targets.map(function () { return 0; }) };
+            for (var y = en - 2; y <= en; y++)
+              if (ys[y]) {
+                o2.n += ys[y].n;
+                ys[y].s.forEach(function (v, i) { o2.s[i] += v; });
+              }
+            return o2;
+          };
+          var cu = win(aMax),
+            pr = null;
+          for (var e2 = aMax - 3; e2 >= 1950 && !pr; e2--) {
+            var w2 = win(e2);
+            if (w2.n >= 3) pr = w2;
+          }
+          if (cu.n >= 3 && pr) tr = targets.map(function (X, i) { return cu.s[i] / cu.n - pr.s[i] / pr.n; });
+        }
+        rows.forEach(function (rw, i) {
+          rw.tr = tr[i];
+        });
+        return { rows: rows, n: comp.length, tot: act.length };
+      },
+      [e, targets.join("\u0001"), t, n, r],
+    );
+    var sireNames = b.useMemo(
+      function () {
+        return e
+          .filter(function (x) {
+            return qe(x.name, x, t, n) === "Male" && Zr(x);
+          })
+          .map(function (x) {
+            return x.name;
+          });
+      },
+      [e, t, n],
+    );
+    var res = b.useMemo(
+      function () {
+        if (!cow || !r.has(cow) || (bull && !r.has(bull)) || !targets.length) return null;
+        return roadSearch({ cow: cow, bull: bull || null, targets: targets, even: even, sires: sireNames, sire: t, dam: n, names: r, kinship: k });
+      },
+      [cow, bull, targets.join("\u0001"), even, sireNames, t, n, r],
+    );
+    function chip(X) {
+      var on = !off[X];
+      var isExtra = F0.indexOf(X) < 0;
+      return E(
+        "span",
+        { key: X, className: "rm-chip" + (on ? " on" : "") },
+        E("i", { className: "pl-sw", style: { background: col(X) } }),
+        E(
+          "span",
+          {
+            onClick: function () {
+              setOff(function (c) {
+                var nx = Object.assign({}, c);
+                nx[X] = !c[X];
+                return nx;
+              });
+            },
+          },
+          lab(X),
+        ),
+        isExtra
+          ? E(
+              "span",
+              {
+                className: "rm-x",
+                onClick: function () {
+                  setExtra(function (c) {
+                    return c.filter(function (y) { return y !== X; });
+                  });
+                },
+              },
+              "×",
+            )
+          : null,
+      );
+    }
+    function fmt(v) {
+      return v === null || v === undefined ? "—" : v.toFixed(1) + "%";
+    }
+    var herdCard = E(
+      "div",
+      { className: "card" },
+      E("h2", null, "Herd"),
+      E("div", { className: "rm-chips" }, all.map(chip)),
+      E(
+        "div",
+        { className: "rm-add" },
+        E(ph, {
+          label: "Add an animal to track",
+          value: addv,
+          placeholder: "Any animal",
+          allAnimals: e,
+          onChange: function (v) {
+            if (v && r.has(v) && all.indexOf(v) < 0) {
+              setExtra(function (c) { return c.concat([v]); });
+              setAddv("");
+            } else setAddv(v);
+          },
+        }),
+      ),
+      E(
+        "div",
+        { className: "table-scroll" },
+        E(
+          "table",
+          { className: "rank-table" },
+          E("thead", null, E("tr", null, ["Animal", "Herd now", "Next crop, best sire", "Best sire"].map(function (h) { return E("th", { key: h }, h); }))),
+          E(
+            "tbody",
+            null,
+            herd.rows.map(function (rw) {
+              return E(
+                "tr",
+                { key: rw.X },
+                E("td", null, E("i", { className: "pl-sw", style: { background: col(rw.X) } }), lab(rw.X)),
+                E("td", null, fmt(rw.avg), " ", rw.tr === null ? null : dSm(rw.tr, 1)),
+                E("td", null, fmt(rw.next), rw.next !== null && rw.avg !== null ? E(b.default.Fragment, null, " ", dSm(rw.next - rw.avg, 1)) : null),
+                E("td", null, rw.best ? E("span", { className: "row-link", style: { cursor: "pointer" }, onClick: function () { P.onGoToAnimal(rw.best.name); } }, rw.best.name + " " + rw.best.v.toFixed(1) + "%") : "—"),
+              );
+            }),
+          ),
+        ),
+      ),
+    );
+    function routeTable(S) {
+      var rows = [{ lab: "Start", sire: null, fb: S.start.fb, coi: S.start.coi }].concat(
+        S.best.steps.map(function (s) {
+          return { lab: "Gen " + s.gen, sire: s.sire, fb: s.fb, coi: s.coi };
+        }),
+      );
+      return E(
+        "div",
+        { className: "table-scroll" },
+        E(
+          "table",
+          { className: "rank-table" },
+          E(
+            "thead",
+            null,
+            E(
+              "tr",
+              null,
+              E("th", null, ""),
+              E("th", null, "Breed to"),
+              targets.map(function (X) { return E("th", { key: X }, lab(X)); }),
+              E("th", null, "COI"),
+            ),
+          ),
+          E(
+            "tbody",
+            null,
+            rows.map(function (rw, i) {
+              var prev = i ? rows[i - 1] : null;
+              return E(
+                "tr",
+                { key: i },
+                E("td", null, rw.lab),
+                E("td", null, rw.sire ? E("span", { className: "row-link", style: { cursor: "pointer" }, onClick: function () { P.onGoToAnimal(rw.sire); } }, rw.sire) : bull ? "planned calf" : "—"),
+                rw.fb.map(function (v, q) {
+                  return E("td", { key: q }, v.toFixed(1) + "%", prev ? E(b.default.Fragment, null, " ", dSm(v - prev.fb[q], 1)) : null);
+                }),
+                E("td", null, rw.coi.toFixed(1) + "%"),
+              );
+            }),
+          ),
+        ),
+      );
+    }
+    var femaleCard = E(
+      "div",
+      { className: "card" },
+      E("h2", null, "One female"),
+      E(
+        "div",
+        { className: "pairing-row" },
+        E(ph, { label: "Start from", value: cow, onChange: setCow, allAnimals: e, placeholder: "Any cow", accept: function (x) { return Zr(x) && qe(x.name, x, t, n) !== "Male"; } }),
+        E(ph, { label: "Planned calf, bred to (optional)", value: bull, onChange: setBull, allAnimals: e, placeholder: "Pick a bull", accept: function (x) { return Zr(x) && qe(x.name, x, t, n) !== "Female"; } }),
+      ),
+      E(
+        "div",
+        { className: "pl-q" },
+        E("div", { className: "pl-seg" },
+          [[false, "Highest combined"], [true, "Keep them even"]].map(function (a) {
+            return E("button", { key: a[1], type: "button", className: even === a[0] ? "on" : "", onClick: function () { setEven(a[0]); } }, a[1]);
+          }),
+        ),
+      ),
+      res
+        ? E(
+            "div",
+            null,
+            E("p", { className: "pl-hd" }, res.best.steps.length ? "Best route: " + res.best.steps.length + " generation" + (res.best.steps.length === 1 ? "" : "s") : "No sire improves her"),
+            routeTable(res),
+            res.alts.length
+              ? E(
+                  "details",
+                  { className: "rm-alts" },
+                  E("summary", null, "Other routes (" + res.alts.length + ")"),
+                  res.alts.map(function (s, i) {
+                    return E(
+                      "div",
+                      { key: i, className: "rm-alt" },
+                      s.steps.map(function (x) { return x.sire; }).join(" → "),
+                      " · ",
+                      targets.map(function (X, q) { return lab(X) + " " + s.fb[q].toFixed(1) + "%"; }).join(", "),
+                      " · COI ",
+                      s.coi.toFixed(1) + "%",
+                    );
+                  }),
+                )
+              : null,
+          )
+        : null,
+    );
+    return E("div", { className: "screen active" }, E("h1", null, "Breeding Roadmap"), herdCard, femaleCard);
   }
   function sh({
     allAnimals: e,
@@ -21021,6 +21435,13 @@ Rules:
   .pl-refchip { display: inline-flex; align-items: center; border: 1px solid var(--border-strong); padding: 3px 4px 3px 8px; font-size: 12px; }
   .pl-refchip button { border: 0; background: transparent; font-size: 16px; line-height: 1; padding: 0 6px; cursor: pointer; color: var(--text-secondary); }
   .pl-card-static { cursor: default; }
+  .rm-chips { margin-bottom: 4px; }
+  .rm-chip { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--border-strong); border-radius: 16px; padding: 4px 12px; margin: 0 8px 8px 0; background: var(--surface); cursor: pointer; opacity: .55; }
+  .rm-chip.on { background: var(--surface-selected); border-color: var(--accent); opacity: 1; }
+  .rm-x { margin-left: 4px; font-weight: 700; }
+  .rm-add { max-width: 420px; margin-bottom: 12px; }
+  .rm-alt { padding: 6px 0; font-size: 13px; border-bottom: 1px solid var(--border); }
+  .rm-alts { margin-top: 12px; }
   .pl-card-dam { background: var(--surface-selected); border-color: var(--accent-subtle-b); border-left: 5px solid var(--accent); }
   .pl-cards2 { display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 12px; }
   @media (min-width: 1000px) { .pl-cards2 { grid-template-columns: 1fr 1fr; } }
