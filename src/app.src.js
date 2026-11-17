@@ -14433,9 +14433,9 @@ Error generating stack: ` +
         "1. What do you want to do?",
         seg(
           [
-            { v: "up", l: "Increase" },
+            { v: "up", l: "Highest" },
             { v: "hold", l: "Maintain" },
-            { v: "down", l: "Reduce" },
+            { v: "down", l: "Lowest" },
           ],
           goal,
           setGoal,
@@ -14567,16 +14567,18 @@ Error generating stack: ` +
       var unitOf = function (p) {
         return MK === "blood" ? "%" : MK === "rel" ? "" : "";
       };
-      function fmtVal(p) {
-        if (MK === "blood") return p.blood.toFixed(1) + "%";
-        if (MK === "rel") return (p.rel / 100).toFixed(2);
-        if (MK === "occ") return String(p.occ);
+      function fmtVal(p, mk) {
+        mk = mk || MK;
+        if (mk === "blood") return p.blood.toFixed(1) + "%";
+        if (mk === "rel") return (p.rel / 100).toFixed(2);
+        if (mk === "occ") return String(p.occ);
         return p.cl === null ? "–" : "Gen " + p.cl;
       }
-      function delta(p, cp) {
-        if (MK === "blood") return dl(p.blood - cp.blood, 1);
-        if (MK === "rel") return dl((p.rel - cp.rel) / 100, 2);
-        if (MK === "occ") return dl(p.occ - cp.occ, 0);
+      function delta(p, cp, mk) {
+        mk = mk || MK;
+        if (mk === "blood") return dl(p.blood - cp.blood, 1);
+        if (mk === "rel") return dl((p.rel - cp.rel) / 100, 2);
+        if (mk === "occ") return dl(p.occ - cp.occ, 0);
         if (p.cl === null && cp.cl === null) return E("span", { className: "pl-dl pl-eq" }, "\u00b10");
         if (cp.cl === null) return E("span", { className: "pl-dl pl-up" }, "new");
         if (p.cl === null) return E("span", { className: "pl-dl pl-dn" }, "none");
@@ -14656,10 +14658,17 @@ Error generating stack: ` +
                     "span",
                     { key: F, className: "pl-hm" },
                     E("span", { className: "pl-hml" }, sn(F)),
-                    " ",
-                    E("b", null, fmtVal(x.per[k])),
-                    " ",
-                    delta(x.per[k], x.cv[k]),
+                    measL.map(function (mk) {
+                      var ml = { blood: "Blood", rel: "Rel", occ: "Occ", cl: "Closest" }[mk];
+                      return E(
+                        "span",
+                        { key: mk, style: { marginLeft: 6 } },
+                        measL.length > 1 ? E("span", { className: "pl-hml" }, ml + " ") : null,
+                        E("b", null, fmtVal(x.per[k], mk)),
+                        " ",
+                        delta(x.per[k], x.cv[k], mk),
+                      );
+                    }),
                   );
                 }),
                 E(
@@ -17828,9 +17837,9 @@ Error generating stack: ` +
         "1. What do you want to do?",
         seg(
           [
-            { v: "up", l: "Increase" },
+            { v: "up", l: "Highest" },
             { v: "hold", l: "Maintain" },
-            { v: "down", l: "Reduce" },
+            { v: "down", l: "Lowest" },
           ],
           goal,
           setGoal,
