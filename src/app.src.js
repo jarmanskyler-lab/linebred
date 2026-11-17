@@ -12861,7 +12861,7 @@ Error generating stack: ` +
           { className: "pl-tile" },
           E("div", { className: "pl-l" }, "Avg Complete Gens"),
           E("div", { className: "pl-v" }, d.cgAvg.toFixed(1)),
-          E("div", { className: "pl-s" }, "goal 10 \u00B7 " + d.cgShort + " under 6"),
+          E("div", { className: "pl-s" }, "goal 10"),
         ),
         E(
           "div",
