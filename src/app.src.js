@@ -11204,11 +11204,11 @@ Error generating stack: ` +
     var sexLab = P.sexLabel;
     return E(
       "div",
-      { className: "pl-card pl-card-static" },
+      { className: "pl-card pl-card-static" + (P.tone === "dam" ? " pl-card-dam" : "") },
       E(
         "div",
         { className: "pl-head" },
-        E("span", { className: "pl-role" }, sexLab),
+        E("span", { className: "pl-role" + (P.tone === "dam" ? " pl-role-d" : "") }, sexLab),
         h && h.regNum ? E("span", { className: "pl-reg" }, "Reg " + h.regNum) : null,
         h && h.birthDate ? E("span", { className: "pl-reg" }, h.birthDate) : null,
         P.status ? E("span", { className: "pl-reg" }, P.status) : null,
@@ -17191,6 +17191,40 @@ Error generating stack: ` +
       ],
     });
   }
+  function MatingCard(P) {
+    var E = b.default.createElement;
+    var s = P.name,
+      t = P.sire,
+      n = P.dam,
+      r = P.names;
+    var ped = nh(s, t, n, r);
+    var deep = 0;
+    ped.perGen.forEach(function (g) {
+      if (g.filled > 0) deep = g.gen;
+    });
+    var h = P.rec;
+    return E(AnimalStdCard, {
+      name: s,
+      rec: h,
+      sire: t,
+      dam: n,
+      names: r,
+      kinship: P.kinship,
+      allAnimals: P.allAnimals,
+      targets: P.targets,
+      isFounder: function () {
+        return true;
+      },
+      onSelect: P.onGo || function () {},
+      sexLabel: P.role,
+      tone: P.tone,
+      status: h && (h.herdStatus || h.status),
+      hasPed: !!(t[s] || n[s]),
+      coi: t[s] || n[s] ? P.kinship(t[s], n[s]) * 100 : 0,
+      complete: ped.fullThrough,
+      deep: deep,
+    });
+  }
   function DamBar(P) {
     var E = b.default.createElement;
     var s = P.name,
@@ -17926,18 +17960,14 @@ Error generating stack: ` +
           setCoiP,
         ),
       ),
-      E(
-        "div",
-        { className: "metric-note" },
-        "Blood % is the calf’s share of ancestry from the foundation animal. Relationship counts every shared gene, so it can pass 100%. Closest generation is how far back a foundation animal first appears: nearer is higher. COI re-orders the list.",
-      ),
     );
 
     if (!D) return E("div", null, controls);
     var damBar =
       dam &&
-      E(DamBar, {
+      E(MatingCard, {
         role: damRole,
+        tone: damRole === "Dam" ? "dam" : null,
         name: c,
         rec: byN.get(c),
         sire: t,
@@ -17946,8 +17976,7 @@ Error generating stack: ` +
         kinship: a,
         allAnimals: e,
         targets: d,
-        colors: COL,
-        short: sn,
+        onGo: P.onGoToAnimal,
       });
     if (!N)
       return E(
@@ -18570,11 +18599,6 @@ Error generating stack: ` +
         extra.length < CM_MAX_REF &&
           E(ph, { key: "add" + extra.length, label: "Add an animal (a reference sire, any bull, or a cow)", value: addv, onChange: addRef, allAnimals: e }),
       ),
-      E(
-        "div",
-        { className: "metric-note" },
-        "Pick a cow and a bull to see the calf. The pickers list only living animals or bulls with semen on hand, by sex. Foundation animals are always measured; any animal you add is measured the same way, on this screen only.",
-      ),
     );
 
     var ext = b.useMemo(
@@ -18768,19 +18792,13 @@ Error generating stack: ` +
           )
         : null,
     );
-    var dambar = E(DamBar, {
-      role: "Dam",
-      name: cow,
-      rec: cowRec,
-      sire: t,
-      dam: n,
-      names: r,
-      kinship: a,
-      allAnimals: e,
-      targets: targets,
-      colors: COL,
-      short: sn,
-    });
+    var cardProps = { sire: t, dam: n, names: r, kinship: a, allAnimals: e, targets: d, onGo: P.onGoToAnimal };
+    var dambar = E(
+      "div",
+      { className: "pl-cards2" },
+      E(MatingCard, Object.assign({ role: "Dam", tone: "dam", name: cow, rec: cowRec }, cardProps)),
+      E(MatingCard, Object.assign({ role: "Sire", name: bull, rec: bullRec }, cardProps)),
+    );
     var nextGen = E(
       "div",
       { className: "pl-nextgen" },
@@ -18887,6 +18905,7 @@ Error generating stack: ` +
       body = E(CheckMate, {
         key: "check",
         noPick: true,
+        onGoToAnimal: P.onGoToAnimal,
         last: L,
         setLast: P.setLast,
         matingLog: P.matingLog,
@@ -19159,6 +19178,7 @@ Error generating stack: ` +
         }),
         (0, o.jsx)(PlNew, {
           hideDam: !!presetDam,
+          onGoToAnimal: i,
           allAnimals: e,
           dam: c,
           damOk: D,
@@ -21001,6 +21021,9 @@ Rules:
   .pl-refchip { display: inline-flex; align-items: center; border: 1px solid var(--border-strong); padding: 3px 4px 3px 8px; font-size: 12px; }
   .pl-refchip button { border: 0; background: transparent; font-size: 16px; line-height: 1; padding: 0 6px; cursor: pointer; color: var(--text-secondary); }
   .pl-card-static { cursor: default; }
+  .pl-card-dam { background: var(--surface-selected); border-color: var(--accent-subtle-b); border-left: 5px solid var(--accent); }
+  .pl-cards2 { display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 12px; }
+  @media (min-width: 1000px) { .pl-cards2 { grid-template-columns: 1fr 1fr; } }
   .pl-hlist { display: flex; flex-direction: column; }
   .pl-hrow { padding: 10px 6px; border-top: var(--bw) solid var(--border); }
   .pl-hrow.best { background: var(--accent-soft, rgba(139, 26, 26, 0.06)); }
