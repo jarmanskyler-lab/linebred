@@ -14303,7 +14303,7 @@ Error generating stack: ` +
       var s = t[name],
         m = n[name],
         v = 0;
-      if (s && m && r.has(s) && r.has(m)) v = H.phiRow(s)(m) * 100;
+      if (s && m && r.has(s) && r.has(m)) v = P.kinship(s, m) * 100;
       cowCoi.current.set(name, v);
       return v;
     }
@@ -14311,7 +14311,7 @@ Error generating stack: ` +
     function coiOfPair(H, cow, bull) {
       var key = cow + "\0" + bull;
       if (pairCoi.current.has(key)) return pairCoi.current.get(key);
-      var v = H.phiRow(cow)(bull) * 100;
+      var v = P.kinship(cow, bull) * 100;
       pairCoi.current.set(key, v);
       return v;
     }
