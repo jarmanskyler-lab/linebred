@@ -13670,6 +13670,7 @@ Error generating stack: ` +
       var pool = [];
       cur.forEach(function (x) {
         cands.forEach(function (c) {
+          for (var u2 = 0; u2 < x.steps.length; u2++) if (x.steps[u2].sire === c.name) return;
           var fb = x.fb.map(function (v, q) {
             return (v + c.fb[q]) / 2;
           });
