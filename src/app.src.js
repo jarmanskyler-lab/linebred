@@ -9608,19 +9608,19 @@ Error generating stack: ` +
               children: (0, o.jsx)("img", { src: "logo.png", alt: "LineBred" }),
             }),
             (0, o.jsx)("button", {
-              className: Xd.includes(w) ? "active" : "",
+              className: (Xd.includes(w) ? "active " : "") + "tb-desk",
               onClick: () => {
                 (X(null), x("browse"));
               },
               children: "Animals",
             }),
             (0, o.jsx)("button", {
-              className: w === "matings" || w === "matinglog" ? "active" : "",
+              className: (w === "matings" || w === "matinglog" ? "active " : "") + "tb-desk",
               onClick: () => x("matings"),
               children: "Matings",
             }),
             (0, o.jsx)("button", {
-              className: w === "reports" ? "active" : "",
+              className: (w === "reports" ? "active " : "") + "tb-desk",
               onClick: () => x("reports"),
               children: "Data Health",
             }),
@@ -9685,7 +9685,7 @@ Error generating stack: ` +
           (0, o.jsx)("div", {
             className: "storage-warning",
             children:
-              "\u26A0 This session isn't saving reliably. Anything you add or edit right now may be lost if you close or reload this tab. Finish what you're doing, then let Claude know so this can be fixed \u2014 don't count on it persisting yet.",
+              "\u26A0 Changes may not be saved on this device. Finish what you're doing before closing or reloading this page.",
           }),
         p
           ? (0, o.jsxs)(o.Fragment, {
@@ -9852,6 +9852,28 @@ Error generating stack: ` +
                 ],
               }),
             }),
+        (0, o.jsx)("div", {
+          className: "app-footer",
+          children: (() => {
+            let v = String(window.__LINEBRED_DATA_VERSION || "").split("-")[0] || "?",
+              dd = "";
+            try {
+              let dt = new Date((l && (l.importedAt || l.generated)) || "");
+              if (!isNaN(dt.getTime())) dd = " \u00B7 data " + (dt.getMonth() + 1) + "/" + dt.getDate();
+            } catch (e) {}
+            return "Release " + v + dd;
+          })(),
+        }),
+        (0, o.jsx)("nav", {
+          className: "tabbar",
+          children: [
+            ["dashboard", "Dashboard", w === "dashboard", () => x("dashboard"), "\u25A6"],
+            ["animals", "Animals", Xd.includes(w), () => { X(null); x("browse"); }, "\u2630"],
+            ["matings", "Matings", w === "matings" || w === "matinglog", () => x("matings"), "\u2665"],
+          ].map(([k, lbl, on, fn, ic]) =>
+            (0, o.jsxs)("button", { className: on ? "active" : "", onClick: fn, children: [(0, o.jsx)("span", { className: "tb-ic", children: ic }), lbl] }, k),
+          ),
+        }),
       ],
     });
   }
@@ -12151,8 +12173,54 @@ Error generating stack: ` +
                   className: "metric-note",
                   children: ['No animal found matching "', k, '" \u2014 pick a suggestion above.'],
                 })
-              : (0, o.jsx)("div", {
-                  className: "table-scroll",
+              : (0, o.jsxs)(o.Fragment, { children: [
+                (0, o.jsx)("div", {
+                  className: "herd-cards",
+                  children: K.slice(0, 150).map((S, _) => {
+                    let rv =
+                      y === "blood" ? `${S.blood.toFixed(2)}%`
+                      : y === "relationship" ? `${S.rel.toFixed(2)}%`
+                      : y === "occurrences" ? `${S.occ}\xD7`
+                      : y === "coi" ? `${S.coi.toFixed(2)}%`
+                      : y === "balance" ? `${S.value.toFixed(2)}%`
+                      : null;
+                    return (0, o.jsxs)(
+                      "button",
+                      {
+                        type: "button",
+                        className: "herd-card" + (y !== "az" && _ === 0 ? " best" : ""),
+                        onClick: () => d(S.name),
+                        children: [
+                          (0, o.jsxs)("span", {
+                            className: "hc-top",
+                            children: [
+                              (0, o.jsx)("span", { className: "hc-name", children: S.name }),
+                              rv != null && (0, o.jsxs)("span", { className: "hc-rank", children: [rv, (0, o.jsx)("small", { children: D })] }),
+                            ],
+                          }),
+                          (0, o.jsx)("span", {
+                            className: "hc-sub",
+                            children: [Rl(S.sex), S.status]
+                              .concat(
+                                v.map((N) => {
+                                  let P = ye(S.name, N, t, n, r) * 100,
+                                    m = /(\d+)\s*$/.exec(String(N)),
+                                    lbl = m ? m[1] + (m[1].endsWith("1") && m[1] !== "11" ? "st" : m[1].endsWith("2") && m[1] !== "12" ? "nd" : m[1].endsWith("3") && m[1] !== "13" ? "rd" : "th") : dn(N);
+                                  return lbl + " " + (P > 0 ? P.toFixed(1) + "%" : "\u2014");
+                                }),
+                              )
+                              .concat([S.avail || "\u2014"])
+                              .filter((x2) => x2 != null && x2 !== "")
+                              .join(" \xB7 "),
+                          }),
+                        ],
+                      },
+                      S.name,
+                    );
+                  }),
+                }),
+                (0, o.jsx)("div", {
+                  className: "table-scroll herd-table",
                   children: (0, o.jsxs)("table", {
                     className: "rank-table",
                     children: [
@@ -12213,6 +12281,7 @@ Error generating stack: ` +
                     ],
                   }),
                 }),
+              ] }),
             K.length > 150 &&
               (0, o.jsxs)("div", {
                 className: "metric-note",
@@ -12448,10 +12517,10 @@ Error generating stack: ` +
     return E(
       "div",
       { className: "dash-tiles" },
-      tile("Herd Size", d.act, "", ""),
-      tile("Animals in Database", e.length.toLocaleString(), "", ""),
-      tile("Herd COI", d.coi == null ? "\u2014" : d.coi.toFixed(1) + "%", "", ""),
-      tile("Avg Complete Gens", d.cg.toFixed(1), "", ""),
+      tile("Herd Size", d.act, "dash-t-size", ""),
+      tile("Animals in Database", e.length.toLocaleString(), "dash-t-db", ""),
+      tile("Herd COI", d.coi == null ? "\u2014" : d.coi.toFixed(1) + "%", "dash-t-coi", ""),
+      tile("Avg Complete Gens", d.cg.toFixed(1), "dash-t-gens", ""),
       (P.founders || []).map(fTile),
     );
   }
@@ -16944,6 +17013,7 @@ Error generating stack: ` +
   }
   function ph({ label: e, value: t, onChange: n, allAnimals: r, accept: acc, placeholder: phd }) {
     let [l, a] = (0, b.useState)(t || "");
+    let [fo, setFo] = (0, b.useState)(false);
     (0, b.useEffect)(() => {
       a(t || "");
     }, [t]);
@@ -16953,11 +17023,19 @@ Error generating stack: ` +
       return r.filter((u) => u.name.includes(s) && (!acc || acc(u))).slice(0, 8);
     }, [l, r, acc]);
     return (0, o.jsxs)("div", {
-      className: "pairing-slot",
+      className: "pairing-slot" + (fo ? " ph-open" : ""),
       style: { position: "relative" },
       children: [
+        (0, o.jsxs)("div", {
+          className: "ph-sheet-bar",
+          children: [
+            (0, o.jsx)("span", { children: e }),
+            (0, o.jsx)("button", { type: "button", onClick: () => { setFo(false); (document.activeElement && document.activeElement.blur && document.activeElement.blur()); }, children: "Done" }),
+          ],
+        }),
         (0, o.jsx)("label", { children: e }),
         (0, o.jsx)("input", {
+          onFocus: () => setFo(true),
           autoCorrect: "off",
           autoCapitalize: "off",
           autoComplete: "off",
@@ -16978,7 +17056,7 @@ Error generating stack: ` +
                 {
                   className: "suggestion-row",
                   onClick: () => {
-                    (n(s.name), a(s.name));
+                    (n(s.name), a(s.name), setFo(false));
                   },
                   children: [
                     s.name,
@@ -18767,6 +18845,14 @@ Error generating stack: ` +
     }
     return { CALF: CALF, t2: t2, n2: n2, r2: r2, e2: e2, a2: a2, gen2: gen2 };
   }
+  function lbOrd(name) {
+    var m = /(\d+)\s*$/.exec(String(name));
+    if (!m) return String(name);
+    var n = m[1],
+      l = n.slice(-1),
+      t2 = n.slice(-2);
+    return n + (t2 === "11" || t2 === "12" || t2 === "13" ? "th" : l === "1" ? "st" : l === "2" ? "nd" : l === "3" ? "rd" : "th");
+  }
   function CheckMate(P) {
     var E = b.default.createElement;
     var e = P.allAnimals,
@@ -18814,6 +18900,15 @@ Error generating stack: ` +
     var sA = b.useState(""),
       addv = sA[0],
       setAddv = sA[1];
+    var sFd = b.useState(false),
+      damOpen = sFd[0],
+      setDamOpen = sFd[1];
+    var sFs = b.useState(false),
+      sireOpen = sFs[0],
+      setSireOpen = sFs[1];
+    var sMo = b.useState(false),
+      moreOpen = sMo[0],
+      setMoreOpen = sMo[1];
     var G = window.__lbProg || {};
     var sn = function (x) {
       return (G.shorts && G.shorts[x]) || x;
@@ -18971,7 +19066,8 @@ Error generating stack: ` +
       setAddv("");
     }
 
-    var controls = E(
+    function mkControls(sum) {
+    return E(
       "div",
       { className: "card pl-panel" },
       P.noPick ? null : E(
@@ -18980,6 +19076,7 @@ Error generating stack: ` +
         E(ph, { label: "Cow", value: cow, onChange: setCow, allAnimals: e, accept: function (x) { return Zr(x) && qe(x.name, x, t, n) !== "Male"; } }),
         E(ph, { label: "Bull", value: bull, onChange: setBull, allAnimals: e, accept: function (x) { return Zr(x) && qe(x.name, x, t, n) !== "Female"; } }),
       ),
+      sum || null,
       E(
         "div",
         { className: "pl-q" },
@@ -19015,6 +19112,8 @@ Error generating stack: ` +
           E(ph, { key: "add" + extra.length, label: "Add an animal (a reference sire, any bull, or a cow)", value: addv, onChange: addRef, allAnimals: e }),
       ),
     );
+    }
+    var controls = mkControls(null);
 
     var ext = b.useMemo(
       function () {
@@ -19093,7 +19192,7 @@ Error generating stack: ` +
                 "tr",
                 null,
                 ["Foundation", "Blood %", "Relation", "Times", "Closest"].map(function (h) {
-                  return E("th", { key: h }, h);
+                  return E("th", { key: h, className: h === "Relation" ? "pl-hide-m" : undefined }, h);
                 }),
               ),
             ),
@@ -19105,9 +19204,9 @@ Error generating stack: ` +
                   E(
                     "tr",
                     { key: p.name },
-                    E("td", null, E("i", { className: "pl-sw", style: { background: COL[j] } }), sn(p.name)),
+                    E("td", null, E("i", { className: "pl-sw", style: { background: COL[j] } }), sn(p.name), E("span", { className: "pl-relm" }, "Relation " + (p.rel / 100).toFixed(2))),
                     E("td", null, p.blood.toFixed(1) + "%", dl(p.blood - p.dBlood, 1)),
-                    E("td", null, (p.rel / 100).toFixed(2), dl((p.rel - p.dRel) / 100, 2)),
+                    E("td", { className: "pl-hide-m" }, (p.rel / 100).toFixed(2), dl((p.rel - p.dRel) / 100, 2)),
                     E("td", null, p.occ),
                     E("td", null, p.cl === null ? "\u2014" : "Gen " + p.cl),
                   ),
@@ -19130,7 +19229,7 @@ Error generating stack: ` +
                   "All other ancestors",
                 ),
                 E("td", null, other.toFixed(1) + "%", dl(-sd, 1)),
-                E("td", null),
+                E("td", { className: "pl-hide-m" }),
                 E("td", null),
                 E("td", null),
               ),
@@ -19163,6 +19262,12 @@ Error generating stack: ` +
           E("div", { className: "pl-s" }, C.kids.ka + " still active"),
         ),
       ),
+      E(
+        "button",
+        { type: "button", className: "pl-more-btn", onClick: function () { setMoreOpen(!moreOpen); } },
+        moreOpen ? "Hide other ancestors" : "Show other ancestors this mating concentrates",
+      ),
+      E("div", { className: "pl-more" + (moreOpen ? " open" : "") },
       E("p", { className: "pl-hd" }, "Other ancestors this mating concentrates"),
       E(
         "p",
@@ -19199,6 +19304,7 @@ Error generating stack: ` +
           }),
         ),
       ),
+      ),
       C.cgBull < 6
         ? E(
             "div",
@@ -19208,11 +19314,34 @@ Error generating stack: ` +
         : null,
     );
     var cardProps = { sire: t, dam: n, names: r, kinship: a, allAnimals: e, targets: d, onGo: P.onGoToAnimal };
+    function fold(role, nm, open, setOpen, body) {
+      return E(
+        "div",
+        { className: "pl-fold" + (open ? " open" : ""), key: role },
+        E(
+          "button",
+          { type: "button", className: "pl-fold-h", onClick: function () { setOpen(!open); } },
+          E("span", { className: "pl-fold-r" }, role),
+          E("span", { className: "pl-fold-n" }, nm),
+          E("span", { className: "pl-fold-c" }, "\u25BE"),
+        ),
+        E("div", { className: "pl-fold-b" }, body),
+      );
+    }
     var dambar = E(
       "div",
       { className: "pl-cards2" },
-      E(MatingCard, Object.assign({ role: "Dam", tone: "dam", name: cow, rec: cowRec }, cardProps)),
-      E(MatingCard, Object.assign({ role: "Sire", name: bull, rec: bullRec }, cardProps)),
+      fold("Cow", cow, damOpen, setDamOpen, E(MatingCard, Object.assign({ role: "Dam", tone: "dam", name: cow, rec: cowRec }, cardProps))),
+      fold("Bull", bull, sireOpen, setSireOpen, E(MatingCard, Object.assign({ role: "Sire", name: bull, rec: bullRec }, cardProps))),
+    );
+    var summary = E(
+      "div",
+      { className: "pl-summary" },
+      E("div", null, E("div", { className: "pl-sl" }, "Calf COI"), E("div", { className: "pl-sv" }, C.coi.toFixed(1) + "%", dl(C.coi - C.cowCoi, 1))),
+      fper.map(function (p) {
+        return E("div", { key: p.name }, E("div", { className: "pl-sl" }, lbOrd(p.name)), E("div", { className: "pl-sv" }, p.blood.toFixed(1) + "%"));
+      }),
+      E("div", null, E("div", { className: "pl-sl" }, "Foundation"), E("div", { className: "pl-sv" }, totBlood.toFixed(1) + "%")),
     );
     var nextGen = E(
       "div",
@@ -19241,7 +19370,7 @@ Error generating stack: ` +
     return E(
       "div",
       null,
-      FIX ? null : controls,
+      FIX ? null : mkControls(summary),
       dambar,
       sexWarn.length ? E("div", { className: "pl-note" }, sexWarn.join(" ")) : null,
       E(
@@ -19250,9 +19379,10 @@ Error generating stack: ` +
         "The calf from " + cow + " × " + bull + ". Changes are compared with " + cow + ": green is an increase, red is a decrease.",
       ),
       card,
+      E("div", { className: "pl-foot pl-foot-m" }, "These are expected values from the pedigree. Real calves vary."),
       E(
         "div",
-        { className: "pl-actions" },
+        { className: "pl-actions" + (FIX ? " pl-nostick" : "") },
         E("div", { className: "pl-foot" }, "These are expected values from the pedigree. Real calves vary."),
       P.saveMatingLog && !FIX
         ? E(
@@ -19289,6 +19419,17 @@ Error generating stack: ` +
                 },
               },
               "Save to Log",
+            ),
+            E(
+              "button",
+              {
+                className: "btn pl-plan-btn",
+                onClick: function () {
+                  var el = document.querySelector(".pl-nextgen");
+                  if (el && el.scrollIntoView) el.scrollIntoView({ behavior: "smooth", block: "start" });
+                },
+              },
+              "Plan the next generation",
             ),
             logMsg ? E("span", { className: "pl-logmsg" }, logMsg) : null,
           )
@@ -21505,6 +21646,129 @@ Rules:
     .toolbar > span { margin-right: var(--s-3); }
     .toolbar > span img { height: 26px; }
     .toolbar button { padding: 13px 10px; }
+  }
+
+  /* ==== Phone layout (Phases 1-3) ========================================
+     Everything phone-specific lives below. Phone-only elements are hidden by
+     default so desktop is unchanged. */
+  .tabbar, .herd-cards, .pl-summary, .pl-fold-h, .pl-more-btn, .pl-relm,
+  .pl-foot-m, .pl-plan-btn, .ph-sheet-bar { display: none; }
+  .pl-fold-b { display: block; }
+  .app-footer { text-align: center; font-size: 12px; color: var(--text-faint); padding: 4px 0 20px; }
+
+  @media (max-width: 640px) {
+    /* Phase 1: readable text, bigger tap targets */
+    .app-root { font-size: 16px; padding-bottom: calc(72px + env(safe-area-inset-bottom)); }
+    .app-root button, .app-root .btn, .subnav button { min-height: 44px; }
+    .app-root input, .app-root select, .app-root textarea { font-size: 16px; min-height: 44px; }
+    .metric-label, .metric-note, .form-field label, .pl-lab, .dash-tl, .dash-ts, .dash-fn,
+    .pl-sub, .pl-l, .pl-s, .pl-hd, .pl-foot, .pl-count, .pl-genrow td, .hint, .breadcrumb {
+      font-size: 14px; color: var(--c-charcoal-80);
+    }
+    .pl-table, .pl-table td, .rank-table td { font-size: 15px; }
+    .pl-table th, .rank-table th { font-size: 13px; color: var(--c-charcoal-80); padding-right: 14px; white-space: nowrap; }
+    .pl-table td { padding: 10px 12px 10px 0; }
+    .dash-tv { font-size: 30px; }
+    .dash-fpair .dash-tv { font-size: 26px; }
+    .pl-v, .stat-card .metric-value { font-size: 26px; }
+    .subnav button { padding: 10px 14px; }
+    .suggestion-row { padding: 14px 12px; font-size: 16px; }
+    .toolbar .tb-desk { display: none; }
+    .toolbar { justify-content: center; }
+    .dash-row { min-height: 44px; }
+    .clickable-row td { padding-top: 12px; padding-bottom: 12px; }
+    .pl-relm { display: block; font-size: 13px; color: var(--c-charcoal-80); margin-top: 2px; }
+    .pl-hide-m { display: none; }
+    .pl-ftable { table-layout: auto; }
+    .pl-ftable th, .pl-ftable td { padding-right: 18px !important; }
+    .pl-ftable td:nth-child(2) .pl-dl { margin-left: 6px; }
+
+    /* Phase 3: bottom tabs */
+    .tabbar {
+      display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 30;
+      background: var(--surface); border-top: 2px solid var(--border-strong);
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+    .tabbar button {
+      flex: 1; min-height: 56px; border: 0; background: none; font: inherit; font-size: 13px;
+      font-weight: 600; color: var(--c-charcoal-80); display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 2px; cursor: pointer;
+    }
+    .tabbar button .tb-ic { font-size: 18px; line-height: 1; }
+    .tabbar button.active { color: var(--accent); box-shadow: inset 0 3px 0 var(--accent); }
+
+    /* Phase 3: dashboard order. Foundation tiles and herd COI first; database count small. */
+    .dash-tiles { gap: 8px; }
+    .dash-ftile { order: 1; }
+    .dash-t-coi { order: 2; }
+    .dash-t-size { order: 3; }
+    .dash-t-gens { order: 4; }
+    .dash-t-db { order: 5; padding: 8px 8px; display: flex; flex-direction: column; justify-content: center; }
+    .dash-t-db .dash-tv { font-size: 18px; color: var(--c-charcoal-80); }
+    .dash-t-db .dash-tl { margin-top: 0; font-size: 12px; }
+
+    /* Phase 2: herd list as stacked rows */
+    .herd-table { display: none; }
+    .herd-cards { display: block; }
+    .herd-card {
+      display: block; width: 100%; text-align: left; font: inherit; background: var(--surface);
+      border: var(--bw) solid var(--border-strong); padding: 10px 12px; margin: 0 0 8px; cursor: pointer;
+      color: var(--text);
+    }
+    .herd-card.best { border-color: var(--accent); }
+    .hc-top { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+    .hc-name { font-weight: 600; font-size: 16px; line-height: 1.3; overflow-wrap: anywhere; }
+    .hc-rank { font-weight: 700; color: var(--accent); font-size: 16px; white-space: nowrap; text-align: right; }
+    .hc-rank small { display: block; font-size: 11px; font-weight: 400; color: var(--c-charcoal-80); }
+    .hc-sub { display: block; margin-top: 4px; font-size: 14px; color: var(--c-charcoal-80); line-height: 1.4; }
+
+    /* Phase 2: mating result */
+    .pl-summary {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin: 0 0 14px;
+    }
+    .pl-summary > div { background: var(--surface-sunken); border: var(--bw) solid var(--border-strong); padding: 6px 4px; text-align: center; min-width: 0; }
+    .pl-sl { font-size: 12px; color: var(--c-charcoal-80); }
+    .pl-sv { font-size: 19px; font-weight: 700; color: var(--accent); line-height: 1.2; }
+    .pl-sv .pl-dl { display: block; font-size: 12px; font-weight: 600; }
+    .pl-fold { border: var(--bw) solid var(--border-strong); background: var(--surface); margin-bottom: 8px; }
+    .pl-fold-h {
+      display: flex; align-items: center; gap: 10px; width: 100%; min-height: 48px; padding: 8px 12px;
+      border: 0; background: none; font: inherit; text-align: left; cursor: pointer; color: var(--text);
+    }
+    .pl-fold-r { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--c-charcoal-80); flex: none; }
+    .pl-fold-n { flex: 1; font-weight: 600; overflow-wrap: anywhere; }
+    .pl-fold-c { flex: none; transition: transform .15s; }
+    .pl-fold.open .pl-fold-c { transform: rotate(180deg); }
+    .pl-fold:not(.open) .pl-fold-b { display: none; }
+    .pl-fold-b .pl-card { border: 0; }
+    .pl-cards2 { grid-template-columns: minmax(0, 1fr); }
+    .pl-fold, .pl-fold-b { min-width: 0; }
+    .pl-fold-b { overflow-x: auto; }
+    .pl-more-btn {
+      display: block; width: 100%; margin: 10px 0; border: var(--bw) solid var(--border-strong);
+      background: var(--surface); font: inherit; font-weight: 600; cursor: pointer; padding: 10px 12px; color: var(--text);
+    }
+    .pl-more:not(.open) { display: none; }
+    .pl-foot-m { display: block; }
+    .pl-actions:not(.pl-nostick) {
+      position: sticky; bottom: calc(56px + env(safe-area-inset-bottom)); z-index: 25;
+      background: var(--surface); border-top: 2px solid var(--border-strong);
+      margin: 0 -12px 14px; padding: 8px 12px;
+    }
+    .pl-actions .pl-foot { display: none; }
+    .pl-actions-row { gap: 8px; }
+    .pl-actions-row .btn { flex: 1 1 40%; display: flex; align-items: center; justify-content: center; }
+    .pl-plan-btn { display: flex; }
+
+    /* Phase 3: full-screen pickers */
+    .pairing-slot.ph-open {
+      position: fixed !important; top: 0; left: 0; right: 0; bottom: 0; z-index: 100;
+      background: var(--surface); padding: 12px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px;
+    }
+    .pairing-slot.ph-open > label { display: none; }
+    .pairing-slot.ph-open .ph-sheet-bar { display: flex; justify-content: space-between; align-items: center; font-weight: 700; font-size: 18px; }
+    .ph-sheet-bar button { border: 0; background: none; color: var(--accent); font: inherit; font-weight: 700; padding: 0 8px; cursor: pointer; }
+    .pairing-slot.ph-open .suggestions { position: static; max-height: none; flex: 1; border-top: var(--bw) solid var(--border-strong); }
   }
 `,
     kh = Jd.createRoot(document.getElementById("root"));
