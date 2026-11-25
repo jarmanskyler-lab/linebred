@@ -8622,14 +8622,26 @@ Error generating stack: ` +
   }
   function Um(e, t, n, r) {
     let l = new Map();
+    // Integer pair keys (name -> small id, key = lo * KM + hi) use far less memory than "a|b" strings.
+    // Falls back to a string key if an id would overflow the 31-bit-safe range.
+    let ids = new Map(),
+      KM = 46340;
+    function idOf(s) {
+      let x = ids.get(s);
+      if (x === void 0) ((x = ids.size), ids.set(s, x));
+      return x;
+    }
     function a(s, u) {
+      let x = idOf(s),
+        y = idOf(u);
+      if (x < KM && y < KM) return x < y ? x * KM + y : y * KM + x;
       return s < u ? s + "|" + u : u + "|" + s;
     }
     if (Tn)
       for (let [s, u] of Tn) {
         if ((Rt && Rt.has(s)) || !n.has(s)) continue;
         let d = u.preCOI / 100;
-        l.set(s + "|" + s, 0.5 + 0.5 * d);
+        l.set(a(s, s), 0.5 + 0.5 * d);
         let c = e[s],
           g = t[s];
         c && g && n.has(c) && n.has(g) && l.set(a(c, g), d);
@@ -8637,7 +8649,7 @@ Error generating stack: ` +
     function i(s, u) {
       if (!s || !u) return 0;
       if (s === u) {
-        let y = s + "|" + s;
+        let y = a(s, s);
         if (l.has(y)) return l.get(y);
         if (!n.has(s)) return (l.set(y, 0.5), 0.5);
         let E = 0.5 + 0.5 * i(e[s], t[s]);
