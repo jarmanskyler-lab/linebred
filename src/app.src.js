@@ -9386,6 +9386,12 @@ Error generating stack: ` +
     var st = b.useState(0),
       i = st[0],
       setI = st[1];
+    var cardRef = b.useRef(null);
+    var sb = b.useState(null),
+      big = sb[0],
+      setBig = sb[1];
+    var bigRef = b.useRef(null);
+    bigRef.current = big;
     function close() {
       try {
         localStorage.setItem(TOUR_KEY, "1");
@@ -9394,76 +9400,233 @@ Error generating stack: ` +
     }
     b.useEffect(function () {
       function k(ev) {
-        if (ev.key === "Escape") close();
+        if (ev.key === "Escape") {
+          if (bigRef.current) setBig(null);
+          else close();
+        }
       }
       window.addEventListener("keydown", k);
       return function () {
         window.removeEventListener("keydown", k);
       };
     }, []);
+    b.useEffect(
+      function () {
+        if (cardRef.current) cardRef.current.scrollTop = 0;
+      },
+      [i],
+    );
     function tile(v, l, d) {
       return h("div", { className: "tm-tile", style: { animationDelay: d } }, h("div", { className: "tm-tv" }, v), h("div", { className: "tm-tl" }, l));
+    }
+    function shots(list) {
+      return h(
+        "div",
+        { className: "tour-shots" },
+        list.map(function (q, j) {
+          return h(
+            "button",
+            { key: j, type: "button", className: "tour-shot", onClick: function () { setBig({ f: q[0], c: q[1] }); } },
+            h("img", { src: "guide/" + q[0] + ".jpg", alt: q[1], loading: "lazy" }),
+            h("span", null, q[1]),
+          );
+        }),
+      );
     }
     var steps = [
       {
         t: "Welcome to LineBred",
-        mock: h("div", { className: "tm tm-welcome" }, h("img", { src: "logo.png", alt: "LineBred" })),
+        mock: null,
+        shots: [["dash-top", "Dashboard"], ["animal-coi", "What causes the COI"], ["mat-herd-results", "Best matings"], ["roadmap", "Roadmap"]],
         body: [
-          "This app keeps track of the Mark Donald 77 and McK Donald 43 bloodlines in your herd.",
-          "It shows how much of each bull is in every animal, and how closely two animals are related, so you can pick matings that keep those lines strong without breeding too close.",
-          "This quick tour takes about a minute.",
+          "LineBred measures a linebreeding program against the foundation animals you choose. It reads every pedigree in the database and answers questions like:",
+          { ul: [
+            "How much of each foundation animal's blood does every animal carry?",
+            "Is the herd concentrating that blood over time, or drifting away from it?",
+            "How inbred is this animal, and which ancestors are driving it?",
+            "Which sire and dam pairing builds what I want without tightening COI too far?",
+          ] },
+          { h: "What is inside" },
+          { ul: [
+            "Dashboard: herd-wide blood, relationship and COI, plus a list of pedigree problems to fix.",
+            "Animals: rank the whole herd, open any pedigree, add or edit records.",
+            "Matings: check a pairing, find the best sire or dam, plan several generations ahead, and keep a log.",
+          ] },
+          "Tap any picture in this guide to enlarge it. Use the menu at the top to jump to any step, and tap ? Guide any time to come back.",
+          { small: "Screens say cow, bull and calf because this copy holds Hereford pedigrees. Read them as dam, sire and offspring. The calculations work the same for any species with a pedigree." },
+        ],
+      },
+      {
+        t: "Start here: foundation animals",
+        mock: h(
+          "div",
+          { className: "tm tm-chips" },
+          h("div", { className: "tm-chip tm-chip1" }, "Animal A"),
+          h("div", { className: "tm-chip tm-chip2" }, "Animal B"),
+          h("div", { className: "tm-chip tm-chip3" }, "Animal C"),
+        ),
+        body: [
+          "A foundation animal is a sire or dam your program is built around. You decide who they are.",
+          "Everything in LineBred is measured against them: the blood each animal carries from them, its relationship to them, and how often they appear in its pedigree.",
+          "You can designate up to 6, and change the list whenever your program changes. Every screen recalculates to match.",
+          "This copy starts with two designated, Mark Donald 77 and McK Donald 43. They are only the starting point. Swap them or add more.",
+        ],
+      },
+      {
+        t: "How to pick your foundation animals",
+        mock: h(
+          "div",
+          { className: "tm" },
+          h("div", { className: "tm-field" }, h("small", null, "SEARCH BY NAME OR REGISTRATION NUMBER"), h("span", { className: "tm-type" }, "BB ARTHUR 6005")),
+          h("div", { className: "tm-btn tm-btn-save tm-small" }, "Designate foundation animal"),
+          h("div", { className: "tm-chip tm-chip-pop" }, "BB ARTHUR 6005"),
+        ),
+        body: [
+          { ol: [
+            "Tap Dashboard at the bottom.",
+            "Scroll down to the box called Foundation Animals.",
+            "Tap + Designate a foundation animal.",
+            "Type a name or registration number. Tap the animal when it shows in the list.",
+            "Optional: a short name (like 77th) for tight spaces, a color, and a note.",
+            "Tap Designate foundation animal. Done.",
+          ] },
+          "Every screen now measures against it.",
+        ],
+        shots: [["dash-foundation", "The Foundation Animals box"], ["foundation-form", "Search, then designate"]],
+      },
+      {
+        t: "Change or remove one",
+        mock: null,
+        body: [
+          "Every foundation animal is a row in the Foundation Animals box.",
+          { ul: [
+            "Edit changes its short name, color or note.",
+            "Remove takes it off the list. The app asks you to confirm first, and at least one must stay.",
+            "Export and Import save the list to a file and load it back, for backup or a second device.",
+          ] },
+          { h: "Good to know" },
+          "Every number recalculates for the new set. An animal whose pedigree does not reach every foundation animal is left out of the herd averages, so designating one more can change who counts. Needs attention on the Dashboard shows how many are left out.",
+          "To look at one ancestor without changing the list, open a pedigree and tap + on its card. It is tracked on that chart only.",
         ],
       },
       {
         t: "Dashboard: your herd at a glance",
-        mock: h(
-          "div",
-          { className: "tm" },
-          h("div", { className: "tm-tiles" }, tile("214", "Herd Size", "0s"), tile("10.3%", "Herd COI", "1.2s"), tile("11.1%", "77th Blood", "2.4s")),
-          h("div", { className: "tm-note" }, "Example numbers"),
-        ),
+        mock: null,
+        shots: [["dash-top", "Top of the Dashboard"]],
         body: [
-          "The Dashboard is the first screen. Tap Dashboard at the bottom any time to come back.",
-          "Herd Size is how many head are in the herd now.",
-          "Blood % is how much of an animal's pedigree comes from that bull. More percent means more of his blood.",
-          "Herd COI is how inbred the herd is. A lower number means less inbred.",
+          "Each foundation animal gets its own box with three numbers:",
+          { ul: [
+            "Relationship: the average additive relationship of your animals to it.",
+            "Blood: the average share of ancestry from it, with repeat appearances adding up. The green or red change compares the most recent birth years with the years before, so you can see whether you are concentrating or diluting.",
+            "Times: how often it appears in a typical pedigree.",
+          ] },
+          "Above those: Herd Size, Herd COI, and Avg Complete Gens (generations of pedigree with no gaps; 10 is the goal).",
+          "Show stats for switches between the active herd and the whole database.",
         ],
       },
       {
-        t: "Animals: look up any animal",
-        mock: h(
-          "div",
-          { className: "tm" },
-          h("div", { className: "tm-row" }, h("b", null, "BB ARTHUR 6005"), h("span", null, "M · Active · 77th 12.5%")),
-          h("div", { className: "tm-row tm-row-hit" }, h("b", null, "JH MS MARK H009 ET"), h("span", null, "F · Active · 77th 22.9%")),
-          h("div", { className: "tm-row" }, h("b", null, "DH BEAU MARK 815"), h("span", null, "M · Active · 77th 25.0%")),
-          h("div", { className: "tm-finger" }),
-          h("div", { className: "tm-ped" }, "Pedigree and blood shown"),
-        ),
+        t: "Dashboard: further down",
+        mock: null,
+        shots: [["dash-averages", "Herd averages"], ["dash-attention", "Needs attention"]],
         body: [
-          "Tap Animals at the bottom. You will see every animal in your herd.",
-          "Each one shows how much 77 and 43 blood it carries.",
-          "Tap an animal's name to open its pedigree. Use the search box to find one by name or registration number.",
+          { ul: [
+            "Herd averages: a donut and table of how much of the herd's ancestry comes from each foundation animal, and how much from everyone else.",
+            "Foundation blood by birth year: a chart showing whether your blood level is rising or falling.",
+            "Most influential animals: who shows up most in your herd's pedigrees.",
+            "Sire lines and Cow families: how the herd traces back through the male side and the female side.",
+            "COI distribution: how many animals sit in each inbreeding band.",
+          ] },
+          "Needs attention is your to-do list: animals missing a sire or dam, pedigrees shorter than 6 generations, pedigrees that miss a foundation animal, and matings in the Log that are due for a check. Fixing these makes every other number more trustworthy.",
         ],
       },
       {
-        t: "Matings: plan a breeding",
+        t: "Inbreeding (COI) in plain words",
         mock: h(
           "div",
           { className: "tm" },
-          h("div", { className: "tm-field" }, h("small", null, "COW"), h("span", { className: "tm-type" }, "JH MS MARK H009 ET")),
-          h("div", { className: "tm-field" }, h("small", null, "BULL"), h("span", { className: "tm-type tm-type2" }, "BB ARTHUR 6005")),
-          h("div", { className: "tm-strip" }, h("div", null, h("small", null, "Calf COI"), h("b", null, "7.6%")), h("div", null, h("small", null, "77th"), h("b", null, "17.7%")), h("div", null, h("small", null, "43rd"), h("b", null, "11.6%"))),
+          h("div", { className: "tm-scale" }, h("i", { className: "s1" }, "Low"), h("i", { className: "s2" }, "Caution"), h("i", { className: "s3" }, "Risk"), h("i", { className: "s4" }, "High"), h("em", { className: "tm-marker" })),
+          h("div", { className: "tm-scalen" }, h("span", null, "0"), h("span", null, "6.25"), h("span", null, "12.5"), h("span", null, "25%+")),
         ),
         body: [
-          "Tap Matings at the bottom. Pick a cow, then pick a bull. Start typing a name and tap it in the list.",
-          "The calf's numbers show up right away.",
-          "Calf COI is how inbred the calf would be. Lower means less inbred.",
-          "The 77th and 43rd numbers are how much of each bull the calf would carry.",
+          "COI is the inbreeding coefficient: the probability that an animal's two copies of a gene are identical by descent, which comes from how closely related its sire and dam were.",
+          "For reference: 6.25% is first cousins, 12.5% is half siblings, and 25% is full siblings or parent to offspring.",
+          "The app bands it: under 6.25 low, 6.25 to 12.5 caution, 12.5 to 25 risk, 25 and up high.",
+          "Linebreeding is closeness on purpose. COI is how you watch the cost: what you concentrate in blood, you also pay for in inbreeding.",
         ],
       },
       {
-        t: "Save it and plan ahead",
+        t: "Animals: your whole list",
+        mock: null,
+        shots: [["animals-ranked", "Ranked by Blood % to a target ancestor"]],
+        body: [
+          "Tap Animals at the bottom. Search by name, or filter by sex and Active only.",
+          "Rank by re-sorts the herd: A to Z, Blood %, Relationship, Occurrences, COI, or Foundation Balance (how evenly an animal carries all your foundation animals). The list shows highest to lowest.",
+          "Target Ancestor picks which foundation animal Blood %, Relationship and Occurrences are measured against.",
+          "Tap an animal to open its record. There you can correct its registration number, birth date, sex, status and notes, and tap View full pedigree record for the full analysis.",
+        ],
+      },
+      {
+        t: "One animal's pedigree record",
+        mock: null,
+        shots: [["animal-top", "Foundation ancestry"], ["animal-chart", "Pedigree chart"], ["animal-coi", "What causes the COI"]],
+        body: [
+          { ul: [
+            "Foundation ancestry: blood from each foundation animal, how many times each appears, and in which generations.",
+            "The pedigree chart: tap a card to open or close its parents, drag, pinch to zoom, and choose how many generations to show. Tap + on a card to track that ancestor on this chart only.",
+            "How this animal connects to each foundation animal: Show the paths lists every line of descent between them.",
+            "Top 10 ancestors: ranked by additive relationship. Tap What causes the COI? to see how much each common ancestor contributes to the inbreeding.",
+            "Other ancestors this animal concentrates: non-foundation animals that repeat heavily and may be shaping the line quietly.",
+            "Complete generations: how deep the pedigree is complete. Shallow pedigrees make every number less certain.",
+          ] },
+        ],
+      },
+      {
+        t: "Matings: check a pairing",
+        mock: null,
+        shots: [["mat-check", "Expected offspring numbers"]],
+        body: [
+          "Tap Matings. Pick the cow (dam) and the bull (sire) and the expected offspring numbers appear:",
+          { ul: [
+            "Calf COI, and the change from the dam.",
+            "Expected blood from each foundation animal.",
+            "Closest and In generations: how near each foundation animal sits.",
+          ] },
+          "Open the Cow and Bull cards for details. Under Also measure against, add up to 3 other sires or dams to compare.",
+          "These are expected values from the pedigree. Individual offspring vary.",
+        ],
+      },
+      {
+        t: "Matings: find the best match",
+        mock: null,
+        shots: [["mat-herd-opts", "The four questions"], ["mat-herd-results", "Ranked pairings"]],
+        body: [
+          { ul: [
+            "Pick only a dam: it ranks the best sires for her.",
+            "Pick only a sire: it ranks the best dams for him.",
+            "Pick neither: it searches the whole active herd for the best pairings.",
+          ] },
+          "Four questions set the search: what you want to do, which foundation animals count, how to measure (blend several if you like), and the COI approach:",
+          { ul: [
+            "Push the foundation blood as high as it will go.",
+            "Push, but stay under a COI ceiling you set.",
+            "Hold steady and bring COI down.",
+            "Even the dam up across the foundation animals.",
+          ] },
+          "Tap Find best matches. Green is a gain and red a loss compared with the dam. Tap a pairing to open the full check.",
+        ],
+      },
+      {
+        t: "Roadmap: plan several generations",
+        mock: null,
+        shots: [["roadmap", "Breeding Roadmap"]],
+        body: [
+          "One mating looks one generation ahead. Roadmap looks further. Tap Matings, then Roadmap.",
+          "Pick a dam to start from and a target foundation animal. It works out which sequence of matings over several generations gets her descendants closest to that animal's blood while staying under your COI limit.",
+          "It shows the best route and a steadier route that keeps COI lowest. If nothing helps within your limits, it says so; loosen a limit or widen the sire pool.",
+        ],
+      },
+      {
+        t: "Save it and keep track",
         mock: h(
           "div",
           { className: "tm tm-btns" },
@@ -9473,9 +9636,41 @@ Error generating stack: ` +
           h("div", { className: "tm-finger tm-finger2" }),
         ),
         body: [
-          "Save to Log keeps this mating on your phone so you can look at it later. The Log is under Matings.",
-          "Plan the next generation lets you plan what that calf could be bred to down the road.",
-          "Saved matings stay on the phone you saved them on.",
+          "Save to Log records a planned mating. The Log is under Matings. It stays on the device you saved it on.",
+          "In the Log, mark it confirmed in calf, then calved successfully, and link the resulting calf once it is in the database.",
+          "Matings due for a revisit show up in Needs attention on the Dashboard.",
+          "Plan the next generation, on the mating screen, lets you plan what that offspring could be bred to.",
+        ],
+        shots: [["log", "Mating Log"]],
+      },
+      {
+        t: "Add and edit animals",
+        mock: null,
+        shots: [["add", "Add Animal"]],
+        body: [
+          "Under Animals, tap Add / Edit.",
+          { ul: [
+            "Add Manually: enter the registered name, registration number, birth date, sire and dam.",
+            "Import from Photo/PDF: load a pedigree chart and review what was read before saving.",
+            "Clone an Existing Animal: copies the sire and dam for full siblings.",
+            "Edit an animal: correct registration number, birth date, sex, status and notes, and mark sires as available (semen on hand) so they show up in the matings search.",
+          ] },
+          "Animals you add or edit are flagged as yours, and you can revert an edit. Changes are saved on the device you made them on.",
+          "On a computer, the Data Health screen audits the database for gaps and conflicts.",
+        ],
+      },
+      {
+        t: "What you can learn",
+        mock: null,
+        body: [
+          { ul: [
+            "Am I concentrating the blood I want? The Dashboard blood change and birth-year chart.",
+            "Which animals are thin on it? Animals tab, ranked by Blood % or Foundation Balance.",
+            "Am I getting too tight? Herd COI, the COI bands, and What causes the COI? on an animal.",
+            "Which sire is best for this dam? Matings, then Find best matches.",
+            "Who is quietly shaping the line? Most influential animals, and Other ancestors this animal concentrates.",
+            "Where are the pedigree gaps? Needs attention, plus Data Health on a computer.",
+          ] },
         ],
       },
       {
@@ -9483,31 +9678,46 @@ Error generating stack: ` +
         mock: null,
         body: null,
         words: [
-          ["Blood %", "how much of the animal's pedigree comes from that bull"],
-          ["Relationship", "how closely related the animal is to that bull. Higher means closer kin"],
-          ["Times", "how many times that bull shows up in the pedigree"],
-          ["COI", "how inbred an animal is. Lower means less inbred"],
-          ["77th and 43rd", "Mark Donald 77 and McK Donald 43, the two foundation bulls"],
+          ["Foundation animal", "a sire or dam you designate. Every number is measured against them"],
+          ["Blood %", "share of an animal's ancestry from a foundation animal, repeat appearances adding up"],
+          ["Relationship", "additive relationship between an animal and a foundation animal"],
+          ["Times", "how many times an ancestor appears in a pedigree"],
+          ["COI", "inbreeding coefficient: how closely related the sire and dam were"],
+          ["Complete generations", "generations of pedigree with no gaps"],
+          ["Foundation Balance", "how evenly an animal carries all your foundation animals"],
         ],
       },
     ];
     var S = steps[i],
       last = i === steps.length - 1;
+    function para(x, j) {
+      if (typeof x === "string") return h("p", { key: j, className: "tour-p" }, x);
+      if (x.ul) return h("ul", { key: j, className: "tour-list" }, x.ul.map(function (t, q) { return h("li", { key: q }, t); }));
+      if (x.ol) return h("ol", { key: j, className: "tour-list" }, x.ol.map(function (t, q) { return h("li", { key: q }, t); }));
+      if (x.h) return h("h3", { key: j, className: "tour-h" }, x.h);
+      if (x.small) return h("p", { key: j, className: "tour-small" }, x.small);
+      return null;
+    }
     return h(
       "div",
       { className: "tour-back", role: "dialog", "aria-modal": "true", "aria-label": "LineBred guide" },
       h(
         "div",
-        { className: "tour-card" },
+        { className: "tour-card", ref: cardRef },
         h(
           "div",
           { className: "tour-top" },
-          h("span", { className: "tour-step" }, "Step " + (i + 1) + " of " + steps.length),
+          h(
+            "select",
+            { className: "tour-jump", value: i, "aria-label": "Jump to a step", onChange: function (e) { setI(+e.target.value); } },
+            steps.map(function (q, j) { return h("option", { key: j, value: j }, (j + 1) + " of " + steps.length + ": " + q.t); }),
+          ),
           h("button", { type: "button", className: "tour-skip", onClick: close }, last ? "Close" : "Skip"),
         ),
         h("h2", { className: "tour-title" }, S.t),
         S.mock ? h("div", { className: "tour-mockwrap", key: i }, S.mock) : null,
-        S.body ? S.body.map(function (x, j) { return h("p", { key: j, className: "tour-p" }, x); }) : null,
+        S.shots ? shots(S.shots) : null,
+        S.body ? S.body.map(para) : null,
         S.words
           ? h(
               "dl",
@@ -9520,18 +9730,19 @@ Error generating stack: ` +
         last ? h("p", { className: "tour-p" }, "Tap ? Guide at the top any time to see this again.") : null,
         h(
           "div",
-          { className: "tour-dots" },
-          steps.map(function (_, j) {
-            return h("i", { key: j, className: j === i ? "on" : "" });
-          }),
-        ),
-        h(
-          "div",
           { className: "tour-nav" },
           i > 0 ? h("button", { type: "button", className: "btn tour-prev", onClick: function () { setI(i - 1); } }, "Back") : h("span", null),
           h("button", { type: "button", className: "btn tour-next", onClick: last ? close : function () { setI(i + 1); } }, last ? "Done" : "Next"),
         ),
       ),
+      big
+        ? h(
+            "div",
+            { className: "tour-lb", onClick: function () { setBig(null); } },
+            h("div", { className: "tour-lb-top" }, h("span", null, big.c), h("button", { type: "button", className: "btn", onClick: function () { setBig(null); } }, "Close")),
+            h("div", { className: "tour-lb-body", onClick: function (e) { e.stopPropagation(); } }, h("img", { src: "guide/" + big.f + ".jpg", alt: big.c })),
+          )
+        : null,
     );
   }
   function Xm() {
@@ -21815,7 +22026,37 @@ Rules:
   .tour-back { position: fixed; inset: 0; z-index: 200; background: rgba(30, 28, 26, 0.72); display: flex; align-items: center; justify-content: center; padding: 12px; }
   .tour-card { background: var(--surface); width: 100%; max-width: 460px; max-height: 94vh; overflow-y: auto; padding: 18px 18px 16px; border-top: 4px solid var(--accent); }
   .tour-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-  .tour-step { font-size: 14px; color: var(--c-charcoal-80); font-weight: 600; letter-spacing: .03em; }
+  .tour-jump { flex: 1; min-width: 0; margin-right: 10px; font: inherit; font-size: 15px; font-weight: 600; color: var(--c-charcoal-80); border: 1px solid #cfcbc3; background: #fff; padding: 8px 6px; min-height: 44px; text-overflow: ellipsis; }
+  .tour-list { margin: 0 0 12px; padding-left: 22px; font-size: 18px; line-height: 1.45; }
+  .tour-list li { margin-bottom: 8px; }
+  .tour-h { font-size: 19px; margin: 14px 0 6px; color: var(--accent); }
+  .tour-small { font-size: 15px; line-height: 1.45; color: var(--c-charcoal-80); margin: 0 0 10px; border-left: 3px solid #cfcbc3; padding-left: 10px; }
+  .tour-shots { display: flex; gap: 10px; overflow-x: auto; margin: 0 0 14px; padding-bottom: 4px; -webkit-overflow-scrolling: touch; }
+  .tour-shot { flex: none; width: 150px; border: 1px solid #cfcbc3; background: #fff; padding: 0; text-align: left; cursor: pointer; font: inherit; }
+  .tour-shot img { display: block; width: 100%; height: 250px; object-fit: cover; object-position: top; border-bottom: 1px solid #e3dfd6; }
+  .tour-shot span { display: block; font-size: 13px; font-weight: 600; padding: 6px 7px; color: var(--c-charcoal-80); line-height: 1.25; }
+  .tour-lb { position: fixed; inset: 0; z-index: 300; background: rgba(20, 18, 16, 0.92); display: flex; flex-direction: column; }
+  .tour-lb-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 14px; color: #fff; font-weight: 600; font-size: 17px; }
+  .tour-lb-body { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 0 10px 20px; display: flex; justify-content: center; align-items: flex-start; }
+  .tour-lb-body img { width: 100%; max-width: 520px; height: auto; display: block; background: #fff; }
+  .tm-chips { display: flex; flex-wrap: wrap; gap: 8px; align-content: center; justify-content: center; }
+  .tm-chip { background: var(--accent); color: #fff; font-weight: 600; font-size: 15px; padding: 8px 14px; animation: tmChip 6s ease infinite; }
+  .tm-chip2 { animation-delay: .6s; }
+  .tm-chip3 { background: #1f3b63; animation-delay: 2.2s; }
+  .tm-chip-pop { position: absolute; right: 12px; bottom: 10px; opacity: 0; animation: tmSaved 6s ease infinite; }
+  .tm-small { font-size: 14px; padding: 8px; animation-duration: 6s; animation-name: tmPress2; }
+  .tm-scale { display: flex; height: 38px; position: relative; margin-top: 16px; }
+  .tm-scale i { flex: 1; font-style: normal; font-size: 13px; font-weight: 700; color: #fff; display: flex; align-items: center; justify-content: center; }
+  .tm-scale .s1 { background: #5b8a4a; } .tm-scale .s2 { background: #c9a227; } .tm-scale .s3 { background: #c8741f; } .tm-scale .s4 { background: #9b1c1c; }
+  .tm-marker { position: absolute; top: -12px; left: 0; width: 0; height: 0; border-left: 8px solid transparent; border-right: 8px solid transparent; border-top: 12px solid #222; animation: tmMark 7s ease-in-out infinite; }
+  .tm-scalen { display: flex; justify-content: space-between; font-size: 12px; color: var(--c-charcoal-80); margin-top: 4px; }
+  .tm-find { display: flex; flex-direction: column; gap: 8px; justify-content: center; }
+  .tm-q { background: #fff; border: 1px solid #d6d1c7; padding: 8px 10px; font-size: 15px; font-weight: 600; display: flex; gap: 10px; align-items: center; }
+  .tm-q i { font-style: normal; width: 22px; height: 22px; border-radius: 50%; background: #cfcbc3; color: #fff; display: inline-flex; align-items: center; justify-content: center; animation: tmCheck 6s ease infinite; animation-delay: inherit; }
+  @keyframes tmChip { 0% { opacity: 0; transform: scale(.7); } 10%, 85% { opacity: 1; transform: none; } 100% { opacity: 0; } }
+  @keyframes tmPress2 { 0%, 45% { background: #fff; } 55%, 70% { background: #f3dcdc; } 100% { background: #fff; } }
+  @keyframes tmMark { 0% { left: 4%; } 50% { left: 88%; } 100% { left: 4%; } }
+  @keyframes tmCheck { 0%, 8% { background: #cfcbc3; } 16%, 85% { background: #2f6b3a; } 100% { background: #cfcbc3; } }
   .tour-skip { border: 0; background: none; font: inherit; font-size: 16px; color: var(--c-charcoal-80); text-decoration: underline; padding: 8px 4px; min-height: 44px; cursor: pointer; }
   .tour-title { font-size: 25px; line-height: 1.2; margin: 0 0 12px; }
   .tour-p { font-size: 18px; line-height: 1.5; margin: 0 0 10px; }
