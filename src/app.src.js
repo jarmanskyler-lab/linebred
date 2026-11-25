@@ -21259,7 +21259,7 @@ Rules:
   /* ---- app bar + tabs -------------------------------------------------- */
   .toolbar {
     display: flex; align-items: center; gap: 2px;
-    padding: 0 var(--s-4);
+    padding: env(safe-area-inset-top) var(--s-4) 0;
     background: var(--surface);
     border-bottom: var(--bw) solid var(--border-strong);
     overflow-x: auto;
@@ -22027,7 +22027,7 @@ Rules:
     .screen { padding: var(--s-4) var(--s-3) var(--s-7); }
     .form-grid { grid-template-columns: 1fr; }
     .metrics-below { grid-template-columns: 1fr; }
-    .toolbar { padding: 0 var(--s-3); }
+    .toolbar { padding: env(safe-area-inset-top) var(--s-3) 0; }
     .toolbar > span { margin-right: var(--s-3); }
     .toolbar > span img { height: 26px; }
     .toolbar button { padding: 13px 10px; }
@@ -22035,7 +22035,7 @@ Rules:
 
   /* ==== Guide / tour ==================================================== */
   .tb-guide { margin-left: auto; font-weight: 600; }
-  .tour-back { position: fixed; inset: 0; z-index: 200; background: rgba(30, 28, 26, 0.72); display: flex; align-items: center; justify-content: center; padding: 12px; }
+  .tour-back { position: fixed; inset: 0; z-index: 200; background: rgba(30, 28, 26, 0.72); display: flex; align-items: center; justify-content: center; padding: calc(12px + env(safe-area-inset-top)) 12px calc(12px + env(safe-area-inset-bottom)); }
   .tour-card { background: var(--surface); width: 100%; max-width: 460px; max-height: 94vh; overflow-y: auto; padding: 18px 18px 16px; border-top: 4px solid var(--accent); }
   .tour-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
   .tour-jump { flex: 1; min-width: 0; margin-right: 10px; font: inherit; font-size: 15px; font-weight: 600; color: var(--c-charcoal-80); border: 1px solid #cfcbc3; background: #fff; padding: 8px 6px; min-height: 44px; text-overflow: ellipsis; }
@@ -22048,7 +22048,7 @@ Rules:
   .tour-shot img { display: block; width: 100%; height: 250px; object-fit: cover; object-position: top; border-bottom: 1px solid #e3dfd6; }
   .tour-shot span { display: block; font-size: 13px; font-weight: 600; padding: 6px 7px; color: var(--c-charcoal-80); line-height: 1.25; }
   .tour-lb { position: fixed; inset: 0; z-index: 300; background: rgba(20, 18, 16, 0.92); display: flex; flex-direction: column; }
-  .tour-lb-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 14px; color: #fff; font-weight: 600; font-size: 17px; }
+  .tour-lb-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: calc(10px + env(safe-area-inset-top)) 14px 10px; color: #fff; font-weight: 600; font-size: 17px; }
   .tour-lb-body { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 0 10px 20px; display: flex; justify-content: center; align-items: flex-start; }
   .tour-lb-body img { width: 100%; max-width: 520px; height: auto; display: block; background: #fff; }
   .tm-chips { display: flex; flex-wrap: wrap; gap: 8px; align-content: center; justify-content: center; }
@@ -22127,7 +22127,7 @@ Rules:
   @media (prefers-reduced-motion: reduce) { .tm *, .tm { animation: none !important; } .tm-strip, .tm-ped { opacity: 1; transform: none; } .tm-type, .tm-type2 { width: 100%; } .tm-finger { display: none; } }
   @media (max-width: 640px) {
     .toolbar { position: relative; }
-    .tb-guide { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); margin-left: 0; }
+    .tb-guide { position: absolute; right: 8px; top: calc(50% + env(safe-area-inset-top) / 2); transform: translateY(-50%); margin-left: 0; }
   }
 
   /* ==== Phone layout (Phases 1-3) ========================================
@@ -22245,7 +22245,7 @@ Rules:
     /* Phase 3: full-screen pickers */
     .pairing-slot.ph-open {
       position: fixed !important; top: 0; left: 0; right: 0; bottom: 0; z-index: 100;
-      background: var(--surface); padding: 12px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px;
+      background: var(--surface); padding: calc(12px + env(safe-area-inset-top)) 12px calc(12px + env(safe-area-inset-bottom)); overflow-y: auto; display: flex; flex-direction: column; gap: 8px;
     }
     .pairing-slot.ph-open > label { display: none; }
     .pairing-slot.ph-open .ph-sheet-bar { display: flex; justify-content: space-between; align-items: center; font-weight: 700; font-size: 18px; }
