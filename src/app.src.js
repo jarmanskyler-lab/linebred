@@ -9380,6 +9380,160 @@ Error generating stack: ` +
     );
     return b.default.createElement("div", { className: "pdg", ref: ref });
   }
+  var TOUR_KEY = "lb_tour_v1";
+  function Tour(P) {
+    var h = b.default.createElement;
+    var st = b.useState(0),
+      i = st[0],
+      setI = st[1];
+    function close() {
+      try {
+        localStorage.setItem(TOUR_KEY, "1");
+      } catch (e) {}
+      P.onClose();
+    }
+    b.useEffect(function () {
+      function k(ev) {
+        if (ev.key === "Escape") close();
+      }
+      window.addEventListener("keydown", k);
+      return function () {
+        window.removeEventListener("keydown", k);
+      };
+    }, []);
+    function tile(v, l, d) {
+      return h("div", { className: "tm-tile", style: { animationDelay: d } }, h("div", { className: "tm-tv" }, v), h("div", { className: "tm-tl" }, l));
+    }
+    var steps = [
+      {
+        t: "Welcome to LineBred",
+        mock: h("div", { className: "tm tm-welcome" }, h("img", { src: "logo.png", alt: "LineBred" })),
+        body: [
+          "This app keeps track of the Mark Donald 77 and McK Donald 43 bloodlines in your herd.",
+          "It shows how much of each bull is in every animal, and how closely two animals are related, so you can pick matings that keep those lines strong without breeding too close.",
+          "This quick tour takes about a minute.",
+        ],
+      },
+      {
+        t: "Dashboard: your herd at a glance",
+        mock: h(
+          "div",
+          { className: "tm" },
+          h("div", { className: "tm-tiles" }, tile("214", "Herd Size", "0s"), tile("10.3%", "Herd COI", "1.2s"), tile("11.1%", "77th Blood", "2.4s")),
+          h("div", { className: "tm-note" }, "Example numbers"),
+        ),
+        body: [
+          "The Dashboard is the first screen. Tap Dashboard at the bottom any time to come back.",
+          "Herd Size is how many head are in the herd now.",
+          "Blood % is how much of an animal's pedigree comes from that bull. More percent means more of his blood.",
+          "Herd COI is how inbred the herd is. A lower number means less inbred.",
+        ],
+      },
+      {
+        t: "Animals: look up any animal",
+        mock: h(
+          "div",
+          { className: "tm" },
+          h("div", { className: "tm-row" }, h("b", null, "BB ARTHUR 6005"), h("span", null, "M · Active · 77th 12.5%")),
+          h("div", { className: "tm-row tm-row-hit" }, h("b", null, "JH MS MARK H009 ET"), h("span", null, "F · Active · 77th 22.9%")),
+          h("div", { className: "tm-row" }, h("b", null, "DH BEAU MARK 815"), h("span", null, "M · Active · 77th 25.0%")),
+          h("div", { className: "tm-finger" }),
+          h("div", { className: "tm-ped" }, "Pedigree and blood shown"),
+        ),
+        body: [
+          "Tap Animals at the bottom. You will see every animal in your herd.",
+          "Each one shows how much 77 and 43 blood it carries.",
+          "Tap an animal's name to open its pedigree. Use the search box to find one by name or registration number.",
+        ],
+      },
+      {
+        t: "Matings: plan a breeding",
+        mock: h(
+          "div",
+          { className: "tm" },
+          h("div", { className: "tm-field" }, h("small", null, "COW"), h("span", { className: "tm-type" }, "JH MS MARK H009 ET")),
+          h("div", { className: "tm-field" }, h("small", null, "BULL"), h("span", { className: "tm-type tm-type2" }, "BB ARTHUR 6005")),
+          h("div", { className: "tm-strip" }, h("div", null, h("small", null, "Calf COI"), h("b", null, "7.6%")), h("div", null, h("small", null, "77th"), h("b", null, "17.7%")), h("div", null, h("small", null, "43rd"), h("b", null, "11.6%"))),
+        ),
+        body: [
+          "Tap Matings at the bottom. Pick a cow, then pick a bull. Start typing a name and tap it in the list.",
+          "The calf's numbers show up right away.",
+          "Calf COI is how inbred the calf would be. Lower means less inbred.",
+          "The 77th and 43rd numbers are how much of each bull the calf would carry.",
+        ],
+      },
+      {
+        t: "Save it and plan ahead",
+        mock: h(
+          "div",
+          { className: "tm tm-btns" },
+          h("div", { className: "tm-btn tm-btn-save" }, "Save to Log"),
+          h("div", { className: "tm-btn tm-btn-next" }, "Plan the next generation"),
+          h("div", { className: "tm-saved" }, "Saved ✓"),
+          h("div", { className: "tm-finger tm-finger2" }),
+        ),
+        body: [
+          "Save to Log keeps this mating on your phone so you can look at it later. The Log is under Matings.",
+          "Plan the next generation lets you plan what that calf could be bred to down the road.",
+          "Saved matings stay on the phone you saved them on.",
+        ],
+      },
+      {
+        t: "Words you will see",
+        mock: null,
+        body: null,
+        words: [
+          ["Blood %", "how much of the animal's pedigree comes from that bull"],
+          ["Relationship", "how closely related the animal is to that bull. Higher means closer kin"],
+          ["Times", "how many times that bull shows up in the pedigree"],
+          ["COI", "how inbred an animal is. Lower means less inbred"],
+          ["77th and 43rd", "Mark Donald 77 and McK Donald 43, the two foundation bulls"],
+        ],
+      },
+    ];
+    var S = steps[i],
+      last = i === steps.length - 1;
+    return h(
+      "div",
+      { className: "tour-back", role: "dialog", "aria-modal": "true", "aria-label": "LineBred guide" },
+      h(
+        "div",
+        { className: "tour-card" },
+        h(
+          "div",
+          { className: "tour-top" },
+          h("span", { className: "tour-step" }, "Step " + (i + 1) + " of " + steps.length),
+          h("button", { type: "button", className: "tour-skip", onClick: close }, last ? "Close" : "Skip"),
+        ),
+        h("h2", { className: "tour-title" }, S.t),
+        S.mock ? h("div", { className: "tour-mockwrap", key: i }, S.mock) : null,
+        S.body ? S.body.map(function (x, j) { return h("p", { key: j, className: "tour-p" }, x); }) : null,
+        S.words
+          ? h(
+              "dl",
+              { className: "tour-words" },
+              S.words.map(function (w, j) {
+                return h("div", { key: j }, h("dt", null, w[0]), h("dd", null, w[1]));
+              }),
+            )
+          : null,
+        last ? h("p", { className: "tour-p" }, "Tap ? Guide at the top any time to see this again.") : null,
+        h(
+          "div",
+          { className: "tour-dots" },
+          steps.map(function (_, j) {
+            return h("i", { key: j, className: j === i ? "on" : "" });
+          }),
+        ),
+        h(
+          "div",
+          { className: "tour-nav" },
+          i > 0 ? h("button", { type: "button", className: "btn tour-prev", onClick: function () { setI(i - 1); } }, "Back") : h("span", null),
+          h("button", { type: "button", className: "btn tour-next", onClick: last ? close : function () { setI(i + 1); } }, last ? "Done" : "Next"),
+        ),
+      ),
+    );
+  }
   function Xm() {
     let [e, t] = (0, b.useState)([]),
       [n, r] = (0, b.useState)([]),
@@ -9392,6 +9546,7 @@ Error generating stack: ` +
       [O, f] = (0, b.useState)(null),
       [p, m] = (0, b.useState)(!1),
       [w, x] = (0, b.useState)("dashboard"),
+      [tourOn, setTourOn] = (0, b.useState)(!1),
       [mm, setMm] = (0, b.useState)("find"),
       [cmLast, setCmLast] = (0, b.useState)({ cow: "", bull: "", extra: [], key: 0 }),
       [h, T] = (0, b.useState)(""),
@@ -9594,10 +9749,16 @@ Error generating stack: ` +
       bt = (0, b.useCallback)((j) => {
         (R(j), x("edit"));
       }, []);
+    (0, b.useEffect)(() => {
+      try {
+        if (!localStorage.getItem(TOUR_KEY)) setTourOn(!0);
+      } catch (e) {}
+    }, []);
     return (0, o.jsxs)("div", {
       className: "app-root",
       children: [
         (0, o.jsx)("style", { children: wh }),
+        tourOn && !i && (0, o.jsx)(Tour, { onClose: () => setTourOn(!1) }),
         (0, o.jsxs)("div", {
           className: "toolbar",
           children: [
@@ -9624,6 +9785,7 @@ Error generating stack: ` +
               onClick: () => x("reports"),
               children: "Data Health",
             }),
+            (0, o.jsx)("button", { className: "tb-guide", onClick: () => setTourOn(!0), children: "? Guide" }),
           ],
         }),
         Xd.includes(w) &&
@@ -21646,6 +21808,73 @@ Rules:
     .toolbar > span { margin-right: var(--s-3); }
     .toolbar > span img { height: 26px; }
     .toolbar button { padding: 13px 10px; }
+  }
+
+  /* ==== Guide / tour ==================================================== */
+  .tb-guide { margin-left: auto; font-weight: 600; }
+  .tour-back { position: fixed; inset: 0; z-index: 200; background: rgba(30, 28, 26, 0.72); display: flex; align-items: center; justify-content: center; padding: 12px; }
+  .tour-card { background: var(--surface); width: 100%; max-width: 460px; max-height: 94vh; overflow-y: auto; padding: 18px 18px 16px; border-top: 4px solid var(--accent); }
+  .tour-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+  .tour-step { font-size: 14px; color: var(--c-charcoal-80); font-weight: 600; letter-spacing: .03em; }
+  .tour-skip { border: 0; background: none; font: inherit; font-size: 16px; color: var(--c-charcoal-80); text-decoration: underline; padding: 8px 4px; min-height: 44px; cursor: pointer; }
+  .tour-title { font-size: 25px; line-height: 1.2; margin: 0 0 12px; }
+  .tour-p { font-size: 18px; line-height: 1.5; margin: 0 0 10px; }
+  .tour-words { margin: 0 0 8px; }
+  .tour-words div { margin-bottom: 10px; }
+  .tour-words dt { font-weight: 700; font-size: 18px; color: var(--accent); }
+  .tour-words dd { margin: 0; font-size: 17px; line-height: 1.4; }
+  .tour-dots { display: flex; gap: 8px; justify-content: center; margin: 14px 0 12px; }
+  .tour-dots i { width: 10px; height: 10px; border-radius: 50%; background: #cfcbc3; }
+  .tour-dots i.on { background: var(--accent); }
+  .tour-nav { display: flex; gap: 10px; justify-content: space-between; }
+  .tour-nav .btn { min-height: 52px; font-size: 18px; padding: 0 22px; }
+  .tour-prev { background: #fff; color: var(--text); border: 2px solid #b9b3a7; }
+  .toolbar .tb-guide { color: var(--accent); }
+  .tour-next { background: var(--accent); color: #fff; border-color: var(--accent); margin-left: auto; min-width: 140px; }
+  .tour-mockwrap { margin: 0 0 14px; }
+  .tm { position: relative; background: #f1eee8; border: 1px solid #d6d1c7; padding: 12px; min-height: 150px; overflow: hidden; }
+  .tm-welcome { display: flex; align-items: center; justify-content: center; animation: tmFade 1s ease both; }
+  .tm-welcome img { max-width: 70%; height: auto; }
+  .tm-note { position: absolute; right: 8px; bottom: 4px; font-size: 12px; color: var(--c-charcoal-80); }
+  .tm-tiles { display: flex; gap: 8px; }
+  .tm-tile { flex: 1; background: #fff; border: 2px solid #d6d1c7; text-align: center; padding: 14px 4px; animation: tmPulse 3.6s ease-in-out infinite; }
+  .tm-tv { font-size: 24px; font-weight: 700; color: var(--accent); }
+  .tm-tl { font-size: 13px; color: var(--c-charcoal-80); }
+  .tm-row { background: #fff; border: 1px solid #d6d1c7; padding: 8px 10px; margin-bottom: 6px; }
+  .tm-row b { display: block; font-size: 15px; }
+  .tm-row span { font-size: 13px; color: var(--c-charcoal-80); }
+  .tm-row-hit { animation: tmHit 4s ease-in-out infinite; }
+  .tm-finger { position: absolute; width: 30px; height: 30px; border-radius: 50%; background: rgba(139, 26, 26, .35); border: 2px solid var(--accent); left: 70%; top: 108%; animation: tmFinger 4s ease-in-out infinite; }
+  .tm-ped { position: absolute; left: 0; right: 0; bottom: 0; background: var(--accent); color: #fff; text-align: center; font-size: 15px; font-weight: 600; padding: 10px; transform: translateY(100%); animation: tmPed 4s ease-in-out infinite; }
+  .tm-field { background: #fff; border: 1px solid #b9b3a7; padding: 6px 10px; margin-bottom: 8px; }
+  .tm-field small { display: block; font-size: 11px; letter-spacing: .06em; color: var(--c-charcoal-80); }
+  .tm-type { display: block; overflow: hidden; white-space: nowrap; width: 0; font-size: 16px; font-weight: 600; animation: tmType 6s steps(20) infinite; }
+  .tm-type2 { animation-name: tmType2; }
+  .tm-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; opacity: 0; animation: tmStrip 6s ease infinite; }
+  .tm-strip > div { background: #fff; border: 1px solid #d6d1c7; text-align: center; padding: 6px 2px; }
+  .tm-strip small { display: block; font-size: 12px; color: var(--c-charcoal-80); }
+  .tm-strip b { font-size: 20px; color: var(--accent); }
+  .tm-btns { display: flex; flex-direction: column; gap: 10px; justify-content: center; }
+  .tm-btn { text-align: center; padding: 13px 8px; font-weight: 600; font-size: 16px; border: 2px solid var(--accent); background: #fff; }
+  .tm-btn-save { animation: tmPress 4.5s ease-in-out infinite; }
+  .tm-btn-next { background: var(--accent); color: #fff; }
+  .tm-saved { position: absolute; right: 10px; top: 10px; background: #2f6b3a; color: #fff; font-size: 14px; padding: 4px 10px; opacity: 0; animation: tmSaved 4.5s ease infinite; }
+  .tm-finger2 { left: 45%; top: 10px; animation-name: tmFinger2; animation-duration: 4.5s; }
+  @keyframes tmFade { from { opacity: 0; transform: scale(.96); } to { opacity: 1; transform: none; } }
+  @keyframes tmPulse { 0%, 100% { box-shadow: none; border-color: #d6d1c7; } 12%, 30% { box-shadow: 0 0 0 4px rgba(139, 26, 26, .35); border-color: var(--accent); } 45% { box-shadow: none; border-color: #d6d1c7; } }
+  @keyframes tmHit { 0%, 35% { background: #fff; } 45%, 100% { background: #f3dcdc; border-color: var(--accent); } }
+  @keyframes tmFinger { 0% { left: 80%; top: 110%; opacity: 0; } 15% { opacity: 1; } 40% { left: 60%; top: 52%; transform: scale(1); } 46% { transform: scale(.7); } 52% { transform: scale(1); } 80% { opacity: 1; } 100% { left: 60%; top: 52%; opacity: 0; } }
+  @keyframes tmPed { 0%, 55% { transform: translateY(100%); } 65%, 90% { transform: none; } 100% { transform: translateY(100%); } }
+  @keyframes tmType { 0%, 5% { width: 0; } 30%, 100% { width: 100%; } }
+  @keyframes tmType2 { 0%, 32% { width: 0; } 58%, 100% { width: 100%; } }
+  @keyframes tmStrip { 0%, 60% { opacity: 0; transform: translateY(6px); } 72%, 94% { opacity: 1; transform: none; } 100% { opacity: 0; } }
+  @keyframes tmPress { 0%, 40% { background: #fff; } 48%, 70% { background: #f3dcdc; } 100% { background: #fff; } }
+  @keyframes tmSaved { 0%, 50% { opacity: 0; } 58%, 85% { opacity: 1; } 100% { opacity: 0; } }
+  @keyframes tmFinger2 { 0% { opacity: 0; left: 80%; top: 30px; } 20% { opacity: 1; } 42% { left: 50%; top: 22px; transform: scale(1); } 47% { transform: scale(.7); } 52% { transform: scale(1); } 75% { opacity: 1; } 100% { opacity: 0; left: 50%; top: 22px; } }
+  @media (prefers-reduced-motion: reduce) { .tm *, .tm { animation: none !important; } .tm-strip, .tm-ped { opacity: 1; transform: none; } .tm-type, .tm-type2 { width: 100%; } .tm-finger { display: none; } }
+  @media (max-width: 640px) {
+    .toolbar { position: relative; }
+    .tb-guide { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); margin-left: 0; }
   }
 
   /* ==== Phone layout (Phases 1-3) ========================================
