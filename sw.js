@@ -2,12 +2,12 @@
 // Strategy: cache the app shell on install; serve the shell cache-first so the app
 // opens with no signal, and keep data.json network-first so a freshly pushed
 // database is picked up as soon as the phone is online again.
-const VERSION = "20261125-safe";
+const VERSION = "20261126-sharp";
 const SHELL = "linebred-shell-" + VERSION;
 const DATA  = "linebred-data-" + VERSION;
 const SHELL_FILES = [
   "./", "./index.html", "./app.js", "./tokens.css", "./manifest.webmanifest",
-  "./logo.png", "./logo-reversed.png",
+  "./logo.png", "./logo-bar.png", "./logo-reversed.png",
   "./icon-180.png", "./icon-512.png", "./favicon-32.png",
 ];
 

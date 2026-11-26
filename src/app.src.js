@@ -9989,7 +9989,7 @@ Error generating stack: ` +
               onClick: () => x("dashboard"),
               style: { cursor: "pointer" },
               title: "Dashboard",
-              children: (0, o.jsx)("img", { src: "logo.png", alt: "LineBred" }),
+              children: (0, o.jsx)("img", { src: "logo-bar.png", alt: "LineBred" }),
             }),
             (0, o.jsx)("button", {
               className: (Xd.includes(w) ? "active " : "") + "tb-desk",
@@ -22127,7 +22127,7 @@ Rules:
   @media (prefers-reduced-motion: reduce) { .tm *, .tm { animation: none !important; } .tm-strip, .tm-ped { opacity: 1; transform: none; } .tm-type, .tm-type2 { width: 100%; } .tm-finger { display: none; } }
   @media (max-width: 640px) {
     .toolbar { position: relative; }
-    .tb-guide { position: absolute; right: 8px; top: calc(50% + env(safe-area-inset-top) / 2); transform: translateY(-50%); margin-left: 0; }
+    .tb-guide { position: absolute; right: 8px; top: env(safe-area-inset-top); bottom: 0; transform: none; margin-left: 0; display: flex; align-items: center; }
   }
 
   /* ==== Phone layout (Phases 1-3) ========================================
